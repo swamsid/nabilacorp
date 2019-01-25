@@ -1,0 +1,1364 @@
+commit 534ac97b3ab4f86013d0e54d00458bf6e200f09a
+Merge: 162caea d9cabcb
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Tue Dec 4 11:01:01 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 162caea8d90592252b44a9e45bf3a001ba7a1b02
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Tue Dec 4 11:00:51 2018 +0700
+
+    Form master item bisa ada supplier
+
+commit d9cabcb100189f085617458e4f619ef7c9983d85
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Dec 4 10:35:19 2018 +0700
+
+    1
+
+commit 059d9e515981de93156449b7a87a29ad261bc9ab
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Dec 4 09:35:23 2018 +0700
+
+    1
+
+commit 0952744c9354e5194503387f90001ac94e9c08ac
+Merge: d840229 6888097
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Dec 4 09:26:01 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit d840229b6890f5531416ae69fbda71639b81394e
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Dec 4 09:25:58 2018 +0700
+
+    123
+
+commit 6888097038ac48b3213d9435c088e486ac7d7cd1
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Dec 4 08:14:54 2018 +0700
+
+    update
+
+commit 157a28e8a16c2aed9cc93583a99f7f723d72a846
+Merge: c90507a 194c865
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 08:08:39 2018 +0700
+
+    Merge pull request #20 from thaziz/mahmudpcs
+    
+    pcs
+
+commit 194c86596de5e7553135916f52a249b9ef0061bf
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 08:07:57 2018 +0700
+
+    pcs
+
+commit c90507a5d1c33ebe7b0c100e3552b8689752362d
+Merge: f32120d 74f6ca6
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Dec 4 07:50:32 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit f32120d04682ede3667c9d6023a96d11c9dde681
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Dec 4 07:50:24 2018 +0700
+
+    12
+
+commit 74f6ca60db7ce080651ecbe4325b286ccee6496c
+Merge: 7649034 715dad6
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 07:08:47 2018 +0700
+
+    Merge pull request #19 from thaziz/mahmudpcs
+    
+    corfirm
+
+commit 715dad6af576803ec200870788153cd443c40ce0
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 07:07:42 2018 +0700
+
+    corfirm
+
+commit 76490347e2114eed9cfdad9c4a2d08e68180b951
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Dec 4 04:43:48 2018 +0700
+
+    d
+
+commit b12ed67177d30dce6fe8ad4548927d2afb42323c
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Dec 4 04:35:16 2018 +0700
+
+    data
+
+commit 8cc4cde1812edc518df40092f5a62da153e01177
+Merge: 8a133fd f88792c
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Dec 4 04:29:11 2018 +0700
+
+    update
+
+commit 8a133fdd3cbf8cfbcf5b72e626f38b5c51ecdebc
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Dec 4 04:25:56 2018 +0700
+
+    update
+
+commit f88792cdc1e40912df49266b271fcb10bc681b12
+Merge: a92193e d2a577d
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 00:03:01 2018 +0700
+
+    Merge pull request #18 from thaziz/mahmud0412
+    
+    produksi
+
+commit d2a577dd126131a455a757407ac8dd96b9b27ae4
+Merge: 792e265 a92193e
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 00:02:52 2018 +0700
+
+    Merge branch 'master' into mahmud0412
+
+commit 792e265206ded9a2d846eec1a70f14839129e921
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Dec 4 00:00:29 2018 +0700
+
+    produksi
+
+commit 61a6d5ade9975b496a9fdcb16c776d11bd61d062
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 23:14:13 2018 +0700
+
+    123
+
+commit 7ec038d0a5f141cd9c8fecdaf73d667f08dc24ab
+Merge: 889e744 a92193e
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 15:54:37 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 889e744bccace0980ee09ae2d9e1601c297d0274
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 15:54:35 2018 +0700
+
+    2
+
+commit a92193ee5a6c35005d99221320fca53b2bfcb5ba
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Dec 3 15:10:49 2018 +0700
+
+    d
+
+commit 6204cc5c27e344bccde5bc763f6e7df9356a7ca3
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 14:17:01 2018 +0700
+
+    2
+
+commit 9493860b851ce2122d1cb5169a5dee1c7f346926
+Merge: 0026c05 5fe7b5f
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 14:14:42 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 0026c05234fb6a03cf2c73274e62f932165fe327
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 14:14:40 2018 +0700
+
+    123123
+
+commit e8ac5df8c64e4a7e5370c6f95e50d6060e317d11
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 13:21:03 2018 +0700
+
+    qw
+
+commit 5fe7b5fe66caf5e8ae6a60c6a0e397f207c8b470
+Merge: 8ffa44f effacb1
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Mon Dec 3 11:47:05 2018 +0700
+
+    Merge pull request #17 from thaziz/mahmud122
+    
+    pemakaianbarang
+
+commit effacb174cd2f7ea3c61cd6fdd373b560bd53958
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Mon Dec 3 11:46:26 2018 +0700
+
+    pemakaianbarang
+
+commit 8ffa44face366b988d04427be372548561d1c927
+Merge: 6ed8263 f16fcf2
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 11:44:12 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 6ed8263bf083ca0cebadaa4d2f6a97c6c4fd84c4
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 11:44:10 2018 +0700
+
+    12
+
+commit f16fcf2259b6f5b1405eb9ab4ec3f4d3d98b418e
+Merge: f15190c 3413fe8
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Dec 3 10:52:39 2018 +0700
+
+    update
+
+commit f15190c34d2aaa3f101f8b162f2fb4718a55fa1d
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Dec 3 10:49:34 2018 +0700
+
+    push
+
+commit 3413fe868c0feb264609a440804b9ec27b9ec846
+Merge: c6ff094 c477973
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 10:33:21 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit c6ff0940ee2e0283558640104369b2f2977c43f3
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Dec 3 10:33:18 2018 +0700
+
+    qwd
+
+commit c4779736c4d29278157ab8738641342855cd93b5
+Merge: 472087a 7047abd
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Mon Dec 3 10:06:55 2018 +0700
+
+    Merge pull request #16 from thaziz/mahmud122
+    
+    sidebar
+
+commit 7047abd23d56c756354003ebd12e1a938681bb24
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Mon Dec 3 09:57:57 2018 +0700
+
+    sidebar
+
+commit 472087aae7a2cf2d0764a0e04efd72e5960a5317
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Dec 3 08:49:54 2018 +0700
+
+    Perbaikan routes
+
+commit 719df1f9e067ceaf3a2ac6c3d9ee2a8ce960a4c8
+Merge: d41cf58 76800e1
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Dec 3 08:26:29 2018 +0700
+
+    Form update manajemen harga dan form master data barang
+
+commit d41cf5826b49ddc4b4127cc59bb19363eb190bd3
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Dec 3 08:22:54 2018 +0700
+
+    Form update manajemen harga dan form master data barang
+
+commit 76800e103ffcf4390bd7dc16ef5f9f789b2c0a35
+Merge: 8469377 2576f19
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Sun Dec 2 23:37:56 2018 +0700
+
+    Merge pull request #15 from thaziz/mahmud122
+    
+    pakaibarang
+
+commit 2576f197d61027d6331842bf413c8dacaf73f48b
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Sun Dec 2 23:36:36 2018 +0700
+
+    pakaibarang
+
+commit 84693778f217a89266c423127a20801539d9dda3
+Merge: 27f46a4 7467d7b
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Sun Dec 2 18:46:18 2018 +0700
+
+    Merge pull request #14 from thaziz/mahmud1130
+    
+    inventory
+
+commit 7467d7bab470e339917a8ed6ddab32d68c5fca01
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Sun Dec 2 18:45:14 2018 +0700
+
+    inventory
+
+commit 27f46a4f5593b574a45c9009d342c6ad42f63ad8
+Author: thaziz <taziz704@gmail.com>
+Date:   Sun Dec 2 14:43:45 2018 +0700
+
+    update
+
+commit 397d984bd9401166137bd13f6549dc5b4fc3ab60
+Merge: b2c3c33 31a69ac
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Sat Dec 1 11:36:08 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit b2c3c33a2fab845c5f8b81c0b7ec670713f76e5b
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Sat Dec 1 11:35:08 2018 +0700
+
+    123
+
+commit 31a69ac6bcd33fb7eca21b9b032d8fe75a04ec42
+Merge: 3fb1cc3 11231a3
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Fri Nov 30 17:08:04 2018 +0700
+
+    Merge pull request #13 from thaziz/mahmud1130
+    
+    monitoring
+
+commit 11231a39910d7766b472848585cefc17c4f04c7d
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Fri Nov 30 17:06:53 2018 +0700
+
+    monitoring
+
+commit 3fb1cc39abd09249387798068ee3bc9997b4c54c
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Nov 30 16:10:28 2018 +0700
+
+    d
+
+commit efbdd305065dc89463d5801fb450e1b8328b5fa3
+Merge: bd74b39 d5ccaaa
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Fri Nov 30 15:19:52 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit bd74b391e342eb108800ad235ad1575442e8053d
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Fri Nov 30 15:19:39 2018 +0700
+
+    Perbaikan form rencana penjualan
+
+commit d5ccaaa9f9dc40f9c75665d7247684fcce08918a
+Merge: 210a70f 5bda8a3
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Fri Nov 30 14:35:44 2018 +0700
+
+    Merge pull request #12 from thaziz/mahmud1129
+    
+    inventory
+
+commit 5bda8a333cb3a3adfb354dd7cd491aec941b9dbb
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Fri Nov 30 14:34:13 2018 +0700
+
+    inventory
+
+commit 210a70f3a6159b56f77b3071c39caeb4199aecc0
+Merge: f44a864 b8fadd6
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Fri Nov 30 10:23:19 2018 +0700
+
+    Merge pull request #11 from thaziz/mahmud1129
+    
+    pengiriman
+
+commit b8fadd614f3ec885ae96e929def6909d4d0634d8
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Fri Nov 30 10:22:22 2018 +0700
+
+    pengiriman
+
+commit f44a864c95bc117ce10332ce3b1f0c4f5fe5232b
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Nov 30 09:10:46 2018 +0700
+
+    update
+
+commit b15f26108f2b78261220c348cb46a8e8a746a83d
+Merge: 7793d8b 7db8115
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Thu Nov 29 22:46:07 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 7793d8b5d0faf13cd0ef77d71a123d6f6fe59152
+Merge: a9aed03 69a73ee
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Thu Nov 29 22:23:10 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 7db8115ff45453148c19a737c3abd1adf39a3e6e
+Merge: 27f8264 69a73ee
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 29 22:18:58 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 27f8264d210a550436fcbd0f23c61fdf9cf0be7b
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 29 22:18:07 2018 +0700
+
+    Penambahan fitur manajemen harga
+
+commit a9aed034e6fff296717a2a5a9cc885f5ca8e475d
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Thu Nov 29 22:01:48 2018 +0700
+
+    hh
+
+commit 69a73eec5e463c22f069019b617dbff075245d8f
+Merge: ca43c88 e9eb07b
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 16:54:27 2018 +0700
+
+    Merge pull request #10 from thaziz/mahmud1129
+    
+    kirim barang
+
+commit e9eb07bb6cda47b1e32b3612fdb3af91d2d51c86
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 16:53:49 2018 +0700
+
+    kirim barang
+
+commit ca43c88e9bb5b08ae219f1d4df7aba6524f97451
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 29 16:18:00 2018 +0700
+
+    f
+
+commit 2efdfc88da9414e0be7e29151b7a2faa1718e951
+Merge: 7d16821 d427e79
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 29 15:44:31 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 7d16821d78409663bcc30f7ffa7b52d1a093f4fd
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 29 15:44:06 2018 +0700
+
+    ris
+
+commit d427e79afbe6852d4b84369522c7caa88db7e35d
+Merge: 7dcd8d8 19fa7c4
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 29 15:29:59 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 7dcd8d85a92a5ff18c5f46542f8595463743dc9e
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 29 15:29:45 2018 +0700
+
+    Perbaikan rencana penjualan sudah selesai
+
+commit 19fa7c4384c92d291755292f78a840120f97ad45
+Merge: e33a06b 64550fe
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 14:41:52 2018 +0700
+
+    Merge pull request #9 from thaziz/mahmud1129
+    
+    spk
+
+commit 64550fe2e5df5d1ee3d71b535cb42bb02544fa92
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 14:38:59 2018 +0700
+
+    spk
+
+commit e33a06b2d3024ec41e1bb796356af308b7acbfa1
+Merge: f72f1c0 ea08b6c
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 13:59:59 2018 +0700
+
+    Merge pull request #8 from thaziz/mahmud1129
+    
+    spk
+
+commit ea08b6c12c859ed5bd9b83d6b342242095027a61
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 13:58:00 2018 +0700
+
+    spk
+
+commit f72f1c011c2a212dc0e95a87fef4cc7ab0bf1eb9
+Merge: 2630da7 08e726c
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 29 13:06:35 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 2630da74621685c871a1808f0f70db46bbb38aca
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 29 13:05:41 2018 +0700
+
+    update
+
+commit 08e726cbbde4bfda7890b635a7b692730a0a9311
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Thu Nov 29 11:28:37 2018 +0700
+
+    .
+
+commit a203e2c9cd122426b7d603910171e3070a5bce58
+Merge: 56c6f58 43be836
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 29 10:56:14 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 56c6f58f2aea7a087eb08b29eea29ca3b5e54e02
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 29 10:56:00 2018 +0700
+
+    Laporan penjualan sudah selesai
+
+commit 43be8367d2b43cf94ef0dcadb4a9aefcc3bb2eef
+Merge: 83c77dd 70d5996
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 10:36:01 2018 +0700
+
+    Merge pull request #7 from thaziz/mahmud28
+    
+    spkproduksi
+
+commit 70d59963afe4a7d2458e9af42d000c29870ec5b0
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Thu Nov 29 10:35:14 2018 +0700
+
+    spkproduksi
+
+commit 83c77ddad87a86709ec83ee99195d83afd059217
+Merge: 78aeae2 421451b
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Thu Nov 29 10:11:05 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 78aeae2b16c3e91dab85e86683cc71f4c45537d6
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Thu Nov 29 10:10:58 2018 +0700
+
+    22
+
+commit 421451b1c4147a358c9f61d9d923ee7d04417208
+Merge: d7233be e8145af
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Wed Nov 28 16:41:03 2018 +0700
+
+    Merge pull request #6 from thaziz/mahmud28
+    
+    outputproduksi
+
+commit e8145affc56df355185ae3d9fff15787df43fa2b
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Wed Nov 28 16:38:08 2018 +0700
+
+    outputproduksi
+
+commit d7233be4409b438b56998fbad9d538781b1fb57b
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 16:33:09 2018 +0700
+
+    f
+
+commit f10eb5321c46a0394d5abc9754a8dc2395a71ee1
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 15:16:52 2018 +0700
+
+    f
+
+commit 91989b3f08d4e845f7ce1c39d6c071f7ace2bf5f
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 14:24:37 2018 +0700
+
+    f
+
+commit 186f49f27e828c64e1c240941644548c568ccb0f
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:59:31 2018 +0700
+
+    a
+
+commit e1ea3487c79c1a1139b1fe8bdb069e76267e7b38
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:56:39 2018 +0700
+
+    a
+
+commit 9a2242c06aef7652d7e06779678bb2d9537724dd
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:24:36 2018 +0700
+
+    d
+
+commit f335b1d41955132a0088eecf668dddcdf6a646f7
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:22:34 2018 +0700
+
+    d
+
+commit 0812c84f0e832154424b12623f962dfbd25475e3
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:20:49 2018 +0700
+
+    update
+
+commit c9e1b930e7df958d869416a02730c7c87a83a5e9
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:16:46 2018 +0700
+
+    update
+
+commit 689a3a3b21182d739394cd1c3eed8dad6c9e4c06
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:13:24 2018 +0700
+
+    update
+
+commit 30ebb63c6c77138d2ca974ef448221ceffb8b01d
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:10:49 2018 +0700
+
+    update
+
+commit d2ddc663adcf81867a7c9ba1b487431536f2012d
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 13:07:39 2018 +0700
+
+    update
+
+commit b0bc4f3531910b935aab534186e497f622f4cb48
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 12:04:13 2018 +0700
+
+    update
+
+commit e0642a70503f0d4b1c658774a730d0e499a4ac0d
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 10:41:59 2018 +0700
+
+    update
+
+commit 168a9f2bf6f599924d9a0643992121e46c15f6d0
+Merge: c2415b5 fb11668
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Wed Nov 28 10:34:16 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit c2415b51ddbd3db341ef319a76e734fec385d1f5
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Wed Nov 28 10:34:07 2018 +0700
+
+    Bisa mengupdate rencana penjualan ke database
+
+commit fb11668c7a74e65bcd1efbc6bb538cdc4c766815
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 10:22:33 2018 +0700
+
+    update
+
+commit 0b917495e97f688cbe7f1f5044737af73e6334cd
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 28 10:20:40 2018 +0700
+
+    update
+
+commit 85bc8a05831d4ae337aa49de1a68f59ca3661ba7
+Merge: f1c01c0 1e2574c
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Wed Nov 28 09:41:28 2018 +0700
+
+    Merge pull request #5 from thaziz/mahmud28
+    
+    DB
+
+commit 1e2574c970add83d3888d10e3139e9c7248f6393
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Wed Nov 28 09:40:02 2018 +0700
+
+    DB
+
+commit f1c01c04dabd8b6b95ed2f3290c7c0b4a2584c96
+Merge: 9aabb78 5473d99
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Wed Nov 28 08:52:42 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 9aabb7805ffd61e58fb2c0faa882b6f331671697
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Wed Nov 28 08:52:18 2018 +0700
+
+    Update rencana penjualan sudah selesai
+
+commit 5473d995afc47cec39407e374bf27030441865d2
+Merge: a29c5dc 463fc9e
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Wed Nov 28 01:39:43 2018 +0700
+
+    Merge pull request #4 from thaziz/mahmud28
+    
+    produksi
+
+commit 463fc9e485df36ee2d4438ef4476aeeb26b573f9
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Wed Nov 28 01:37:59 2018 +0700
+
+    produksi
+
+commit a29c5dc59a514bd9c830666ff095d197acc3e9d7
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Nov 27 17:10:27 2018 +0700
+
+    update
+
+commit 7cc086e97fc5477d4291a2dd926028562a717359
+Merge: 5d1de7b 38f080d
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Nov 27 17:01:55 2018 +0700
+
+    Merge pull request #3 from thaziz/mahmud27
+    
+    mahmudopname
+
+commit 38f080d3c183bb9f982e5c4b48d50c3b077590f9
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Nov 27 17:00:14 2018 +0700
+
+    mahmudopname
+
+commit 5d1de7b4bf71107083e1c5d1f95a27f83d7ae18a
+Merge: 9f767e8 1cf291f
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Nov 27 15:54:21 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 9f767e868be68df9eafd06c41cd0c855478b926f
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Tue Nov 27 15:54:19 2018 +0700
+
+    q123123123
+
+commit 1cf291f6d99d012194b6bead5458acda23a9275d
+Merge: 1532f6d a6bf0d3
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Nov 27 12:28:14 2018 +0700
+
+    Merge pull request #2 from thaziz/mahmud27
+    
+    produksi
+
+commit a6bf0d38542004b1171f25a10633907999461cee
+Author: 123mahmud <37867983+123mahmud@users.noreply.github.com>
+Date:   Tue Nov 27 12:26:34 2018 +0700
+
+    produksi
+
+commit 1532f6ddca2dd99418882e1ebb29c514a9f6bee2
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Nov 26 18:03:12 2018 +0700
+
+    bahan baku
+
+commit 7684d97eca77e1d6d009195e5017c2840dc86cc5
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Mon Nov 26 17:36:35 2018 +0700
+
+    .
+
+commit 30056f433e643fb962658e42540973b1b9a0939c
+Merge: ab4ee1f bb6418c
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Nov 26 16:42:12 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit ab4ee1fcac888e743638490caf8be716be72e3bd
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Nov 26 16:41:59 2018 +0700
+
+    Rencana penjualan : create, delete, & read. Update msh belum selesai
+
+commit bb6418cbd2a7cd4116f92226db3a07f31c567967
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Nov 26 13:20:07 2018 +0700
+
+    database
+
+commit 565fafc5ce15ca632dfcde211b2c52758c35abfb
+Merge: 786c82f 1e5d0c0
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Nov 26 11:01:37 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 786c82f03ec5ab79da1eb548143724cc31697984
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Mon Nov 26 11:01:27 2018 +0700
+
+    Input data rencaa penjualan
+
+commit 1e5d0c0aa4cc1e64a98d75dbc373088025ece7cd
+Merge: 70a1732 e085926
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Nov 26 10:37:56 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 70a1732ce17114b9ca104906619feb68ec58023b
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Mon Nov 26 10:37:54 2018 +0700
+
+    2
+
+commit e085926e8da9742f3725d176067f5766cb11eb04
+Merge: aefe5b3 72c680d
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Nov 23 15:49:56 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit aefe5b368509881fe2de2fca0748cda3757f1618
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Nov 23 15:48:12 2018 +0700
+
+    update
+
+commit 72c680da195ee8149f7e937fccca277811bbbfe8
+Author: AzrieL/Muttq <denyprasetyo41@gmail.com>
+Date:   Fri Nov 23 15:44:46 2018 +0700
+
+    123
+
+commit 78c702d8db9cf5f03ae547f81f73b727ad71df69
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 22 14:37:32 2018 +0700
+
+    plan
+
+commit 9c8a51d25b6d68db83010227ce05f193617a8085
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Nov 22 14:10:40 2018 +0700
+
+    plan
+
+commit 98da5ffb4104255df769588e6047df19ffff1492
+Author: Didin <syaifudinhadi8@gmail.com>
+Date:   Thu Nov 22 11:54:21 2018 +0700
+
+    Perbaikan di http://localhost/nabilacorp/konfirmasi-purchase/index
+
+commit e5208d3efa100e5cc82d0bc130d375415a3587b9
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Nov 21 16:44:41 2018 +0700
+
+    update
+
+commit 80feeb35d4ca8981d028724acd984bffbfe1b44d
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Nov 16 10:32:29 2018 +0700
+
+    update
+
+commit 8f31a8e52d7d48ec6b73032aae50b62dcfc01532
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Nov 16 10:29:50 2018 +0700
+
+    update
+
+commit 8d3b7d7522ace9c16a82caa165903e46351b91b4
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 30 14:23:36 2018 +0700
+
+    update
+
+commit 14e7d01017c96c4b5a5b0936cbd231b70ed6c081
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Mon Oct 29 15:32:10 2018 +0700
+
+    .
+
+commit 930bb23ffa76ce42984d5b43a21b3a4a53f7cc54
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 26 13:11:05 2018 +0700
+
+    sidebar
+
+commit caebe8e036333c91e793ebdfca58e55b29752cb5
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 26 11:11:33 2018 +0700
+
+    fix error & tambah icon title
+
+commit 03062e56375a1edfd0ca66972566a494d218a809
+Merge: 1723560 5ee6cbd
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 26 11:00:22 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 1723560b276e4ee04c0fc63b4ee69b55fc1b0e80
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 26 11:00:17 2018 +0700
+
+    update main js css
+
+commit 5ee6cbd0c142b732d8d526efaf1a456b4abe3e78
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 15:16:22 2018 +0700
+
+    f
+
+commit d6a2fbb89837f344bdc710dc64e6fd49fe764ccd
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 15:11:13 2018 +0700
+
+    f
+
+commit b87d6b6d66d36b362a880e40c1e483201e9bfa2b
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 15:09:54 2018 +0700
+
+    f
+
+commit 9cb9046aaba6f89163f11e7f4d8ec2493105be87
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 15:08:34 2018 +0700
+
+    f
+
+commit 4d23aaefafbeca317efdb7a9d85913fff4179c77
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 15:01:35 2018 +0700
+
+    f
+
+commit 3c42eb85b58308e65a45ea9c0f9d2e6e5b8d4a00
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 14:20:30 2018 +0700
+
+    upgrade
+
+commit b6bb577ebd84dad135375699797666633cf1b71e
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 14:13:51 2018 +0700
+
+    updagte
+
+commit a3edd4dd8fbe9d6a9a85b974502a8ef359fd5305
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 14:05:48 2018 +0700
+
+    updagte
+
+commit 28e87594fdcb51225e0304b175396a0ff16d7e00
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 13:58:11 2018 +0700
+
+    updagte
+
+commit 8647ec762b5df29976fa77d1224c6c9a409a828a
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 13:31:47 2018 +0700
+
+    updagte
+
+commit 192d4f5b36c219dde95e39dc841dfe01b33f347a
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 11:56:24 2018 +0700
+
+    d
+
+commit d24c2420c16bcc387da85304b5db152c9449cc28
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 11:22:28 2018 +0700
+
+    update
+
+commit 74d4855ae49328d0ae50ad567fd68e13aa7287fd
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 11:19:19 2018 +0700
+
+    update
+
+commit aa989aca23629b0b6ae9ac81bb9de2540c6f66ed
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:58:10 2018 +0700
+
+    baru
+
+commit 3e37e9128c754152148477119ea09d8756b3affd
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:56:35 2018 +0700
+
+    baru
+
+commit a792ac736694fadc4c6d03d32126ad70ef3ea6b4
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:52:37 2018 +0700
+
+    baru
+
+commit 71b62805f8594360cd4cc37bd2d9acd86231715f
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:37:51 2018 +0700
+
+    baru
+
+commit b25da30ed6ef3e3a9917a61ca110d228c10c8232
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:35:28 2018 +0700
+
+    baru
+
+commit beabfe50b34ebcf2c15890aafce01011a052e825
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:25:11 2018 +0700
+
+    baru
+
+commit 964c377e227983950c9bb98b9346931d66a571cf
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:23:17 2018 +0700
+
+    baru
+
+commit 1972b763afb901e3d0ccefe5a9517349341f4fd8
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 25 10:09:20 2018 +0700
+
+    baru
+
+commit 7679ff0f7f2852c81c6d8fed563033fc2a4a9bbe
+Merge: 393d3ad aa2d0a4
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 23 13:14:50 2018 +0700
+
+    filter
+
+commit 393d3ad436b7c3ee785629377d10a6dd69105be2
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 23 13:10:31 2018 +0700
+
+    filter
+
+commit aa2d0a4ff07a4b9998e6a3256f9d893d3406b754
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Tue Oct 23 12:07:53 2018 +0700
+
+    .
+
+commit 6692f8693727e87f9a2507ad4425397a4c01e836
+Merge: d01eda0 1d6910a
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 23 10:12:34 2018 +0700
+
+    f
+
+commit d01eda0149657f052a889a0b20375d16cfd59e33
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 23 10:05:53 2018 +0700
+
+    f
+
+commit 1d6910a0ba0f38367ba438fc7c03951a2a561d6e
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Fri Oct 19 13:08:32 2018 +0700
+
+    .
+
+commit d14d1fefb8a642b8fd9d7f1c8a3d059e654802a0
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Fri Oct 19 11:26:58 2018 +0700
+
+    .
+
+commit bdeacdd2f137ce4104ad85260f2d6a3e35f05487
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Oct 19 11:01:33 2018 +0700
+
+    update
+
+commit 9d1c59f00fee518ac3e5e13790398f96734ed5c5
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Fri Oct 19 10:59:07 2018 +0700
+
+    .
+
+commit 877ec2f8da433ef8729568a234b5f67e955aa84c
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 19 10:35:57 2018 +0700
+
+    Update assets/styles/main.css
+
+commit 274a291b2a6576f608f3c0118282d2221c2e163a
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 19 10:31:40 2018 +0700
+
+    tambah input-error
+
+commit 99d5f27107a8b42355ff8ef1e514d6778d30b9b9
+Author: foxbloodiron <ariakbar6944@gmail.com>
+Date:   Fri Oct 19 10:29:44 2018 +0700
+
+    tambag class .input-error
+
+commit 35a1a9bcee9ddf6a6fb417637e9c11515d86e3b5
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Oct 19 09:54:32 2018 +0700
+
+    update
+
+commit e89795d70b164af3ae1f4e91da007f2d0cde45bc
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Oct 19 07:56:33 2018 +0700
+
+    filter
+
+commit 3b91ed7ee3694255e1b55fc294e429b809781c1a
+Merge: 3641e42 d64ee0f
+Author: thaziz <taziz704@gmail.com>
+Date:   Fri Oct 19 07:55:32 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit d64ee0fb8b54840122d086fa187730f39afb9d2c
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Thu Oct 18 16:33:42 2018 +0700
+
+    .
+
+commit b4e5b2beed0fc570826083d8812f6c9c8b216f32
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Thu Oct 18 14:14:25 2018 +0700
+
+    .
+
+commit 0dbf79e6fb0a22024acc127b56fcce55ddce0db6
+Merge: 18bfd28 d0d82bf
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Thu Oct 18 12:44:16 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+    qwedfdre
+
+commit 18bfd2806ce8004771a4518687001539b595a3a4
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Thu Oct 18 12:42:38 2018 +0700
+
+    .
+
+commit 3641e426b2b7ea4a65e25fe6b31c16d17b6d5b97
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 18 08:07:28 2018 +0700
+
+    update
+
+commit d0d82bf3b6d5ce0b474c4bcb8e21dce92296bccf
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 18 07:21:48 2018 +0700
+
+    upadte
+
+commit 6e5be61a5a588357a097606c536661b8d87937b3
+Author: thaziz <taziz704@gmail.com>
+Date:   Thu Oct 18 07:13:45 2018 +0700
+
+    update
+
+commit bdb238369280ec0504817467f808b57307bacf61
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 09:17:52 2018 +0700
+
+    d
+
+commit 21e13f5012d9cc3d4ce6837aa7ed8f96cdddb3f2
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 09:12:06 2018 +0700
+
+    d
+
+commit cdb12257a039953fbe2eefc2e36ebe47e0900755
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 08:50:22 2018 +0700
+
+    d
+
+commit d707ff421c72ba0635d9afa258d0a8ab6a4c1246
+Merge: 8ddbd6b b545d5c
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 08:46:00 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 8ddbd6bf83dde3cc0d9de3cacda7cdd49ff1e5b4
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 08:44:55 2018 +0700
+
+    update
+
+commit b545d5cb0b0861b4417cb9ea8a0572022e057a08
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Wed Oct 17 08:40:20 2018 +0700
+
+    .
+
+commit fd5290f6231367a0256605602b2f3f1ae11b1775
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Wed Oct 17 08:16:15 2018 +0700
+
+    .
+
+commit 18a17c9f075b13f3155cd850da8990181812150e
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 07:13:17 2018 +0700
+
+    update
+
+commit 9d907183a2e6bd77936cba2555d6260331b9d6a9
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 07:07:13 2018 +0700
+
+    update
+
+commit 9056cf27090eb5d4eb499db378c82e7309a5f397
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 07:03:32 2018 +0700
+
+    update
+
+commit e212bc3b62af63b8838251c13a8938de1925b5be
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 07:00:20 2018 +0700
+
+    update
+
+commit da4617a06b63157fa1e9cd5bed23d471ac280f66
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 17 06:15:53 2018 +0700
+
+    baru
+
+commit a35965deb9798fc66d1f573fe7d41eb47d01a6a6
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 16 17:17:56 2018 +0700
+
+    f
+
+commit 734b09d3e5491f49da53a5039b14c6215d79d1f5
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Tue Oct 16 16:47:58 2018 +0700
+
+    .
+
+commit 962e2dd5454f18f858c91ae5f6b8d879777a8ac0
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 16 13:26:15 2018 +0700
+
+    f
+
+commit f4f0be468c8c4b096751d1b1f391176db1651dff
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 16 13:24:21 2018 +0700
+
+    d
+
+commit bc496e350408f80169bc32218287eca5f615117f
+Merge: 2fd946d 1b8e1d6
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Tue Oct 16 13:14:01 2018 +0700
+
+    Merge branch 'master' of https://github.com/thaziz/nabilacorp
+
+commit 2fd946d614bd02cb699319905996321c66efb2b7
+Author: Muhammad Ferdy Cahya Pratama <ferdyp73@gmail.com>
+Date:   Tue Oct 16 13:12:52 2018 +0700
+
+    .
+
+commit 1b8e1d69df7b9caefaa4931bc65ee2539d5d1787
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 16 10:50:49 2018 +0700
+
+    d
+
+commit 6569a353e9e2efaff5dd1f3332c9b02b3b3a28bb
+Author: thaziz <taziz704@gmail.com>
+Date:   Tue Oct 16 10:47:57 2018 +0700
+
+    d
+
+commit 6b85caefd74d847e9c9c769484a8b4540723a0e9
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Oct 15 17:05:57 2018 +0700
+
+    filter
+
+commit c9e1f2c900996106abdb838971e1d0ec03ac66b8
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Oct 15 15:36:15 2018 +0700
+
+    d
+
+commit 2ac8be3f51630b9f622e271fa656ffe1382e7419
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Oct 15 15:30:48 2018 +0700
+
+    f
+
+commit c154e54cbd0078bd0757b184b318d90254d288c1
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Oct 15 15:25:20 2018 +0700
+
+    f
+
+commit 8bc7bcdf5dc8a49c8f6b6aa6f88b17ffe970a40e
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Oct 15 15:02:42 2018 +0700
+
+    update
+
+commit 5583824395c006868e202eae168e1405b80473fb
+Author: thaziz <taziz704@gmail.com>
+Date:   Mon Oct 15 13:52:32 2018 +0700
+
+    update
+
+commit 01b8f696d588e2fad03b146da46af1f29ba102ec
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 10 11:06:28 2018 +0700
+
+    update
+
+commit 531a7d1e3c6f6917f0daffbddd55f941e456e7c8
+Author: thaziz <taziz704@gmail.com>
+Date:   Wed Oct 10 07:56:11 2018 +0700
+
+    update
+
+commit 69ec1df30ac203c8166856e36dfa78032723286e
+Author: thaziz <34264066+thaziz@users.noreply.github.com>
+Date:   Wed Oct 10 07:48:09 2018 +0700
+
+    Initial commit
