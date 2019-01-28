@@ -31,13 +31,13 @@ class spkFinancialController extends Controller
 
   public function spk()
   {
-    $tabIndex=view('keuangan::spk.tab-index');
-    $tabManajSPK=view('keuangan::spk.tab-manajemen-spk');
-    $spkDetail=view('keuangan::spk.detail-spk');
-    $createSpk=view('keuangan::spk.create-spk');
-    $editSpk=view('keuangan::spk.edit-spk');
+    $tabIndex=view('Keuangan::spk.tab-index');
+    $tabManajSPK=view('Keuangan::spk.tab-manajemen-spk');
+    $spkDetail=view('Keuangan::spk.detail-spk');
+    $createSpk=view('Keuangan::spk.create-spk');
+    $editSpk=view('Keuangan::spk.edit-spk');
 
-    return view('keuangan::spk/index',compact('tabIndex','tabManajSPK','spkDetail','createSpk','editSpk'));
+    return view('Keuangan::spk/index',compact('tabIndex','tabManajSPK','spkDetail','createSpk','editSpk'));
   }
 
   public function getDataTabelIndex()
@@ -464,7 +464,7 @@ class spkFinancialController extends Controller
       ->join('m_satuan','s_id','=','fr_scale')
       ->get();
 
-    return view('keuangan::spk.detail-formula',compact('spk','formula'));
+    return view('Keuangan::spk.detail-formula',compact('spk','formula'));
   }
 
   public function updateStatus(Request $request, $id){
