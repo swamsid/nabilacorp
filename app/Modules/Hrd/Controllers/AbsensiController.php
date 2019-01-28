@@ -25,7 +25,7 @@ class AbsensiController extends Controller
       $divisi = m_divisi::all();
       $produksi = m_produksi::all();
       $dataAbsensi = view('Hrd::Absensi.data-absensi',compact('produksi'));
-      return view('Hrd::absensi/index', compact('divisi','produksi','dataAbsensi'));
+      return view('Hrd::Absensi/index', compact('divisi','produksi','dataAbsensi'));
     }
 
     public function table($tgl1, $tgl2, $data){
