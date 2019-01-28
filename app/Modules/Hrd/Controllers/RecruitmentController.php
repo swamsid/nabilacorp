@@ -40,7 +40,10 @@ class RecruitmentController extends Controller
     public function recruitment()
     {
         $lowongan = DB::table('d_lowongan')->select('l_code')->where('l_isactive', 'Y')->get();
-        return view('hrd/recruitment/index', compact('lowongan'));
+        $dataDiri = view('Hrd::recruitment.tab-datadiri',compact('lowongan'));
+        $tabCv = view('Hrd::recruitment.tab-cv');
+        $tabBerkas = view('Hrd::recruitment.tab-berkas');
+        return view('Hrd::recruitment/index', compact('dataDiri','tabCv','tabBerkas'));
     }
 
     public function process_rekrut($id)
