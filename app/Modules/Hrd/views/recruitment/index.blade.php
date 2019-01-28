@@ -294,11 +294,11 @@
 
             <div class="tab-content" id="form_wizard">
               <!-- tab data diri -->
-              @include('hrd.recruitment.tab-datadiri')
+              {!!$dataDiri!!}
               <!-- tab cv -->
-              @include('hrd.recruitment.tab-cv')
+              {!!$tabCv!!}
               <!-- tab berkas -->
-              @include('hrd.recruitment.tab-berkas')
+              {!!$tabBerkas!!}
               <!-- tab finish step -->
               <div class="tab-pane" role="tabpanel" id="step4">
                 <h1 class="text-md-center">Apakah anda yakin?</h1>

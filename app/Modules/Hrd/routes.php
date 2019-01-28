@@ -1,7 +1,19 @@
 <?php
 
+Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware' => 'web','guest'], function () {
+    Route::get('/', function () {
+        return view('auth.login');
+    })->name('index');
+    Route::get('login', 'loginController@authenticate');
+    Route::post('login', 'loginController@authenticate');
+    Route::get('not-allowed', 'mMemberController@notAllowed');
+    Route::get('recruitment', 'RecruitmentController@recruitment');
+    Route::post('recruitment/save', 'RecruitmentController@save');
+    Route::get('recruitment/cek-email', 'RecruitmentController@cekEmail');
+    Route::get('recruitment/cek-wa', 'RecruitmentController@cekWa');
+});
+
 Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web','auth']], function () {
-	
 //Mahmud Absensi
     Route::get('/hrd/absensi/index', 'AbsensiController@index');
     Route::get('/hrd/absensi/table/manajemen/{tgl1}/{tgl2}/{data}', 'AbsensiController@table');
@@ -146,6 +158,8 @@ Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web'
     Route::post('/hrd/payrollman/simpan-data', 'PayrollmanController@simpanData');
     Route::get('/hrd/payrollman/get-detail/{id}', 'PayrollmanController@getDataDetail');
     Route::post('/hrd/payrollman/delete-data', 'PayrollmanController@deleteData');
+//Recruitment
+    
 });
 
 
