@@ -4,9 +4,6 @@ Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware' => 'web
     Route::get('/', function () {
         return view('auth.login');
     })->name('index');
-    Route::get('login', 'loginController@authenticate');
-    Route::post('login', 'loginController@authenticate');
-    Route::get('not-allowed', 'mMemberController@notAllowed');
     Route::get('recruitment', 'RecruitmentController@recruitment');
     Route::post('recruitment/save', 'RecruitmentController@save');
     Route::get('recruitment/cek-email', 'RecruitmentController@cekEmail');
