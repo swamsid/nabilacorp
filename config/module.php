@@ -10,7 +10,7 @@ return  [
        'Master',
        'System',
        'Inventory',
-       'keuangan',
+       'Keuangan',
        'print_terminal',
        'Nabila'
     ]

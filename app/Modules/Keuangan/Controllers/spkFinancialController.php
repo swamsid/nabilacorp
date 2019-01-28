@@ -15,12 +15,9 @@ use App\m_itemm;
 use App\d_stock;
 use App\d_stock_mutation;
 use App\d_gudangcabang;
-
 use App\Modules\Keuangan\model\d_productplan;
-
 use App\Modules\Master\model\d_formula;
 use App\Modules\Master\model\d_formula_result;
-
 use Datatables;
 use App\d_spk;
 use App\lib\mutasi;
@@ -31,13 +28,13 @@ class spkFinancialController extends Controller
 
   public function spk()
   {
-    $tabIndex=view('Keuangan::spk.tab-index');
-    $tabManajSPK=view('Keuangan::spk.tab-manajemen-spk');
-    $spkDetail=view('Keuangan::spk.detail-spk');
-    $createSpk=view('Keuangan::spk.create-spk');
-    $editSpk=view('Keuangan::spk.edit-spk');
+    $tabIndex = view('Keuangan::spk.tab-index');
+    $tabManajSPK = view('Keuangan::spk.tab-manajemen-spk');
+    $spkDetail = view('Keuangan::spk.detail-spk');
+    $createSpk = view('Keuangan::spk.create-spk');
+    $editSpk = view('Keuangan::spk.edit-spk');
 
-    return view('Keuangan::spk/index',compact('tabIndex','tabManajSPK','spkDetail','createSpk','editSpk'));
+    return view('Keuangan::spk.index',compact('tabIndex','tabManajSPK','spkDetail','createSpk','editSpk'));
   }
 
   public function getDataTabelIndex()
