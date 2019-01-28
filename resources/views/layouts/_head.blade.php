@@ -27,22 +27,16 @@
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/toastr/toastr.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/toastr/toastr.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/bootstrap-live-search/css/bootstrap-select.css') }}">
-
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/izi-toast/css/iziToast.css') }}">
-
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/sliptree-multiselect/css/bootstrap-tokenfield.css')}}">
-
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/select2/select2.css')}}">
     <link href="{{ asset('assets/vendors/sweetalert/sweetalert.css') }}" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" href="{{ asset('modul_keuangan/font-awesome_4_7_0/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('modul_keuangan/css/style.css') }}">
-
     {{-- Style Modul Keuangan Wajib Di Main --}}
-
     {{-- ez popup style --}}
     <link rel="stylesheet" type="text/css" href="{{asset('modul_keuangan/js/vendors/ez_popup_v_1_1/ez.popup.css')}}">
-
+    <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/timepicker.min.css') }}">
     
     <!-- <link rel="icon" href="{{ asset('assets/images/tamma-logo.ico') }}"> -->
     <style type="text/css">
