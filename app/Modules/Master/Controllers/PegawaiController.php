@@ -32,7 +32,7 @@ class PegawaiController extends Controller
         $data = collect($list);
         return Datatables::of($data)           
                 ->addColumn('action', function ($data) {
-                    if ($data->c_isactive == 'TRUE') {
+                    if ($data->c_isactive == 'Y') {
                         return  '<div class="text-center">'.
                                     '<button id="edit" 
                                         onclick="edit('.$data->c_id.')" 
@@ -77,7 +77,7 @@ class PegawaiController extends Controller
         $data = collect($list);
         return Datatables::of($data)           
                 ->addColumn('action', function ($data) {
-                    if ($data->cp_isactive == 'TRUE') {
+                    if ($data->cp_isactive == 'Y') {
                         return  '<div class="text-center">'.
                                     '<button id="edit" 
                                         onclick="editPro('.$data->c_id.')" 
@@ -126,7 +126,7 @@ class PegawaiController extends Controller
         }
         $kode = str_pad($maxid, 2, '0', STR_PAD_LEFT);
         $id_pegawai = 'PG-' . $tanggal . '/' .  $kode;
-        $divisi = DB::table('m_divisi')->where('c_isactive','TRUE')->get(); 
+        $divisi = DB::table('m_divisi')->where('c_isactive','Y')->get(); 
         // dd($divisi);
         $shift = DB::table('m_shift')->get();   
         return view('Master::datapegawai/tambah_pegawai', compact('id_pegawai','divisi','shift'));
@@ -145,12 +145,12 @@ class PegawaiController extends Controller
         }
         $kode = str_pad($maxid, 2, '0', STR_PAD_LEFT);
         $id_pegawai = 'PG-' . $tanggal . '/' .  $kode;
-        $tugas = DB::table('m_jabatan_pro')->where('c_isactive','TRUE')->get(); 
+        $tugas = DB::table('m_jabatan_pro')->where('c_isactive','Y')->get(); 
         return view('Master::datapegawai/tambah_pegawai_pro', compact('id_pegawai','tugas'));
     }
 
     public function jabatanData($id){
-        $jabatan = DB::table('m_jabatan')->where('c_divisi_id', $id)->where('c_isactive','TRUE')->get();
+        $jabatan = DB::table('m_jabatan')->where('c_divisi_id', $id)->where('c_isactive','Y')->get();
         return json_encode($jabatan);
     }
 
@@ -214,7 +214,7 @@ class PegawaiController extends Controller
 
     public function editPegawai($id)
     {
-        $divisi = DB::table('m_divisi')->where('c_isactive','TRUE')->get(); 
+        $divisi = DB::table('m_divisi')->where('c_isactive','Y')->get(); 
         $shift = DB::table('m_shift')->get();  
         $data = DB::table('m_pegawai_man')->where('c_id', $id)->first();
         $hari = explode(" - ",$data->c_hari_kerja);
@@ -234,7 +234,7 @@ class PegawaiController extends Controller
 
     public function editPegawaiPro($id)
     {
-        $tugas = DB::table('m_jabatan_pro')->where('c_isactive','TRUE')->get(); 
+        $tugas = DB::table('m_jabatan_pro')->where('c_isactive','Y')->get(); 
         $data = DB::table('m_pegawai_pro')->where('c_id', $id)->first();
         return view('Master::datapegawai.edit_pegawai_pro',['data' => $data, 'tugas'=> $tugas]);
     }
@@ -376,12 +376,12 @@ class PegawaiController extends Controller
         $cek = DB::table('m_pegawai_man')->select('c_isactive')
             ->where('c_id',$request->id)
             ->first();
-        if ($cek->c_isactive == 'TRUE') 
+        if ($cek->c_isactive == 'Y') 
         {
             DB::table('m_pegawai_man')
             ->where('c_id',$request->id)
             ->update([
-                'c_isactive' => 'FALSE'
+                'c_isactive' => 'N'
             ]);
         }
         else
@@ -389,7 +389,7 @@ class PegawaiController extends Controller
             DB::table('m_pegawai_man')
             ->where('c_id',$request->id)
             ->update([
-                'c_isactive' => 'TRUE'
+                'c_isactive' => 'Y'
             ]);
         }
         DB::commit();
@@ -414,12 +414,12 @@ class PegawaiController extends Controller
             ->where('c_id',$request->id)
             ->first();
 
-        if ($cek->cp_isactive == 'TRUE') 
+        if ($cek->cp_isactive == 'Y') 
         {
             DB::table('m_pegawai_pro')
             ->where('c_id',$request->id)
             ->update([
-                'cp_isactive' => 'FALSE'                
+                'cp_isactive' => 'N'                
             ]);
 
         }
@@ -428,7 +428,7 @@ class PegawaiController extends Controller
             DB::table('m_pegawai_pro')
             ->where('c_id',$request->id)
             ->update([
-                'cp_isactive' => 'TRUE'
+                'cp_isactive' => 'Y'
             ]);
 
         }

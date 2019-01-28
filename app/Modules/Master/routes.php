@@ -93,7 +93,7 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::put('/master/datapegawai/update-pegawai-pro/{id}', 'PegawaiController@updatePegawaiPro');
     Route::delete('/master/datapegawai/delete-pegawai-pro/{id}', 'PegawaiController@deletePegawaiPro');
     Route::post('/master/datapegawai/import-pro', 'PegawaiController@importPegawaiPro');
-    Route::get('/master/datapegawai/`import-pro', 'PegawaiController@getFilePro');
+    Route::get('/master/datapegawai/import-pro', 'PegawaiController@getFilePro');
     Route::get('/master/datapegawai/pegawai', 'PegawaiController@pegawai')->name('pegawai');
     Route::get('/master/datapegawai/edit-pegawai/{id}', 'PegawaiController@editPegawai');
     Route::post('/master/datapegawai/update-pegawai/{id}', 'PegawaiController@updatePegawai');

@@ -52,6 +52,7 @@
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 " style="margin-top:15px;">
                   <form method="POST" id="simpanPegawai">
+                    {{ csrf_field() }}
                     <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                       <div class="col-md-2 col-sm-4 col-xs-12">
                         <label class="tebal">ID Pegawai<font color="red">*</font></label>
@@ -79,7 +80,7 @@
                           <select id="divisi" name="c_divisi_id" class="form-control input-sm">
                             <option>--pilih jabatan--</option>
                             <?php foreach($divisi as $div){ ?>
-                              <option value="{{ $div->c_id }}">{{ $div->c_divisi }}</option>
+                            <option value="{{ $div->c_id }}">{{ $div->c_divisi }}</option>
                             <?php } ?>
                           </select>
                         </div>
@@ -95,33 +96,33 @@
                           </select>
                         </div>
                       </div>
-                     <div class="col-md-2 col-sm-4 col-xs-12">
+                      <div class="col-md-2 col-sm-4 col-xs-12">
                         <label class="tebal">Hari Kerja</label>
                       </div>
                       <div class="col-md-2 col-sm-8 col-xs-12">
                         <div class="form-group">
                           <select id="" name="c_hari_awal" class="form-control input-sm">
-                              <option value="Senin">Senin</option>
-                              <option value="Selasa">Selasa</option>
-                              <option value="Rabu">Rabu</option>
-                              <option value="Kamis">Kamis</option>
-                              <option value="Jumat">Jumat</option>
-                              <option value="Sabtu">Sabtu</option>
-                              <option value="Minggu">Minggu</option>
-                            </select>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                            <option value="Minggu">Minggu</option>
+                          </select>
                         </div>
                       </div>
-                       <div class="col-md-2 col-sm-8 col-xs-12">
+                      <div class="col-md-2 col-sm-8 col-xs-12">
                         <div class="form-group">
                           <select id="" name="c_hari_akhir" class="form-control input-sm">
-                              <option value="Senin">Senin</option>
-                              <option value="Selasa">Selasa</option>
-                              <option value="Rabu">Rabu</option>
-                              <option value="Kamis">Kamis</option>
-                              <option value="Jumat">Jumat</option>
-                              <option value="Sabtu">Sabtu</option>
-                              <option value="Minggu">Minggu</option>
-                            </select>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                            <option value="Minggu">Minggu</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
@@ -322,63 +323,63 @@
               autoclose: true,
               format: 'yyyy-mm-dd'
             });
-        $('select[name="c_divisi_id"]').on('change', function() {
-            var stateID = $(this).val();
-            if(stateID) {
-              $.ajax({
-                url: '{{ url('/master/datapegawai/data-jabatan') }}/'+stateID,
-                type: "GET",
-                dataType: "json",
-                  success:function(data) {                    
+            $('select[name="c_divisi_id"]').on('change', function () {
+              var stateID = $(this).val();
+              if (stateID) {
+                $.ajax({
+                  url: '{{ url('/master/datapegawai/data-jabatan') }}/' + stateID,
+                  type: "GET",
+                  dataType: "json",
+                  success: function (data) {
                     $('select[name="c_jabatan_id"]').empty();
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                       // console.log(value.c_id)
-                      $('select[name="c_jabatan_id"]').append('<option value="'+ value.c_id + "-" + value.c_sub_divisi_id +'">'+ value.c_posisi +'</option>');
+                      $('select[name="c_jabatan_id"]').append('<option value="' + value.c_id + "-" +
+                        value.c_sub_divisi_id + '">' + value.c_posisi + '</option>');
                     });
                   }
                 });
-              if(stateID == 4){
-                 $('#produksi').removeAttr('hidden');
-              }else{
-                $('#produksi').attr('hidden','true');
+                if (stateID == 4) {
+                  $('#produksi').removeAttr('hidden');
+                } else {
+                  $('#produksi').attr('hidden', 'true');
+                }
+              } else {
+                $('select[name="c_jabatan_id"]').empty();
               }
-            }else{
-              $('select[name="c_jabatan_id"]').empty();
-            }
-        });
+            });
 
-        function simpanPegawai(){
-          $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $('.simpanPeg').attr('disabled', 'disabled');
-        var a = $('#simpanPegawai').serialize();
-        $.ajax({
-            url: baseUrl + "/master/datapegawai/simpan-pegawai",
-            type: 'POST',
-            data: a,
-            success: function (response,) {
-                if (response.status == 'sukses') {
+            function simpanPegawai() {
+              $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+              });
+              $('.simpanPeg').attr('disabled', 'disabled');
+              var a = $('#simpanPegawai').serialize();
+              $.ajax({
+                url: baseUrl + "/master/datapegawai/simpan-pegawai",
+                type: 'POST',
+                data: a,
+                success: function (response, ) {
+                  if (response.status == 'sukses') {
                     iziToast.success({
-                        timeout: 5000,
-                        position: "topRight",
-                        icon: 'fa fa-chrome',
-                        title: '',
-                        message: 'Data pegawai tersimpan.'
+                      timeout: 5000,
+                      position: "topRight",
+                      icon: 'fa fa-chrome',
+                      title: '',
+                      message: 'Data pegawai tersimpan.'
                     });
                     window.location.href = baseUrl + "/master/datapegawai/pegawai";
-                } else {
+                  } else {
                     iziToast.error({
-                        position: "topRight",
-                        title: '',
-                        message: 'Mohon melengkapi data.'
+                      position: "topRight",
+                      title: '',
+                      message: 'Mohon melengkapi data.'
                     });
                     $('.simpanPeg').removeAttr('disabled', 'disabled');
+                  }
                 }
+              })
             }
-        })
-        }
-
-          </script> @endsection        
+          </script> @endsection

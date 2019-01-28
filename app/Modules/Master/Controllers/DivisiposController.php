@@ -22,7 +22,7 @@ class DivisiposController extends Controller
         return Datatables::of($divisi) 
         ->addIndexColumn()          
             ->addColumn('action', function ($data) {
-              if ($data->c_isactive == 'TRUE') 
+              if ($data->c_isactive == 'Y') 
               {
                 return  '<div class="text-center">
                             <button id="edit" 
@@ -91,7 +91,7 @@ class DivisiposController extends Controller
       return Datatables::of($posisi) 
         ->addIndexColumn()          
             ->addColumn('action', function ($data) {
-              if ($data->c_isactive == 'TRUE') 
+              if ($data->c_isactive == 'Y') 
               {
                 return  '<div class="text-center">
                             <button id="edit" 
@@ -217,12 +217,12 @@ class DivisiposController extends Controller
         ->where('c_id',$request->id)
         ->first();
 
-      if ($cek->c_isactive == 'TRUE') 
+      if ($cek->c_isactive == 'Y') 
       {
         DB::table('m_divisi')
         ->where('c_id',$request->id)
         ->update([
-          'c_isactive' => 'FALSE'
+          'c_isactive' => 'N'
         ]);
       }
       else
@@ -230,7 +230,7 @@ class DivisiposController extends Controller
         DB::table('m_divisi')
         ->where('c_id',$request->id)
         ->update([
-          'c_isactive' => 'TRUE'
+          'c_isactive' => 'Y'
         ]);
       }
 
@@ -257,12 +257,12 @@ class DivisiposController extends Controller
         ->where('c_id',$request->id)
         ->first();
 
-      if ($cek->c_isactive == 'TRUE') 
+      if ($cek->c_isactive == 'Y') 
       {
         DB::table('m_sub_divisi')
         ->where('c_id',$request->id)
         ->update([
-          'c_isactive' => 'FALSE'
+          'c_isactive' => 'N'
         ]);
       }
       else
@@ -270,7 +270,7 @@ class DivisiposController extends Controller
         DB::table('m_sub_divisi')
         ->where('c_id',$request->id)
         ->update([
-          'c_isactive' => 'TRUE'
+          'c_isactive' => 'Y'
         ]);
       }
       DB::commit();
