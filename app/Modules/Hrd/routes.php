@@ -117,6 +117,35 @@ Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web'
     Route::post('/hrd/recruitment/simpan-pegawai-baru', 'RecruitmentController@simpanPegawaiBaru');
     Route::post('/hrd/recruitment/delete-data-pelamar', 'RecruitmentController@deleteDataPelamar');
     Route::get('/hrd/recruitment/buat_pdf', 'RecruitmentController@buat_pdf');
+// print KPI
+    Route::get('/hrd/manscorekpi/print_kpi/{id}', 'ManscorekpiController@print_pki')->name('print_kpi');
+// print payroll
+    Route::get('/hrd/payrollman/print-payroll/{id}', 'PayrollmanController@print_payroll');
+//payroll produksi Mahmud
+    Route::get('/hrd/produksi/payroll', 'PayrollProduksiController@index');
+    Route::get('/hrd/payroll/table/gaji/{rumah}/{jabatan}/{tgl1}/{tgl2}', 'PayrollProduksiController@tableDataGarapan');
+     Route::get('/hrd/payroll/table/gaji/GR/{rumah}/{jabatan}/{tgl1}/{tgl2}', 'PayrollProduksiController@tableDataGarapanGr');
+    Route::get('/hrd/payroll/lihat-gaji/{id}/{tgl1}/{tgl2}', 'PayrollProduksiController@lihatGaji');
+    Route::get('/hrd/payroll/lihat-gaji/GR/{id}/{tgl1}/{tgl2}', 'PayrollProduksiController@lihatGajiGR');
+    Route::get('/hrd/payroll/pilih/absensi/{pilih}', 'PayrollProduksiController@pilihAbsensi');
+    Route::get('/hrd/payroll/print-gaji/GR/{id}/{tgl1}/{tgl2}', 'PayrollProduksiController@printGajiGr');
+    Route::get('/hrd/payroll/print-gaji/nonGR/{id}/{tgl1}/{tgl2}', 'PayrollProduksiController@printGajinonGr');
+//Data Garapan/
+    Route::get('produksi/garapan/index', 'GarapanPegawaiController@index');
+    Route::get('produksi/garapan/table/{rumah}/{item}/{jabatan}/{tgl}', 'GarapanPegawaiController@tableGarapan');
+    Route::get('produksi/garapan/save', 'GarapanPegawaiController@saveGarapan');
+    Route::get('produksi/garapan/table/data/{rumah}/{item}/{jabatan}/{tgl1}/{tgl2}', 'GarapanPegawaiController@tableDataGarapan');
+
+/*PAYROLL MANAJEMEN*/
+    Route::get('/hrd/payrollman/index', 'PayrollmanController@index');
+    Route::get('/hrd/payrollman/get-payroll-man', 'PayrollmanController@listGajiManajemen');
+    Route::get('/hrd/payrollman/lookup-data-divisi', 'PayrollmanController@lookupDivisi');
+    Route::get('/hrd/payrollman/lookup-data-jabatan', 'PayrollmanController@lookupJabatan');
+    Route::get('/hrd/payrollman/lookup-data-pegawai', 'PayrollmanController@lookupPegawai');
+    Route::get('/hrd/payrollman/set-field-modal', 'PayrollmanController@setFieldModal');
+    Route::post('/hrd/payrollman/simpan-data', 'PayrollmanController@simpanData');
+    Route::get('/hrd/payrollman/get-detail/{id}', 'PayrollmanController@getDataDetail');
+    Route::post('/hrd/payrollman/delete-data', 'PayrollmanController@deleteData');
 });
 
 

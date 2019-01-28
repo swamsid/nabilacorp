@@ -153,7 +153,7 @@
                             <div id="note-tab" class="tab-pane fade">
                                 <div class="row">
                                     <div class="panel-body">
-                                        @include('hrd.payroll-produksi.data-garapan')
+                                        {!!$dataGarapan!!}
                                     </div>
                                 </div>
                             </div>

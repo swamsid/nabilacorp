@@ -49,15 +49,15 @@
 
           <div id="generalTabContent" class="tab-content responsive">
             <!-- /div alert-tab -->
-            @include('hrd.payrollman.tab-index')
+            {!!$tabIndex!!}
           </div>
 
         </div>
       </div>
     </div>
   </div> 
-  @include('hrd.payrollman.modal')
-  @include('hrd.payrollman.modal-detail')
+  {!!$modal!!}
+  {!!$modalDetail!!}
 </div>
 @endsection 
 @section("extra_scripts")
