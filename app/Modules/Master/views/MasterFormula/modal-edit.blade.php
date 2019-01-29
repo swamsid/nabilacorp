@@ -20,7 +20,7 @@
 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="form-group">  
-                 <input style="text-align: right;" autocomplete="off" type="number" class="form-control input-sm" name="hasil_item" id="hasil_itemEdit" value="{{ (int)$item->fr_result }}">
+                 <input style="text-align: right;" autocomplete="off" type="text" class="form-control input-sm currenc" name="hasil_item" id="hasil_itemEdit" value="{{ (int)$item->fr_result }}">
                 </div>
               </div>
 
@@ -87,7 +87,7 @@
                           {{ $data->i_name }}
                         </td>
                         <td>
-                          <input type="number" name="qty[]" id="" class="form-control text-right" 
+                          <input type="text" name="qty[]" id="" class="form-control text-right currenc" 
                           value="{{ (int)$data->f_value }}">
                         </td>
                         <td>
@@ -105,10 +105,23 @@
                   </div>
             </div>
 
-
 <script>
   tableResepEdit = $('#edit-detail').DataTable();
-
+  $(document).on("ajaxComplete", function(e){
+        var a = $('.currenc').val()
+        $.fn.maskFunc = function(){
+        $('.currenc').inputmask("currency", {
+          radixPoint: ",",
+          groupSeparator: ".",
+          digits: 0,
+          autoGroup: true,
+          prefix: '', //Space after $, this will not truncate the first character.
+          rightAlign: false,
+          oncleared: function () { self.Value(''); }
+        });
+      }
+  });
+  
   $( "#bahan_bakuEdit" ).focus(function(){
     var key = 1;
     $( "#bahan_bakuEdit" ).autocomplete({

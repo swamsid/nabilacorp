@@ -38,13 +38,6 @@ class MasterFormulaController extends Controller
 
     })
 
-    ->addColumn('fr_result', function ($data) {
-    return '<div class="text-right">
-              '.(int)$data->fr_result.'
-            </div>';
-
-    })
-
     ->addColumn('action', function ($data) {
     return '<div class="text-center">
                   <button style="margin-left:5px;" 
@@ -158,7 +151,7 @@ class MasterFormulaController extends Controller
     d_formula_result::insert([
         'fr_id' => $fr_id,
         'fr_adonan' => $request->id_item,
-        'fr_result' => $request->hasil_item,
+        'fr_result' => str_replace('.', '', $request->hasil_item),
         'fr_scale' => $request->satuanItem[0],
         'fr_created' => Carbon::now()
     ]);
@@ -168,7 +161,7 @@ class MasterFormulaController extends Controller
         'f_id' => $fr_id,
         'f_detailid' =>$i + 1,
         'f_bb' => $i_id[$i],
-        'f_value' => $request->qty[$i],
+        'f_value' => str_replace('.', '', $request->qty[$i]),
         'f_scale' =>$request->satuan[$i]
       ]);
     }
@@ -266,7 +259,7 @@ class MasterFormulaController extends Controller
 
     d_formula_result::where('fr_adonan',$id_item)
       ->update([
-        'fr_result' => $request->hasil_item,
+        'fr_result' => str_replace('.', '', $request->hasil_item),
         'fr_scale'  => $request->satuanItem[0],
         'fr_updated' => Carbon::now()
       ]);
@@ -278,7 +271,7 @@ class MasterFormulaController extends Controller
             'f_id' => $fResult[0]->fr_id,
             'f_detailid' => $i + 1,
             'f_bb' => $request->i_id[$i],
-            'f_value' => $request->qty[$i],
+            'f_value' => str_replace('.', '', $request->qty[$i]),
             'f_scale' =>$request->satuan[$i]
         ]);
     }

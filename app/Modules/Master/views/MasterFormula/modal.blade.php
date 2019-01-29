@@ -30,7 +30,7 @@
 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="form-group">  
-                 <input style="text-align: right;" autocomplete="off" type="number" class="form-control input-sm" name="hasil_item" id="hasil_item">
+                 <input style="text-align: right;" autocomplete="off" type="text" class="form-control input-sm currenc" name="hasil_item" id="hasil_item">
                 </div>
               </div>
 
@@ -60,7 +60,7 @@
                   <div class="col-md-3 col-sm-3 col-xs-12">
                    <label class="control-label tebal">Masukan Jumlah</label>
                       <div class="input-group input-group-sm" style="width: 100%;">
-                         <input type="number" id="qty" name="qty" class="form-control text-right" >
+                         <input type="text" id="qty" name="qty" class="form-control text-right currenc" >
                       </div>
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-12">
@@ -103,3 +103,21 @@
     </div>
 
 </div>
+
+<script>
+  $(document).on("ajaxComplete", function(e){
+        var a = $('.currenc').val()
+        alert(a);
+        $.fn.maskFunc = function(){
+        $('.currenc').inputmask("currency", {
+          radixPoint: ",",
+          groupSeparator: ".",
+          digits: 0,
+          autoGroup: true,
+          prefix: '', //Space after $, this will not truncate the first character.
+          rightAlign: false,
+          oncleared: function () { self.Value(''); }
+        });
+      }
+  });
+</script>
