@@ -14,7 +14,7 @@
 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="form-group">  
-                  <input style="text-align: right;" readonly autocomplete="off" type="number" class="form-control input-sm" name="hasil_item" id="hasil_item" value="{{ (int)$item->fr_result }}">
+                  <input style="text-align: right;" readonly autocomplete="off" type="number" class="form-control input-sm" name="hasil_item" id="hasil_item" value="{{ number_format($item->fr_result,0,",",".") }}">
                 </div>
               </div>
 
@@ -46,7 +46,7 @@
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   <td>{{ $data->i_name }}</td>
-                  <td>{{ (int)$data->f_value }}</td>
+                  <td>{{ number_format($data->f_value,0,",",".") }}</td>
                   <td>{{ $data->s_name }}</td>
                 </tr>
                 @endforeach

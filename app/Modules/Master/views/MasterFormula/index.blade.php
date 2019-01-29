@@ -119,6 +119,7 @@
       </div>
   </div>
 
+
 @endsection
 @section("extra_scripts")
 <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
@@ -136,7 +137,18 @@
   tableResep = $('#resep-detail').DataTable();
 
   $('#myModal').on('shown.bs.modal', function () {
-    $('#namaitem').focus()
+    $('#namaitem').focus();
+    $.fn.maskFunc = function(){
+    $('.currenc').inputmask("currency", {
+        radixPoint: ",",
+        groupSeparator: ".",
+        digits: 0,
+        autoGroup: true,
+        prefix: '', //Space after $, this will not truncate the first character.
+        rightAlign: false,
+        oncleared: function () { self.Value(''); }
+      });
+    }
   }) 
 
   $('#hasil_item').keypress(function(e){
@@ -215,6 +227,15 @@
     $("#namaitem" ).val('');
   });
 
+  $('.currenc').inputmask("currency", {
+      radixPoint: ",",
+      groupSeparator: ".",
+      digits: 0,
+      autoGroup: true,
+      prefix: '', //Space after $, this will not truncate the first character.
+      rightAlign: false,
+      oncleared: function () { self.Value(''); }
+    });
 });
 
   var tableFormula = $('#TableFormula').DataTable({
@@ -227,7 +248,7 @@
     {data: 'DT_Row_Index', name: 'DT_Row_Index'},
     {data: 'i_code', name: 'i_code'},
     {data: 'i_name', name: 'i_name'},
-    {data: 'fr_result', name: 'fr_result'},
+    {data: 'fr_result', name: 'fr_result',render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
     {data: 's_name', name: 's_name'},
     {data: 'action', name: 'action', orderable: false, searchable: false},
     ],
@@ -249,7 +270,7 @@
       tableResep.row.add([
         i_code+'<input type="hidden" name="i_id[]" id="" class="i_id" value="'+i_id+'">',
         i_name+'',
-        '<input type="number" name="qty[]" id="" class="form-control text-right" value="'+qty+'">',
+        '<input type="text" name="qty[]" id="" class="form-control text-right currenc" value="'+qty+'">',
         satuan+'<input type="hidden" name="satuan[]" id="" class="" value="'+idSatuan+'">',
         hapus
         ]);
@@ -264,6 +285,16 @@
         $('#qty').val('');
         $("input[name='bahan_baku']").focus();
       }
+
+      $('.currenc').inputmask("currency", {
+        radixPoint: ",",
+        groupSeparator: ".",
+        digits: 0,
+        autoGroup: true,
+        prefix: '', //Space after $, this will not truncate the first character.
+        rightAlign: false,
+        oncleared: function () { self.Value(''); }
+      });
   }
 
     $('#qty').keypress(function(e){
@@ -413,6 +444,15 @@
       data: {x:id},
       success : function(response){
         $('#edit-formula').html(response);
+        $('.currenc').inputmask("currency", {
+          radixPoint: ",",
+          groupSeparator: ".",
+          digits: 0,
+          autoGroup: true,
+          prefix: '', //Space after $, this will not truncate the first character.
+          rightAlign: false,
+          oncleared: function () { self.Value(''); }
+        });
       }
     });
   }

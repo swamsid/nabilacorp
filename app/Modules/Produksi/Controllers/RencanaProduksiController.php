@@ -17,9 +17,8 @@ class RencanaProduksiController extends Controller
     $pp = DB::Table('m_item')
           ->join('d_productplan','m_item.i_id','=','d_productplan.pp_item')
           ->where('pp_isspk','N')
-          // ->where('pp_comp',$pp_comp)
           ->get();
-
+          
     $datax = $this->setData($pp);
 
     echo json_encode($datax);

@@ -114,7 +114,7 @@
         // {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"},
         {"data" : 'pp_date', name: 'spk_date', "width" : "10%"},
         {"data" : 'i_name', name: 'spk_code', "width" : "70%"},
-        {"data" : 'pp_qty', name: 'i_name', "width" : "10%", "className" : "right"},
+        {"data" : 'pp_qty', name: 'i_name', "width" : "10%", render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
         {"data" : "action", orderable: false, searchable: false, "width" : "5%"},
       ],
       "language": {
@@ -173,7 +173,7 @@
           $('#tgl_plan').val(tgl);
           $('#iditem').val(iditem);
           $('#item').val(response.i_name.i_name);
-          $('#jumlah').val(jumlah);
+          $('#jumlah').val(ubahFormatQty(jumlah));
           tabelFormula(iditem, jumlah, comp);
         }
       }
@@ -223,7 +223,7 @@
           $('#iditem').val(iditem);
           $('#itemD').val(response.data.i_name);
           $('#id_spkk').val(response.data.spk_id);
-          $('#jumlahD').val(response.data.pp_qty);
+          $('#jumlahD').val(ubahFormatQty(response.data.pp_qty));
           var iditem = response.data.pp_item;
           var jumlah = response.data.pp_qty;
           tabelDraftFormula(iditem, jumlah);
@@ -339,7 +339,7 @@
         {"data" : 'spk_date', name: 'spk_date', "width" : "10%"},
         {"data" : 'spk_code', name: 'spk_code', "width" : "10%"},
         {"data" : 'i_name', name: 'i_name', "width" : "25%"},
-        {"data" : 'pp_qty', name: 'pp_qty', "width" : "10%"},
+        {"data" : 'pp_qty', name: 'pp_qty', "width" : "10%",render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
         {"data" : "status", "width" : "10%"},
         {"data" : "action", orderable: false, searchable: false, "width" : "15%"},
       ],
@@ -433,6 +433,40 @@
             if(uang!='NaN'){                
               if(chekArray[1]==undefined){
                   return rev2.split('').reverse().join('') + ',' +'00';            
+              }else if(chekArray[1]!=undefined){
+                return rev2.split('').reverse().join('') + ',' +chekArray[1];            
+                }
+            }
+            else if(uang=='NaN'){
+               //return 'Rp. 0,00'
+            }
+           
+            else if(uang=='undefined'){
+               return 'Rp. 0,00'
+            }
+        } 
+    }
+
+    function ubahFormatQty(uang)
+    {        
+      
+        var pisah = new Array();
+        var chekArray;        
+        chekArray = uang.toString().split('.');
+        
+        if ($.isArray(chekArray)) {
+            var rev = parseInt(chekArray[0], 10).toString().split('').reverse().join('');
+            var rev2 = '';
+            for (var w = 0; w < rev.length; w++) {
+                rev2 += rev[w];
+                if ((w+ 1) % 3 === 0 && w !== (rev.length - 1)) {
+                    rev2 += '.';
+                }
+            }
+            
+            if(uang!='NaN'){                
+              if(chekArray[1]==undefined){
+                  return rev2.split('').reverse().join('');            
               }else if(chekArray[1]!=undefined){
                 return rev2.split('').reverse().join('') + ',' +chekArray[1];            
                 }

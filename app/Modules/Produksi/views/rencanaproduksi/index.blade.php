@@ -98,7 +98,6 @@
 
 @endsection
 @section("extra_scripts")
-<script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     console.log('tsr');
@@ -139,7 +138,7 @@
           { "data": "pp_date" ,"className" : "dt-body-center"},
           { "data": "i_code" ,"className" : "dt-body-center"},
           { "data": "i_name" },
-          { "data": "pp_qty" ,"className" : "dt-body-right"},
+          { "data": "pp_qty" ,render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
           { "data": "button" },
       ]
 
