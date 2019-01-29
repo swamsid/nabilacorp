@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-8 col-sm-3 col-xs-12">
               <div class="form-group">
-                <input class="form-control" readonly="" type="text" name="jumlah" id="jumlahD" value="{{ $item->pp_qty }}">
+                <input class="form-control" readonly="" type="text" name="jumlah" id="jumlahD" value="{{ number_format("$item->pp_qty",0,",",".") }}">
               </div>
             </div>
 

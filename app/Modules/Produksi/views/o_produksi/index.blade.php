@@ -122,10 +122,10 @@
 
             cariTanggal();
 
-            $('#result-spk').inputmask("currency", {
+            $('.resultSpk').inputmask("currency", {
                 radixPoint: ".",
                 groupSeparator: ",",
-                digits: 2,
+                digits: 0,
                 allowMinus: false,
                 autoGroup: true,
                 prefix: '', //Space after $, this will not truncate the first character.

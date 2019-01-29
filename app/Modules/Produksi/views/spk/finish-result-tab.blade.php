@@ -41,6 +41,7 @@
                             <th width="30%">No Spk</th>
                             <th>Item</th>
                             <th>Jumlah</th>
+                            <th>Hasil Spk</th>
                             <th>Status</th>
                             <th style="text-align: center;">Aksi</th>
                         </tr>

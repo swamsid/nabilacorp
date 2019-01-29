@@ -66,11 +66,16 @@ class ManOutputProduksiController extends Controller
             })
 
             ->editColumn('pp_qty', function ($user) {
-                return  '<input type="text" 
+                return  '<input type="hidden" 
                                 name="" 
                                 class="form-control input-sm spk-id text-right plan-spk-'.$user->spk_id.'" 
                                 readonly
-                                value="'.$user->pp_qty.'">';
+                                value="'.$user->pp_qty.'">
+                        <input type="text" 
+                                name="" 
+                                class="form-control input-sm'.$user->spk_id.'" 
+                                readonly
+                                value="'.number_format($user->pp_qty,0,",",".").'">';
             })
 
             ->editColumn('produksi', function ($user) {
@@ -82,7 +87,7 @@ class ManOutputProduksiController extends Controller
                                 name="" 
                                 class="form-control input-sm text-right produksi-spk-'.$user->spk_id.'" 
                                 readonly
-                                value="'.$result.'">';
+                                value="'.number_format($result,0,",",".").'">';
             })
 
             ->editColumn('result', function ($user) {
