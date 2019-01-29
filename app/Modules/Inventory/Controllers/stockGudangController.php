@@ -32,7 +32,7 @@ class stockGudangController extends Controller
           's_name')
           ->where('s_comp', $comp)
           ->where('s_position', $comp)
-          ->where('i_isactive','TRUE')
+          ->where('i_active','Y')
           ->join('m_item', 'i_id', '=', 's_item')
           ->join('m_satuan', 'm_satuan.s_id', '=', 'i_sat1')
           ->get();
