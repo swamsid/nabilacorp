@@ -181,7 +181,7 @@
             title: '',
             message: 'Data Berhasil di Update.'
           });
-          window.location.href = baseUrl + "/hrd/payroll/setting-gaji";
+          window.location.href = baseUrl + "/master/payroll/setting-gaji";
         } else {
           iziToast.error({
             position: "topRight",

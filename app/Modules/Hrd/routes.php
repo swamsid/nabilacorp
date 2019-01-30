@@ -21,7 +21,7 @@ Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web'
     Route::get('/export/id-manajemen', 'AbsensiController@exportManajemen');
     Route::get('/export/id-produksi', 'AbsensiController@exportProduksi');
 //Mahmud Setting Payroll
-    Route::get('/hrd/payroll/setting-gaji', 'GajiController@settingGajiMan');
+    Route::get('/master/payroll/setting-gaji', 'GajiController@settingGajiMan');
     Route::get('/hrd/payroll/datatable-gaji-man', 'GajiController@gajiManData');
     Route::get('/hrd/payroll/tambah-gaji-man', 'GajiController@tambahGajiMan');
     Route::post('/hrd/payroll/simpan-gaji-man', 'GajiController@simpanGajiMan');
