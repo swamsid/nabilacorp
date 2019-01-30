@@ -14,7 +14,7 @@ use App\GajiManajemen;
 use App\GajiProduksi;
 use App\Potongan;
 use App\m_gaji_pro;
-use App\Model\Master\m_tunjangan_man;
+use App\m_tunjangan_man;
 
 class GajiController extends Controller
 {
@@ -164,11 +164,34 @@ class GajiController extends Controller
     {
         return view('Hrd::payroll/tambah_set_manajemen');
     }
-    public function simpanGajiMan(Request $request){
-        $input = $request->all();
-        $data = GajiManajemen::create($input);
-        
-        return redirect('/hrd/payroll/setting-gaji');
+    public function simpanGajiMan(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+        $id = GajiManajemen::select('c_id')->max('c_id')+1;
+        $data = GajiManajemen::create([
+            'c_id' => $id,
+            'nm_gaji' => $request->nm_gaji,
+            'c_sd' => str_replace('.', '', $request->c_sd),
+            'c_smp' => str_replace('.', '', $request->c_smp),
+            'c_sma' => str_replace('.', '', $request->c_sma),
+            'c_smk' => str_replace('.', '', $request->c_smk),
+            'c_d1' => str_replace('.', '', $request->c_d1),
+            'c_d2' => str_replace('.', '', $request->c_d2),
+            'c_d3' => str_replace('.', '', $request->c_d3),
+            'c_s1' => str_replace('.', '', $request->c_s1)
+        ]);
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function editGajiMan($id)
     {
@@ -177,16 +200,47 @@ class GajiController extends Controller
         return view('Hrd::payroll.edit_set_manajemen',['data' => $data]);
     }
     public function updateGajiMan(Request $request, $id){
-        $input = $request->except('_token', '_method','jumlah');
-        $data = GajiManajemen::where('c_id', $id)->update($input);
-        
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::beginTransaction();
+        try {
+        $data = GajiManajemen::where('c_id', $id)
+        ->update([
+            'nm_gaji' => $request->nm_gaji,
+            'c_sd' => str_replace('.', '', $request->c_sd),
+            'c_smp' => str_replace('.', '', $request->c_smp),
+            'c_sma' => str_replace('.', '', $request->c_sma),
+            'c_smk' => str_replace('.', '', $request->c_smk),
+            'c_d1' => str_replace('.', '', $request->c_d1),
+            'c_d2' => str_replace('.', '', $request->c_d2),
+            'c_d3' => str_replace('.', '', $request->c_d3),
+            'c_s1' => str_replace('.', '', $request->c_s1)
+        ]);
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function deleteGajiMan($id){
-
+        DB::beginTransaction();
+        try {
         $data = DB::table('m_gaji_man')->where('c_id', $id)->delete();
-
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function tambahGajiPro()
     {
@@ -194,11 +248,27 @@ class GajiController extends Controller
         return view('Hrd::payroll/tambah_set_produksi');
     }
     public function simpanGajiPro(Request $request){
-        // dd($request->all());
-        $input = $request->all();
-        $data = GajiProduksi::create($input);
-        
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::beginTransaction();
+        try {
+        $id = GajiProduksi::select('c_id')->max('c_id')+1;
+        $data = GajiProduksi::create([
+            'c_id' => $id,
+            'nm_gaji' => $request->nm_gaji,
+            'c_status' => $request->c_status,
+            'c_gaji' => str_replace('.', '', $request->c_gaji),
+            'c_lembur' => str_replace('.', '', $request->c_lembur),
+        ]);
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function editGajiPro($id){
         $data = DB::table('m_gaji_pro')->where('c_id', $id)->first();
@@ -218,6 +288,8 @@ class GajiController extends Controller
     }
     public function updateGajiPro(Request $request, $id){
         // dd($request->all());
+        DB::beginTransaction();
+        try {
         if (count($request->form_cek) > 0) {
             $tunjangan = implode(',', $request->form_cek);
         }else{
@@ -227,18 +299,38 @@ class GajiController extends Controller
             ->update([
                 'nm_gaji' => $request->nm_gaji,
                 'c_status' => $request->c_status,
-                'c_gaji' => $request->c_gaji,
-                'c_lembur' => $request->c_lembur,
+                'c_gaji' => str_replace('.', '', $request->c_gaji),
+                'c_lembur' => str_replace('.', '', $request->c_lembur),
                 'c_gaji_jabatan' => $tunjangan,
                 'updated_at' => Carbon::now()
             ]);
-        
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function deleteGajiPro($id){
+        DB::beginTransaction();
+        try {
         $data = DB::table('m_gaji_pro')->where('c_id', $id)->delete();
-
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function tambahPotongan(){
         return view('hrd/payroll/tambah_set_potongan');
@@ -318,6 +410,8 @@ class GajiController extends Controller
                 ->make(true);
     }
     public function simpanTunjangan(Request $request){
+        DB::beginTransaction();
+        try {
         $data = new m_tunjangan_man;
         $data->tman_levelpeg = $request->level;
         $data->tman_nama = $request->nama;
@@ -325,13 +419,25 @@ class GajiController extends Controller
         $data->tman_value = str_replace('.', '', $request->nilai);
         $data->tman_created = Carbon::now('Asia/Jakarta');
         $data->save();
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function editTunjangan($id){
         $data = DB::table('m_tunjangan_man')->where('tman_id', $id)->first();
         return view('Hrd::payroll/edit_set_tunjangan',['data' => $data]);
     }
     public function updateTunjangan(Request $request, $id){
+        DB::beginTransaction();
+        try {
         m_tunjangan_man::where('tman_id','=', $id)
             ->update([
                 'tman_nama' => $request->nama,
@@ -340,8 +446,17 @@ class GajiController extends Controller
                 'tman_value' => str_replace('.', '', $request->nilai),
                 'tman_updated' => Carbon::now('Asia/Jakarta')
             ]);
-        
-        return redirect('/hrd/payroll/setting-gaji');
+        DB::commit();
+        return response()->json([
+                'status' => 'sukses'
+            ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+            ]);
+        }
     }
     public function deleteTunjangan($id){
         $data = DB::table('m_tunjangan_man')->where('tman_id', $id)->delete();

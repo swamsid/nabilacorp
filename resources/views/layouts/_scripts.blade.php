@@ -29,8 +29,6 @@
     <script src="{{ asset ('assets/script/zabuto_calendar.min.js') }}"></script>
     <script src="{{ asset ('assets/script/index.js') }}"></script>
     <script src="{{ asset ('assets/toastr/toastr.min.js') }}"></script>
-    <script src="{{ asset ('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset ('vendor/unisharp/laravel-ckeditor/adapters/jquery.js') }}"></script>
     <script src="{{ asset ('assets/bootstrap-live-search/js/bootstrap-select.js') }}"></script>
     <script src="{{ asset ('assets/sliptree-multiselect/bootstrap-tokenfield.js') }}"></script>
     <!--LOADING SCRIPTS FOR CHARTS-->

@@ -1,4 +1,4 @@
-@extends('main') 
+@extends('main')
 @section('content')
 <!--BEGIN PAGE WRAPPER-->
 <div id="page-wrapper">
@@ -45,11 +45,11 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <form method="POST" action="{{ url('hrd/payroll/simpan-tunjangan') }}" id="form_tunjangan">
+                  <form method="POST" id="tunjanganMan">
                     {{ csrf_field() }}
                     <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="tebal">Nama Tunjangan</label>
+                        <label class="tebal">Nama Tunjangan<font color="red">*</font></label>
                       </div>
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
@@ -58,21 +58,21 @@
                       </div>
 
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="tebal">Level Tunjangan</label>
+                        <label class="tebal">Level Tunjangan<font color="red">*</font></label>
                       </div>
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
                           <select id="" name="level" class="form-control input-sm">
-                          <option value="">--pilih Level--</option>
-                          <option value="AL">Semua</option>
-                          <option value="LD">Leader</option>
-                          <option value="ST">Staff</option>
+                            <option value="">--pilih Level--</option>
+                            <option value="AL">Semua</option>
+                            <option value="LD">Leader</option>
+                            <option value="ST">Staff</option>
                           </select>
                         </div>
                       </div>
 
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="tebal">Periode</label>
+                        <label class="tebal">Periode<font color="red">*</font></label>
                       </div>
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
@@ -89,19 +89,16 @@
                       </div>
 
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label class="tebal">Nilai Tunjangan</label>
+                        <label class="tebal">Nilai Tunjangan<font color="red">*</font></label>
                       </div>
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
                           <input type="text" name="nilai" class="form-control input-sm currency">
                         </div>
                       </div>
-                      
-                      <div class="col-md-6 col-sm-12 col-xs-12">
-                        <input type="button" value="Batal" class="btn btn-danger btn-block" onclick="batal()">
-                      </div>
-                      <div class="col-md-6 col-sm-12 col-xs-12">
-                        <input type="submit" value="Simpan" class="btn btn-primary btn-block">
+
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <input type="submit" value="Simpan" class="btn btn-primary btn-block simpanGaji" onclick="simpanTunjangan()">
                       </div>
                     </div>
                   </form>
@@ -114,14 +111,14 @@
     </div>
   </div>
 </div>
-@endsection 
+@endsection
 @section('extra_scripts')
 <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
 <script src="{{ asset("js/inputmask/inputmask.jquery.js") }}"></script>
 <script type="text/javascript">
-  $(document).ready(function() { 
+  $(document).ready(function () {
     //mask money
-    $.fn.maskFunc = function(){
+    $.fn.maskFunc = function () {
       $('.currency').inputmask("currency", {
         radixPoint: ",",
         groupSeparator: ".",
@@ -129,15 +126,50 @@
         autoGroup: true,
         prefix: '', //Space after $, this will not truncate the first character.
         rightAlign: false,
-        oncleared: function () { self.Value(''); }
+        oncleared: function () {
+          self.Value('');
+        }
       });
     }
 
     $(this).maskFunc();
-  }); 
+  });
 
   function batal() {
     $('#form_tunjangan')[0].reset();
   }
-</script> 
+
+  function simpanTunjangan() {
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $('.simpanGaji').attr('disabled', 'disabled');
+    $.ajax({
+      url: baseUrl + "/hrd/payroll/simpan-tunjangan",
+      type: "POST",
+      data: $('#tunjanganMan').serialize(),
+      success: function (response) {
+        if (response.status == 'sukses') {
+          iziToast.success({
+            timeout: 5000,
+            position: "topRight",
+            icon: 'fa fa-chrome',
+            title: '',
+            message: 'Data Berhasil di Tambah.'
+          });
+          window.location.href = baseUrl + "/hrd/payroll/setting-gaji";
+        } else {
+          iziToast.error({
+            position: "topRight",
+            title: '',
+            message: 'Data Gagal di Tambah.'
+          });
+          $('.simpanGaji').removeAttr('disabled', 'disabled');
+        }
+      }
+    });
+  }
+</script>
 @endsection
