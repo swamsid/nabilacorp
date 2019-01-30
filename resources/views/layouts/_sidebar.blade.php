@@ -163,9 +163,9 @@
                                 </li>
                             @endif
                             @if(Auth::user()->punyaAkses('Payroll','ma_read'))
-                                <li class="{{ Request::is('hrd/payroll/setting-gaji') ? 'active' : '' || Request::is('hrd/payroll/*') ? 'active' : '' }}">
-                                    <a href="{{ url('/hrd/payroll/setting-gaji') }}"><span
-                                                class="submenu-title">Payroll</span><span class="hidden">HRD</span></a>
+                                <li class="{{ Request::is('master/payroll/setting-gaji') ? 'active' : '' || Request::is('master/payroll/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/master/payroll/setting-gaji') }}"><span
+                                                class="submenu-title">Payroll</span><span class="hidden">Master</span></a>
                                 </li>
                             @endif
                         </ul>
