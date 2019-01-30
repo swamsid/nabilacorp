@@ -162,6 +162,12 @@
                                                 class="hidden">Master</span></a>
                                 </li>
                             @endif
+                            @if(Auth::user()->punyaAkses('Payroll','ma_read'))
+                                <li class="{{ Request::is('hrd/payroll/setting-gaji') ? 'active' : '' || Request::is('hrd/payroll/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/hrd/payroll/setting-gaji') }}"><span
+                                                class="submenu-title">Payroll</span><span class="hidden">HRD</span></a>
+                                </li>
+                            @endif
                         </ul>
                     </li>
 
@@ -261,7 +267,7 @@
 
                             <!-- <li class="menu-sekunder {{ Request::is('produksi/produksi/produksi2') ? 'active' : '' || Request::is('produksi/produksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/produksi/produksi2') }}"><span class="submenu-title">Manajemen Produksi</span><span class="hidden">Produksi</span></a>
                             </li> -->
-                            <li class="menu-sekunder {{ Request::is('produksi/hasil-produksi/index') ? 'active' : '' || Request::is('produksi/hasil-produksi/*') ? 'active' : '' }}"><a href="{{ url('produksi/hasil-produksi/index') }}"><span class="submenu-title">Manajemen Output Produksi</span><span class="hidden">Produksi</span></a>
+                            <li class="menu-sekunder {{ Request::is('produksi/hasil-produksi') ? 'active' : '' }}"><a href="{{ url('produksi/hasil-produksi/index') }}"><span class="submenu-title">Manajemen Output Produksi</span><span class="hidden">Produksi</span></a>
                             </li>
                             <li class="menu-sekunder {{ Request::is('produksi/waste/waste') ? 'active' : '' || Request::is('produksi/waste/*') ? 'active' : '' }}"><a href="{{ url('/produksi/waste/waste') }}"><span class="submenu-title">Manajemen Sampah (Waste)</span><span class="hidden">Produksi</span></a>
                             </li>
@@ -379,12 +385,6 @@
                                                 class="hidden">HRD</span></a>
                                 </li>
                             @endif
-                            @if(Auth::user()->punyaAkses('Payroll','ma_read'))
-                                <li class="{{ Request::is('hrd/payroll/setting-gaji') ? 'active' : '' || Request::is('hrd/payroll/*') ? 'active' : '' }}">
-                                    <a href="{{ url('/hrd/payroll/setting-gaji') }}"><span
-                                                class="submenu-title">Payroll</span><span class="hidden">HRD</span></a>
-                                </li>
-                            @endif
                             @if(Auth::user()->punyaAkses('Payroll Pegawai Produksi','ma_read'))
                                 <li class="{{ Request::is('hrd/produksi/payroll') ? 'active' : '' || Request::is('hrd/produksi/*') ? 'active' : '' }}">
                                     <a href="{{ url('/hrd/produksi/payroll') }}"><span
@@ -405,15 +405,15 @@
                                                 class="hidden">HRD</span></a>
                                 </li>
                             @endif
-                            @if(Auth::user()->punyaAkses('Input data KPI','ma_read'))
-                                <li class="{{ Request::is('hrd/inputkpix/index') ? 'active' : '' || Request::is('hrd/inputkpix/*') ? 'active' : '' }}">
-                                    <a href="{{ url('/hrd/inputkpix/index') }}"><span class="submenu-title">Input Data KPI</span><span
-                                                class="hidden">HRD</span></a>
-                                </li>
-                            @endif
                             @if(Auth::user()->punyaAkses('Manajemen Scoreboard','ma_read'))
                                 <li class="{{ Request::is('hrd/manajemenkpipegawai/index') ? 'active' : '' || Request::is('hrd/manajemenkpipegawai/*') ? 'active' : '' }}">
                                     <a href="{{ url('/hrd/manajemenkpipegawai/index') }}"><span class="submenu-title">Manajemen Scoreboard</span><span
+                                                class="hidden">HRD</span></a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->punyaAkses('Input data KPI','ma_read'))
+                                <li class="{{ Request::is('hrd/inputkpix/index') ? 'active' : '' || Request::is('hrd/inputkpix/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/hrd/inputkpix/index') }}"><span class="submenu-title">Input Data KPI</span><span
                                                 class="hidden">HRD</span></a>
                                 </li>
                             @endif
