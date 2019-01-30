@@ -37,7 +37,7 @@
             <li>
               <a href="#alert-tab" data-toggle="tab" onclick="tblPro()">Produksi</a>
             </li>
-    {{--         <li>
+            {{-- <li>
               <a href="#potongan" data-toggle="tab">Potongan</a>
             </li> --}}
           </ul>
@@ -343,7 +343,7 @@
           }
         });
       }
-        
+      function tblPot(){
         $('#tbl_pot').DataTable({
           processing: true,
           // responsive:true, 
@@ -378,6 +378,8 @@
             }
           }
         });
+      }
+        
         function edit(a) {
           var parent = $(a).parents('tr');
           var id = $(parent).find('.d_id').text();
