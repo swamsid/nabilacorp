@@ -16,20 +16,21 @@ class transaksi_bank_controller extends Controller
     }
 
     public function form_resource(){
-    	$akunKas = DB::table('dk_akun')
-    					->where('ak_kelompok', jurnal()->kelompok_bank)
-    					->where('ak_type', 'detail')
-    					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
-    					->get();
+    	$kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
+        $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
-    	$akunLawan = DB::table('dk_akun')
-    					->where('ak_kelompok', '!=', jurnal()->kelompok_kas)
-    					->where('ak_kelompok', '!=', jurnal()->kelompok_bank)
-    					->where('ak_type', 'detail')
-    					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
-    					->get();
+        $akunKas = DB::table('dk_akun')
+                        ->where('ak_kelompok', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+                        ->get();
+
+        $akunLawan = DB::table('dk_akun')
+                        ->where('ak_kelompok', '!=', $kelompok_kas->hp_hierarki)
+                        ->where('ak_kelompok', '!=', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+                        ->get();
 
     	return json_encode([
     		'akunKas'	=> $akunKas,
@@ -132,6 +133,8 @@ class transaksi_bank_controller extends Controller
                         "status"    => 'error',
                         "message"   => 'Beberapa Akun Tidak Ada di Database. Data Gagal Disimpan',
                     ];
+
+                    return json_encode($response);
                 }
             }
 
@@ -292,6 +295,8 @@ class transaksi_bank_controller extends Controller
                         "status"    => 'error',
                         "message"   => 'Beberapa Akun Tidak Ada di Database. Data Gagal Disimpan',
                     ];
+
+                    return json_encode($response);
                 }
             }
 

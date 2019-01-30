@@ -21,8 +21,7 @@ class laporan_neraca_saldo_controller extends Controller
         
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
 
-        $res = akun::where('ak_type', 'detail')
-        				->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
+        $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
         				->where('dk_akun_saldo.as_periode', $d1)
         				->where('ak_isactive', '1')
         				->select(
@@ -48,8 +47,7 @@ class laporan_neraca_saldo_controller extends Controller
     public function print(Request $request){
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
 
-        $res = akun::where('ak_type', 'detail')
-        				->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
+        $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
         				->where('dk_akun_saldo.as_periode', $d1)
         				->where('ak_isactive', '1')
         				->select(
@@ -80,8 +78,7 @@ class laporan_neraca_saldo_controller extends Controller
     public function pdf(Request $request){
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
 
-        $res = akun::where('ak_type', 'detail')
-        				->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
+        $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
         				->where('dk_akun_saldo.as_periode', $d1)
         				->where('ak_isactive', '1')
         				->select(
@@ -120,8 +117,7 @@ class laporan_neraca_saldo_controller extends Controller
 
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
 
-        $res = akun::where('ak_type', 'detail')
-        				->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
+        $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
         				->where('dk_akun_saldo.as_periode', $d1)
         				->where('ak_isactive', '1')
         				->select(

@@ -153,48 +153,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12 mt-form" style="background: none; border-top: 1px solid #eee; padding-top: 20px;" v-if="conteks == 'detail'">
-                                                    <div class="row">
-
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-                                                                <div class="col-md-3">
-                                                                    <label class="modul-keuangan" style="font-weight: bold; font-style: italic;">Relasi Neraca</label>
-                                                                </div>
-
-                                                                <div class="col-md-5">
-                                                                    <vue-select :name="'ak_group_neraca'" :id="'ak_group_neraca'" :options="groupNeraca"></vue-select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-                                                                <div class="col-md-3">
-                                                                    <label class="modul-keuangan" style="font-weight: bold; font-style: italic;">Relasi Laba Rugi</label>
-                                                                </div>
-
-                                                                <div class="col-md-5">
-                                                                    <vue-select :name="'ak_group_lr'" :id="'ak_group_lr'" :options="groupLabaRugi"></vue-select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 mt-form">
-                                                            <div class="row">
-                                                                <div class="col-md-3">
-                                                                    <label class="modul-keuangan" style="font-weight: bold; font-style: italic;">Relasi Arus Kas</label>
-                                                                </div>
-
-                                                                <div class="col-md-5">
-                                                                    <vue-select :name="'ak_group_ak'" :id="'ak_group_ak'" :options="groupArusKas"></vue-select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
                                                 <div class="col-md-12">
                                                     <div class="col-md-12" style="margin-top: 40px;" v-if="locked">
                                                         <div class="row">
@@ -314,7 +272,7 @@
             });
         }
 
-		var app = new Vue({
+        var app = new Vue({
             el: '#page-wrapper',
             data: {
                 stat: 'standby',
@@ -324,7 +282,7 @@
                 onUpdate: false,
                 locked: false,
                 dataIsActive: true,
-                conteks: 'parrent',
+                conteks: 'detail',
 
                 data_table_columns : [
                     {name: 'Nomor Akun', context: 'ak_id', width: '20%', childStyle: 'text-align: center'},
@@ -350,14 +308,9 @@
 
                 type: [
                     {
-                        id      : 'parrent',
-                        text    : 'Parrent'
-                    },
-
-                    {
                         id      : 'detail',
                         text    : 'Detail'
-                    }
+                    },
                 ],
 
                 posisi: [
@@ -372,32 +325,7 @@
                     }
                 ],
 
-                kelompokParrent: [
-                    {
-                        id      : '1',
-                        text    : '1 - Aset'
-                    },
-
-                    {
-                        id      : '2',
-                        text    : '2 - Kewajiban'
-                    },
-
-                    {
-                        id      : '3',
-                        text    : '3 - Modal'
-                    },
-
-                    {
-                        id      : '4',
-                        text    : '4 - Beban-Beban'
-                    },
-
-                    {
-                        id      : '5',
-                        text    : '5 - Pendapatan'
-                    }
-                ],
+                kelompok: [],
 
                 kelompokDetail: [],
                 kelompok: [],
@@ -427,15 +355,8 @@
                           .then((response) => {
                             // console.log(response.data.akun_parrent);
                             this.kelompokDetail = response.data.akun_parrent;
-
-                            this.groupNeraca = response.data.group_neraca;
-                            this.groupArusKas = response.data.arus_kas;
-                            this.groupLabaRugi = response.data.laba_rugi;
-                            this.kelompok = this.kelompokParrent;
-
-                            this.groupNeraca.unshift({id: '', text: 'Tidak Memiliki Relasi Neraca'});
-                            this.groupLabaRugi.unshift({id: '', text: 'Tidak Memiliki Relasi Laba Rugi'});
-                            this.groupArusKas.unshift({id: '', text: 'Tidak Memiliki Relasi Arus Kas'});
+                            this.kelompok = response.data.kelompok;
+                            this.singleData.parrentId = response.data.kelompok[0].id
                           })
                           .catch((e) => {
                             alert('error '+e);
@@ -635,7 +556,7 @@
                     this.list_data_table = [];
                     this.onAjaxLoading = true;
 
-                    axios.get('{{ Route('akun.datatable') }}?type='+$('#ak_type').val())
+                    axios.get('{{ Request('/') }}/modul/keuangan/master/akun/datatable?type='+$('#ak_type').val())
                             .then((response) => {
                                 console.log(response.data);
                                 if(response.data.length){

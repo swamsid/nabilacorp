@@ -494,6 +494,8 @@
                             </li>  --}}
                             <li class="menu-sekunder {{ Request::is('system/profilperusahaan/profil') ? 'active' : '' || Request::is('system/profilperusahaan/*') ? 'active' : '' }}"><a href="{{ url('/system/profilperusahaan/profil') }}"><span class="submenu-title">Profil Perusahaan</span><span class="hidden">System</span></a>
                             </li>
+                            <li class="menu-sekunder {{ Request::is('modul/keuangan/setting/klasifikasi-akun') ? 'active' : '' || Request::is('modul/keuangan/setting/klasifikasi-akun/*') ? 'active' : '' }}"><a href="{{ url('modul/keuangan/setting/klasifikasi-akun') }}"><span class="submenu-title">Klasifikasi Akun</span><span class="hidden">System</span></a>
+                            </li>
                             <li class="menu-sekunder {{ Request::is('system/thnfinansial/finansial') ? 'active' : '' || Request::is('system/thnfinansial/*') ? 'active' : '' }}"><a href="{{ url('/system/thnfinansial/finansial') }}"><span class="submenu-title">Tahun Finansial</span><span class="hidden">System</span></a>
                             </li>
                         </ul>

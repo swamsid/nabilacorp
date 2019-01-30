@@ -27,108 +27,255 @@
 			<tbody>
 				<tr>
 					<td></td>
-					<td width="50%" style="padding: 5px; text-align: center; border: 1px solid #ccc;">Aktiva</td>
-					<td width="50%" style="padding: 5px; text-align: center; border: 1px solid #ccc;">Pasiva</td>
+
 				</tr>
 
 				<tr>
 					<td></td>
 					<td style="vertical-align: top;">
 						<table width="100%">
-							<?php $aktiva = $pasiva = 0 ?>
-							@foreach($data['data'] as $key => $header)
-								<?php $totHead = 0 ?>
-								<tr>
-									<td colspan="2" style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #0099cc; color: #ffffff">{{ $header->gs_nama }}</td>
-								</tr>
-	 
-								@foreach($header->group as $key => $group)
+							<?php $dataSum = []; ?>
+							@foreach($data['data'] as $key => $level1)
+								@if($level1->hls_id == '4' || $level1->hls_id == '5')
+									<?php $totalLevel1 = 0 ?>
 									<tr>
-										<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">{{ $group->ag_nama }}</td>
-
-										<?php 
-											$totGR = 0;
-
-											foreach($group->lr as $key => $akun){
-												foreach($akun->fromKelompok as $key => $detail){
-													$plus = $minus = 0;
-
-													if($detail->ak_posisi == 'D'){
-														$plus = ($detail->kas_debet + $detail->bank_debet + $detail->memorial_debet);
-
-														$monius = ($detail->kas_kredit + $detail->bank_kredit + $detail->memorial_kredit);
-													}else{
-														$plus = ($detail->kas_kredit + $detail->bank_kredit + $detail->memorial_kredit);
-
-														$monius = ($detail->kas_debet + $detail->bank_debet + $detail->memorial_debet);
-													}
-
-													$totGR += ($detail->ak_posisi == "D") ? (($plus - $minus) * -1) : ($plus - $minus);
-												}
-											}
-
-											$totHead += $totGR;
-										?>
-
-										<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $totGR }}</td>
+										<td style="padding-left: 10px; font-weight: bold; background-color: #cccccc;">{{ $level1->hls_nama }}</td>
+										<td></td>
 									</tr>
 
-									@foreach($group->lr as $key => $akun)
-										
-										<?php 
-											$nama = "";
+									@foreach($level1->subclass as $key => $subclass)
+										@if($subclass->hs_nama != 'Tidak Memiliki')
+											<tr>
+												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;background-color: #eeeeee;">
+													{{ $subclass->hs_nama }}
+												</td>
+												<td></td>
+											</tr>
+										@endif
 
-											foreach($data['kelompok'] as $r => $kelompok){
-												if($akun->ak_kelompok == $kelompok->ak_kelompok){
-													$nama = $kelompok->ak_nama;
-													break;
-												}
-											}
-										?>
-
-										<tr>
-											<td style="border: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
-
+										@foreach($subclass->level_2 as $key => $level2)
 											<?php 
-												$tot = 0;
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "30px";
+												$bold = ($subclass->hs_nama != 'Tidak Memiliki') ? "600px" : "lighter";
+												$dif = 0;
 
-												foreach($akun->fromKelompok as $key => $detail){
-													$plus = $minus = 0;
-
-													if($detail->ak_posisi == 'D'){
-														$plus = ($detail->kas_debet + $detail->bank_debet + $detail->memorial_debet);
-
-														$monius = ($detail->kas_kredit + $detail->bank_kredit + $detail->memorial_kredit);
-													}else{
-														$plus = ($detail->kas_kredit + $detail->bank_kredit + $detail->memorial_kredit);
-
-														$monius = ($detail->kas_debet + $detail->bank_debet + $detail->memorial_debet);
-													}
-
-													$tot += ($detail->ak_posisi == "D") ? (($plus - $minus) * -1) : ($plus - $minus);
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
 												}
-											?>
 
-											<td style="font-weight: normal; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $tot }}</td>
+												$totalLevel1 += $dif
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: {{ $bold }};">
+													{{ $level2->hld_nama }}
+												</td>
+												<td style="text-align: right; padding-right: 10px;">
+													{{ $dif }}
+												</td>
 											</tr>
 
+										@endforeach
+
+										{{-- @if($subclass->hs_nama != 'Tidak Memiliki')
+											<tr>
+												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;">
+													Total {{ $subclass->hs_nama }}
+												</td>
+												<td></td>
+											</tr>
+										@endif --}}
+
 									@endforeach
+										<tr>
+											<td style="padding-left: 10px; font-weight: bold;">
+												Total {{ $level1->hls_nama }}
+											</td>
+											<td style="border-top: 1px solid #ccc; font-weight: bold; text-align: right; padding-right: 10px;">
+												{{ $totalLevel1 }}
+											</td>
+										</tr>
 
-								@endforeach
+										<tr><td></td></tr>
 
-								<tr>
-									<td style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
-
-									<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ $totHead }}</td>
-									
-								</tr>
-
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-
-								<?php $aktiva += $totHead ?>
+										<?php $dataSum[$level1->hls_id] = $totalLevel1; ?>
+								@endif
 							@endforeach
+
+							<tr>
+								<td style="padding-left: 20px; font-weight: bold; color: #0099CC">
+									Laba Rugi Kotor
+								</td>
+								<td style="padding-right: 10px; font-weight: bold; color: #0099CC; text-align: right;">
+									{{ ($dataSum[4] - $dataSum[5]) }}
+								</td>
+							</tr>
+
+							<tr><td></td></tr>
+
+							@foreach($data['data'] as $key => $level1)
+								@if($level1->hls_id == '6' || $level1->hls_id == '7')
+									<?php $totalLevel1 = 0 ?>
+									<tr>
+										<td style="padding-left: 10px; font-weight: bold; background-color: #cccccc;">{{ $level1->hls_nama }}</td>
+										<td></td>
+									</tr>
+
+									@foreach($level1->subclass as $key => $subclass)
+										@if($subclass->hs_nama != 'Tidak Memiliki')
+											<tr>
+												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;background-color: #eeeeee;">
+													{{ $subclass->hs_nama }}
+												</td>
+												<td></td>
+											</tr>
+										@endif
+
+										@foreach($subclass->level_2 as $key => $level2)
+											<?php 
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "30px";
+												$bold = ($subclass->hs_nama != 'Tidak Memiliki') ? "600px" : "lighter";
+												$dif = 0;
+
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
+												}
+
+												$totalLevel1 += $dif
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: {{ $bold }};">
+													{{ $level2->hld_nama }}
+												</td>
+												<td style="text-align: right; padding-right: 10px;">
+													{{ $dif }}
+												</td>
+											</tr>
+
+										@endforeach
+
+										{{-- @if($subclass->hs_nama != 'Tidak Memiliki')
+											<tr>
+												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;">
+													Total {{ $subclass->hs_nama }}
+												</td>
+												<td></td>
+											</tr>
+										@endif --}}
+
+									@endforeach
+										<tr>
+											<td style="padding-left: 10px; font-weight: bold;">
+												Total {{ $level1->hls_nama }}
+											</td>
+											<td style="border-top: 1px solid #ccc; font-weight: bold; text-align: right; padding-right: 10px;">
+												{{ $totalLevel1 }}
+											</td>
+										</tr>
+
+										<tr><td></td></tr>
+
+										<?php $dataSum[$level1->hls_id] = $totalLevel1; ?>
+								@endif
+							@endforeach
+
+							<tr>
+								<td style="padding-left: 20px; font-weight: bold; color: #0099CC">
+									Total BO dan AU
+								</td>
+								<td style="padding-right: 10px; font-weight: bold; color: #0099CC; text-align: right;">
+									{{ ($dataSum[6] - $dataSum[7]) }}
+								</td>
+							</tr>
+
+							<tr>
+								<td style="padding-left: 20px; font-weight: bold; color: #0099CC">
+									Laba Operasi
+								</td>
+								<td style="padding-right: 10px; font-weight: bold; color: #0099CC; text-align: right;">
+									{{ ($dataSum[4] - $dataSum[5]) - ($dataSum[6] + $dataSum[7]) }}
+								</td>
+							</tr>
+
+							<tr><td></td></tr>
+
+							@foreach($data['data'] as $key => $level1)
+								@if($level1->hls_id == '8' || $level1->hls_id == '9')
+									<?php $totalLevel1 = 0 ?>
+									<tr>
+										<td style="padding-left: 10px; font-weight: bold; background-color: #cccccc;">{{ $level1->hls_nama }}</td>
+										<td></td>
+									</tr>
+
+									@foreach($level1->subclass as $key => $subclass)
+										@if($subclass->hs_nama != 'Tidak Memiliki')
+											<tr>
+												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;background-color: #eeeeee;">
+													{{ $subclass->hs_nama }}
+												</td>
+												<td></td>
+											</tr>
+										@endif
+
+										@foreach($subclass->level_2 as $key => $level2)
+											<?php 
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "30px";
+												$bold = ($subclass->hs_nama != 'Tidak Memiliki') ? "600px" : "lighter";
+												$dif = 0;
+
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
+												}
+
+												$totalLevel1 += $dif
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: {{ $bold }};">
+													{{ $level2->hld_nama }}
+												</td>
+												<td style="text-align: right; padding-right: 10px;">
+													{{ $dif }}
+												</td>
+											</tr>
+
+										@endforeach
+
+										{{-- @if($subclass->hs_nama != 'Tidak Memiliki')
+											<tr>
+												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;">
+													Total {{ $subclass->hs_nama }}
+												</td>
+												<td></td>
+											</tr>
+										@endif --}}
+
+									@endforeach
+										<tr>
+											<td style="padding-left: 10px; font-weight: bold;">
+												Total {{ $level1->hls_nama }}
+											</td>
+											<td style="border-top: 1px solid #ccc; font-weight: bold; text-align: right; padding-right: 10px;">
+												{{ $totalLevel1 }}
+											</td>
+										</tr>
+
+										<tr><td></td></tr>
+
+										<?php $dataSum[$level1->hls_id] = $totalLevel1; ?>
+								@endif
+							@endforeach
+
+							<tr>
+								<td style="padding-left: 20px; font-weight: bold; color: #0099CC">
+									Laba Sebelum Pajak
+								</td>
+								<td style="padding-right: 10px; font-weight: bold; color: #0099CC; text-align: right;">
+									{{ ($dataSum[4] - $dataSum[5]) - ($dataSum[6] + $dataSum[7]) + ($dataSum[8] - $dataSum[9]) }}
+								</td>
+							</tr>
+
 						</table>
 					</td>
 				<tr>
@@ -136,13 +283,13 @@
 				<tr>
 					<td></td>
 					<td>
-						<table width="100%">
+						{{-- <table width="100%">
 							<tr>
 								<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Pendapatan</td>
 
 								<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $aktiva }}</td>
 							</tr>
-						</table>
+						</table> --}}
 					</td>
 				<tr>
 			</tbody>
