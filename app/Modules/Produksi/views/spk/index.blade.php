@@ -119,8 +119,8 @@
                                 {"data": 'spk_date', name: 'spk_date', "width": "10%"},
                                 {"data": 'spk_code', name: 'spk_code', "width": "10%"},
                                 {"data": 'i_name', name: 'i_name', "width": "25%"},
-                                {"data": 'pp_qty', name: 'pp_qty', "width": "10%"},
-                                {"data": 'produksi', name: 'produksi', "width": "10%", "className": "right"},
+                                {"data": 'pp_qty', name: 'pp_qty', "width": "10%",render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
+                                {"data": 'produksi', name: 'produksi', "width": "10%", "className": "right", render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
                                 {"data": "status", "width": "10%"},
                                 {"data": "action", orderable: false, searchable: false, "width": "10%"},
                             ],
@@ -155,7 +155,8 @@
                                 {"data": 'spk_date', name: 'spk_date', "width": "10%"},
                                 {"data": 'spk_code', name: 'spk_code', "width": "10%"},
                                 {"data": 'i_name', name: 'i_name', "width": "25%"},
-                                {"data": 'pp_qty', name: 'pp_qty', "width": "10%"},
+                                {"data": 'pp_qty', name: 'pp_qty', "width": "10%", render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
+                                {"data": 'produksi', name: 'produksi', "width": "10%", "className": "right", render: $.fn.dataTable.render.number( '.', '.', 0,),"className" : "dt-body-right"},
                                 {"data": "status", "width": "10%"},
                                 {"data": "action", orderable: false, searchable: false, "width": "10%"},
                             ],
@@ -194,6 +195,7 @@
                                 type: "get",
                                 dataType: "JSON",
                                 success: function (response) {
+                                    $('#myModalView').modal('hide');
                                     if (response.status == "sukses") {
                                         refreshTabel();
                                     }else if(response.status == 'gagal'){

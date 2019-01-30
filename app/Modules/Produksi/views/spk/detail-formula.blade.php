@@ -37,7 +37,7 @@
         <div class="col-md-8 col-sm-3 col-xs-12">
             <div class="form-group">
                 <input class="form-control" readonly="" type="text" name="jumlah" id="jumlahD"
-                       value="{{ $item->pp_qty }}">
+                       value="{{ number_format( $item->pp_qty,0,',','.') }}">
             </div>
         </div>
 
@@ -73,7 +73,7 @@
                    <tr>
                         <td>{{ $formula[$i]['i_code'] }}</td>
                         <td>{{ $formula[$i]['i_name'] }}</td>
-                        <td class="text-right">{{ number_format( $formula[$i]['fr_value'],0,',','.')}}</td>
+                        <td class="text-right">{{ number_format( $formula[$i]['fr_value'],0,',','.') }}</td> 
                         <td>{{ $formula[$i]['s_name'] }}</td>
                   {{--       <td>Rp.
                             <span class="pull-right">
@@ -97,7 +97,7 @@
                 class="fa fa-print"></i>&nbsp;Print</a> --}}
     <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
     @if ($ket == 'AP')
-            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="ubahStatus({{ $id }})">Proses</button>
+            <button type="button" class="btn btn-danger" onclick="ubahStatus({{ $id }})">Proses</button>
     @endif
 </div>
 

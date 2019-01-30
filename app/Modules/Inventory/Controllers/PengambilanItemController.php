@@ -55,11 +55,17 @@ class PengambilanItemController extends Controller
             })
             ->addColumn('prdt_qty', function ($data) {
                 return '<input  id="prdt_qty" 
-                      class="form-control text-right" 
-                      type="text" 
-                      name="prdt_qty[]" 
-                      readonly
-                      value="' . $data->prdt_qty . '">';
+                            class="form-control text-right" 
+                            type="text" 
+                            name="prdt_qty[]" 
+                            readonly
+                            value="' . $data->prdt_qty . '">
+                        <input  id="prdt_qty" 
+                            class="form-control text-right" 
+                            type="text" 
+                            name="prdt_qty[]" 
+                            readonly
+                            value="'.number_format($data->prdt_qty,0,",",".").'">';
 
             })
             

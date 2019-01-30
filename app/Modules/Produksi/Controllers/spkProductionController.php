@@ -205,6 +205,14 @@ class spkProductionController extends Controller
             ->editColumn('status', function ($data) {
                     return '<span class="label label-success">Selesai</span>';
             })
+
+            ->editColumn('produksi', function ($user) {
+                return $result = d_productresult_dt::
+                    join('d_productresult','d_productresult.pr_id','=','prdt_productresult')
+                    ->where('pr_spk',$user->spk_id)
+                    ->sum('d_productresult_dt.prdt_qty');
+            })
+
             ->addColumn('action', function ($data) {
                     return '<div class="text-center">
                     <button class="btn btn-sm btn-success"
@@ -228,7 +236,7 @@ class spkProductionController extends Controller
             ->editColumn('spk_date', function ($user) {
                 return $user->spk_date ? with(new Carbon($user->spk_date))->format('d M Y') : '';
             })
-            ->rawColumns(['status', 'action'])
+            ->rawColumns(['status' ,'produksi' ,'action'])
             ->make(true);
     }
 
