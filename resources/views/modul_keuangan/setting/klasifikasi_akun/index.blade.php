@@ -606,12 +606,16 @@
 
                             if(response.data.subclass.length > 0){
                                 this.levelSubclass = response.data.subclass;
-                                this.level1SubclassChange(response.data.subclass[0].id);
+                                // alert(response.data.subclass[0].id);
+                                this.level1SubclassChange(parseInt(response.data.subclass[0].id));
+                                
+                                
                             }
 
                             if(response.data.level_1.length > 0){
                                 this.level_1 = response.data.level_1;
-                                this.level1Change(response.data.level_1[0].id);
+                                // alert(response.data.subclass[0].id);
+                                this.level1Change(parseInt(response.data.level_1[0].id));
                             }
                                         
                           })
