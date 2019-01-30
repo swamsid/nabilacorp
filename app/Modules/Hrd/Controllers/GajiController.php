@@ -333,7 +333,7 @@ class GajiController extends Controller
         }
     }
     public function tambahPotongan(){
-        return view('hrd/payroll/tambah_set_potongan');
+        return view('Hrd::payroll/tambah_set_potongan');
     }
     public function simpanPotongan(Request $request){
         $input = $request->all();
