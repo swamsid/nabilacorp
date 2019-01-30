@@ -49,16 +49,16 @@
 
           <div id="generalTabContent" class="tab-content responsive">
             <!-- /div alert-tab -->
-            @include('hrd.datainputkpix.tab-index')
+            {!!$tabIndex!!}
           </div>
 
         </div>
       </div>
     </div>
   </div> 
-  @include('hrd.datainputkpix.modal')
-  @include('hrd.datainputkpix.modal-detail')
-  @include('hrd.datainputkpix.modal-edit')
+  {!!$modal!!}
+  {!!$modalDetail!!}
+  {!!$modalEdit!!}
 </div>
 @endsection 
 @section("extra_scripts")

@@ -18,13 +18,11 @@ class DkpixController extends Controller
 {
     public function index()
     {
-        $tabIndex = view('Hrd::manajemenkpix.tab-index');
-        $tabScore = view('Hrd::manajemenkpix.tab-score');
-        $modal = view('Hrd::manajemenkpix.modal');
-        $modalDetail = view('Hrd::manajemenkpix.modal-detail');
-        $modalScore = view('Hrd::manajemenkpix.modal-detail-score');
-        $modalEdit = view('Hrd::manajemenkpix.modal-edit');
-        return view('Hrd::manajemenkpix/index',compact('tabIndex','tabScore','modal','modalDetail','modalScore','modalEdit'));
+        $tabIndex = view('Hrd::datainputkpix.tab-index');
+        $modal = view('Hrd::datainputkpix.modal');
+        $modalDetail = view('Hrd::datainputkpix.modal-detail');
+        $modalEdit = view('Hrd::datainputkpix.modal-edit');
+        return view('Hrd::datainputkpix/index',compact('tabIndex','modal','modalDetail','modalEdit'));
     }
 
     public function getKpixByTgl($tgl1, $tgl2)
