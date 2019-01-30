@@ -384,6 +384,6 @@ class ManscorekpiController extends Controller
         // return $total;
         // return $score;
         // return $pegawai;
-        return view('hrd.manajemenkpix.print_pki', compact('pegawai', 'data', 'score', 'total'));
+        return view('Hrd::manajemenkpix.print_pki', compact('pegawai', 'data', 'score', 'total'));
     }
 }
