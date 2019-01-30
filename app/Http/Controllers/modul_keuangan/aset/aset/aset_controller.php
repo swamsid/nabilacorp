@@ -47,13 +47,10 @@ class aset_controller extends Controller
 
         $akunKas = DB::table('dk_akun')
                         ->where('ak_kelompok', jurnal()->kelompok_kas)
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->orWhere('ak_kelompok', jurnal()->kelompok_bank)
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->orWhere('ak_id', jurnal()->akun_hutang_usaha)
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
                         ->get();

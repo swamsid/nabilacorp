@@ -24,8 +24,7 @@ class laporan_buku_besar_controller extends Controller
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
         $d2 = date('Y-m-d', strtotime('+1 months', strtotime($tanggal2)));
 
-        $akun = akun::where('ak_type', 'detail')
-                        ->where('ak_isactive', '1')
+        $akun = akun::where('ak_isactive', '1')
                         ->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))
                         ->orderBy('ak_id')->get();
 
@@ -48,7 +47,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -70,7 +68,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -113,7 +110,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -135,7 +131,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -176,7 +171,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -198,7 +192,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -247,7 +240,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
@@ -269,7 +261,6 @@ class laporan_buku_besar_controller extends Controller
                                             ]);
                                 }
                         ])
-                        ->where('ak_type', 'detail')
                         ->where('ak_isactive', '1')
                         ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
                         ->get();
