@@ -38,7 +38,7 @@
             <div id="alert-tab" class="tab-pane fade in active">
               <div class="row">
                 <div class="col-md-12">
-                  <form method="POST" action="{{ url('hrd/payroll/simpan-gaji-pro') }}">
+                  <form method="POST" id="gajiPro">
                     {{ csrf_field() }}
                     <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                       <div class="col-md-2 col-sm-4 col-xs-12">
@@ -54,7 +54,7 @@
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" name="c_gaji" class="form-control input-sm">
+                          <input type="text" name="c_gaji" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
@@ -62,21 +62,74 @@
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" name="c_lembur" class="form-control input-sm">
+                          <input type="text" name="c_lembur" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
-                      <div class="col-md-6 col-sm-12 col-xs-12">
-                        <input type="button" value="Batal" class="btn btn-danger btn-block">
+                      <div class="col-md-2 col-sm-4 col-xs-12">
+                        <label class="tebal">Jenis Gaji</label>
                       </div>
-                      <div class="col-md-6 col-sm-12 col-xs-12">
-                        <input type="submit" value="Simpan" class="btn btn-primary btn-block">
+                      <div class="col-md-10 col-sm-8 col-xs-12">
+                        <div class="form-group">
+                          <select class="form-control form-control-sm" name="c_status">
+                            <option value="HR">Harian</option>
+                            <option value="GR">Garapan</option>
+                          </select>
+                        </div>
                       </div>
+                      
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <input type="submit" value="Simpan" class="btn btn-primary btn-block simpanGaji" onclick="simpanGaji()">
+                      </div>
+                      
                   </form>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-          @endsection @section('extra_scripts')
-          <script type="text/javascript">
-          </script> @endsection
+        </div>
+        @endsection @section('extra_scripts')
+        <script type="text/javascript">
+          $('.rupiah').inputmask("currency", {
+							radixPoint: ",",
+							groupSeparator: ".",
+							digits: 2,
+							allowMinus: false,
+							autoGroup: true,
+							prefix: '', //Space after $, this will not truncate the first character.
+							rightAlign: false,
+							oncleared: function () {}
+            });
+
+            function simpanGaji() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('.simpanGaji').attr('disabled', 'disabled');
+            $.ajax({
+              url: baseUrl + "/hrd/payroll/simpan-gaji-pro",
+              type: "POST",
+              data: $('#gajiPro').serialize(),
+              success: function (response) {
+                if (response.status == 'sukses') {
+                    iziToast.success({
+                        timeout: 5000,
+                        position: "topRight",
+                        icon: 'fa fa-chrome',
+                        title: '',
+                        message: 'Data Berhasil di Tambah.'
+                    });
+                    window.location.href = baseUrl + "/hrd/payroll/setting-gaji";
+                } else {
+                    iziToast.error({
+                        position: "topRight",
+                        title: '',
+                        message: 'Data Gagal di Tambah.'
+                    });
+                    $('.simpanGaji').removeAttr('disabled', 'disabled');
+                }
+            }
+            });
+          }
+        </script> @endsection

@@ -38,11 +38,11 @@
             <div id="alert-tab" class="tab-pane fade in active">
               <div class="row">
                 <div class="col-md-12">
-                  <form method="POST" action="{{ url('hrd/payroll/simpan-gaji-man') }}">
+                  <form method="POST" id='gajiMan'>
                     {{ csrf_field() }}
                     <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">Nama Gaji</label>
+                        <label class="tebal">Nama Gaji<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
@@ -50,12 +50,12 @@
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">Jumlah </label>
+                        <label class="tebal">Jumlah</label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
                           <div class="input-group">
-                            <input type="number" id="jumlah" name="jumlah" class="form-control input-sm">
+                            <input type="text" id="jumlah" name="jumlah" class="form-control input-sm text-right rupiah">
                             <span class="input-group-btn">
                               <button type="button" class="btn btn-success btn-sm" onclick="samakan()">Samakan</button>
                             </span>
@@ -63,12 +63,12 @@
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">Jabatan</label>
+                        <label class="tebal">Jabatan<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
                           <select id="" name="c_jabatan" class="form-control input-sm">
-                            <option>--pilih jabatan--</option>
+                            <option value="">--pilih jabatan--</option>
                             <option value="1">Leader</option>
                             <option value="2">Staf</option>
                             <option value="3">Semua</option>
@@ -76,97 +76,137 @@
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">SD</label>
+                        <label class="tebal">SD<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="sd" name="c_sd" class="form-control input-sm">
+                          <input type="text" id="sd" name="c_sd" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">SMP</label>
+                        <label class="tebal">SMP<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="smp" name="c_smp" class="form-control input-sm">
+                          <input type="text" id="smp" name="c_smp" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">SMA</label>
+                        <label class="tebal">SMA<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="sma" name="c_sma" class="form-control input-sm">
+                          <input type="text" id="sma" name="c_sma" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">SMK</label>
+                        <label class="tebal">SMK<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="smk" name="c_smk" class="form-control input-sm">
+                          <input type="text" id="smk" name="c_smk" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">D1</label>
+                        <label class="tebal">D1<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="d1" name="c_d1" class="form-control input-sm">
+                          <input type="text" id="d1" name="c_d1" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">D3</label>
+                        <label class="tebal">D2<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="d3" name="c_d3" class="form-control input-sm">
+                          <input type="text" id="d2" name="c_d2" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">D2</label>
+                        <label class="tebal">D3<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="d2" name="c_d2" class="form-control input-sm">
+                          <input type="text" id="d3" name="c_d3" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
-                        <label class="tebal">S1</label>
+                        <label class="tebal">S1<font color="red">*</font></label>
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" id="s1" name="c_s1" class="form-control input-sm">
+                          <input type="text" id="s1" name="c_s1" class="form-control input-sm text-right rupiah">
                         </div>
                       </div>
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-md-6 col-sm-12 col-xs-12">
-                          <input type="button" value="Batal" class="btn btn-danger btn-block">
-                        </div>
-                        <div class="col-md-6 col-sm-12 col-xs-12">
-                          <input type="submit" value="Simpan" class="btn btn-primary btn-block">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <input type="submit" value="Simpan" class="btn btn-primary btn-block simpanGaji" onclick="simpanGajiMan()">
                         </div>
                       </div>
                   </form>
-                  </div>
-                  
                 </div>
+
               </div>
             </div>
           </div>
-          @endsection @section('extra_scripts')
-          <script type="text/javascript">
-            function samakan() {
-              var jum = $('#jumlah').val();
-              console.log(jum);
-              $('#sd').val(jum);
-              $('#smp').val(jum);
-              $('#sma').val(jum);
-              $('#smk').val(jum);
-              $('#d1').val(jum);
-              $('#d2').val(jum);
-              $('#d3').val(jum);
-              $('#s1').val(jum);
+        </div>
+        @endsection @section('extra_scripts')
+        <script type="text/javascript">
+          $('.rupiah').inputmask("currency", {
+            radixPoint: ",",
+            groupSeparator: ".",
+            digits: 2,
+            allowMinus: false,
+            autoGroup: true,
+            prefix: '', //Space after $, this will not truncate the first character.
+            rightAlign: false,
+            oncleared: function () {}
+          });
+
+          function samakan() {
+            var jum = $('#jumlah').val();
+            console.log(jum);
+            $('#sd').val(jum);
+            $('#smp').val(jum);
+            $('#sma').val(jum);
+            $('#smk').val(jum);
+            $('#d1').val(jum);
+            $('#d2').val(jum);
+            $('#d3').val(jum);
+            $('#s1').val(jum);
+          }
+
+          function simpanGajiMan() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('.simpanGaji').attr('disabled', 'disabled');
+            $.ajax({
+              url: baseUrl + "/hrd/payroll/simpan-gaji-man",
+              type: "POST",
+              data: $('#gajiMan').serialize(),
+              success: function (response) {
+                if (response.status == 'sukses') {
+                    iziToast.success({
+                        timeout: 5000,
+                        position: "topRight",
+                        icon: 'fa fa-chrome',
+                        title: '',
+                        message: 'Data Berhasil di Tambah.'
+                    });
+                    window.location.href = baseUrl + "/hrd/payroll/setting-gaji";
+                } else {
+                    iziToast.error({
+                        position: "topRight",
+                        title: '',
+                        message: 'Data Gagal di Tambah.'
+                    });
+                    $('.simpanGaji').removeAttr('disabled', 'disabled');
+                }
             }
-            
-          </script> @endsection
+            });
+          }
+        </script> @endsection

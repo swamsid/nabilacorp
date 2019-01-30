@@ -38,9 +38,8 @@
             <div id="alert-tab" class="tab-pane fade in active">
               <div class="row">
                 <div class="col-md-12">
-                  <form method="POST" action="{{ url('hrd/payroll/update-gaji-pro') }}/{{ $data->c_id }}">
+                  <form method="POST" id="gajiPro">
                     {{ csrf_field() }}
-                    {{ method_field('PUT') }}
                     <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                       <div class="col-md-2 col-sm-4 col-xs-12">
                         <label class="tebal">Nama Gaji:</label>
@@ -55,7 +54,7 @@
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" value="{{ $data->c_gaji }}" name="c_gaji" class="form-control input-sm">
+                          <input type="text" value="{{ $data->c_gaji }}" name="c_gaji" class="form-control input-sm rupiah text-right">
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
@@ -63,7 +62,23 @@
                       </div>
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
-                          <input type="number" value="{{ $data->c_lembur }}" name="c_lembur" class="form-control input-sm">
+                          <input type="text" value="{{ $data->c_lembur }}" name="c_lembur" class="form-control input-sm rupiah text-right">
+                        </div>
+                      </div>
+                      <div class="col-md-2 col-sm-4 col-xs-12">
+                        <label class="tebal">Jenis Gaji:</label>
+                      </div>
+                      <div class="col-md-10 col-sm-8 col-xs-12">
+                        <div class="form-group">
+                          <select class="form-control form-control-sm" name="c_status">
+                            @if ($data->c_status == 'HR')
+                               <option value="HR">Harian</option>
+                               <option value="GR">Garapan</option>
+                            @else
+                              <option value="GR">Garapan</option>
+                              <option value="HR">Harian</option>
+                            @endif
+                          </select>
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-4 col-xs-12">
@@ -71,62 +86,100 @@
                       </div>
                       <div class="col-md-10 col-sm-8 col-xs-12" style="margin-bottom:20px">
                         <div class="form-group">
-                          
+
                           @foreach ($txt as $lis)
-                            <label class="col-md-12 col-sm-12 col-xs-12 lbl-check">
-                              @for ($i = 0; $i <count($list); $i++)
-                                @if ($list[$i] == $lis->c_id)
-                                  <input type="hidden" value="{{$list[$i]}}" class="ip_hidden" name="ip_cek[]">
-                                @endif
+                          <label class="col-md-12 col-sm-12 col-xs-12 lbl-check">
+                            @for ($i = 0; $i <count($list); $i++) @if ($list[$i]==$lis->c_id)
+                              <input type="hidden" value="{{$list[$i]}}" class="ip_hidden" name="ip_cek[]">
+                              @endif
                               @endfor
                               <input type="checkbox" value="{{$lis->c_id}}" name="form_cek[]" class="ceklis_tunjangan">
-                                  {{$lis->c_jabatan_pro}}                         
-                            </label>
+                              {{$lis->c_jabatan_pro}}
+                          </label>
                           @endforeach
-                           
+
                         </div>
-                        </div>
                       </div>
-                      <div class="col-md-6 col-sm-12 col-xs-12">
-                        <input type="button" value="Batal" class="btn btn-danger btn-block">
-                      </div>
-                      <div class="col-md-6 col-sm-12 col-xs-12">
-                        <input type="submit" value="Simpan" class="btn btn-primary btn-block">
-                      </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <input type="submit" value="Simpan" class="btn btn-primary btn-block simpanGaji" onclick="updateGajiPro({{ $data->c_id }})">
+                    </div>
                   </form>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-          @endsection @section('extra_scripts')
-          <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
-          <script src="{{ asset("js/inputmask/inputmask.jquery.js") }}"></script>
-          <script type="text/javascript">
-            $(document).ready(function() { 
-              $('#btn-check-all').click(function() {
-                 $('.ceklis_tunjangan').iCheck('check');
-              });
-              $('#btn-uncheck-all').click(function() {
-                 $('.ceklis_tunjangan').iCheck('uncheck');
-              });
+        </div>
+        @endsection @section('extra_scripts')
+        <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
+        <script src="{{ asset("js/inputmask/inputmask.jquery.js") }}"></script>
+        <script type="text/javascript">
+          $(document).ready(function () {
+            $('#btn-check-all').click(function () {
+              $('.ceklis_tunjangan').iCheck('check');
+            });
+            $('#btn-uncheck-all').click(function () {
+              $('.ceklis_tunjangan').iCheck('uncheck');
+            });
 
-              var numcheck = $(".ip_hidden").length;
-              //alert(numcheck);
-              // for (var i = 0; i < numcheck; i++) {
-              //   alert($("input[name='form_cek]").val());
-              // }
-              $('input[name="form_cek[]"]').each(function() 
-              {
-                var ceklis = $(this).val();
-                $('input[name="ip_cek[]"]').each(function() 
-                {
-                  var ipcek = $(this).val();
-                  if (ipcek == ceklis) 
-                  {
-                    $('input.ceklis_tunjangan[value="'+ipcek+'"]').iCheck('check');
-                  }
-                });
-              });    
-            }); 
-          </script>  @endsection
+            var numcheck = $(".ip_hidden").length;
+            //alert(numcheck);
+            // for (var i = 0; i < numcheck; i++) {
+            //   alert($("input[name='form_cek]").val());
+            // }
+            $('input[name="form_cek[]"]').each(function () {
+              var ceklis = $(this).val();
+              $('input[name="ip_cek[]"]').each(function () {
+                var ipcek = $(this).val();
+                if (ipcek == ceklis) {
+                  $('input.ceklis_tunjangan[value="' + ipcek + '"]').iCheck('check');
+                }
+              });
+            });
+
+            $('.rupiah').inputmask("currency", {
+							radixPoint: ",",
+							groupSeparator: ".",
+							digits: 2,
+							allowMinus: false,
+							autoGroup: true,
+							prefix: '', //Space after $, this will not truncate the first character.
+							rightAlign: false,
+							oncleared: function () {}
+            });
+            
+          });
+
+          function updateGajiPro(x) {
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						});
+						$('.simpanGaji').attr('disabled', 'disabled');
+						$.ajax({
+							url: baseUrl + "/hrd/payroll/update-gaji-pro/" + x,
+							type: "POST",
+							data: $('#gajiPro').serialize(),
+							success: function (response) {
+								if (response.status == 'sukses') {
+									iziToast.success({
+										timeout: 5000,
+										position: "topRight",
+										icon: 'fa fa-chrome',
+										title: '',
+										message: 'Data Berhasil di Update.'
+									});
+									window.location.href = baseUrl + "/hrd/payroll/setting-gaji";
+								} else {
+									iziToast.error({
+										position: "topRight",
+										title: '',
+										message: 'Data Gagal di Update.'
+									});
+									$('.simpanGaji').removeAttr('disabled', 'disabled');
+								}
+							}
+						});
+					}
+        </script> @endsection

@@ -224,7 +224,7 @@
         $.extend($.fn.dataTableExt.oStdClasses, extensions);
         // Used when bJQueryUI is true
         $.extend($.fn.dataTableExt.oJUIClasses, extensions)
-        $('#tbl_man').DataTable({
+        var tblMan = $('#tbl_man').DataTable({
           processing: true,
           // responsive:true, 
           serverSide: true,
@@ -265,7 +265,7 @@
       
       function tblTunjangan(){
         $('#tbl_tunjangan').dataTable().fnDestroy();
-        $('#tbl_tunjangan').DataTable({
+        tblTunjangan = $('#tbl_tunjangan').DataTable({
           processing: true,
           // responsive:true, 
           serverSide: true,
@@ -305,7 +305,7 @@
         
       function tblPro(){
         $('#tbl_pro').dataTable().fnDestroy();
-        $('#tbl_pro').DataTable({
+        tblPro = $('#tbl_pro').DataTable({
           processing: true,
           // responsive:true, 
           serverSide: true,
@@ -397,48 +397,40 @@
             async: false
           });
         }
+
         function hapus(id) {
-          iziToast.question({
-            timeout: 20000,
-            close: false,
-            overlay: true,
-            toastOnce: true,
-            id: 'question',
-            zindex: 999,
-            title: 'Hey',
-            message: 'Apakah anda yakin?',
-            position: 'center',
-            buttons: [
-              ['<button><b>YA</b></button>', function (instance, toast) {
-                $.ajax({
-                  url: '{{ url("hrd/payroll/delete-gaji-man") }}' + '/' + id,
-                  async: false,
-                  type: "DELETE",
-                  data: {
-                    "id": id,
-                    "_method": 'DELETE',
-                    "_token": '{{ csrf_token() }}',
-                  },
-                  dataType: "json",
-                  success: function (data) { }
-                });
-                window.location.reload();
-                instance.hide(toast, { transitionOut: 'fadeOut' }, 'button');
-
-              }, true],
-              ['<button>TIDAK</button>', function (instance, toast) {
-
-                instance.hide(toast, { transitionOut: 'fadeOut' }, 'button');
-
-              }]
-            ],
-            onClosing: function (instance, toast, closedBy) {
-              console.info('Closing | closedBy: ' + closedBy);
-            },
-            onClosed: function (instance, toast, closedBy) {
-              console.info('Closed | closedBy: ' + closedBy);
-            }
-          });
+            iziToast.show({
+                color: 'red',
+                title: 'Peringatan',
+                message: 'Apakah anda yakin!',
+                position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+                progressBarColor: 'rgb(0, 255, 184)',
+                buttons: [
+                    [
+                        '<button>Ok</button>',
+                        function (instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOutUp'
+                            }, toast);
+                            $.ajax({
+                                type: 'get',
+                                url: baseUrl + "/hrd/payroll/delete-gaji-man/" + id,
+                                success: function () {
+                                    tblMan.ajax.reload();
+                                }
+                            });
+                        }
+                    ],
+                    [
+                        '<button>Close</button>',
+                        function (instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOutUp'
+                            }, toast);
+                        }
+                    ]
+                ]
+            });
         }
         function editTunjangan(a) {
           var parent = $(a).parents('tr');
@@ -459,48 +451,40 @@
             async: false
           });
         }
+
         function hapusTunjangan(id) {
-          iziToast.question({
-            timeout: 20000,
-            close: false,
-            overlay: true,
-            toastOnce: true,
-            id: 'question',
-            zindex: 999,
-            title: 'Hey',
-            message: 'Apakah anda yakin?',
-            position: 'center',
-            buttons: [
-              ['<button><b>YA</b></button>', function (instance, toast) {
-                $.ajax({
-                  url: '{{ url("hrd/payroll/delete-tunjangan") }}' + '/' + id,
-                  async: false,
-                  type: "DELETE",
-                  data: {
-                    "id": id,
-                    "_method": 'DELETE',
-                    "_token": '{{ csrf_token() }}',
-                  },
-                  dataType: "json",
-                  success: function (data) { }
-                });
-                window.location.reload();
-                instance.hide(toast, { transitionOut: 'fadeOut' }, 'button');
-
-              }, true],
-              ['<button>TIDAK</button>', function (instance, toast) {
-
-                instance.hide(toast, { transitionOut: 'fadeOut' }, 'button');
-
-              }]
-            ],
-            onClosing: function (instance, toast, closedBy) {
-              console.info('Closing | closedBy: ' + closedBy);
-            },
-            onClosed: function (instance, toast, closedBy) {
-              console.info('Closed | closedBy: ' + closedBy);
-            }
-          });
+            iziToast.show({
+                color: 'red',
+                title: 'Peringatan',
+                message: 'Apakah anda yakin!',
+                position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+                progressBarColor: 'rgb(0, 255, 184)',
+                buttons: [
+                    [
+                        '<button>Ok</button>',
+                        function (instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOutUp'
+                            }, toast);
+                            $.ajax({
+                                type: 'get',
+                                url: baseUrl + "/hrd/payroll/delete-tunjangan/" + id,
+                                success: function () {
+                                    tblTunjangan.ajax.reload();
+                                }
+                            });
+                        }
+                    ],
+                    [
+                        '<button>Close</button>',
+                        function (instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOutUp'
+                            }, toast);
+                        }
+                    ]
+                ]
+            });
         }
         function editPro(a) {
           var parent = $(a).parents('tr');
@@ -522,47 +506,38 @@
           });
         }
         function hapusPro(id) {
-          iziToast.question({
-            timeout: 20000,
-            close: false,
-            overlay: true,
-            toastOnce: true,
-            id: 'question',
-            zindex: 999,
-            title: 'Hey',
-            message: 'Apakah anda yakin?',
-            position: 'center',
-            buttons: [
-              ['<button><b>YA</b></button>', function (instance, toast) {
-                $.ajax({
-                  url: '{{ url("hrd/payroll/delete-gaji-pro") }}' + '/' + id,
-                  async: false,
-                  type: "DELETE",
-                  data: {
-                    "id": id,
-                    "_method": 'DELETE',
-                    "_token": '{{ csrf_token() }}',
-                  },
-                  dataType: "json",
-                  success: function (data) { }
-                });
-                window.location.reload();
-                instance.hide(toast, { transitionOut: 'fadeOut' }, 'button');
-
-              }, true],
-              ['<button>TIDAK</button>', function (instance, toast) {
-
-                instance.hide(toast, { transitionOut: 'fadeOut' }, 'button');
-
-              }]
-            ],
-            onClosing: function (instance, toast, closedBy) {
-              console.info('Closing | closedBy: ' + closedBy);
-            },
-            onClosed: function (instance, toast, closedBy) {
-              console.info('Closed | closedBy: ' + closedBy);
-            }
-          });
+            iziToast.show({
+                color: 'red',
+                title: 'Peringatan',
+                message: 'Apakah anda yakin!',
+                position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+                progressBarColor: 'rgb(0, 255, 184)',
+                buttons: [
+                    [
+                        '<button>Ok</button>',
+                        function (instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOutUp'
+                            }, toast);
+                            $.ajax({
+                                type: 'get',
+                                url: baseUrl + "/hrd/payroll/delete-gaji-pro/" + id,
+                                success: function () {
+                                    tblPro.ajax.reload();
+                                }
+                            });
+                        }
+                    ],
+                    [
+                        '<button>Close</button>',
+                        function (instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOutUp'
+                            }, toast);
+                        }
+                    ]
+                ]
+            });
         }
         function editPot(a) {
           var parent = $(a).parents('tr');

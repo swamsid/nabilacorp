@@ -169,7 +169,7 @@ class PayrollmanController extends Controller
     }
 
     public function setFieldModal(Request $request)
-    {
+    { 
         //pertanggalan
         $tahun = date("Y");
         $tanggal_a = date('Y-m-d',strtotime($request->sDate));
@@ -211,6 +211,7 @@ class PayrollmanController extends Controller
         $d_absen = abs_pegawai_man::where('apm_pm', $request->pegawai)->whereBetween('apm_tanggal', [$tanggal_a, $tanggal_b])->get();
 
         //kelola tunjangan
+        $lembur = [];
         if (count($d_absen) > 0) {
             foreach ($d_absen as $val) {
                 if ($val->apm_absent != null) { $alpha[] = $val->apm_absent; } else { $hadir[] = $val->apm_absent; }
@@ -219,7 +220,6 @@ class PayrollmanController extends Controller
                 if ($val->apm_jam_masuk != null) { $dt_jammasuk[] = $val->apm_tanggal.' '.$val->apm_jam_masuk; } else { $dt_jammasuk[] = null; }
             }
         }
-        //dd($lembur);
         //dd($dt_scanmasuk, $dt_jammasuk);
 
         //hitung lembur jam reguler
@@ -577,6 +577,6 @@ class PayrollmanController extends Controller
         //     'list_potongan' => $list_potongan
         // ]);
 
-        return view('hrd.payrollman.print-payroll', [ 'rocknroll' => $payroll , 'tunjangan' => $list_tunjangan , 'gaji' => $list_gaji, 'potongan' => $list_potongan ]);
+        return view('Hrd::payrollman.print-payroll', [ 'rocknroll' => $payroll , 'tunjangan' => $list_tunjangan , 'gaji' => $list_gaji, 'potongan' => $list_potongan ]);
     }
 }
