@@ -21,7 +21,7 @@ class PayrollmanController extends Controller
 {
     public function index()
     {
-        $data = DB::table('m_divisi')->where('c_isactive','TRUE')->select('c_id', 'c_divisi')->get();
+        $data = DB::table('m_divisi')->where('c_isactive','Y')->select('c_id', 'c_divisi')->get();
         $tabIndex = view('Hrd::payrollman.tab-index',compact('data'));
         $modal = view('Hrd::payrollman.modal');
         $modalDetail = view('Hrd::payrollman.modal-detail');
@@ -38,27 +38,27 @@ class PayrollmanController extends Controller
         if ($request->status == 'ALL' && $request->divisi == 'semua') {
             $data = d_payroll_man::join('m_pegawai_man','d_payroll_man.d_pm_pid','=','m_pegawai_man.c_id')
                         ->select('d_payroll_man.*', 'm_pegawai_man.*')
-                        ->where('c_isactive','TRUE')
+                        ->where('c_isactive','Y')
                         ->whereBetween('d_payroll_man.d_pm_date', [$tanggal_a, $tanggal_b])
                         ->orderBy('d_payroll_man.d_pm_created', 'DESC')->get();
         }elseif ($request->status == 'ALL') {
             $data = d_payroll_man::join('m_pegawai_man','d_payroll_man.d_pm_pid','=','m_pegawai_man.c_id')
                         ->select('d_payroll_man.*', 'm_pegawai_man.*')
                         ->where('m_pegawai_man.c_divisi_id', $request->divisi)
-                        ->where('c_isactive','TRUE')
+                        ->where('c_isactive','Y')
                         ->whereBetween('d_payroll_man.d_pm_date', [$tanggal_a, $tanggal_b])
                         ->orderBy('d_payroll_man.d_pm_created', 'DESC')->get();
         }elseif ($request->divisi == 'semua') {
             $data = d_payroll_man::join('m_pegawai_man','d_payroll_man.d_pm_pid','=','m_pegawai_man.c_id')
                         ->select('d_payroll_man.*', 'm_pegawai_man.*')
-                        ->where('c_isactive','TRUE')
+                        ->where('c_isactive','Y')
                         ->where('d_payroll_man.d_pm_iscetak', '=', $request->status)
                         ->whereBetween('d_payroll_man.d_pm_date', [$tanggal_a, $tanggal_b])
                         ->orderBy('d_payroll_man.d_pm_created', 'DESC')->get();
         }else{  
             $data = d_payroll_man::join('m_pegawai_man','d_payroll_man.d_pm_pid','=','m_pegawai_man.c_id')
                         ->select('d_payroll_man.*', 'm_pegawai_man.*')
-                        ->where('c_isactive','TRUE')
+                        ->where('c_isactive','Y')
                         ->where('d_payroll_man.d_pm_iscetak', '=', $request->status)
                         ->where('m_pegawai_man.c_divisi_id', $request->divisi)
                         ->whereBetween('d_payroll_man.d_pm_date', [$tanggal_a, $tanggal_b])
@@ -108,7 +108,7 @@ class PayrollmanController extends Controller
         $term = trim($request->q);
         if (empty($term)) 
         {
-            $divisi = DB::table('m_divisi')->where('c_isactive','TRUE')->orderBy('c_divisi', 'ASC')->limit(10)->get();
+            $divisi = DB::table('m_divisi')->where('c_isactive','Y')->orderBy('c_divisi', 'ASC')->limit(10)->get();
             foreach ($divisi as $val) {
                 $formatted_tags[] = ['id' => $val->c_id, 'text' => $val->c_divisi];
             }
@@ -116,7 +116,7 @@ class PayrollmanController extends Controller
         }
         else
         {  
-            $divisi = DB::table('m_divisi')->where('c_isactive','TRUE')->where('c_divisi', 'LIKE', '%'.$term.'%')->orderBy('c_divisi', 'ASC')->limit(10)->get();
+            $divisi = DB::table('m_divisi')->where('c_isactive','Y')->where('c_divisi', 'LIKE', '%'.$term.'%')->orderBy('c_divisi', 'ASC')->limit(10)->get();
             foreach ($divisi as $val) {
                 $formatted_tags[] = ['id' => $val->c_id, 'text' => $val->c_divisi];
             }
@@ -130,7 +130,7 @@ class PayrollmanController extends Controller
         $term = trim($request->q);
         if (empty($term)) 
         {
-            $jabatan = DB::table('m_jabatan')->where('c_isactive','TRUE')->where('c_divisi_id', $request->divisi)->orderBy('c_posisi', 'ASC')->limit(10)->get();
+            $jabatan = DB::table('m_jabatan')->where('c_isactive','Y')->where('c_divisi_id', $request->divisi)->orderBy('c_posisi', 'ASC')->limit(10)->get();
             foreach ($jabatan as $val) {
                 $formatted_tags[] = ['id' => $val->c_id, 'text' => $val->c_posisi];
             }
@@ -138,7 +138,7 @@ class PayrollmanController extends Controller
         }
         else
         {  
-            $jabatan = DB::table('m_jabatan')->where('c_isactive','TRUE')->where('c_divisi_id', $request->divisi)->where('c_posisi', 'LIKE', '%'.$term.'%')->orderBy('c_posisi', 'ASC')->limit(10)->get();
+            $jabatan = DB::table('m_jabatan')->where('c_isactive','Y')->where('c_divisi_id', $request->divisi)->where('c_posisi', 'LIKE', '%'.$term.'%')->orderBy('c_posisi', 'ASC')->limit(10)->get();
             foreach ($jabatan as $val) {
                 $formatted_tags[] = ['id' => $val->c_id, 'text' => $val->c_posisi];
             }
@@ -152,7 +152,7 @@ class PayrollmanController extends Controller
         $term = trim($request->q);
         if (empty($term)) 
         {
-            $pegawai = DB::table('m_pegawai_man')->where('c_isactive','TRUE')->where('c_divisi_id', $request->divisi)->where('c_jabatan_id', $request->jabatan)->orderBy('c_nama', 'ASC')->limit(10)->get();
+            $pegawai = DB::table('m_pegawai_man')->where('c_isactive','Y')->where('c_divisi_id', $request->divisi)->where('c_jabatan_id', $request->jabatan)->orderBy('c_nama', 'ASC')->limit(10)->get();
             foreach ($pegawai as $val) {
                 $formatted_tags[] = ['id' => $val->c_id, 'text' => $val->c_nama];
             }
@@ -160,7 +160,7 @@ class PayrollmanController extends Controller
         }
         else
         {  
-            $pegawai = DB::table('m_pegawai_man')->where('c_isactive','TRUE')->where('c_divisi_id', $request->divisi)->where('c_jabatan_id', $request->jabatan)->where('c_nama', 'LIKE', '%'.$term.'%')->orderBy('c_nama', 'ASC')->limit(10)->get();
+            $pegawai = DB::table('m_pegawai_man')->where('c_isactive','Y')->where('c_divisi_id', $request->divisi)->where('c_jabatan_id', $request->jabatan)->where('c_nama', 'LIKE', '%'.$term.'%')->orderBy('c_nama', 'ASC')->limit(10)->get();
             foreach ($pegawai as $val) {
                 $formatted_tags[] = ['id' => $val->c_id, 'text' => $val->c_nama];
             }
@@ -169,7 +169,7 @@ class PayrollmanController extends Controller
     }
 
     public function setFieldModal(Request $request)
-    {
+    { 
         //pertanggalan
         $tahun = date("Y");
         $tanggal_a = date('Y-m-d',strtotime($request->sDate));
@@ -211,6 +211,7 @@ class PayrollmanController extends Controller
         $d_absen = abs_pegawai_man::where('apm_pm', $request->pegawai)->whereBetween('apm_tanggal', [$tanggal_a, $tanggal_b])->get();
 
         //kelola tunjangan
+        $lembur = [];
         if (count($d_absen) > 0) {
             foreach ($d_absen as $val) {
                 if ($val->apm_absent != null) { $alpha[] = $val->apm_absent; } else { $hadir[] = $val->apm_absent; }
@@ -219,7 +220,6 @@ class PayrollmanController extends Controller
                 if ($val->apm_jam_masuk != null) { $dt_jammasuk[] = $val->apm_tanggal.' '.$val->apm_jam_masuk; } else { $dt_jammasuk[] = null; }
             }
         }
-        //dd($lembur);
         //dd($dt_scanmasuk, $dt_jammasuk);
 
         //hitung lembur jam reguler
@@ -577,6 +577,6 @@ class PayrollmanController extends Controller
         //     'list_potongan' => $list_potongan
         // ]);
 
-        return view('hrd.payrollman.print-payroll', [ 'rocknroll' => $payroll , 'tunjangan' => $list_tunjangan , 'gaji' => $list_gaji, 'potongan' => $list_potongan ]);
+        return view('Hrd::payrollman.print-payroll', [ 'rocknroll' => $payroll , 'tunjangan' => $list_tunjangan , 'gaji' => $list_gaji, 'potongan' => $list_potongan ]);
     }
 }

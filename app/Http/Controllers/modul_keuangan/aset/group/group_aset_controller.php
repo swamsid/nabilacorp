@@ -34,11 +34,16 @@ class group_aset_controller extends Controller
     }
 
     public function form_resource(){
-    	$accHarta = DB::table('dk_akun')->where('ak_kelompok', '1.004')->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
 
-    	$accAkumulasi = DB::table('dk_akun')->where('ak_kelompok', '1.005')->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+        $kelompokHarta = DB::table('dk_hierarki_penting')->where('hp_id', '1')->first();
+        $kelompokAkumulasi = DB::table('dk_hierarki_penting')->where('hp_id', '2')->first();
+        $kelompokBeban = DB::table('dk_hierarki_penting')->where('hp_id', '3')->first();
 
-    	$accBeban = DB::table('dk_akun')->where('ak_kelompok', '4.001')->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+    	$accHarta = DB::table('dk_akun')->where('ak_kelompok', $kelompokHarta->hp_hierarki)->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+
+    	$accAkumulasi = DB::table('dk_akun')->where('ak_kelompok', $kelompokAkumulasi->hp_hierarki)->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+
+    	$accBeban = DB::table('dk_akun')->where('ak_kelompok', $kelompokBeban->hp_hierarki)->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
 
     	return json_encode([
     		'acc_harta'			=> $accHarta,
@@ -60,6 +65,19 @@ class group_aset_controller extends Controller
     	$nomor = 'GA-'.date('Y/md').'/'.str_pad($id, 4, "0", STR_PAD_LEFT);
 
     	DB::beginTransaction();
+
+        $ak1 = DB::table('dk_akun')->where('ak_id', $request->ga_akun_harta)->first();
+        $ak2 = DB::table('dk_akun')->where('ak_id', $request->ga_akun_akumulasi)->first();
+        $ak3 = DB::table('dk_akun')->where('ak_id', $request->ga_akun_beban)->first();
+
+        if(!$ak1 || !$ak2 || !$ak3){
+            $response = [
+                "status"    => 'error',
+                "message"   => 'Beberapa Akun Keuangan Tidak Dapat Ditemukan, Cobalah Untuk Memuat Ulang Halaman'.$e,
+            ];
+
+            return json_encode($response);
+        }
 
     	try {
     		

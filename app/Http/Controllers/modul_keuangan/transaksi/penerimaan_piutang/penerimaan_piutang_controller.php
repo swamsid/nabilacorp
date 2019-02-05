@@ -19,16 +19,17 @@ class penerimaan_piutang_controller extends Controller
 
     	$chanel = DB::table('dk_receivable')->distinct('rc_chanel')->select('rc_chanel as id', 'rc_chanel as text')->get();
 
+        $kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
+        $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
+
     	$akunKas = DB::table('dk_akun')
-    					->where('ak_kelompok', jurnal()->kelompok_kas)
-    					->where('ak_type', 'detail')
+    					->where('ak_kelompok', $kelompok_kas->hp_hierarki)
     					->where('ak_isactive', '1')
     					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
     					->get();
 
     	$akunBank = DB::table('dk_akun')
-    					->where('ak_kelompok', jurnal()->kelompok_bank)
-    					->where('ak_type', 'detail')
+    					->where('ak_kelompok', $kelompok_bank->hp_hierarki)
     					->where('ak_isactive', '1')
     					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
     					->get();
@@ -116,6 +117,7 @@ class penerimaan_piutang_controller extends Controller
             $jurnalDetail = [];
 
             $tanggal = explode('/', $request->rc_tanggal_trans)[2].'-'.explode('/', $request->rc_tanggal_trans)[1].'-'.explode('/', $request->rc_tanggal_trans)[0];
+            $cekAk1 = DB::table('dk_akun')->where('ak_id', $request->akun)->first();
 
             $id = (DB::table('dk_receivable_detail')->max('rcdt_id')) ? (DB::table('dk_receivable_detail')->max('rcdt_id') + 1) : 1;
 
@@ -126,6 +128,15 @@ class penerimaan_piutang_controller extends Controller
 
             if($rc_value > ($data->first()->rc_total_tagihan - $data->first()->rc_sudah_dibayar)){
                 $dibayar = ($data->first()->rc_total_tagihan - $data->first()->rc_sudah_dibayar);
+            }
+
+            if(!$cekAk1){
+                $response = [
+                        "status"    => 'gagal',
+                        "message"   => 'Beberapa Akun Tidak Bisa Ditemukan, Cobalah Untuk Memuat Ulang Halaman',
+                    ];
+
+                    return json_encode($response);
             }
 
             DB::table('dk_receivable_detail')->insert([
@@ -143,7 +154,6 @@ class penerimaan_piutang_controller extends Controller
             ]);
 
             if(isset($request->dana_titipan)){
-
                 $cekPiutang = DB::table('dk_akun')->where('ak_id', $data->first()->rc_akun_piutang)->first();
                 $cekTitipan = DB::table('dk_akun')->where('ak_id', $data->first()->rc_akun_titipan)->first();
 
@@ -152,6 +162,8 @@ class penerimaan_piutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Piutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 if(!$data->first()->rc_akun_titipan || !$cekTitipan){
@@ -159,6 +171,8 @@ class penerimaan_piutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Titipan Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
@@ -187,6 +201,8 @@ class penerimaan_piutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Piutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
@@ -271,6 +287,17 @@ class penerimaan_piutang_controller extends Controller
                 $dibayar = ($sisa_lama);
             }
 
+            $cekAk1 = DB::table('dk_akun')->where('ak_id', $request->akun)->first();
+
+            if(!$cekAk1){
+                $response = [
+                        "status"    => 'gagal',
+                        "message"   => 'Beberapa Akun Tidak Bisa Ditemukan, Cobalah Untuk Memuat Ulang Halaman',
+                    ];
+
+                    return json_encode($response);
+            }
+
             $rcdt->update([
                 'rcdt_keterangan'   => $request->rc_keterangan,
                 'rcdt_tanggal'      => $tanggal,
@@ -292,6 +319,8 @@ class penerimaan_piutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Piutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 if(!$receivable->first()->rc_akun_titipan || !$cekTitipan){
@@ -299,6 +328,8 @@ class penerimaan_piutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Titipan Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
@@ -327,6 +358,8 @@ class penerimaan_piutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Piutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [

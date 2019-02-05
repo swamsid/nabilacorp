@@ -160,7 +160,7 @@
                         </div>
 
                         <div class="col-md-12 text-center text">
-                            <a href="#">
+                            <a href="{{ Route('laporan.keuangan.arus_kas', $laba_rugi) }}">
                                 Arus Kas
                             </a>
                         </div>    

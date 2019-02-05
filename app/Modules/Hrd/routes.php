@@ -21,19 +21,19 @@ Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web'
     Route::get('/export/id-manajemen', 'AbsensiController@exportManajemen');
     Route::get('/export/id-produksi', 'AbsensiController@exportProduksi');
 //Mahmud Setting Payroll
-    Route::get('/hrd/payroll/setting-gaji', 'GajiController@settingGajiMan');
+    Route::get('/master/payroll/setting-gaji', 'GajiController@settingGajiMan');
     Route::get('/hrd/payroll/datatable-gaji-man', 'GajiController@gajiManData');
     Route::get('/hrd/payroll/tambah-gaji-man', 'GajiController@tambahGajiMan');
     Route::post('/hrd/payroll/simpan-gaji-man', 'GajiController@simpanGajiMan');
     Route::get('/hrd/payroll/edit-gaji-man/{id}', 'GajiController@editGajiMan');
-    Route::put('/hrd/payroll/update-gaji-man/{id}', 'GajiController@updateGajiMan');
+    Route::post('/hrd/payroll/update-gaji-man/{id}', 'GajiController@updateGajiMan');
     Route::get('/hrd/payroll/delete-gaji-man/{id}', 'GajiController@deleteGajiMan');
     Route::get('/hrd/payroll/datatable-gaji-pro', 'GajiController@gajiProData');
     Route::get('/hrd/payroll/tambah-gaji-pro', 'GajiController@tambahGajiPro');
     Route::post('/hrd/payroll/simpan-gaji-pro', 'GajiController@simpanGajiPro');
     Route::get('/hrd/payroll/edit-gaji-pro/{id}', 'GajiController@editGajiPro');
-    Route::put('/hrd/payroll/update-gaji-pro/{id}', 'GajiController@updateGajiPro');
-    Route::delete('/hrd/payroll/delete-gaji-pro/{id}', 'GajiController@deleteGajiPro');
+    Route::post('/hrd/payroll/update-gaji-pro/{id}', 'GajiController@updateGajiPro');
+    Route::get('/hrd/payroll/delete-gaji-pro/{id}', 'GajiController@deleteGajiPro');
     Route::get('/hrd/payroll/datatable-potongan', 'GajiController@potonganData');
     Route::get('/hrd/payroll/tambah-potongan', 'GajiController@tambahPotongan');
     Route::post('/hrd/payroll/simpan-potongan', 'GajiController@simpanPotongan');
@@ -45,7 +45,7 @@ Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web'
     Route::get('/hrd/payroll/datatable-tunjangan-man', 'GajiController@tunjanganManData');
     Route::get('/hrd/payroll/edit-tunjangan-man/{id}', 'GajiController@editTunjangan');
     Route::post('/hrd/payroll/update-tunjangan/{id}', 'GajiController@updateTunjangan');
-    Route::delete('/hrd/payroll/delete-tunjangan/{id}', 'GajiController@deleteTunjangan');
+    Route::get('/hrd/payroll/delete-tunjangan/{id}', 'GajiController@deleteTunjangan');
     Route::get('/hrd/payroll/set-tunjangan-pegawai-man', 'GajiController@setTunjanganPegMan');
     Route::get('/hrd/payroll/datatable-tunjangan-pegman', 'GajiController@tunjanganPegManData');
     Route::get('/hrd/payroll/edit-tunjangan-pegman/{id}', 'GajiController@editPegManData');

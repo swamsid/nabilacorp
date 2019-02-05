@@ -36,75 +36,75 @@
 					<td style="vertical-align: top;">
 						<table width="100%">
 							<?php $aktiva = $pasiva = 0 ?>
-							@foreach($data['data'] as $key => $header)
-								@if($header->gs_kelompok == 'aktiva')
-									<?php $totHead = 0 ?>
+							@foreach($data as $a => $level_1)
+								@if($level_1->hls_id == '1')
+									<?php $totLevel1 = 0; ?>
 									<tr>
-										<td colspan="2" style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">{{ $header->gs_nama }}</td>
-									</tr>
-		 
-									@foreach($header->group as $key => $group)
-										<tr>
-											<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">{{ $group->ag_nama }}</td>
+										<td width="70%" style="font-weight: bold;">
+											{{ $level_1->hls_nama }}
+										</td>
 
-											<?php 
-												$totGR = 0;
-
-												foreach($group->akun as $key => $akun){
-													foreach($akun->fromKelompok as $key => $detail){
-														$totGR += $detail->saldo_akhir;
-													}
-												}
-
-												$totHead += $totGR;
-											?>
-
-											<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($totGR, 2) }}</td>
-										</tr>
-
-										@foreach($group->akun as $key => $akun)
+										<td width="30%" style="font-weight: bold;">
 											
-											<?php 
-												$nama = "";
+										</td>
+									</tr>
 
-												foreach($data['kelompok'] as $r => $kelompok){
-													if($akun->ak_kelompok == $kelompok->ak_kelompok){
-														$nama = $kelompok->ak_nama;
-														break;
-													}
-												}
-											?>
-
+									@foreach($level_1->subclass as $a => $subclass)
+										<?php $totSubclass = 0; ?>
+										@if($subclass->hs_nama != "Tidak Memiliki")
 											<tr>
-												<td style="border-bottom: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
+												<td style="padding-left: 25px; font-style: italic;">{{ $subclass->hs_nama }}</td>
+												<td></td>
+											</tr>
+										@endif
 
-												<?php 
-													$tot = 0;
+										@foreach($subclass->level_2 as $a => $level2)
+											<?php 
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "25px";
+												$dif = 0;
 
-													foreach($akun->fromKelompok as $key => $detail){
-														$tot += $detail->saldo_akhir;
-													}
-												?>
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
+												}
 
-												<td style="font-weight: normal; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($tot, 2) }}</td>
-												</tr>
+												$totSubclass += $dif;
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nama }}</td>
+												<td style=" text-align: right;">
+													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
+												</td>
+											</tr>
 
 										@endforeach
 
+										<?php $totLevel1 += $totSubclass; ?>
+
+										@if($subclass->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="padding-left: 25px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
+												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600;">
+													{{ ($totSubclass < 0 )? '('.number_format(str_replace('-', '', $totSubclass), 2).')' : number_format($totSubclass, 2) }}
+												</td>
+											</tr>
+										@endif
+
+										<tr><td colspan="2">&nbsp;</td></tr>
+
 									@endforeach
-
+									<?php $aktiva += $totLevel1; ?>
 									<tr>
-										<td style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
+										<td width="70%" style="font-weight: bold;">
+											Total {{ $level_1->hls_nama }}
+										</td>
 
-										<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ number_format($totHead, 2) }}</td>
-												</tr>
+										<td width="30%" style="font-weight: bold; text-align: right;">
+											{{ ($totLevel1 < 0 )? '('.number_format(str_replace('-', '', $totLevel1), 2).')' : number_format($totLevel1, 2) }}
+										</td>
 									</tr>
 
-									<tr>
-										<td colspan="2">&nbsp;</td>
-									</tr>
-
-									<?php $aktiva += $totHead ?>
+									<tr><td colspan="2">&nbsp;</td></tr>
 								@endif
 							@endforeach
 						</table>
@@ -112,75 +112,76 @@
 
 					<td style="vertical-align: top;">
 						<table width="100%">
-							@foreach($data['data'] as $key => $header)
-								@if($header->gs_kelompok == 'pasiva')
-									<?php $totHead = 0 ?>
+
+							@foreach($data as $a => $level_1)
+								@if($level_1->hls_id != '1')
+									<?php $totLevel1 = 0; ?>
 									<tr>
-										<td colspan="2" style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">{{ $header->gs_nama }}</td>
-									</tr>
-		 
-									@foreach($header->group as $key => $group)
-										<tr>
-											<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">{{ $group->ag_nama }}</td>
+										<td width="70%" style="font-weight: bold; padding-left: 20px;">
+											{{ $level_1->hls_nama }}
+										</td>
 
-											<?php 
-												$totGR = 0;
-
-												foreach($group->akun as $key => $akun){
-													foreach($akun->fromKelompok as $key => $detail){
-														$totGR += $detail->saldo_akhir;
-													}
-												}
-
-												$totHead += $totGR;
-											?>
-
-											<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($totGR, 2) }}</td>
-										</tr>
-
-										@foreach($group->akun as $key => $akun)
+										<td width="30%" style="font-weight: bold;">
 											
-											<?php 
-												$nama = "";
+										</td>
+									</tr>
 
-												foreach($data['kelompok'] as $r => $kelompok){
-													if($akun->ak_kelompok == $kelompok->ak_kelompok){
-														$nama = $kelompok->ak_nama;
-														break;
-													}
-												}
-											?>
-
+									@foreach($level_1->subclass as $a => $subclass)
+										<?php $totSubclass = 0; ?>
+										@if($subclass->hs_nama != "Tidak Memiliki")
 											<tr>
-												<td style="border-bottom: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
+												<td style="padding-left: 25px; font-style: italic; padding-left: 20px;">{{ $subclass->hs_nama }}</td>
+												<td></td>
+											</tr>
+										@endif
 
-												<?php 
-													$tot = 0;
+										@foreach($subclass->level_2 as $a => $level2)
+											<?php 
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "25px";
+												$dif = 0;
 
-													foreach($akun->fromKelompok as $key => $detail){
-														$tot += $detail->saldo_akhir;
-													}
-												?>
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
+												}
 
-												<td style="font-weight: normal; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($tot, 2) }}</td>
-												</tr>
+												$totSubclass += $dif;
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: normal; padding-left: 20px;">{{ $level2->hld_nama }}</td>
+												<td style=" text-align: right;">
+													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
+												</td>
+											</tr>
 
 										@endforeach
 
+										<?php $totLevel1 += $totSubclass; ?>
+
+										@if($subclass->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="padding-left: 25px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
+												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600; padding-left: 20px;">
+													{{ ($totSubclass < 0 )? '('.number_format(str_replace('-', '', $totSubclass), 2).')' : number_format($totSubclass, 2) }}
+												</td>
+											</tr>
+										@endif
+
+										<tr><td colspan="2">&nbsp;</td></tr>
+
 									@endforeach
-
+									<?php $pasiva += $totLevel1; ?>
 									<tr>
-										<td style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
+										<td width="70%" style="font-weight: bold; padding-left: 20px;">
+											Total {{ $level_1->hls_nama }}
+										</td>
 
-										<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ number_format($totHead, 2) }}</td>
-												</tr>
+										<td width="30%" style="font-weight: bold; text-align: right;">
+											{{ ($totLevel1 < 0 )? '('.number_format(str_replace('-', '', $totLevel1), 2).')' : number_format($totLevel1, 2) }}
+										</td>
 									</tr>
 
-									<tr>
-										<td colspan="2">&nbsp;</td>
-									</tr>
-
-									<?php $pasiva += $totHead ?>
+									<tr><td colspan="2">&nbsp;</td></tr>
 								@endif
 							@endforeach
 						</table>
@@ -193,7 +194,7 @@
 							<tr>
 								<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Aktiva</td>
 
-								<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($aktiva, 2) }}</td>
+								<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ ($aktiva < 0 )? '('.number_format(str_replace('-', '', $aktiva), 2).')' : number_format($aktiva, 2) }}</td>
 							</tr>
 						</table>
 					</td>
@@ -201,9 +202,9 @@
 					<td>
 						<table width="100%">
 							<tr>
-								<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Aktiva</td>
+								<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Kewajiban + Modal</td>
 
-								<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($pasiva, 2) }}</td>
+								<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ ($pasiva < 0 )? '('.number_format(str_replace('-', '', $pasiva), 2).')' : number_format($pasiva, 2) }}</td>
 							</tr>
 						</table>
 					</td>
@@ -223,75 +224,75 @@
 					<td style="vertical-align: top;">
 						<table width="100%">
 							<?php $aktiva = $pasiva = 0 ?>
-							@foreach($data['data'] as $key => $header)
-								@if($header->gs_kelompok == 'aktiva')
-									<?php $totHead = 0 ?>
+							@foreach($data as $a => $level_1)
+								@if($level_1->hls_id == '1')
+									<?php $totLevel1 = 0; ?>
 									<tr>
-										<td colspan="2" style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">{{ $header->gs_nama }}</td>
-									</tr>
-		 
-									@foreach($header->group as $key => $group)
-										<tr>
-											<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">{{ $group->ag_nama }}</td>
+										<td width="70%" style="font-weight: bold; padding-left: 10px;">
+											{{ $level_1->hls_nama }}
+										</td>
 
-											<?php 
-												$totGR = 0;
-
-												foreach($group->akun as $key => $akun){
-													foreach($akun->fromKelompok as $key => $detail){
-														$totGR += $detail->saldo_akhir;
-													}
-												}
-
-												$totHead += $totGR;
-											?>
-
-											<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($totGR, 2) }}</td>
-										</tr>
-
-										@foreach($group->akun as $key => $akun)
+										<td width="30%" style="font-weight: bold;">
 											
-											<?php 
-												$nama = "";
+										</td>
+									</tr>
 
-												foreach($data['kelompok'] as $r => $kelompok){
-													if($akun->ak_kelompok == $kelompok->ak_kelompok){
-														$nama = $kelompok->ak_nama;
-														break;
-													}
-												}
-											?>
-
+									@foreach($level_1->subclass as $a => $subclass)
+										<?php $totSubclass = 0; ?>
+										@if($subclass->hs_nama != "Tidak Memiliki")
 											<tr>
-												<td style="border-bottom: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
+												<td style="padding-left: 30px; font-style: italic;">{{ $subclass->hs_nama }}</td>
+												<td></td>
+											</tr>
+										@endif
 
-												<?php 
-													$tot = 0;
+										@foreach($subclass->level_2 as $a => $level2)
+											<?php 
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "25px";
+												$dif = 0;
 
-													foreach($akun->fromKelompok as $key => $detail){
-														$tot += $detail->saldo_akhir;
-													}
-												?>
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
+												}
 
-												<td style="font-weight: normal; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($tot, 2) }}</td>
-												</tr>
+												$totSubclass += $dif;
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nama }}</td>
+												<td style=" text-align: right;">
+													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
+												</td>
+											</tr>
 
 										@endforeach
 
+										<?php $totLevel1 += $totSubclass; ?>
+
+										@if($subclass->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="padding-left: 25px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
+												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600; padding-left: 20px;">
+													{{ ($totSubclass < 0 )? '('.number_format(str_replace('-', '', $totSubclass), 2).')' : number_format($totSubclass, 2) }}
+												</td>
+											</tr>
+										@endif
+
+										<tr><td colspan="2">&nbsp;</td></tr>
+
 									@endforeach
-
+									<?php $aktiva += $totLevel1; ?>
 									<tr>
-										<td style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
+										<td width="70%" style="font-weight: bold; padding-left: 10px;">
+											Total {{ $level_1->hls_nama }}
+										</td>
 
-										<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ number_format($totHead, 2) }}</td>
-												</tr>
+										<td width="30%" style="font-weight: bold; text-align: right;">
+											{{ ($totLevel1 < 0 )? '('.number_format(str_replace('-', '', $totLevel1), 2).')' : number_format($totLevel1, 2) }}
+										</td>
 									</tr>
 
-									<tr>
-										<td colspan="2">&nbsp;</td>
-									</tr>
-
-									<?php $aktiva += $totHead ?>
+									<tr><td colspan="2">&nbsp;</td></tr>
 								@endif
 							@endforeach
 						</table>
@@ -302,18 +303,18 @@
 					<td>
 						<table width="100%">
 							<tr>
-								<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Aktiva</td>
+								<td style="border-bottom: 1px solid #ccc; padding-left: 10px; padding-top: 5px; padding-bottom: 5px;">Total Aktiva</td>
 
 								<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($aktiva, 2) }}</td>
 							</tr>
 						</table>
 					</td>
 				</tr>
-			</tbody>
-		</table>
 
-		<table width="100%" style="font-size: 9pt; margin-top: 20px;">
-			<tbody>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+
 				<tr>
 					<td style="padding: 5px; text-align: center; border-bottom: 1px solid #ccc;">Pasiva</td>
 				</tr>
@@ -321,76 +322,76 @@
 				<tr>
 					<td style="vertical-align: top;">
 						<table width="100%">
-							<?php $aktiva = $pasiva = 0 ?>
-							@foreach($data['data'] as $key => $header)
-								@if($header->gs_kelompok == 'pasiva')
-									<?php $totHead = 0 ?>
+
+							@foreach($data as $a => $level_1)
+								@if($level_1->hls_id != '1')
+									<?php $totLevel1 = 0; ?>
 									<tr>
-										<td colspan="2" style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">{{ $header->gs_nama }}</td>
-									</tr>
-		 
-									@foreach($header->group as $key => $group)
-										<tr>
-											<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">{{ $group->ag_nama }}</td>
+										<td width="70%" style="font-weight: bold; padding-left: 10px;">
+											{{ $level_1->hls_nama }}
+										</td>
 
-											<?php 
-												$totGR = 0;
-
-												foreach($group->akun as $key => $akun){
-													foreach($akun->fromKelompok as $key => $detail){
-														$totGR += $detail->saldo_akhir;
-													}
-												}
-
-												$totHead += $totGR;
-											?>
-
-											<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($totGR, 2) }}</td>
-										</tr>
-
-										@foreach($group->akun as $key => $akun)
+										<td width="30%" style="font-weight: bold;">
 											
-											<?php 
-												$nama = "";
+										</td>
+									</tr>
 
-												foreach($data['kelompok'] as $r => $kelompok){
-													if($akun->ak_kelompok == $kelompok->ak_kelompok){
-														$nama = $kelompok->ak_nama;
-														break;
-													}
-												}
-											?>
-
+									@foreach($level_1->subclass as $a => $subclass)
+										<?php $totSubclass = 0; ?>
+										@if($subclass->hs_nama != "Tidak Memiliki")
 											<tr>
-												<td style="border-bottom: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
+												<td style="padding-left: 30px; font-style: italic;">{{ $subclass->hs_nama }}</td>
+												<td></td>
+											</tr>
+										@endif
 
-												<?php 
-													$tot = 0;
+										@foreach($subclass->level_2 as $a => $level2)
+											<?php 
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "25px";
+												$dif = 0;
 
-													foreach($akun->fromKelompok as $key => $detail){
-														$tot += $detail->saldo_akhir;
-													}
-												?>
+												foreach($level2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
+												}
 
-												<td style="font-weight: normal; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($tot, 2) }}</td>
-												</tr>
+												$totSubclass += $dif;
+
+											?>
+											<tr>
+												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nama }}</td>
+												<td style=" text-align: right;">
+													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
+												</td>
+											</tr>
 
 										@endforeach
 
+										<?php $totLevel1 += $totSubclass; ?>
+
+										@if($subclass->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="padding-left: 25px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
+												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600; padding-left: 20px;">
+													{{ ($totSubclass < 0 )? '('.number_format(str_replace('-', '', $totSubclass), 2).')' : number_format($totSubclass, 2) }}
+												</td>
+											</tr>
+										@endif
+
+										<tr><td colspan="2">&nbsp;</td></tr>
+
 									@endforeach
-
+									<?php $pasiva += $totLevel1; ?>
 									<tr>
-										<td style="border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
+										<td width="70%" style="font-weight: bold; padding-left: 10px;">
+											Total {{ $level_1->hls_nama }}
+										</td>
 
-										<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ number_format($totHead, 2) }}</td>
-												</tr>
+										<td width="30%" style="font-weight: bold; text-align: right;">
+											{{ ($totLevel1 < 0 )? '('.number_format(str_replace('-', '', $totLevel1), 2).')' : number_format($totLevel1, 2) }}
+										</td>
 									</tr>
 
-									<tr>
-										<td colspan="2">&nbsp;</td>
-									</tr>
-
-									<?php $aktiva += $totHead ?>
+									<tr><td colspan="2">&nbsp;</td></tr>
 								@endif
 							@endforeach
 						</table>
@@ -401,9 +402,9 @@
 					<td>
 						<table width="100%">
 							<tr>
-								<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Pasiva</td>
+								<td style="border-bottom: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Kewajiban + Modal</td>
 
-								<td style="font-weight: 800; border-bottom: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($pasiva, 2) }}</td>
+								<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ number_format($pasiva, 2) }}</td>
 							</tr>
 						</table>
 					</td>

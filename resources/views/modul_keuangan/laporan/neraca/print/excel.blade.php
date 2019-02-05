@@ -23,7 +23,7 @@
 
 <br>
 	
-	@if($_GET['tampilan'] == 'tabular')
+	{{-- @if($_GET['tampilan'] == 'tabular') --}}
 		<table width="100%" style="font-size: 9pt;">
 			<tbody>
 				<tr>
@@ -38,66 +38,61 @@
 						<table width="100%">
 							<?php $aktiva = $pasiva = 0 ?>
 							@foreach($data['data'] as $key => $header)
-								@if($header->gs_kelompok == 'aktiva')
-									<?php $totHead = 0 ?>
+								@if($header->hls_id == '1')
+									<?php $totLevel1 = 0 ?>
 									<tr>
-										<td colspan="2" style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #0099cc; color: #ffffff">{{ $header->gs_nama }}</td>
+										<td colspan="2" style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #0099cc; color: #ffffff">{{ $header->hls_nama }}</td>
 									</tr>
 		 
-									@foreach($header->group as $key => $group)
-										<tr>
-											<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">{{ $group->ag_nama }}</td>
+									@foreach($header->subclass as $key => $group)
+										<?php $totSubclass = 0 ?>
+
+										@if($group->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">{{ $group->hs_nama }}</td>
+
+												<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;"></td>
+											</tr>
+											@endif
+
+										@foreach($group->level_2 as $key => $lvl_2)
 
 											<?php 
-												$totGR = 0;
+												$margin = ($group->hs_nama != 'Tidak Memiliki') ? "40px" : "20px";
+												$dif = 0;
 
-												foreach($group->akun as $key => $akun){
-													foreach($akun->fromKelompok as $key => $detail){
-														$totGR += $detail->saldo_akhir;
-													}
+												foreach($lvl_2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
 												}
 
-												$totHead += $totGR;
-											?>
+												$totSubclass += $dif;
 
-											<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $totGR }}</td>
-										</tr>
-
-										@foreach($group->akun as $key => $akun)
-											
-											<?php 
-												$nama = "";
-
-												foreach($data['kelompok'] as $r => $kelompok){
-													if($akun->ak_kelompok == $kelompok->ak_kelompok){
-														$nama = $kelompok->ak_nama;
-														break;
-													}
-												}
 											?>
 
 											<tr>
-												<td style="border: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
+												<td style="border: 1px solid #ccc; padding-left: {{ $margin }}; padding-top: 5px; padding-bottom: 5px;">{{ $lvl_2->hld_nama }}</td>
 
-												<?php 
-													$tot = 0;
-
-													foreach($akun->fromKelompok as $key => $detail){
-														$tot += $detail->saldo_akhir;
-													}
-												?>
-
-												<td style="font-weight: normal; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $tot }}</td>
-												</tr>
+												<td style="font-weight: normal; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $dif }}</td>
+											</tr>
 
 										@endforeach
+
+										<?php $totLevel1 += $totSubclass; ?>
+
+										@if($group->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">Total {{ $group->hs_nama }}</td>
+
+												<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $totSubclass }}</td>
+											</tr>
+										@endif
 
 									@endforeach
 
 									<tr>
-										<td style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
+										<td style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->hls_nama }}</td>
 
-										<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ $totHead }}</td>
+										<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ $totLevel1 }}</td>
 										
 									</tr>
 
@@ -105,7 +100,7 @@
 										<td colspan="2">&nbsp;</td>
 									</tr>
 
-									<?php $aktiva += $totHead ?>
+									<?php $aktiva += $totLevel1 ?>
 								@endif
 							@endforeach
 						</table>
@@ -117,74 +112,69 @@
 					<td style="vertical-align: top;">
 						<table width="100%">
 							@foreach($data['data'] as $key => $header)
-								@if($header->gs_kelompok == 'pasiva')
-									<?php $totHead = 0 ?>
+								@if($header->hls_id != '1')
+									<?php $totLevel1 = 0 ?>
 									<tr>
-										<td colspan="2" style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #0099cc; color: #ffffff">{{ $header->gs_nama }}</td>
+										<td colspan="2" style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #0099cc; color: #ffffff">{{ $header->hls_nama }}</td>
 									</tr>
 		 
-									@foreach($header->group as $key => $group)
-										<tr>
-											<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;background-color: #555555; color: #ffffff">{{ $group->ag_nama }}</td>
+									@foreach($header->subclass as $key => $group)
+										<?php $totSubclass = 0 ?>
+
+										@if($group->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">{{ $group->hs_nama }}</td>
+
+												<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;"></td>
+											</tr>
+											@endif
+
+										@foreach($group->level_2 as $key => $lvl_2)
 
 											<?php 
-												$totGR = 0;
+												$margin = ($group->hs_nama != 'Tidak Memiliki') ? "40px" : "20px";
+												$dif = 0;
 
-												foreach($group->akun as $key => $akun){
-													foreach($akun->fromKelompok as $key => $detail){
-														$totGR += $detail->saldo_akhir;
-													}
+												foreach($lvl_2->akun as $alpha => $akun){
+													$dif += $akun->saldo_akhir; 
 												}
 
-												$totHead += $totGR;
-											?>
+												$totSubclass += $dif;
 
-											<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $totGR }}</td>
-										</tr>
-
-										@foreach($group->akun as $key => $akun)
-											
-											<?php 
-												$nama = "";
-
-												foreach($data['kelompok'] as $r => $kelompok){
-													if($akun->ak_kelompok == $kelompok->ak_kelompok){
-														$nama = $kelompok->ak_nama;
-														break;
-													}
-												}
 											?>
 
 											<tr>
-												<td style="border: 1px solid #ccc; padding-left: 40px; padding-top: 5px; padding-bottom: 5px;">{{ $nama }}</td>
+												<td style="border: 1px solid #ccc; padding-left: {{ $margin }}; padding-top: 5px; padding-bottom: 5px;">{{ $lvl_2->hld_nama }}</td>
 
-												<?php 
-													$tot = 0;
-
-													foreach($akun->fromKelompok as $key => $detail){
-														$tot += $detail->saldo_akhir;
-													}
-												?>
-
-												<td style="font-weight: normal; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $tot }}</td>
-												</tr>
+												<td style="font-weight: normal; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $dif }}</td>
+											</tr>
 
 										@endforeach
+
+										<?php $totLevel1 += $totSubclass; ?>
+
+										@if($group->hs_nama != "Tidak Memiliki")
+											<tr>
+												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">Total {{ $group->hs_nama }}</td>
+
+												<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $totSubclass }}</td>
+											</tr>
+										@endif
 
 									@endforeach
 
 									<tr>
-										<td style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->gs_nama }}</td>
+										<td style="border: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; background-color: #eeeeee;">Total {{ $header->hls_nama }}</td>
 
-										<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ $totHead }}</td>
-									
+										<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px; background-color: #eeeeee;">{{ $totLevel1 }}</td>
+										
 									</tr>
 
 									<tr>
 										<td colspan="2">&nbsp;</td>
 									</tr>
 
-									<?php $pasiva += $totHead ?>
+									<?php $pasiva += $totLevel1 ?>
 								@endif
 							@endforeach
 						</table>
@@ -209,7 +199,7 @@
 					<td>
 						<table width="100%">
 							<tr>
-								<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Aktiva</td>
+								<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">Total Kewajiban + Aktiva</td>
 
 								<td style="font-weight: 800; border: 1px solid #cccccc; text-align: right; padding: 5px;">{{ $pasiva }}</td>
 							</tr>
@@ -218,4 +208,4 @@
 				</tr>
 			</tbody>
 		</table>
-	@endif
+	{{-- @endif --}}

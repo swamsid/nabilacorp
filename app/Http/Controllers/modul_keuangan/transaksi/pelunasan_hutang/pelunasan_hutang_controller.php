@@ -19,19 +19,20 @@ class pelunasan_hutang_controller extends Controller
 
     	$chanel = DB::table('dk_payable')->distinct('py_chanel')->select('py_chanel as id', 'py_chanel as text')->get();
 
-    	$akunKas = DB::table('dk_akun')
-    					->where('ak_kelompok', jurnal()->kelompok_kas)
-    					->where('ak_type', 'detail')
-    					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
-    					->get();
+    	$kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
+        $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
-    	$akunBank = DB::table('dk_akun')
-    					->where('ak_kelompok', jurnal()->kelompok_bank)
-    					->where('ak_type', 'detail')
-    					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
-    					->get();
+        $akunKas = DB::table('dk_akun')
+                        ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+                        ->get();
+
+        $akunBank = DB::table('dk_akun')
+                        ->where('ak_kelompok', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+                        ->get();
 
     	$response = [
     		'chanel'	=> $chanel,
@@ -114,6 +115,16 @@ class pelunasan_hutang_controller extends Controller
         try {
 
             $jurnalDetail = [];
+            $cekAk1 = DB::table('dk_akun')->where('ak_id', $request->akun)->first();
+
+            if(!$cekAk1){
+                $response = [
+                        "status"    => 'gagal',
+                        "message"   => 'Beberapa Akun Tidak Bisa Ditemukan, Cobalah Untuk Memuat Ulang Halaman',
+                    ];
+
+                    return json_encode($response);
+            }
 
             $tanggal = explode('/', $request->rc_tanggal_trans)[2].'-'.explode('/', $request->rc_tanggal_trans)[1].'-'.explode('/', $request->rc_tanggal_trans)[0];
 
@@ -152,6 +163,8 @@ class pelunasan_hutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Hutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 if(!$data->first()->py_akun_titipan || !$cekTitipan){
@@ -159,6 +172,8 @@ class pelunasan_hutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Titipan Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
@@ -187,6 +202,8 @@ class pelunasan_hutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Hutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
@@ -253,6 +270,17 @@ class pelunasan_hutang_controller extends Controller
             return json_encode($response);
         }
 
+        $cekAk1 = DB::table('dk_akun')->where('ak_id', $request->akun)->first();
+
+        if(!$cekAk1){
+            $response = [
+                    "status"    => 'gagal',
+                    "message"   => 'Beberapa Akun Tidak Bisa Ditemukan, Cobalah Untuk Memuat Ulang Halaman',
+                ];
+
+                return json_encode($response);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -292,6 +320,8 @@ class pelunasan_hutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Piutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 if(!$receivable->first()->py_akun_titipan || !$cekTitipan){
@@ -299,6 +329,8 @@ class pelunasan_hutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Titipan Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
@@ -327,6 +359,8 @@ class pelunasan_hutang_controller extends Controller
                         "status"    => 'gagal',
                         "message"   => 'Akun Piutang Tidak Bisa Ditemukan',
                     ];
+
+                    return json_encode($response);
                 }
 
                 $jurnalDetail[$request->akun] = [
