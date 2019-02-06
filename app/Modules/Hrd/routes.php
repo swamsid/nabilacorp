@@ -1,14 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware' => 'web','guest'], function () {
-    Route::get('/', function () {
-        return view('auth.login');
-    })->name('index');
-    Route::get('recruitment', 'RecruitmentController@recruitment');
-    Route::post('recruitment/save', 'RecruitmentController@save');
-    Route::get('recruitment/cek-email', 'RecruitmentController@cekEmail');
-    Route::get('recruitment/cek-wa', 'RecruitmentController@cekWa');
-});
+
 
 Route::group(['namespace' => 'App\Modules\Hrd\Controllers', 'middleware'=>['web','auth']], function () {
 //Mahmud Absensi
