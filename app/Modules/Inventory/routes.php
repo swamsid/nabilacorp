@@ -44,7 +44,7 @@ Route::group(['namespace' => 'App\Modules\Inventory\Controllers', 'middleware'=>
 	Route::get('/inventory/b_digunakan/barang', 'PemakaianBrgGdgController@barang');
 	Route::get('/inventory/b_digunakan/get-pemakaian-by-tgl/{tgl1}/{tgl2}/{comp}', 'PemakaianBrgGdgController@getPemakaianByTgl');
 	Route::get('/inventory/b_digunakan/autocomplete-barang', 'PemakaianBrgGdgController@autocompleteBarang');
-	Route::post('/inventory/b_digunakan/simpan-data-pakai', 'PemakaianBrgGdgController@simpanDataPakai');
+	Route::get('/inventory/b_digunakan/simpan-data-pakai', 'PemakaianBrgGdgController@simpanDataPakai');
 
 	Route::get('/inventory/penerimaan_suplier/suplier', 'penerimaanController@index')->middleware('auth');
 	Route::get('/inventory/penerimaan_suplier/suplier_cari/{id}', 'penerimaanController@suplier_cari')->middleware('auth');

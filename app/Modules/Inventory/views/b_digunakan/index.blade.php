@@ -286,7 +286,7 @@
               $('#btn_simpan').attr('disabled',true);
               $.ajax({
                 url : baseUrl + "/inventory/b_digunakan/simpan-data-pakai",
-                type: "POST",
+                type: "GET",
                 dataType: "JSON",
                 data: $('#form-pakai-barang').serialize(),
                 success: function(response)

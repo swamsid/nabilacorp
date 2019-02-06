@@ -119,12 +119,12 @@ class PemakaianBrgGdgController extends Controller
                 $txtSat1 = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val->i_sat1)->first();
                 $txtSat2 = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val->i_sat2)->first();
                 $txtSat3 = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val->i_sat3)->first();
-
+                
                 $results[] = [  'id' => $val->i_id,
                                 'label' => $val->i_code .'  '.$val->i_name,
                                 'stok' => (int)$val->s_qty,
                                 'sat' => [$val->i_sat1, $val->i_sat2, $val->i_sat3],
-                                'satTxt' => [$txtSat1->s_name, $txtSat2->s_name, $txtSat3->s_name],
+                                'satTxt' => [$txtSat1->s_name],
                                 's_comp' => $val->s_comp,
                                 's_pos' => $val->s_position,
                             ];
