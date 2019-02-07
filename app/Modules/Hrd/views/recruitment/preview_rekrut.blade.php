@@ -59,9 +59,9 @@
                   </ul>
                   <div id="generalTabContent" class="tab-content responsive">
                     
-                    @include('hrd.recruitment.test_interview')
-                    @include('hrd.recruitment.lolos_interview')
-                    @include('hrd.recruitment.diterima')
+                    {!!$testInterview!!}
+                    {!!$lolosInterview!!}
+                    {!!$diTerima!!}
 
                     <div id="alert-tab" class="tab-pane fade in active">
                       
