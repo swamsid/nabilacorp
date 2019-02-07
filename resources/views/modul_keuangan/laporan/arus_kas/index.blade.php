@@ -120,7 +120,46 @@
 		    	text-align: center;
 		    }
 
+		    #contentnya{
+	          width: 65%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+          @page { size: portrait; }
+          nav{
+            display: none;
+          }
+
+          .ctn-nav{
+            display: none;
+          }
+
+          #contentnya{
+          	width: 100%;
+          	padding: 0px;
+          	margin-top: -80px;
+          }
+
+          #table-data th{
+             background-color: #0099CC !important;
+             color: white;
+             -webkit-print-color-adjust: exact;
+          }
+
+          #table-data td.not-same{
+             color: red !important;
+             -webkit-print-color-adjust: exact;
+          }
+
+          .page-break { display: block; page-break-before: always; }
+      	</style>
 	</head>
 
 	<body>
@@ -193,7 +232,7 @@
 			</div> --}}
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-8 offset-2" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
 						if($_GET['type'] == 'bulan')
@@ -665,7 +704,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.arus_kas.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.arus_kas.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

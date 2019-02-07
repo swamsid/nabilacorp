@@ -55,6 +55,13 @@ class transaksi_kas_controller extends Controller
 
         // TRANS-1901/03/0001
 
+        // $response = [
+        //         "status"    => 'berhasil',
+        //         "message"   => 'Transaksi Berhasil Disimpan',
+        //     ];
+
+        //     return json_encode($response);
+
         $detail = []; $jurnalDetail = []; $nomor = 1;
 
         $date = explode('/', $request->tr_tanggal)[2].'-'.explode('/', $request->tr_tanggal)[1].'-'.explode('/', $request->tr_tanggal)[0];

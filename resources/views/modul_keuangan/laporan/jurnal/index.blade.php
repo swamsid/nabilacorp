@@ -110,7 +110,46 @@
 		    	color: white;
 		    }
 
+		    #contentnya{
+	          width: 80%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+	          @page { size: portrait; }
+	          nav{
+	            display: none;
+	          }
+
+	          .ctn-nav{
+	            display: none;
+	          }
+
+	          #contentnya{
+	          	width: 100%;
+	          	padding: 0px;
+	          	margin-top: -50px;
+	          }
+
+	          #table-data th{
+	             background-color: #0099CC !important;
+	             color: white;
+	             -webkit-print-color-adjust: exact;
+	          }
+
+	          #table-data td.not-same{
+	             color: red !important;
+	             -webkit-print-color-adjust: exact;
+	          }
+
+	          .page-break { display: block; page-break-before: always; }
+	    </style>
 	</head>
 
 	<body>
@@ -183,7 +222,7 @@
 			</div>
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-12" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
 						$tanggal_1 = explode('/', $_GET['d1'])[0].' '.switchBulan(explode('/', $_GET['d1'])[1]).' '.explode('/', $_GET['d1'])[2];
@@ -270,10 +309,10 @@
 							<tfoot v-if="pageNow == dataPage">
 								<tr>
 									<td :colspan="(requestNama == 'true') ? 5 : 4" style="background: none; padding: 0px;"></td>
-									<td class="text-right" style="border: 0px solid #eee; background: white; font-weight: bold; padding: 10px 5px; border-bottom: 2px solid #eee;">
+									<td class="text-right" style="border: 0px solid #eee; background: white; font-weight: bold; padding: 10px 5px; border-bottom: 2px solid #eee; color: #0099CC;">
 										@{{ humanizePrice(totDK.debet) }}
 									</td>
-									<td class="text-right" style="border: 0px solid #eee; background: white; font-weight: bold; padding: 10px 5px; border-bottom: 2px solid #eee;">
+									<td class="text-right" style="border: 0px solid #eee; background: white; font-weight: bold; padding: 10px 5px; border-bottom: 2px solid #eee; color: #0099CC;">
 										@{{ humanizePrice(totDK.kredit) }}
 									</td>
 								</tr>
@@ -612,7 +651,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.jurnal_umum.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.jurnal_umum.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

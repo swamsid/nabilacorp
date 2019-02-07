@@ -102,7 +102,7 @@
 
 		    #table-data td, #table-data th {
 		    	padding: 5px 10px;
-		    	border: 1px solid #eee;
+		    	border: 0px solid #eee;
 		    }
 
 		    #table-data td.head{
@@ -120,7 +120,47 @@
 		    	text-align: center;
 		    }
 
+		    #contentnya{
+	          width: 65%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+
+		<style type="text/css" media="print">
+          @page { size: portrait; }
+          nav{
+            display: none;
+          }
+
+          .ctn-nav{
+            display: none;
+          }
+
+          #contentnya{
+          	width: 100%;
+          	padding: 0px;
+          	margin-top: -80px;
+          }
+
+          #table-data th{
+             background-color: #0099CC !important;
+             color: white;
+             -webkit-print-color-adjust: exact;
+          }
+
+          #table-data td.not-same{
+             color: red !important;
+             -webkit-print-color-adjust: exact;
+          }
+
+          .page-break { display: block; page-break-before: always; }
+      	</style>
 	</head>
 
 	<body>
@@ -193,7 +233,7 @@
 			</div> --}}
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-8 offset-2" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
 						if($_GET['type'] == 'bulan')
@@ -234,204 +274,179 @@
 										<table width="100%" style="font-size: 10pt;">
 											<table class="table" id="table-data" v-cloak>
 												<tbody>
+													<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 4 || data.hls_id == 5">
 													<tr>
-														<td>&nbsp;</td>
-													</tr>
-
-													<tr>
-														<td>
-															<table width="100%" style="font-size: 10pt;">
-																<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 4 || data.hls_id == 5">
-																	<tr>
-																		<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
-																		<td style="border: 0px; text-align: right; font-size: 10pt;">
-																			
-																		</td>
-																	</tr>
-
-																	<template v-for="(subclass, idx) in data.subclass">
-																		<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-																			<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
-																			<td style="border: 0px; text-align: right; font-size: 10pt;">
-																				
-																			</td>
-																		</tr>
-
-																		<template v-for="(level2, alpha) in subclass.level_2">
-																			<tr>
-																				<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;'">@{{ level2.hld_nama }}</td>
-																				<td style="border: 0px; text-align: right; font-size: 10pt;">
-																					@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
-																				</td>
-																			</tr>
-																		</template>
-
-																			{{-- <tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-																				<td style="border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;">Total @{{ subclass.hs_nama }}aa</td>
-																				<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
-																					@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
-																				</td>
-																			</tr> --}}
-
-																	</template>
-
-																	<tr>
-																		<td style="border: 0px; font-weight: bold; text-align: left;">Total @{{ data.hls_nama }}</td>
-																		
-																		<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; font-weight: bold;">
-																			@{{ (detail.level1['_'+data.hls_id] < 0) ? '('+humanizePrice(detail.level1['_'+data.hls_id])+')' : humanizePrice(detail.level1['_'+data.hls_id])}}
-																		</td>
-																	</tr>
-
-																	<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
-
-																</template>
-
-																<tr>
-																	<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 30px;">Total Laba Rugi Kotor</td>
-																	
-																	<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; color: #0099CC; font-weight: bold;">
-																		@{{ (parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5']) < 0) ? '('+humanizePrice(parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5']))+')' : humanizePrice(parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) }}
-																	</td>
-																</tr>
-
-																<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
-
-																<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 6 || data.hls_id == 7">
-																	<tr>
-																		<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
-																		<td style="border: 0px; text-align: right; font-size: 10pt;">
-																			
-																		</td>
-																	</tr>
-
-																	<template v-for="(subclass, idx) in data.subclass">
-																		<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-																			<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
-																			<td style="border: 0px; text-align: right; font-size: 10pt;">
-																				
-																			</td>
-																		</tr>
-
-																		<template v-for="(level2, alpha) in subclass.level_2">
-																			<tr>
-																				<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;'">@{{ level2.hld_nama }}</td>
-																				<td style="border: 0px; text-align: right; font-size: 10pt;">
-																					@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
-																				</td>
-																			</tr>
-																		</template>
-
-																			{{-- <tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-																				<td style="border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;">Total @{{ subclass.hs_nama }}</td>
-																				<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
-																					@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
-																				</td>
-																			</tr> --}}
-
-																	</template>
-
-																	<tr>
-																		<td style="border: 0px; font-weight: bold; text-align: left;">Total @{{ data.hls_nama }}</td>
-																		
-																		<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; font-weight: bold">
-																			@{{ (detail.level1['_'+data.hls_id] < 0) ? '('+humanizePrice(detail.level1['_'+data.hls_id])+')' : humanizePrice(detail.level1['_'+data.hls_id])}}
-																		</td>
-																	</tr>
-
-																	<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
-
-																</template>
-
-																<tr>
-																	<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 30px;">Total Beban Operasi & Administrasi Umum</td>
-																	
-																	<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc;  color: #0099CC; font-weight: bold;">
-																		@{{ humanizePrice(parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) }}
-																	</td>
-																</tr>
-
-																<tr>
-																	<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 30px;">Laba Operasi</td>
-																	
-																	<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; color: #0099CC; font-weight: bold;">
-																		@{{ ((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) < 0)? '('+humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])))+')' : humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7']))) }}
-																	</td>
-																</tr>
-
-																<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
-
-																<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 8 || data.hls_id == 9">
-																	<tr>
-																		<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
-																		<td style="border: 0px; text-align: right; font-size: 10pt;">
-																			
-																		</td>
-																	</tr>
-
-																	<template v-for="(subclass, idx) in data.subclass">
-																		<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-																			<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
-																			<td style="border: 0px; text-align: right; font-size: 10pt;">
-																				
-																			</td>
-																		</tr>
-
-																		<template v-for="(level2, alpha) in subclass.level_2">
-																			<tr>
-																				<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;'">@{{ level2.hld_nama }}</td>
-																				<td style="border: 0px; text-align: right; font-size: 10pt;">
-																					@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
-																				</td>
-																			</tr>
-																		</template>
-
-																			{{-- <tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-																				<td style="border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;">Total @{{ subclass.hs_nama }}</td>
-																				<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
-																					@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
-																				</td>
-																			</tr> --}}
-
-																	</template>
-
-																	<tr>
-																		<td style="border: 0px; font-weight: bold; text-align: left;">Total @{{ data.hls_nama }}</td>
-																		
-																		<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; font-weight: bold;">
-																			@{{ (detail.level1['_'+data.hls_id] < 0) ? '('+humanizePrice(detail.level1['_'+data.hls_id])+')' : humanizePrice(detail.level1['_'+data.hls_id])}}
-																		</td>
-																	</tr>
-
-																	<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
-
-																</template>
-
-																<tr>
-																	<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 0px;">Laba Sebelum Pajak</td>
-																	
-																	<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc;  color: #0099CC; font-weight: bold;">
-																		@{{ ((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) + (parseFloat(detail.level1['_8'] - parseFloat(detail.level1['_9']))) < 0) ? '('+humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) + (parseFloat(detail.level1['_8'] - parseFloat(detail.level1['_9']))))+')' : humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) + (parseFloat(detail.level1['_8'] - parseFloat(detail.level1['_9'])))) }}
-																	</td>
-																</tr>
-
-															</table>	
+														<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
+														<td style="border: 0px; text-align: right; font-size: 10pt;">
+															
 														</td>
 													</tr>
 
+													<template v-for="(subclass, idx) in data.subclass">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
+															<td style="border: 0px; text-align: right; font-size: 10pt;">
+																
+															</td>
+														</tr>
+
+														<template v-for="(level2, alpha) in subclass.level_2">
+															<tr>
+																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;'">@{{ level2.hld_id+' - '+level2.hld_nama }}</td>
+																<td style="border: 0px; text-align: right; font-size: 10pt;">
+																	@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
+																</td>
+															</tr>
+														</template>
+
+															{{-- <tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+																<td style="border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;">Total @{{ subclass.hs_nama }}aa</td>
+																<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
+																	@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
+																</td>
+															</tr> --}}
+
+													</template>
+
 													<tr>
-														<td>
-															<table width="100%">
-																<tr>
-																	{{-- <td style="border: 0px; font-weight: bold; text-align: center;">Total Aktiva</td> --}}
-																	
-																	{{-- <td style="border: 0px; text-align: right; font-size: 10pt;">
-																		@{{ (detail.grandAktiva < 0) ? '('+humanizePrice(detail.grandAktiva)+')' : humanizePrice(detail.grandAktiva)}}
-																	</td> --}}
-																</tr>
-															</table>
+														<td style="border: 0px; font-weight: bold; text-align: left;">Total @{{ data.hls_nama }}</td>
+														
+														<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; font-weight: bold;">
+															@{{ (detail.level1['_'+data.hls_id] < 0) ? '('+humanizePrice(detail.level1['_'+data.hls_id])+')' : humanizePrice(detail.level1['_'+data.hls_id])}}
 														</td>
 													</tr>
+
+													<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
+
+												</template>
+
+												<tr>
+													<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 30px;">Total Laba Rugi Kotor</td>
+													
+													<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; color: #0099CC; font-weight: bold;">
+														@{{ (parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5']) < 0) ? '('+humanizePrice(parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5']))+')' : humanizePrice(parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) }}
+													</td>
+												</tr>
+
+												<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
+
+												<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 6 || data.hls_id == 7">
+													<tr>
+														<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
+														<td style="border: 0px; text-align: right; font-size: 10pt;">
+															
+														</td>
+													</tr>
+
+													<template v-for="(subclass, idx) in data.subclass">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
+															<td style="border: 0px; text-align: right; font-size: 10pt;">
+																
+															</td>
+														</tr>
+
+														<template v-for="(level2, alpha) in subclass.level_2">
+															<tr>
+																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;'">@{{ level2.hld_id+' - '+level2.hld_nama }}</td>
+																<td style="border: 0px; text-align: right; font-size: 10pt;">
+																	@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
+																</td>
+															</tr>
+														</template>
+
+															{{-- <tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+																<td style="border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;">Total @{{ subclass.hs_nama }}</td>
+																<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
+																	@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
+																</td>
+															</tr> --}}
+
+													</template>
+
+													<tr>
+														<td style="border: 0px; font-weight: bold; text-align: left;">Total @{{ data.hls_nama }}</td>
+														
+														<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; font-weight: bold">
+															@{{ (detail.level1['_'+data.hls_id] < 0) ? '('+humanizePrice(detail.level1['_'+data.hls_id])+')' : humanizePrice(detail.level1['_'+data.hls_id])}}
+														</td>
+													</tr>
+
+													<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
+
+												</template>
+
+												<tr>
+													<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 30px;">Total Beban Operasi & Administrasi Umum</td>
+													
+													<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc;  color: #0099CC; font-weight: bold;">
+														@{{ humanizePrice(parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) }}
+													</td>
+												</tr>
+
+												<tr>
+													<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 30px;">Laba Operasi</td>
+													
+													<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; color: #0099CC; font-weight: bold;">
+														@{{ ((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) < 0)? '('+humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])))+')' : humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7']))) }}
+													</td>
+												</tr>
+
+												<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
+
+												<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 8 || data.hls_id == 9">
+													<tr>
+														<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
+														<td style="border: 0px; text-align: right; font-size: 10pt;">
+															
+														</td>
+													</tr>
+
+													<template v-for="(subclass, idx) in data.subclass">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
+															<td style="border: 0px; text-align: right; font-size: 10pt;">
+																
+															</td>
+														</tr>
+
+														<template v-for="(level2, alpha) in subclass.level_2">
+															<tr>
+																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;'">@{{ level2.hld_id+' - '+level2.hld_nama }}</td>
+																<td style="border: 0px; text-align: right; font-size: 10pt;">
+																	@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
+																</td>
+															</tr>
+														</template>
+
+															{{-- <tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+																<td style="border: 0px; font-weight: 600; padding-left: 25px; font-style: normal;">Total @{{ subclass.hs_nama }}</td>
+																<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
+																	@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
+																</td>
+															</tr> --}}
+
+													</template>
+
+													<tr>
+														<td style="border: 0px; font-weight: bold; text-align: left;">Total @{{ data.hls_nama }}</td>
+														
+														<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc; font-weight: bold;">
+															@{{ (detail.level1['_'+data.hls_id] < 0) ? '('+humanizePrice(detail.level1['_'+data.hls_id])+')' : humanizePrice(detail.level1['_'+data.hls_id])}}
+														</td>
+													</tr>
+
+													<tr><td colspan="2" style="border: 0px; padding: 0px;">&nbsp;</td></tr>
+
+												</template>
+
+												<tr>
+													<td style="border: 0px; font-weight: bold; text-align: left; color: #0099CC; font-style: italic; padding-left: 0px;">Laba Sebelum Pajak</td>
+													
+													<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #ccc;  color: #0099CC; font-weight: bold;">
+														@{{ ((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) + (parseFloat(detail.level1['_8'] - parseFloat(detail.level1['_9']))) < 0) ? '('+humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) + (parseFloat(detail.level1['_8'] - parseFloat(detail.level1['_9']))))+')' : humanizePrice((parseFloat(detail.level1['_4']) - parseFloat(detail.level1['_5'])) - (parseFloat(detail.level1['_6']) + parseFloat(detail.level1['_7'])) + (parseFloat(detail.level1['_8'] - parseFloat(detail.level1['_9'])))) }}
+													</td>
+												</tr>
 												</tbody>
 											</table>
 										</table>	
@@ -780,7 +795,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.laba_rugi.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.laba_rugi.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){
