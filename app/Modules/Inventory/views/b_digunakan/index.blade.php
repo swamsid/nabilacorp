@@ -178,7 +178,7 @@
       //reset all input txt field
       $('#form-pakai-barang')[0].reset();
       //empty select2 field
-      $('#head_gudang').empty();
+  
       //set datepicker to today 
       $('.datepicker2').datepicker('setDate', 'today');
       //remove class all jquery validation error
@@ -265,6 +265,7 @@
   }
 
   function submitPakai() {
+    var memComp = $('.mem_comp').val();
     iziToast.question({
       close: false,
       overlay: true,
@@ -285,7 +286,7 @@
               $('#btn_simpan').text('Saving...');
               $('#btn_simpan').attr('disabled',true);
               $.ajax({
-                url : baseUrl + "/inventory/b_digunakan/simpan-data-pakai",
+                url : baseUrl + "/inventory/b_digunakan/simpan-data-pakai/" + memComp,
                 type: "GET",
                 dataType: "JSON",
                 data: $('#form-pakai-barang').serialize(),
@@ -415,7 +416,7 @@
         {"data" : "tglPakai", "width" : "10%"},
         {"data" : "d_pb_code", "width" : "10%"},
         {"data" : "i_name", "width" : "15%"},
-        {"data" : "m_sname", "width" : "5%"},
+        {"data" : "s_name", "width" : "5%"},
         {"data" : "qty_pakai", "width" : "10%"},
         {"data" : "d_pb_peminta", "width" : "15%"},
         {"data" : "d_pb_keperluan", "width" : "20%"},
@@ -456,8 +457,8 @@
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
                           +'<td>'+data.data_isi[key-1].qty_pakai+'</td>'
-                          +'<td>'+data.data_isi[key-1].m_sname+'</td>'
-                          +'<td>'+data.stok[key-1]+' '+data.txtSat1[key-1].m_sname+'</td>'
+                          +'<td>'+data.data_isi[key-1].s_name+'</td>'
+                          +'<td>'+data.stok[key-1]+' '+data.txtSat1[key-1].s_name+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pbdt_keterangan+'</td>'
                           +'</tr>');
           key++;
@@ -501,20 +502,20 @@
                 +'<input type="text" name="fieldEditBarang[]" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" id="field_edit_barang" class="form-control" required readonly>'
                 +'<input type="hidden" name="fieldEditItem[]" value="'+data.data_isi[key-1].d_pbdt_item+'" id="field_edit_item" class="form-control">'
                 +'<input type="hidden" name="fieldEditIdDet[]" value="'+data.data_isi[key-1].d_pbdt_id+'" id="field_edit_id_det" class="form-control">'
-                +'<input type="hidden" name="fieldEditSpos[]" value="'+data.header[0].cg_id+'" id="field_edit_spos" class="form-control">'
-                +'<input type="hidden" name="fieldEditScomp[]" value="'+data.header[0].cg_id+'" id="field_edit_scomp" class="form-control">'
+                +'<input type="hidden" name="fieldEditSpos[]" value="'+data.header[0].gc_id+'" id="field_edit_spos" class="form-control">'
+                +'<input type="hidden" name="fieldEditScomp[]" value="'+data.header[0].gc_id+'" id="field_edit_scomp" class="form-control">'
               +'</td>'
               +'<td>'
                 +'<input type="text" name="fieldEditQty[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty" class="form-control">'
                 +'<input type="hidden" name="fieldEditQtyLalu[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty_lalu" class="form-control">'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditSatTxt[]" value="'+data.data_isi[key-1].m_sname+'" id="field_edit_sat_txt" class="form-control" readonly>'
+                +'<input type="text" name="fieldEditSatTxt[]" value="'+data.data_isi[key-1].s_name+'" id="field_edit_sat_txt" class="form-control" readonly>'
                 +'<input type="hidden" name="fieldEditSatId[]" value="'+data.data_isi[key-1].d_pbdt_sat+'" id="field_edit_sat_id" class="form-control" readonly>'
                 +'<input type="hidden" name="fieldHargaSat[]" value="'+data.data_isi[key-1].harga_sat+'" id="field_edit_harga_sat" class="form-control" readonly>'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditStok[]" value="'+data.stok[key-1]+' '+data.txtSat1[key-1].m_sname+'" id="field_edit_stok" class="form-control" readonly>'
+                +'<input type="text" name="fieldEditStok[]" value="'+data.stok[key-1]+' '+data.txtSat1[key-1].s_name+'" id="field_edit_stok" class="form-control" readonly>'
               +'</td>'
               +'<td>'
                 +'<input type="text" name="fieldEditKet[]" value="'+data.data_isi[key-1].d_pbdt_keterangan+'" id="field_edit_ket" class="form-control">'
@@ -548,7 +549,7 @@
           $('#btn_update').attr('disabled',true); //set button disable 
           $.ajax({
             url : baseUrl + "/inventory/b_digunakan/update-data-pakai",
-            type: "POST",
+            type: "GET",
             dataType: "JSON",
             data: $('#form-edit-pakai').serialize(),
             success: function(response)
@@ -615,7 +616,7 @@
         ['<button><b>Ya</b></button>', function (instance, toast) {
           $.ajax({
             url : baseUrl + "/inventory/b_digunakan/delete-data-pakai",
-            type: "POST",
+            type: "GET",
             dataType: "JSON",
             data: {id:id, "_token": "{{ csrf_token() }}"},
             success: function(response)
