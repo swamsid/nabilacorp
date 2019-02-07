@@ -1,6 +1,6 @@
 @extends('main')
 
-@section('title', 'Laporan Keuangan')
+@section('title', 'Analisa Keuangan')
 
 @section(modulSetting()['extraStyles'])
 
@@ -65,7 +65,7 @@
         <!--BEGIN TITLE & BREADCRUMB PAGE-->
         <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
             <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                <div class="page-title">Laporan Keuangan</div>
+                <div class="page-title">Analisa Keuangan</div>
             </div>
             <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
 
@@ -73,7 +73,7 @@
 
                 <li><i></i>&nbsp;Keuangan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 
-                <li class="active">Laporan Keuangan</li>
+                <li class="active">Analisa Keuangan</li>
             </ol>
             <div class="clearfix">
             </div>
@@ -89,85 +89,73 @@
                       </div>
 
                       <ul id="generalTab" class="nav nav-tabs">
-                        <li class="active"><a href="#alert-tab" data-toggle="tab">Pilih Laporan Keuangan</a></li>
+                        <li class="active"><a href="#alert-tab" data-toggle="tab">Pilih Analisa Keuangan</a></li>
                       </ul>
 
                       <div id="generalTabContent" class="tab-content responsive">
                           <div id="alert-tab" class="tab-pane fade in active">
                             <div class="row text-center" style="padding-left: 7em;">
-                                <a href="{{ route('laporan.keuangan.jurnal_umum', $jurnalRequest) }}">
+
+                                <a href="{{ Route('analisa.keuangan.npo', '_token='.csrf_token().'&type=bulan&d1='.date('Y')) }}">
                                     <div class="col-md-3" style="margin-left: 30px;">
                                         <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
                                             <div class="col-md-12 text-center">
-                                                <i class="fa fa-clipboard" style="font-size: 24pt; color: #ffbb33;"></i>
+                                                <i class="fa fa-line-chart" style="font-size: 24pt; color: #33b5e5;"></i>
                                             </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Laporan Jurnal
+                                            <div class="col-md-12 text-center" style="margin-top: 20px;">
+                                                Analisa Net Profit/OCF
                                             </div>
                                         </div> 
                                     </div>
                                 </a>
 
-                                <a href="{{ route('laporan.keuangan.buku_besar', $buku_besar) }}">
+                                <a href="{{ Route('analisa.keuangan.hutang_piutang', '_token='.csrf_token().'&type=bulan&d1='.date('Y')) }}">
                                     <div class="col-md-3" style="margin-left: 30px;">
                                         <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
                                             <div class="col-md-12 text-center">
-                                                <i class="fa fa-book" style="font-size: 24pt; color: #ffbb33;"></i>
+                                                <i class="fa fa-line-chart" style="font-size: 24pt; color: #33b5e5;"></i>
                                             </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Buku Besar
+                                            <div class="col-md-12 text-center" style="margin-top: 20px;">
+                                                Analisa Hutang Piutang
                                             </div>
                                         </div> 
                                     </div>
                                 </a>
 
-                                <a href="{{ Route('laporan.keuangan.neraca_saldo', $neraca_saldo) }}">
+                                <a href="{{ Route('analisa.keuangan.pertumbuhan_aset', '_token='.csrf_token().'&type=bulan&d1='.date('Y')) }}">
                                     <div class="col-md-3" style="margin-left: 30px;">
                                         <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
                                             <div class="col-md-12 text-center">
-                                                <i class="fa fa-bar-chart" style="font-size: 24pt; color: #ffbb33;"></i>
+                                                <i class="fa fa-line-chart" style="font-size: 24pt; color: #33b5e5;"></i>
                                             </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Neraca Saldo
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
-
-                                <a href="{{ Route('laporan.keuangan.neraca', $neraca) }}">
-                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-balance-scale" style="font-size: 24pt; color: #33b5e5;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Laporan Neraca
+                                            <div class="col-md-12 text-center" style="margin-top: 20px;">
+                                                Analisa Pertumbuhan Aset
                                             </div>
                                         </div> 
                                     </div>
                                 </a>
 
-                                <a href="{{ Route('laporan.keuangan.laba_rugi', $laba_rugi) }}">
-                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 30px;">
+                                <a href="{{ Route('analisa.keuangan.aset_ekuitas', '_token='.csrf_token().'&type=bulan&d1='.date('Y')) }}">
+                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 20px;">
                                         <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
                                             <div class="col-md-12 text-center">
-                                                <i class="fa fa-list-ul" style="font-size: 24pt; color: #33b5e5;"></i>
+                                                <i class="fa fa-line-chart" style="font-size: 24pt; color: #33b5e5;"></i>
                                             </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Laba Rugi
+                                            <div class="col-md-12 text-center" style="margin-top: 20px;">
+                                                Analisa Aset Terhadap Ekuitas
                                             </div>
                                         </div> 
                                     </div>
                                 </a>
 
-                                <a href="{{ Route('laporan.keuangan.arus_kas', $laba_rugi) }}">
-                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 30px;">
+                                <a href="{{ Route('analisa.keuangan.cashflow', '_token='.csrf_token().'&type=bulan&d1='.date('Y')) }}">
+                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 20px;">
                                         <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
                                             <div class="col-md-12 text-center">
-                                                <i class="fa fa-random" style="font-size: 24pt; color: #33b5e5;"></i>
+                                                <i class="fa fa-line-chart" style="font-size: 24pt; color: #33b5e5;"></i>
                                             </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Arus Kas
+                                            <div class="col-md-12 text-center" style="margin-top: 20px;">
+                                                Analisa Cashflow
                                             </div>
                                         </div> 
                                     </div>

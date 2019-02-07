@@ -454,24 +454,11 @@
                             </li>
                             <li class="menu-sekunder {{ Request::is('keuangan/l_hutangpiutang/hutang') ? 'active' : '' || Request::is('keuangan/l_hutangpiutang/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/l_hutangpiutang/hutang') }}"><span class="submenu-title">Laporan Hutang Piutang</span><span class="hidden">Keuangan</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/l_jurnal/jurnal') ? 'active' : '' || Request::is('keuangan/l_jurnal/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/l_jurnal/jurnal') }}"><span class="submenu-title">Laporan Keuangan</span><span class="hidden">Keuangan</span></a>
+                            <li class="menu-sekunder {{ Request::is('keuangan/modul/keuangan/laporan') ? 'active' : '' || Request::is('keuangan/modul/keuangan/laporan/*') ? 'active' : '' }}"><a href="{{ url('keuangan/modul/keuangan/laporan') }}"><span class="submenu-title">Laporan Keuangan</span><span class="hidden">Keuangan</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisaprogress/analisa') ? 'active' : '' || Request::is('keuangan/analisaprogress/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaprogress/analisa') }}"><span class="submenu-title">Analisa Progress Terhadap Perencanaan</span><span class="hidden">Keuangan</span></a>
+                            <li class="menu-sekunder {{ Request::is('keuangan/modul/keuangan/analisa') ? 'active' : '' || Request::is('keuangan/modul/keuangan/analisa/*') ? 'active' : '' }}"><a href="{{ url('keuangan/modul/keuangan/analisa') }}"><span class="submenu-title">Analisa Keuangan</span><span class="hidden">Keuangan</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisaocf/analisa2') ? 'active' : '' || Request::is('keuangan/analisaocf/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaocf/analisa2') }}"><span class="submenu-title">Analisa Net Profit Terhadap OCF</span><span class="hidden">Keuangan</span></a>
-                            </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisaaset/analisa3') ? 'active' : '' || Request::is('keuangan/analisaaset/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaaset/analisa3') }}"><span class="submenu-title">Analisa Pertumbuhan Aset</span><span class="hidden">Keuangan</span></a>
-                            </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisacashflow/analisa4') ? 'active' : '' || Request::is('keuangan/analisacashflow/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisacashflow/analisa4') }}"><span class="submenu-title">Analisa Cashflow</span><span class="hidden">Keuangan</span></a>
-                            </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisaindex/analisa5') ? 'active' : '' || Request::is('keuangan/analisaindex/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaindex/analisa5') }}"><span class="submenu-title">Analisa Common Size dan Index</span><span class="hidden">Keuangan</span></a>
-                            </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisarasio/analisa6') ? 'active' : '' || Request::is('keuangan/analisarasio/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisarasio/analisa6') }}"><span class="submenu-title">Analisa Rasio Keuangan</span><span class="hidden">Keuangan</span></a>
-                            </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisabottom/analisa7') ? 'active' : '' || Request::is('keuangan/analisabottom/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisabottom/analisa7') }}"><span class="submenu-title">Analisa Three Bottom Line</span><span class="hidden">Keuangan</span></a>
-                            </li>
-                            <li class="menu-sekunder {{ Request::is('keuangan/analisaroe/analisa8') ? 'active' : '' || Request::is('keuangan/analisaroe/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaroe/analisa8') }}"><span class="submenu-title">Analisa ROE</span><span class="hidden">Keuangan</span></a>
-                            </li>
+                            
                         </ul>
                     </li>
 

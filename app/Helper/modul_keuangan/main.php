@@ -111,7 +111,7 @@
 			// setting
 				'allowJurnalToExecute'	=> true,
 				'comp'					=> 1,
-				'companyName'			=> 'Dirga Ambara Corporindo',
+				'companyName'			=> 'CV. Nabila Bakery & Pastry',
 
 			// kelompok_akun_role
 				'kelompok_kas'						=> '1.001',
