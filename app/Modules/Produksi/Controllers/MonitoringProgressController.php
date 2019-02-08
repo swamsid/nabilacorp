@@ -17,6 +17,7 @@ use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Session;
+use App\d_sales_plan;
 
 class MonitoringProgressController extends Controller
 {
@@ -36,8 +37,7 @@ class MonitoringProgressController extends Controller
       if($request->fil=='A')
       {
          $comp=Session::get('user_comp');    
-         $salesPlan=DB::table('d_sales_plan')->join('d_salesplan_dt','sp_id','=','spdt_salesplan')
-                  ->where('sp_status',DB::raw("'N'"))              
+         $salesPlan=DB::table('d_sales_plan')->join('d_salesplan_dt','sp_id','=','spdt_salesplan')           
                   ->select(DB::raw("sum(spdt_qty) as spdt_qty"),'spdt_item')->groupBy('spdt_item');
 
          $pp = DB::Table('d_productplan')
@@ -94,7 +94,7 @@ class MonitoringProgressController extends Controller
             ->where('i_active','Y')
             ->groupBy('i_id')
             ->get();
-
+            dd($mon);
 
          $dat = array();
          foreach ($mon as $r) 
@@ -289,7 +289,13 @@ class MonitoringProgressController extends Controller
       ->join('m_item','m_item.i_id','=','sd_item')
       ->where('i_id',$id)
       ->get();
- 
+    // dd($pesanan);
+    $rencana = d_sales_plan::
+      ->join('d_salesplan_dt','d_salesplan_dt.spdt_salesplan','=','sp_id')
+      ->join('m_item','m_item.i_id','=','spdt_item')
+      ->where('i_id',$id)
+      ->get();
+    dd($rencana);
     return view('Produksi::monitoringprogress.nota',compact('pesanan'));
   }
 
