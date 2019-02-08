@@ -99,7 +99,7 @@ class rencanaPenjualanController extends Controller
        $rows = d_sales_plan::leftJoin('d_salesplan_dt', 'spdt_salesplan', '=', 'sp_id')
           ->leftJoin('m_item', 'i_id', '=', 'spdt_item');
       // memilih kolom yang akan ditampilkan
-      $rows = $rows->select('sp_id', 'sp_code', 'sp_comp', 'sp_mem', 'sp_date', DB::raw('IFNULL( SUM(i_price) , 0) AS total_harga'));    
+      $rows = $rows->select('sp_id', 'sp_code', 'sp_comp', 'sp_mem', 'sp_date');    
 
         // Memfilter data
        $rows = $rows->where('sp_comp', $sp_comp);
