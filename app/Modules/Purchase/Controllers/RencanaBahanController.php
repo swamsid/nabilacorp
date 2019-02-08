@@ -452,14 +452,14 @@ class RencanaBahanController extends Controller
         //insert to table d_purchasingplan
         $plan = new d_purchase_plan;
         $plan->p_date= Carbon::now('Asia/Jakarta')->format('Y-m-d');
-        $plan->p_comp = ;
-        $plan->p_gudang = ;
-        $plan->p_code = $kode_plan;
-        $plan->p_supplier = $request->i_sup;
-        $plan->p_mem = $id_peg;
-        $plan->p_confirm = ;
-        $plan->p_status = ;
-        $plan->p_status_date = ;
+        // $plan->p_comp = ;
+        // $plan->p_gudang = ;
+        // $plan->p_code = $kode_plan;
+        // $plan->p_supplier = $request->i_sup;
+        // $plan->p_mem = $id_peg;
+        // $plan->p_confirm = ;
+        // $plan->p_status = ;
+        // $plan->p_status_date = ;
         $plan->p_created = Carbon::now();
         $plan->save();
 
