@@ -14,7 +14,7 @@ use App\d_pakai_barangdt;
 use App\d_gudangcabang;
 use Carbon\Carbon;
 use Response;
-use App\lib\mutasi;
+use App\Lib\mutasi;
 use App\d_stock_mutation;
 use Auth;
 
