@@ -100,10 +100,6 @@
                             </li> -->
                             <!-- <li class="menu-sekunder {{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Master Data Jenis Produksi</span></a>
                             </li> -->
-
-                            <li class="menu-sekunder {{ Request::is('master/modul/keuangan/master/group-akun') ? 'active' : '' || Request::is('master/modul/keuangan/master/group-akun/*') ? 'active' : '' }}"><a href="{{ url('master/modul/keuangan/master/group-akun') }}"><span class="submenu-title">Master Data Group Keuangan</span></a>
-                            </li>
-
                             <li class="menu-sekunder {{ Request::is('master/modul/keuangan/master/akun') ? 'active' : '' || Request::is('master/modul/keuangan/master/akun/*') ? 'active' : '' }}"><a href="{{ url('master/modul/keuangan/master/akun') }}"><span class="submenu-title">Master Data Akun Keuangan</span></a>
                             </li>
                           <!--   <li class="menu-sekunder {{ Request::is('master/datatransaksi/transaksi') ? 'active' : '' || Request::is('master/datatransaksi/*') ? 'active' : '' }}"><a href="{{ url('/master/datatransaksi/transaksi') }}"><span class="submenu-title">Master Data Transaksi Keuangan</span></a>
