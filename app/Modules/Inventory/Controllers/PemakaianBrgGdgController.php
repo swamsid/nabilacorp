@@ -329,7 +329,7 @@ class PemakaianBrgGdgController extends Controller
             ->leftJoin('d_pakai_barang','d_pakai_barangdt.d_pbdt_pbid','=','d_pakai_barang.d_pb_id')
             ->leftJoin('m_item','d_pakai_barangdt.d_pbdt_item','=','m_item.i_id')
             ->leftJoin('m_satuan','d_pakai_barangdt.d_pbdt_sat','=','m_satuan.s_id')
-            ->where('d_pakai_barang.d_pb_gdg', '=', $tampil)
+            ->where('d_pakai_barang.d_pb_comp', '=', $tampil)
             ->whereBetween('d_pakai_barang.d_pb_date', [$tanggal1, $tanggal2])
             ->groupBy('d_pakai_barangdt.d_pbdt_pbid')
             ->groupBy('d_pakai_barangdt.d_pbdt_item')
@@ -796,9 +796,9 @@ class PemakaianBrgGdgController extends Controller
 
     public function printSuratJalan($id)
     {
-        $dataHeader = d_pakai_barang::join('d_gudangcabang','d_pakai_barang.d_pb_gdg','=','d_gudangcabang.cg_id')
+        $dataHeader = d_pakai_barang::join('d_gudangcabang','d_pakai_barang.d_pb_gdg','=','d_gudangcabang.gc_id')
               ->join('d_mem','d_pakai_barang.d_pb_staff','=','d_mem.m_id')
-              ->select('d_pakai_barang.*', 'd_mem.m_id', 'd_mem.m_name', 'd_gudangcabang.cg_id', 'd_gudangcabang.cg_cabang')
+              ->select('d_pakai_barang.*', 'd_mem.m_id', 'd_mem.m_name', 'd_gudangcabang.gc_id', 'd_gudangcabang.gc_gudang')
               ->where('d_pakai_barang.d_pb_id', '=', $id)
               ->orderBy('d_pakai_barang.d_pb_created', 'DESC')
               ->get()->toArray();
@@ -838,7 +838,7 @@ class PemakaianBrgGdgController extends Controller
         { 
             $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '".$dataIsi[$i]['i_id']."' AND s_comp = '".$data['id_gdg']."' AND s_position = '".$data['id_gdg']."' limit 1) ,'0') as qtyStok"));
             $stok[] = (int)$query[0]->qtyStok;
-            $txtSat1[] = DB::table('m_satuan')->select('m_sname', 'm_sid')->where('m_sid','=', $dataIsi[$i]['i_sat1'])->first();
+            $txtSat1[] = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $dataIsi[$i]['i_sat1'])->first();
         }
 
         $val_stock = [];
@@ -849,6 +849,6 @@ class PemakaianBrgGdgController extends Controller
         $dataIsi = array_chunk($dataIsi, 14);
         //dd($dataIsi, $val_stock, $txt_satuan);
            
-        return view('inventory.b_digunakan.print', compact('dataHeader', 'dataIsi', 'val_stock', 'txt_satuan'));
+        return view('Inventory::b_digunakan.print', compact('dataHeader', 'dataIsi', 'val_stock', 'txt_satuan'));
     }
 }

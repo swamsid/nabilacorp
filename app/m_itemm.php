@@ -518,7 +518,7 @@ class m_itemm extends Model
         $sql=DB::table('m_item')
              ->join('m_satuan','m_satuan.s_id','=','i_sat1')
              ->where('i_active','Y')
-             ->select('i_id','i_name','m_satuan.s_name as s_name','i_price','i_code');
+             ->select('i_id','i_name','m_satuan.s_name as s_name','i_code');
              
         if($search!='')
         {          
@@ -543,7 +543,7 @@ class m_itemm extends Model
         } else {
           foreach ($sql as $data)
           {
-            $results[] = ['label' => $data->i_name.'  (Rp. ' .number_format($data->i_price,0,',','.').')', 'i_id' => $data->i_id,'satuan' =>$data->s_name,'i_code' =>$data->i_code,'i_price' =>number_format($data->i_price,0,',','.'),'item' => $data->i_name];
+            $results[] = ['label' => $data->i_name, 'i_id' => $data->i_id,'satuan' =>$data->s_name,'i_code' =>$data->i_code,'item' => $data->i_name];
           }
         } 
         return Response::json($results);

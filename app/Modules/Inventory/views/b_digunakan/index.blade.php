@@ -402,7 +402,7 @@
   {
     var tgl1 = $('#tanggal3').val();
     var tgl2 = $('#tanggal4').val();
-    var tampil = $('#tampil_data').val();
+    var tampil = $('.mem_comp').val();
     $('#tbl-history').dataTable({
       "destroy": true,
       "processing" : true,
