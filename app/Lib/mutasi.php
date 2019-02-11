@@ -166,7 +166,7 @@ public static function hapusMutasi($item,$permintaan,$comp,$position,$flag,$sm_r
 
             $totalPermintaan= format::format($totalPermintaan);
             $totalHpp=0;
-
+            
 			$updateStock=d_stock::where('s_item',$item)->where('s_comp',$comp)->where('s_position',$position);		
 
             if(!$updateStock->first()->s_qty){

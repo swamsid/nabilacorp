@@ -120,7 +120,42 @@
 		    	text-align: center;
 		    }
 
+		    #contentnya{
+	          width: 80%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+          @page { size: portrait; }
+          nav{
+            display: none;
+          }
+
+          #contentnya{
+          	width: 100%;
+          	padding: 0px;
+          	margin-top: -50px;
+          }
+
+          #table-data th{
+             background-color: #0099CC !important;
+             color: white;
+             -webkit-print-color-adjust: exact;
+          }
+
+          #table-data td.not-same{
+             color: red !important;
+             -webkit-print-color-adjust: exact;
+          }
+
+          .page-break { display: block; page-break-before: always; }
+      </style>
 	</head>
 
 	<body>
@@ -145,7 +180,7 @@
 			          	<i class="fa fa-print" title="Print Laporan" @click="print"></i>
 			        </li>
 
-			        <li class="nav-item dropdown" title="Download Laporan">
+			        {{-- <li class="nav-item dropdown" title="Download Laporan">
 			          	<i class="fa fa-download" id="dropdownMenuButton" data-toggle="dropdown"></i>
 
 			            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -153,13 +188,13 @@
 						    	<i class="fa fa-file-pdf-o" style="font-weight: bold;"></i> &nbsp; Download PDF
 						    </a>
 
-						    {{-- <div class="dropdown-divider"></div>
+						    <div class="dropdown-divider"></div>
 
 						    <a class="dropdown-item" href="#" style="font-size: 10pt;" @click='downloadExcel'>
 						    	<i class="fa fa-file-excel-o" style="font-weight: bold;"></i> &nbsp; Download Excel
-						    </a> --}}
+						    </a>
 					    </div>
-			        </li>
+			        </li> --}}
 
 			        <li class="nav-item">
 			          <i class="fa fa-sliders" title="Pengaturan Laporan" @click="showSetting"></i>
@@ -193,7 +228,7 @@
 			</div> --}}
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-8 offset-2" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
 						if($_GET['type'] == 'bulan')
@@ -583,7 +618,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('analisa.keuangan.pertumbuhan_aset.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('analisa.keuangan.pertumbuhan_aset.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

@@ -60,30 +60,28 @@
                       </div>
                     </div>
 
-                    <div class="col-md-3 col-sm-3 col-xs-12" align="center">
-                      <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="kunciSupplier()">
+                    <div class="col-md-3 col-sm-3 col-xs-12" align="left">
+                      {{--  <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="kunciSupplier()">
                         <strong>
                           <i class="fa fa-lock" aria-hidden="true"></i>
                         </strong>
-                      </button>
-                      <button class="btn btn-success btn-sm btn-flat" id="btn-proses-append" type="button" disabled onclick="prosesSupplier()">
+                      </button>  --}}
+                      <button class="btn btn-info btn-sm" id="btn-proses-append" type="button" title="Cari barang" onclick="prosesSupplier()">
                         <strong>
-                          <i class="fa fa-check" aria-hidden="true"></i>
+                          <i class="fa fa-search" aria-hidden="true"></i>
                         </strong>
                       </button>
-                      <a href="{{ url('purchasing/rencanabahanbaku/bahan') }}" class="btn btn-default btn-sm btn-flat">
-                        <i class="fa fa-arrow-left"></i>
-                      </a>
+                      
                     </div>
                     <div class="table-responsive">
                       <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
                         <thead>
                           <tr>
                             <th style="text-align: center; width: 35%;">Nama Item</th>
-                            <th style="text-align: center; width: 15%;">Satuan</th>
                             <th style="text-align: center; width: 15%;">Stok</th>
+                            <th style="text-align: center; width: 15%;">Satuan</th>
                             <th style="text-align: center; width: 15%;">Kekurangan</th>
-                            {{-- <th style="text-align: center; width: 15%;">Qty</th> --}}
+                            <th style="text-align: center; width: 15%;">Qty</th>
                             <th style="text-align: center; width: 5%;">Aksi</th>
                           </tr>
                         </thead>
@@ -97,19 +95,19 @@
                               <input type="hidden" class="form-control input-sm" name="id_spk[]" id="id_spk" value="{{$data[0]['fr_spk']}}">
                             </td>
                             <td>
-                              <input type="text" class="form-control input-sm" readonly="" name="satuan[]" value="{{$data[0]['satuan']}}">
-                              <input type="hidden" class="form-control input-sm" name="satuanid[]" value="{{$data[0]['i_sat1']}}">
-                            </td>
-                            <td>
                               <input type="text" class="form-control input-sm currency" readonly="" name="stok[]" value="{{$data[0]['stok']}}" style="text-align:right;">
                               <input type="hidden" class="form-control input-sm" readonly="" name="stokRaw[]" value="{{$data[0]['stok']}}" style="text-align:right;">
+                            </td>
+                            <td>
+                              <input type="text" class="form-control input-sm" readonly="" name="satuan[]" value="{{$data[0]['satuan']}}">
+                              <input type="hidden" class="form-control input-sm" name="satuanid[]" value="{{$data[0]['i_sat1']}}">
                             </td>
                             <td>
                               <input type="text" class="form-control input-sm" readonly="" name="remaining[]" value="{{number_format($data[0]['selisih'],0,",",".")}}" style="text-align:right;">
                               <input type="hidden" class="form-control input-sm" readonly="" name="remainingRaw[]" value="{{$data[0]['selisih']}}">
                             </td>
-                            <td hidden="">
-                              <input type="hidden" class="form-control input-sm currency" name="qtyreq[]" value="{{abs($data[0]['selisih'])}}" style="text-align:right;">
+                            <td>
+                              <input type="text" class="form-control input-sm currency" name="qtyreq[]" value="{{abs($data[0]['selisih'])}}" style="text-align:right;">
                             </td>
                             <td align="center">
                               -
@@ -121,6 +119,7 @@
                   </form>
                   <div align="right" style="padding-top:10px;">
                     <div id="div_button_save" class="form-group">
+                      <a href="{{ url('purchasing/rencanabahanbaku/bahan') }}" class="button btn btn-dark">Kembali</a>
                       <button type="button" id="button_submit" class="btn btn-primary" onclick="submit()">Submit Data</button> 
                     </div>
                   </div>
@@ -250,12 +249,12 @@
                     +'<input type="hidden" class="form-control input-sm" name="tgl2[]" id="tgl_2" value="'+data.data[key-1].tanggal2+'">'
                   +'</td>'
                   +'<td>'
-                    +'<input type="text" class="form-control input-sm" readonly name="satuan[]" value="'+data.data[key-1].satuan+'">'
-                    +'<input type="hidden" class="form-control input-sm" name="satuanid[]" value="'+data.data[key-1].i_sat1+'">'
-                  +'</td>'
-                  +'<td>'
                     +'<input type="text" class="form-control input-sm currency" readonly name="stok[]" value="'+data.data[key-1].stok+'" style="text-align:right;">'
                     +'<input type="hidden" class="form-control input-sm" readonly name="stokRaw[]" value="'+data.data[key-1].stok+'">'
+                  +'</td>'
+                  +'<td>'
+                    +'<input type="text" class="form-control input-sm" readonly name="satuan[]" value="'+data.data[key-1].satuan+'">'
+                    +'<input type="hidden" class="form-control input-sm" name="satuanid[]" value="'+data.data[key-1].i_sat1+'">'
                   +'</td>'
                   +'<td>'
                     +'<input type="text" class="form-control input-sm" readonly name="remaining[]" value="'+formatAngka(data.data[key-1].selisih)+'" style="text-align:right;">'

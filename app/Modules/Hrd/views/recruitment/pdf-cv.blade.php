@@ -126,13 +126,13 @@
       <table class="tbl-outer">
         <tr>
           <td align="left" class="outer-left" style="border: hidden;">
-            <img src="{{ asset('assets/img/logo.png')}}" alt="Foto" class="img-logo">
+            <img src="{{ asset('assets/img/logo.jpg')}}" alt="Foto" class="img-logo">
           </td>
           <td align="right" class="outer-left" style="border: hidden;">
             <p style="text-align: left; font-size: 14px" class="outer-left">
-              <strong> TAMMA ROBAH INDONESIA</strong>
+              <strong>  Nabila Cake Bakery & Pastry </strong>
             </p>
-            <p style="text-align: left; font-size: 12px" class="outer-left"> Jl. Randu No.51, Sidotopo Wetan, Kenjeran, Kota SBY, Jawa Timur 60128</p>
+            <p style="text-align: left; font-size: 12px" class="outer-left">  Jl. Gajah Mada No.22, Pesantren, Surodikraman, Kec. Ponorogo, Kabupaten Ponorogo, Jawa Timur 63419.</p>
           </td>
         </tr>
       </table>

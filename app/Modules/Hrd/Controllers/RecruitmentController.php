@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
-use PDF;
+// use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use Datatables;
 use Auth;
 //class untuk menangani storege file (unlink misal)
@@ -143,8 +144,12 @@ class RecruitmentController extends Controller
             }
         }
 
+        $testInterview = view('Hrd::recruitment.test_interview');
+        $lolosInterview = view('Hrd::recruitment.lolos_interview');
+        $diTerima = view('Hrd::recruitment.diterima');
+
         //dd($serti, $lain, $ijasah);
-        return view('hrd/recruitment/preview_rekrut', compact('data', 'cv1', 'cv2', 'ijasah', 'serti', 'lain', 'drh'));
+        return view('Hrd::recruitment/preview_rekrut', compact('data', 'cv1', 'cv2', 'ijasah', 'serti', 'lain', 'drh','testInterview','lolosInterview','diTerima'));
     }
 
     public function save(Request $request)
@@ -1355,9 +1360,8 @@ class RecruitmentController extends Controller
         $pelamar = d_pelamar::where('p_id', $id_pelamar)->first();
         $foto = d_berkas_pelamar::where('bks_pid', $id_pelamar)->where('bks_type', 'I')->first();
         $cv = d_cv_pelamar::where('d_cv_pid', $id_pelamar)->get();
-
         // Send data to the view using loadView function of PDF facade
-        $pdf = PDF::loadView('hrd.recruitment.pdf-cv', array('pelamar' => $pelamar, 'foto' => $foto, 'cv' => $cv));
+        $pdf = PDF::loadView('Hrd::recruitment.pdf-cv', array('pelamar' => $pelamar, 'foto' => $foto, 'cv' => $cv));
         $path_cv = public_path(). '/assets/berkas/dokumen-pelamar';
         $namafile = $pelamar->p_name.'_'.$id_pelamar.'_cv.pdf';
         //save

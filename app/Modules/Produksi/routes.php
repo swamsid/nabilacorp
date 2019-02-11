@@ -14,7 +14,6 @@ Route::group(['namespace' => 'App\Modules\Produksi\Controllers', 'middleware'=>[
 	Route::get('/produksi/spk/spk', 'spkProductionController@spk');
 	Route::get('/produksi/spk/get_spk_by_tgl/{tgl1}/{tgl2}/{comp}', 'spkProductionController@getSpkByTgl');
 	Route::get('/produksi/spk/get_spk_by_tglCL/{tgl1}/{tgl2}', 'spkProductionController@getSpkByTglCL');
-//mahmud
 	Route::get('/produksi/spk/lihat-detail', 'spkProductionController@lihatFormula');
 	Route::get('/produksi/spk/ubah-status-spk/{id}', 'spkProductionController@ubahStatusSpk');
 	Route::get('/produksi/o_produksi/select2/pilihspk/{x}', 'ManOutputProduksiController@selectDataSpk');

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Tammafood | Recruitment</title>
+    <title>Nabila | Recruitment</title>
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}">
@@ -242,7 +242,7 @@
     <!-- Header -->
     <header class="masthead d-flex">
       <div class="container text-center my-auto">
-        <a class="btn btn-danger btn-xl js-scroll-trigger" style="margin-top: 380px; margin-right: 30px;" href="#about">About Tammafood</a>
+        <a class="btn btn-danger btn-xl js-scroll-trigger" style="margin-top: 380px; margin-right: 30px;" href="#about">About Nabila</a>
         <a class="btn btn-primary btn-xl js-scroll-trigger" style="margin-top: 380px; margin-left: 30px;" href="#form_wizard">Apply Now</a>
       </div>
       <div class="overlay"></div>
@@ -252,7 +252,7 @@
     <section class="content-section bg-light" >
       <div class="container text-center">
         <img src="{{url('/public/assets/gif/Loading_icon.gif')}}" id="gif" style="display: block; margin: 0 auto; width: 100px; visibility: hidden;">
-        <form class="form cf" action="{{ url('recruitment/save') }}" method="post" enctype="multipart/form-data">
+        <form class="form cf" action="{{ url('recruitment/save') }}" method="POST" enctype="multipart/form-data">
           {{ csrf_field() }}
           <div class="wizard">
             <div class="wizard-inner">
@@ -324,15 +324,15 @@
       <div class="container">
         <div class="content-section-heading">
           <h3 class="text-secondary mb-0">About</h3>
-          <h2 class="mb-5">Tammafood</h2>
+          <h2 class="mb-5">Nabila</h2>
         </div>
-        <p class="lead mb-5">CV. Tamma Robbah Indonesia adalah salah satu produsen tortilla dan berbagai perlengkapan kebutuhan bahan baku kebab di indonesia. Berdiri sejak 2008 dan sudah memiliki ijin PIRT dan Halal MUI.</p>
-        <p class="lead">Alamat kami Jalan Randu no. 74. Sidotopo Wetan. Surabaya.</p>
-        <p class="lead">Butuh Konsultasi. Silahkan Hubungi Customer Service kami 0812-3456-1066</p>
+        <p class="lead mb-5">CV. Nabila Cake Bakery & Pastry</p>
+        <p class="lead">Alamat kami Jalan Jl. Gajah Mada No.22, Pesantren, Surodikraman, Kec. Ponorogo, Kabupaten Ponorogo, Jawa Timur 63419.</p>
+        <p class="lead">Butuh Konsultasi. Silahkan Hubungi Customer Service kami 0853-3501-5099.</p>
       </div>
     </section>
     <section id="contact" class="map">
-      <iframe width="100%" height="100%" frameborder="0" scrolling="true" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d989.5326478226659!2d112.76258721077522!3d-7.225942202698499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f9aaab9b9ad5%3A0xb6f7039d2cc4db9c!2sTamma+Robah+Indonesia!5e0!3m2!1sen!2sid!4v1534411169797"></iframe>
+      <iframe width="100%" height="100%" frameborder="0" scrolling="true" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.2234190244435!2d111.47002391413292!3d-7.871674994328716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e799f8632a3b711%3A0x776409fcb6a9e405!2sNabila+Cake+Bakery+%26+Pastry!5e0!3m2!1sid!2sid!4v1548917510223"></iframe>
     </section>
 
     <!-- Footer -->

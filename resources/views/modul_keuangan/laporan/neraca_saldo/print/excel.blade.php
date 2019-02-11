@@ -9,7 +9,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td style="font-weight: 800">Laporan Neraca Saldo</td>
+			<td style="font-weight: 800">Laporan Neraca Saldo <small>(x1000)</small></td>
 		</tr>
 
 		<tr>
