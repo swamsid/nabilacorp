@@ -279,6 +279,10 @@ class spkProductionController extends Controller
             $spk = d_spk::find($spk_id);
             $spk->spk_status = 'FN';
             $spk->save();
+            d_productplan::where('pp_id', $spk->spk_ref)
+                    ->update([
+                        'pp_isspk' => 'C'
+                    ]);
         }
         DB::commit();
         return response()->json([

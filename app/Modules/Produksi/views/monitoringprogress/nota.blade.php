@@ -6,13 +6,20 @@
 		<thead>
 			<tr>
 				<th>No</th>
-				<th>No Nota</th>
-				<th>Nama</th>
+				<th>Nota</th>
 				<th>Tanggal</th>
 				<th style="width:13%;">Jumlah Order</th>
 			</tr>
 		</thead>
 		<tbody>
+			@foreach ($rencana as $index => $item)
+			<tr>
+				<td>{{$index+1}}</td>
+				<td>{{$item->sp_code}}</td>
+				<td>{{date('d M Y', strtotime($item->sp_date))}}</td>
+				<td class="text-right">{{$item->spdt_qty}}</td>
+			</tr>
+			@endforeach
 		</tbody>
 	</table>
 </div>
@@ -31,17 +38,16 @@
 				<th style="width:13%;">Jumlah Order</th>
 			</tr>
 		</thead>
-		@foreach ($pesanan as $index => $item)
-		<tr>
-			<td>{{$index+1}}</td>
-			<td>{{$item->s_note}}</td>
-			<td>{{date('d M Y', strtotime($item->s_date))}}</td>
-			<td>{{date('d M Y', strtotime($item->s_finishdate))}}</td>
-			<td class="text-right">{{$item->sd_qty}}</td>
-		</tr>
-		@endforeach
 		<tbody>
-
+			@foreach ($pesanan as $index => $item)
+			<tr>
+				<td>{{$index+1}}</td>
+				<td>{{$item->s_note}}</td>
+				<td>{{date('d M Y', strtotime($item->s_date))}}</td>
+				<td>{{date('d M Y', strtotime($item->s_finishdate))}}</td>
+				<td class="text-right">{{$item->sd_qty}}</td>
+			</tr>
+			@endforeach
 		</tbody>
 	</table>
 </div>
