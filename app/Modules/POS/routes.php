@@ -22,9 +22,9 @@ Route::get('/penjualan/pos-pesanan/detail-view/{id}', 'PenjualanPesananControlle
 Route::get('/penjualan/pos-pesanan/listPenjualan', 'PenjualanPesananController@listPenjualanPesanan')->middleware('auth');
 Route::post('/penjualan/pos-pesanan/listPenjualan', 'PenjualanPesananController@listPenjualanPesanan')->middleware('auth');
 Route::get('/penjualan/pos-pesanan/listPenjualan/data', 'PenjualanPesananController@listPenjualanDataPesanan')->middleware('auth');
-/*Route::get('/penjualan/pos-pesanan/printNota/{id}', 'PenjualanPesananController@printNotaPesanan')->middleware('auth');
+Route::get('/penjualan/pos-pesanan/printNota/{id}', 'PenjualanPesananController@printNotaPesanan')->middleware('auth');
 
-*/
+
 
 //mutasi item
 //update mi
@@ -257,15 +257,7 @@ Route::get('/penjualan/POSpenjualanpesanan/POSpenjualanpesanan', 'PenjualanContr
 	Route::get('/penjualan/pembayaranpiutang/laporan_pembayaran_piutang', 'PembayaranPiutangController@laporan_pembayaran_piutang');
 
 
-	Route::get('/penjualan/pos-mobile/index', 'posMobileController@posMobile')->middleware('auth');	
-	Route::get('/penjualan/pos-mobile/create', 'PenjualanController@create')->middleware('auth');
-	Route::get('/penjualan/pos-mobile/update', 'PenjualanController@update')->middleware('auth');
-	Route::get('/penjualan/pos-mobile/{id}/edit', 'PenjualanController@penjualanDtmobile')->middleware('auth');
-	Route::get('/penjualan/pos-mobile/detail-view/{id}', 'PenjualanController@penjualanViewDtmobile')->middleware('auth');
-	Route::post('/penjualan/pos-mobile/listPenjualan', 'PenjualanController@listPenjualan')->middleware('auth');
-	Route::post('/penjualan/pos-mobile/listPenjualan/data', 'PenjualanController@listPenjualanData')->middleware('auth');
-	Route::get('/penjualan/pos-mobile/listPenjualan/data', 'PenjualanController@listPenjualanData')->middleware('auth');
-	Route::get('/penjualan/pos-mobile/printNota/{id}', 'PenjualanController@printNota')->middleware('auth');
+	Route::get('/penjualan/pos-mobile/index', 'posMobileController@posMobile')->middleware('auth');
 	
 	// Section return penjualan
 	

@@ -51,6 +51,30 @@ class itemController extends Controller
 
     }*/
 
+    public function find_m_item(Request $req) {
+      
+      $keyword = $req->term;
+      $keyword = $keyword != null ? $keyword : '';
+      $i_type = $req->i_type;
+      $i_type = $i_type != null ? $i_type : '';
+
+      $m_item = m_itemm::leftJoin('m_satuan', 'i_satuan', '=', 's_id');
+      if($keyword != '') {
+         $m_item = $m_item->where([['i_name', 'LIKE', DB::raw("'%$keyword%'")]]);
+      }
+      if($i_type != '') {
+         $m_item = $m_item->where('i_type', $i_type);
+      }
+
+      $m_item = $m_item->select('i_id', 'i_code', 'i_name', 'i_sat1', 'i_sat2', 'i_sat3', 'i_price', 's_name', DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_item = m_item.i_id), 0) AS s_qty'));
+
+      $res = [
+        'm_item' => $m_item->get()
+      ];
+      
+      return response()->json($res);
+    }
+
     public function contoh_dokumen() {
       $filename = public_path('print_queue.txt');
       $content = File::get($filename);
@@ -165,6 +189,7 @@ class itemController extends Controller
             'i_group' => $i_group,
             'i_type' => $i_type,
             'i_name' => $i_name,
+            'i_satuan' => $i_sat1,
             'i_sat1' => $i_sat1,
             'i_sat2' => $i_sat2,
             'i_sat3' => $i_sat3,
@@ -172,7 +197,9 @@ class itemController extends Controller
             'i_sat_isi2' => $i_sat_isi2,
             'i_sat_isi3' => $i_sat_isi3,
             'i_min_stock' => $i_min_stock,
-            'i_det' => $i_det,            
+            'i_det' => $i_det,
+            'i_price' => $is_price1,
+            'i_status' => 'Y',
             'i_active' => 'Y',
             'i_insert' => Carbon::now('Asia/Jakarta')
           ]);
@@ -348,7 +375,8 @@ class itemController extends Controller
         DB::table('m_item')
           ->where('i_id', $request->id)
           ->update([
-            'i_active' => 'N',            
+            'i_active' => 'N',
+            'i_status' => 'N'
           ]);
 
         DB::commit();

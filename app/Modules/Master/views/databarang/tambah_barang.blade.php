@@ -100,6 +100,7 @@
                                         <option value="BJ">Barang Jual</option>
                                         <option value="BP">Barang Produksi</option>
                                         <option value="BB">Bahan Baku</option>
+                                        <option value="BNM">Barang Nabila Moslem</option>
                                       </select>
                                       <span style="color:#ed5565;display:none;" class="help-block m-b-none" id="type-error"><small>Type harus dipilih.</small></span>
                                   </div>

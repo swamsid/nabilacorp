@@ -9,7 +9,7 @@ use DB;
 
 class mutation{
     public static function mutasiMasuk(
-        $date
+        $date,
         $comp,
         $position,
         $item,
@@ -21,7 +21,7 @@ class mutation{
         $sell
         ){
         return DB::transaction(function () use (
-        $date
+        $date,
         $comp,
         $position,
         $item,

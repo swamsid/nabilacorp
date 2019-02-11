@@ -162,12 +162,6 @@
                                                 class="hidden">Master</span></a>
                                 </li>
                             @endif
-                            @if(Auth::user()->punyaAkses('Payroll','ma_read'))
-                                <li class="{{ Request::is('master/payroll/setting-gaji') ? 'active' : '' || Request::is('master/payroll/*') ? 'active' : '' }}">
-                                    <a href="{{ url('/master/payroll/setting-gaji') }}"><span
-                                                class="submenu-title">Payroll</span><span class="hidden">Master</span></a>
-                                </li>
-                            @endif
                         </ul>
                     </li>
 
@@ -385,6 +379,12 @@
                                                 class="hidden">HRD</span></a>
                                 </li>
                             @endif
+                            @if(Auth::user()->punyaAkses('Payroll','ma_read'))
+                                <li class="{{ Request::is('hrd/payroll/setting-gaji') ? 'active' : '' || Request::is('hrd/payroll/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/hrd/payroll/setting-gaji') }}"><span
+                                                class="submenu-title">Payroll</span><span class="hidden">HRD</span></a>
+                                </li>
+                            @endif
                             @if(Auth::user()->punyaAkses('Payroll Pegawai Produksi','ma_read'))
                                 <li class="{{ Request::is('hrd/produksi/payroll') ? 'active' : '' || Request::is('hrd/produksi/*') ? 'active' : '' }}">
                                     <a href="{{ url('/hrd/produksi/payroll') }}"><span
@@ -405,15 +405,15 @@
                                                 class="hidden">HRD</span></a>
                                 </li>
                             @endif
-                            @if(Auth::user()->punyaAkses('Manajemen Scoreboard','ma_read'))
-                                <li class="{{ Request::is('hrd/manajemenkpipegawai/index') ? 'active' : '' || Request::is('hrd/manajemenkpipegawai/*') ? 'active' : '' }}">
-                                    <a href="{{ url('/hrd/manajemenkpipegawai/index') }}"><span class="submenu-title">Manajemen Scoreboard</span><span
-                                                class="hidden">HRD</span></a>
-                                </li>
-                            @endif
                             @if(Auth::user()->punyaAkses('Input data KPI','ma_read'))
                                 <li class="{{ Request::is('hrd/inputkpix/index') ? 'active' : '' || Request::is('hrd/inputkpix/*') ? 'active' : '' }}">
                                     <a href="{{ url('/hrd/inputkpix/index') }}"><span class="submenu-title">Input Data KPI</span><span
+                                                class="hidden">HRD</span></a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->punyaAkses('Manajemen Scoreboard','ma_read'))
+                                <li class="{{ Request::is('hrd/manajemenkpipegawai/index') ? 'active' : '' || Request::is('hrd/manajemenkpipegawai/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/hrd/manajemenkpipegawai/index') }}"><span class="submenu-title">Manajemen Scoreboard</span><span
                                                 class="hidden">HRD</span></a>
                                 </li>
                             @endif
@@ -490,11 +490,9 @@
                         <ul class="nav nav-second-level">
                             <li class="menu-sekunder {{ Request::is('system/hakuser/index') ? 'active' : '' || Request::is('system/hakuser/*') ? 'active' : '' }}"><a href="{{ url('/system/hakuser/index') }}"><span class="submenu-title">Manajemen User</span><span class="hidden">System</span></a>
                             </li>
-                            {{--  <li class="menu-sekunder {{ Request::is('system/hakakses/akses') ? 'active' : '' || Request::is('system/hakakses/*') ? 'active' : '' }}"><a href="{{ url('/system/hakakses/akses') }}"><span class="submenu-title">Manajemen Hak Akses</span><span class="hidden">System</span></a>
-                            </li>  --}}
-                            <li class="menu-sekunder {{ Request::is('system/profilperusahaan/profil') ? 'active' : '' || Request::is('system/profilperusahaan/*') ? 'active' : '' }}"><a href="{{ url('/system/profilperusahaan/profil') }}"><span class="submenu-title">Profil Perusahaan</span><span class="hidden">System</span></a>
+                            <li class="menu-sekunder {{ Request::is('system/hakakses/akses') ? 'active' : '' || Request::is('system/hakakses/*') ? 'active' : '' }}"><a href="{{ url('/system/hakakses/akses') }}"><span class="submenu-title">Manajemen Hak Akses</span><span class="hidden">System</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('modul/keuangan/setting/klasifikasi-akun') ? 'active' : '' || Request::is('modul/keuangan/setting/klasifikasi-akun/*') ? 'active' : '' }}"><a href="{{ url('modul/keuangan/setting/klasifikasi-akun') }}"><span class="submenu-title">Klasifikasi Akun</span><span class="hidden">System</span></a>
+                            <li class="menu-sekunder {{ Request::is('system/profilperusahaan/profil') ? 'active' : '' || Request::is('system/profilperusahaan/*') ? 'active' : '' }}"><a href="{{ url('/system/profilperusahaan/profil') }}"><span class="submenu-title">Profil Perusahaan</span><span class="hidden">System</span></a>
                             </li>
                             <li class="menu-sekunder {{ Request::is('system/thnfinansial/finansial') ? 'active' : '' || Request::is('system/thnfinansial/*') ? 'active' : '' }}"><a href="{{ url('/system/thnfinansial/finansial') }}"><span class="submenu-title">Tahun Finansial</span><span class="hidden">System</span></a>
                             </li>
@@ -510,6 +508,7 @@
                             Reseller
                             Marketer Online
                             Return
+                            Purchasing Plan
                             Purchasing
                         </span>
                     </a>
@@ -520,15 +519,17 @@
                             </li>
                             <li class="menu-sekunder {{ Request::is('nabila/belanjakaryawan/index') ? 'active' : '' || Request::is('nabila/belanjakaryawan/*') ? 'active' : '' }}"><a href="{{ url('/nabila/belanjakaryawan/index') }}"><span class="submenu-title">Belanja Karyawan</span><span class="hidden">Nabila Moslem</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('nabila/voucherbelanja/voucher') ? 'active' : '' || Request::is('nabila/voucherbelanja/*') ? 'active' : '' }}"><a href="{{ url('/nabila/voucherbelanja/voucher') }}"><span class="submenu-title">Voucher Belanja</span><span class="hidden">Nabila Moslem</span></a>
-                            </li>
+                            
                             <li class="menu-sekunder {{ Request::is('nabila/belanjareseller/index') ? 'active' : '' || Request::is('nabila/belanjareseller/*') ? 'active' : '' }}"><a href="{{ url('/nabila/belanjareseller/index') }}"><span class="submenu-title">Reseller</span><span class="hidden">Nabila Moslem</span></a>
                             </li>
                             <li class="menu-sekunder {{ Request::is('nabila/belanjamarketing/index') ? 'active' : '' || Request::is('nabila/belanjamarketing/*') ? 'active' : '' }}"><a href="{{ url('/nabila/belanjamarketing/index') }}"><span class="submenu-title">Marketer Online</span><span class="hidden">Nabila Moslem</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('nabila/return/return') ? 'active' : '' || Request::is('nabila/return/*') ? 'active' : '' }}"><a href="{{ url('/nabila/return/return') }}"><span class="submenu-title">Return</span><span class="hidden">Nabila Moslem</span></a>
+                            <li class="menu-sekunder {{ Request::is('nabila/returnpembelian/index') ? 'active' : '' || Request::is('nabila/returnpembelian/*') ? 'active' : '' }}"><a href="{{ url('/nabila/returnpembelian/index') }}"><span class="submenu-title">Return Pembelian</span><span class="hidden">Nabila Moslem</span></a>
                             </li>
-                            <li class="menu-sekunder {{ Request::is('nabila/purchasing/purchasing') ? 'active' : '' || Request::is('nabila/purchasing/*') ? 'active' : '' }}"><a href="{{ url('/nabila/purchasing/purchasing') }}"><span class="submenu-title">Purchasing</span><span class="hidden">Nabila Moslem</span></a>
+                            <li class="menu-sekunder {{ Request::is('nabila/rencanapembelian/index') ? 'active' : '' || Request::is('nabila/rencanapembelian/*') ? 'active' : '' }}"><a href="{{ url('/nabila/rencanapembelian/index') }}"><span class="submenu-title">Rencana Pembelian</span><span class="hidden">Nabila Moslem</span></a>
+                            </li>
+                            <li class="menu-sekunder {{ Request::is('nabila/pembelian/index') ? 'active' : '' || Request::is('nabila/pembelian/*') ? 'active' : '' }}"><a href="{{ url('/nabila/pembelian/index') }}"><span class="submenu-title">Pembelian</span><span class="hidden">Nabila Moslem</span></a>
+                            <li class="menu-sekunder {{ Request::is('nabila/penerimaanbarang/index') ? 'active' : '' || Request::is('nabila/penerimaanbarang/*') ? 'active' : '' }}"><a href="{{ url('/nabila/penerimaanbarang/index') }}"><span class="submenu-title">Penerimaan Barang</span><span class="hidden">Nabila Moslem</span></a>
                             </li>
                         </ul>
                     </li>
