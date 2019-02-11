@@ -356,11 +356,10 @@
                 }
               });
               $('.simpanPeg').attr('disabled', 'disabled');
-              var a = $('#simpanPegawai').serialize();
               $.ajax({
                 url: baseUrl + "/master/datapegawai/simpan-pegawai",
                 type: 'POST',
-                data: a,
+                data: $('#simpanPegawai').serialize(),
                 success: function (response, ) {
                   if (response.status == 'sukses') {
                     iziToast.success({

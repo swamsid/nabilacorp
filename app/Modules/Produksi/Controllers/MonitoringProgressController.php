@@ -36,9 +36,11 @@ class MonitoringProgressController extends Controller
 
       if($request->fil=='A')
       {
-         $comp=Session::get('user_comp');    
-         $salesPlan=DB::table('d_sales_plan')->join('d_salesplan_dt','sp_id','=','spdt_salesplan')           
-                  ->select(DB::raw("sum(spdt_qty) as spdt_qty"),'spdt_item')->groupBy('spdt_item');
+         $comp=Session::get('user_comp');   
+         $date = date('Y-m-d'); 
+         $salesPlan=DB::table('d_sales_plan')
+                  ->select('spdt_item','sp_date','sp_id','spdt_qty','spdt_salesplan')
+                  ->join('d_salesplan_dt','sp_id','=','spdt_salesplan');
 
          $pp = DB::Table('d_productplan')
          ->where(function($query){
@@ -64,7 +66,6 @@ class MonitoringProgressController extends Controller
 
          $stock = DB::Table('d_stock')
          ->select('s_item',DB::raw("sum(s_qty) as s_qty"));
-
          for ($i=0; $i <count($position) ; $i++) 
          { 
             $stock->orWhere(function($query) use ($position,$i){
@@ -72,17 +73,19 @@ class MonitoringProgressController extends Controller
                     }); 
          }
          $stock->groupBy('s_item');
-
          $mon = DB::Table('m_item')
-            ->select('i_id','i_code','i_name','s_qty','pp_qty','spdt_qty',
+            ->select('i_id','i_code','i_name','s_qty','pp_qty','sp_date',
+                DB::raw("sum(spdt_qty) as spdt_qty"),
                 DB::raw("sum(sd_qty) as jumlah"), 
                 DB::raw("count(sd_sales) as nota"), 
+                DB::raw("count(sp_id) as nota"), 
                 DB::raw("max(s_date) as s_date"))
+            ->leftjoin(DB::raw( sprintf( '(%s) d_salesplan', $salesPlan->toSql() ) ), function ($join) use ($date){
+                $join->on('m_item.i_id','=','spdt_item')
+                     ->where('sp_date',$date);
+              })
             ->leftjoin(DB::raw( sprintf( '(%s) d_stock', $stock->toSql() ) ), function ($join){
                 $join->on('m_item.i_id','=','d_stock.s_item');
-              })
-            ->leftjoin(DB::raw( sprintf( '(%s) d_sales_plan', $salesPlan->toSql() ) ), function ($join){
-                $join->on('i_id','=','spdt_item');
               })
             ->leftjoin(DB::raw( sprintf( '(%s) d_productplan', $pp->toSql() ) ), function ($join){
                 $join->on('m_item.i_id','=','d_productplan.pp_item');
@@ -90,11 +93,12 @@ class MonitoringProgressController extends Controller
             ->leftjoin(DB::raw( sprintf( '(%s) d_sales', $sales->toSql() ) ), function ($join){
                 $join->on('i_id','=','sd_item');
               })
+            
             ->where('i_type','BP')
             ->where('i_active','Y')
             ->groupBy('i_id')
             ->get();
-            dd($mon);
+
 
          $dat = array();
          foreach ($mon as $r) 
@@ -155,12 +159,9 @@ class MonitoringProgressController extends Controller
       else if($request->fil=='O')
       {
          $comp = Session::get('user_comp');    
-         $salesPlan = DB::table('d_sales_plan')
-            ->join('d_salesplan_dt','sp_id','=','spdt_salesplan')
-            ->where('sp_status',DB::raw("'N'"))
-            // ->where('sp_comp',DB::raw("$comp"))               
-            ->select(DB::raw("sum(spdt_qty) as spdt_qty"),'spdt_item')
-            ->groupBy('spdt_item');
+         $salesPlan=DB::table('d_sales_plan')
+                  ->select('spdt_item','sp_date','sp_id','spdt_qty','spdt_salesplan')
+                  ->join('d_salesplan_dt','sp_id','=','spdt_salesplan');
 
          $pp = DB::Table('d_productplan')
             ->where(function($query){
@@ -168,16 +169,14 @@ class MonitoringProgressController extends Controller
                     ->orwhere('pp_isspk',DB::raw("'Y'"))
                     ->orwhere('pp_isspk',DB::raw("'P'"));
               })
-            ->select(DB::raw("sum(pp_qty) as pp_qty"), 'pp_item')
-            // ->where('pp_comp',DB::raw("$comp"))               
+            ->select(DB::raw("sum(pp_qty) as pp_qty"), 'pp_item')          
             ->groupBy('pp_item');
 
          $sales = DB::Table('d_sales')
             ->where('s_channel', DB::raw("'Pesanan'"))
             ->where(function ($query) {
                 $query->where('s_status',DB::raw("'final'"));
-              })
-            // ->where('s_comp',DB::raw("$comp"))               
+              })             
             ->leftjoin('d_sales_dt','d_sales.s_id', '=' , 'd_sales_dt.sd_sales');
 
          $cabang=Session::get('user_comp');            
@@ -204,11 +203,12 @@ class MonitoringProgressController extends Controller
                DB::raw("sum(sd_qty) as jumlah"), 
                DB::raw("count(sd_sales) as nota"), 
                DB::raw("max(s_date) as s_date"))
+            ->leftjoin(DB::raw( sprintf( '(%s) d_salesplan', $salesPlan->toSql() ) ), function ($join) use ($date){
+                $join->on('m_item.i_id','=','spdt_item')
+                     ->where('sp_date',$date);
+              })
             ->leftjoin(DB::raw( sprintf( '(%s) d_stock', $stock->toSql() ) ), function ($join){
                $join->on('m_item.i_id','=','d_stock.s_item');
-             })
-            ->leftjoin(DB::raw( sprintf( '(%s) d_sales_plan', $salesPlan->toSql() ) ), function ($join){
-               $join->on('i_id','=','spdt_item');
              })
             ->leftjoin(DB::raw( sprintf( '(%s) d_productplan', $pp->toSql() ) ), function ($join){
                $join->on('m_item.i_id','=','d_productplan.pp_item');
@@ -289,14 +289,16 @@ class MonitoringProgressController extends Controller
       ->join('m_item','m_item.i_id','=','sd_item')
       ->where('i_id',$id)
       ->get();
-    // dd($pesanan);
-    $rencana = d_sales_plan::
+
+    $date = date('Y-m-d');
+    $rencana = d_sales_plan::select('sp_code','i_name','sp_date','spdt_qty')
       ->join('d_salesplan_dt','d_salesplan_dt.spdt_salesplan','=','sp_id')
       ->join('m_item','m_item.i_id','=','spdt_item')
       ->where('i_id',$id)
+      ->where('sp_date',$date)
       ->get();
-    dd($rencana);
-    return view('Produksi::monitoringprogress.nota',compact('pesanan'));
+
+    return view('Produksi::monitoringprogress.nota',compact('pesanan','rencana'));
   }
 
   public function plan($id){
