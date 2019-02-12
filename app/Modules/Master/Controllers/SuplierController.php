@@ -203,13 +203,16 @@ class SuplierController extends Controller
       $keyword = $keyword != null ? $keyword : '';
 
       if($keyword == '') {
-          $data = m_supplier::all();
+          $data = new m_supplier();
       }
       else {
-          $data = m_supplier::where('s_company', 'LIKE', "%$keyword%")->get();
+          $data = m_supplier::where('s_company', 'LIKE', "%$keyword%");
       }
+
+      $data = $data->select('s_id', 's_company', 's_name', 's_npwp', 's_address', 's_phone', 's_phone1', 's_phone2', 's_rekening', 's_bank', 's_fax', 's_note', 's_top', 's_deposit', 's_limit', 's_hutang', DB::raw('s_id AS id'), DB::raw('s_company AS text'))->get();
       $res = array('data' => $data);
 
       return response()->json($res);
     }
+ 
 }

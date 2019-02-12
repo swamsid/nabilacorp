@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="col-md-3 col-sm-8 col-xs-12">
-                                  <div class="form-group">
+                                  <div class="form-groupFa
                                       <input type="number" id='i_min_stock' name='i_min_stock' value='{{ $m_item->i_min_stock }}'  class="form-control">
                                       <span style="color:#ed5565;display:none;" class="help-block m-b-none" id="satuan-error"><small>Min. Stock Harus Diisi</small></span>
                                   </div>
@@ -101,6 +101,7 @@
                                         <option value="BJ">Barang Jual</option>
                                         <option value="BP">Barang Produksi</option>
                                         <option value="BB">Bahan Baku</option>
+                                        <option value="BNM">Barang Nabila Moslem</option>
                                       </select>
                                       <span style="color:#ed5565;display:none;" class="help-block m-b-none" id="type-error"><small>Type harus dipilih.</small></span>
                                   </div>

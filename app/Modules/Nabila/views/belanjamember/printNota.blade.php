@@ -1,13 +1,17 @@
-
+ <!DOCTYPE html>
+<html>
+<head>
+  <title>Print Nota</title>
+</head>
 <style type="text/css">
   
   *{
-/*    font-family: consolas;*/
+    /*font-family: consolas;*/
   }
   .div-width{
     width: 80mm;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left: -10px;
+    margin-top: -10px;
     /*margin: auto;*/
   }
   .float-left{
@@ -48,62 +52,55 @@
     font-size: 15px;
   }
 </style>
-  <div class="div-width">
-
-
-
-
-
-
-
+<body>
 
 <div>    
-          <div class="float-left">
-            <img src="{{ asset('/assets/logo.png') }}"  width="50px" height="50px">
-          </div>
-          <div class="float-left" style="margin-left: 5px;">
-            
-              Nabila Cake Bakery & Pastry<br>
-              Jl. Gajah Mada No.22 Ponorogo<br>
-              uuenaknya pake buuanget
-            
-          </div>
+      <div class="float-left">
+        <img src="{{ asset('/assets/logo.png') }}"  width="50px" height="50px">
       </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div>
-    Nota :{{$data['sales']->s_note}}
+      <div class="float-left" style="margin-left: 5px;">
+        
+          Nabila Cake Bakery & Pastry<br>
+          Jl. Gajah Mada No.22 Ponorogo<br>
+          uuenaknya pake buuanget
+        
+      </div>
     </div>
-    <!--<div class="divided"></div>-->
-    ***************************************** 
+    <br>
+    <br>
+    <br>
+    <!--<div class="divided"></div>-->    
     
     
-    <table class="border-none" width="100%">    
+    <table class="border-none" width="155px">    
+           <td colspan="3">    
+    *****************************************
+          
+        </td>
+
 @foreach($data['sales_dt'] as $detail)
           <tr>
           <td width="38%">{{$detail->i_name}}</td>
-          <td width="48%">
+          <td width="45%" >
 
-          <div style="text-align: right; ">
+          <div>
           {{$detail->sd_qty}} {{$detail->s_name}} * {{number_format($detail->sd_price,'0',',','.')}}
 
           @if($detail->sd_disc_value!='0.00' || $detail->sd_disc_percentvalue!='0.00')
           </div>
 
-          <div style="text-align: right;">
+          <div>
           -{{number_format($detail->sd_disc_value+$detail->sd_disc_percentvalue,'0',',','.')}}
           </div>
           @endif
           </td>
 
-          <td width="" style="text-align: right;">
-                    <div style="text-align: right; ">
+          <td>
+                    <div>
                         {{number_format($detail->sd_qty*$detail->sd_price,'0',',','.')}}                  
                     </div>
                     @if($detail->sd_disc_value!='0.00' || $detail->sd_disc_percentvalue!='0.00')
-                      <div style="text-align: right;">
+                      <div>
                         {{number_format($detail->sd_total,'0',',','.')}}                  
                       </div>
                     @endif
@@ -118,58 +115,32 @@
         </td>
       </tr>
       <tr>
-        <td width="50px" style="">Item: {{$jumlah}}</td>
-        <td class="text-right bold" width="" style="">Total</td>
-        <td width="20px"><div style="text-align: right;">{{number_format($data['sales']->s_net,0,',','.')}}</div></td>        
+        <td width="30%">Item: {{$jumlah}}</td>
+        <td class="text-right bold" >Total</td>
+        <td width="30%"><div style="text-align: right">{{number_format($data['sales']->s_net,0,',','.')}}</div></td>        
       </tr>
       <tr>
-        <td style=""></td>
-        <td class="text-right bold" width="" style="">Diskon</td>
-        <td width=""><div style="text-align: right;">{{number_format($data['sales']->s_disc_percent+$data['sales']->s_disc_value,0,',','.')}}</div></td>        
+        <td></td>
+        <td class="text-right bold" width="25%">Diskon</td>
+        <td width="30%"><div style="text-align: right">{{number_format($data['sales']->s_disc_percent+$data['sales']->s_disc_value,0,',','.')}}</div></td>        
       </tr>
       <tr>
-         <td colspan="3">    
-    *****************************************
-          
-        </td>
+        <td width=""></td>
+        <td class="text-right bold" width="25%">Bayar</td>
+        <td width="30%"><div style="text-align: right">{{$bayar}}</div></td>        
       </tr>
-      <tr>          
-                <td style="45%">Tanggal</td>
-                <td class="text-right bold" width="25%" style=""></td>
-                <td width="35%"><div style="text-align: right;">Nominal</div></td>
-      </tr>
-
       <tr>
-          @foreach($piutang as $dtp)
-                <td style="">{{$dtp->rd_datepay}}</td>
-                <td class="text-right bold" style=""></td>
-                <td width=""><div style="text-align: right;">{{$dtp->rd_value}}</div></td>                
-          @endforeach
-      </tr>
-
-       <tr>
-         <td colspan="3">    
-    *****************************************
-          
-        </td>
-        </tr>
-      <tr>
-        <td width="45"></td>
-        <td class="text-right bold" width="25%" style="">Bayar</td>
-        <td width="30%"><div style="text-align: right;">{{number_format($data['sales']->s_bayar,0,',','.')}}</div></td>        
-      </tr>
-
-      <tr>
-        <td width="45"></td>
-        <td class="text-right bold" width="25%">Sisa Hutang</td>
-        <td width="30%"><div style="text-align: right;">{{number_format($piutang[0]->r_outstanding,0,',','.')}}</div></td>        
+        <td width=""></td>
+        <td class="text-right bold" width="25%">Kembali</td>
+        <td width="30%"><div style="text-align: right">{{$kembalian}}</div></td>        
       </tr>
       
     </table>
     <br>
-    <div style="">
+    <div>
       
-          Final kasih Semoga berkah, rejekinya lancar
+          Terima kasih Semoga berkah, rejekinya lancar
         
     </div>
-
+</body>
+</html>

@@ -43,7 +43,6 @@ Route::get('/purcahse-order/get-data-code-plan', 'purchaseOrderController@getDat
 Route::get('/purcahse-order/seach-supplier', 'purchaseOrderController@seachSupplier')->middleware('auth');
 Route::get('/purcahse-order/delete-data-order', 'purchaseOrderController@deleteDataOrder')->middleware('auth');
 Route::get('/purcahse-order/save-po', 'purchaseOrderController@savePo')->middleware('auth');
-Route::get('/purcahse-order/update-po', 'purchaseOrderController@updatePo')->middleware('auth');
 
 Route::get('/purcahse-plan/store-plan', 'purchasePlanController@storePlan')->middleware('auth');
 
@@ -89,7 +88,7 @@ Route::get('/purchasing/returnpembelian/find_d_purchase_order', 'PurchaseReturnC
 Route::get('/purchasing/returnpembelian/find_d_purchaseorder_dt', 'PurchaseReturnController@find_d_purchaseorder_dt')->middleware('auth');
 // ====================================================================================
 
-Route::get('/purchasing/returnpembelian/tambah_pembelian', 'PurchasingController@tambah_pembelian')->middleware('auth');
+
 //// master
 /* ricky */
 Route::get('/purchasing/belanjapasar/pasar', 'PurchasingController@pasar')->middleware('auth');

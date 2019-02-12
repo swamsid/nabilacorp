@@ -46,20 +46,39 @@
            <div class="col-md-3 col-sm-6 col-xs-12">
              <label>Kasir</label>
            </div>     
-
+            <input type="hidden" name="s_kasir" value="{{$machine->m_id}}">
            <div class="col-md-3 col-sm-6 col-xs-12">
              <div class="form-group">
                <input class="form-control" type="" name="" value="{{$machine->m_name}}" disabled="">
              </div>
            </div>
 
-          <div class="col-md-3 col-sm-6 col-xs-12">
-             <label>Nama Pelanggan</label>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+             <label>Apakah Member ?</label>
            </div>     
 
            <div class="col-md-3 col-sm-6 col-xs-12">
+             <div class="form-group">
+               <select name="is_member" id="is_member" class="form-control">
+                 <option value="1">Ya</option>
+                 <option value="0" selected>Tidak</option>
+               </select>
+             </div>
+           </div>
+
+           <div class="col-md-3 col-sm-6 col-xs-12">
+             <label>Nama Pelanggan</label>
+           </div>   
+
+          <div class="col-md-3 col-sm-6 col-xs-12 hidden" is-member="1">
              <div class="form-group">               
                <select class="move up1 form-control input-sm reset" id="s_nama_cus" name="s_nama_cus"></select>
+             </div>
+           </div>
+
+           <div class="col-md-3 col-sm-6 col-xs-12" is-member="0">
+             <div class="form-group">               
+               <input class="move up1 form-control input-sm reset" id="s_nama_cus" name="s_nama_cus">
              </div>
            </div>
 
@@ -82,52 +101,15 @@
              </div>
            </div> -->
 
-           <div class="col-md-3 col-sm-6 col-xs-12">
-             <label>Pembayaran</label>
-           </div>     
-
-           <div class="col-md-3 col-sm-6 col-xs-12">
-             <div class="form-group">
-               <select  class="move up1 form-control input-sm s_jenis_bayar" id="s_jenis_bayar" name="s_jenis_bayar" onchange="jenis_bayar()">
-                 <option value="1">Tunai</option>
-                 <option value="2">Tempo</option>
-               </select>
-             </div>
-           </div>
-
-
-          <div class="col-md-3 col-sm-6 col-xs-12">
-             <label>Jatuh Tempo</label>
-           </div>     
-
-           <div class="col-md-3 col-sm-6 col-xs-12">
-             <div class="form-group">
-               <input type="text" class="move up2 form-control input-sm s_duedate" name="s_duedate" id="s_duedate" disabled="">
-             </div>
-           </div>
-
-
-
-
-
-           <div class="col-md-3 col-sm-6 col-xs-12">
-             <label>Tanggal Jadi</label>
-           </div>     
-
-           <div class="col-md-3 col-sm-6 col-xs-12">
-             <div class="form-group">
-               <input onblur="jatuhTempo()" type="text" class="move up1 form-control input-sm s_finishdate" name="s_finishdate" id="s_finishdate" onchange="tglf()">
-             </div>
-           </div>
-
+           
 
         
 
 
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-3 col-sm-6 col-xs-12 hidden">
              <label>Pilih Harga</label>
            </div>     
-           <div class="col-md-3 col-sm-6 col-xs-12">
+           <div class="col-md-3 col-sm-6 col-xs-12 hidden">
              <div class="form-group">
                 <select class="move up1 form-control input-sm" id="harga" name="s_type_price" onchange="harga()">
                 @foreach($daftarHarga as $daftar)
@@ -380,7 +362,7 @@
     <input class="minu mx f2 nominal alignAngka nominal" style="width:90%" type="" name="sp_nominal[]"
      id="nominal" 
      onkeyup="totalPembayaran('nominal');rege(event,'nominal');"      
-     onblur="setRupiah(event,'nominal')" onclick="setAwal(event,'nominal')
+     onblur="setRupiah(event,'nominal')" onclick="setAwal(event,'nominal')"
     autocomplete="off">
       </td>
   </tbody>

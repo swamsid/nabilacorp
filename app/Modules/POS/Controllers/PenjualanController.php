@@ -17,7 +17,7 @@ use App\Http\Controllers\Controller;
 use App\mMember;
 use App\Modules\POS\model\m_paymentmethod;
 use App\Modules\POS\model\m_machine;
-use App\Modules\POS\model\d_salesb;
+use App\Modules\POS\model\d_sales;
 use App\Modules\POS\model\d_sales_dt;
 
 use Datatables;
@@ -127,12 +127,12 @@ class PenjualanController extends Controller
     }
 
     function create(Request $request){
-      return d_salesb::simpan($request);
+      return d_sales::simpan($request);
     }
 
      function update(Request $request){
       
-      return d_salesb::perbarui($request);
+      return d_sales::perbarui($request);
     }
 
     function penjualanDtToko($id,Request $request){      
@@ -172,7 +172,7 @@ class PenjualanController extends Controller
     }
     function listPenjualanData(Request $request){
       /*if($request->ajax()){*/
-        return d_salesb::listPenjualanData($request);
+        return d_sales::listPenjualanData($request);
       /*}else{
         return 'f';
       }*/
@@ -186,7 +186,7 @@ class PenjualanController extends Controller
 
       $bayar=$request->s_bayar;
       $kembalian=$request->kembalian;
-      $data=d_salesb::printNota($id);
+      $data=d_sales::printNota($id);
       $dt=d_sales_dt::where('sd_sales',$id)->select('sd_sales')->get();
       $jumlah=count($dt);
       

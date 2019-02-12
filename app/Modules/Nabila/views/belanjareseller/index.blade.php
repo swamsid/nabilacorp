@@ -139,7 +139,7 @@ $(document).ready(function(){
 
 $("#searchitem").autocomplete({        
     source: function(request, response) {
-        $.getJSON(baseUrl+"/item", {term:$('#searchitem').val(),harga: $('#harga').val() }, 
+        $.getJSON(baseUrl+"/nabila/belanjareseller/item", {term:$('#searchitem').val(),harga: $('#harga').val() }, 
           response);
     },
     minLength: 1,
@@ -324,7 +324,7 @@ function table(){
             {data: 's_note', name: 's_note'},            
             {data: 's_nama_cus', name: 's_nama_cus'},            
             {data: 's_alamat_cus', name: 's_alamat_cus'},            
-            {data: 's_kasir', name: 's_kasir'},            
+            {data: 'm_name', name: 'm_name'},            
             /*{data: 'item', name: 'item'}, */
             {data: 's_gross', name: 's_gross'}, 
             {data: 's_disc_percent', name: 's_disc_percent'}, 

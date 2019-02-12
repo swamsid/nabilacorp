@@ -58,10 +58,10 @@
                                   <th class="wd-15p" width="5%">Kode</th>
                                   <th class="wd-15p" width="24%">Nama Barang</th>
                                   <th class="wd-15p" width="5%">Satuan</th>
-                                  <th class="wd-15p" width="8%">Harga HPP</th>
-                                  <th class="wd-15p" width="8%">Harga Jual</th>
+                                  <th class="wd-15p" width="15%">Harga HPP</th>
+                                  <th class="wd-15p" width="15%">Harga Jual</th>
                                   <th class="wd-15p" width="10%">Kelompok </th>
-                                  <th class="wd-15p" width="7%">Aksi</th>
+                                  <th class="wd-15p" width="10%">Aksi</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -137,14 +137,14 @@ function table(){
                 data: null, 
                 name: 'i_hpp',
                 render : function(res) {
-                  return get_currency(res.i_hpp);
+                  return 'Rp ' + get_currency(res.i_hpp);
                 }
               },      
               {
                 data: null, 
                 name: 'is_price1',
                 render : function(res) {
-                  return get_currency(res.i_price);
+                  return 'Rp ' + get_currency(res.i_price);
                 }
               },      
               {data: 'g_name', name: 'g_name'},            
@@ -157,7 +157,11 @@ function table(){
                   'createdCell':  function (td) {
                      $(td).attr('align', 'right'); 
                   }
-               }
+               },
+               {
+                  'targets': 7,
+                  'className' : 'text-center'
+               },
             ],
             responsive: false,
             "pageLength": 10,

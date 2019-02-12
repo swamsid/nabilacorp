@@ -26,7 +26,7 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
 // ===============================================================
 
 //data supplier
-    Route::get('/master/datasuplier/find_m_suplier', 'SuplierController@find_m_suplier')->name('find_m_suplier');    
+    Route::get('/master/datasuplier/find_m_suplier', 'SuplierController@find_m_suplier')->name('find_m_supplier');    
     Route::get('/master/datasuplier/suplier', 'SuplierController@suplier')->name('suplier');    
     Route::get('/master/datasuplier/suplier', 'SuplierController@suplier')->name('suplier');    
     Route::post('master/datasuplier/suplier_proses', 'SuplierController@suplier_proses');
@@ -35,6 +35,7 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::get('master/datasuplier/suplier_edit/{s_id}', 'SuplierController@suplier_edit');
     Route::post('master/datasuplier/suplier_edit_proses/{s_id}', 'SuplierController@suplier_edit_proses');
     Route::get('master/datasuplier/suplier_hapus', 'SuplierController@suplier_hapus');
+    
 //data supplier selesai
 //customer
     Route::get('/master/datacust/cust', 'custController@cust')->name('cust');
@@ -93,7 +94,7 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::put('/master/datapegawai/update-pegawai-pro/{id}', 'PegawaiController@updatePegawaiPro');
     Route::delete('/master/datapegawai/delete-pegawai-pro/{id}', 'PegawaiController@deletePegawaiPro');
     Route::post('/master/datapegawai/import-pro', 'PegawaiController@importPegawaiPro');
-    Route::get('/master/datapegawai/import-pro', 'PegawaiController@getFilePro');
+    Route::get('/master/datapegawai/`import-pro', 'PegawaiController@getFilePro');
     Route::get('/master/datapegawai/pegawai', 'PegawaiController@pegawai')->name('pegawai');
     Route::get('/master/datapegawai/edit-pegawai/{id}', 'PegawaiController@editPegawai');
     Route::post('/master/datapegawai/update-pegawai/{id}', 'PegawaiController@updatePegawai');
@@ -153,7 +154,7 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::post('/master/datakpi/delete-kpi', 'KpiController@deleteKpi');
 
     // Section membership
-    Route::get('/masterw/membership/member', 'MemberController@index')->middleware('auth')->name('customer');
+    Route::get('/master/membership/member', 'MemberController@index')->middleware('auth')->name('customer');
     Route::get('/master/membership/get_data_all', 'MemberController@get_data_all')->middleware('auth');
     Route::get('/master/membership/get_data_active', 'MemberController@get_data_active')->middleware('auth');
     Route::get('/master/membership/get_data_nonactive', 'MemberController@get_data_nonactive')->middleware('auth');
@@ -163,4 +164,6 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::get('/master/membership/form_alter/{id}', 'MemberController@form_alter')->middleware('auth')->name('form_alter_customer');
     Route::get('/master/membership/preview/{id}', 'MemberController@preview')->middleware('auth')->name('preview_customer');
     Route::get('/master/membership/delete/{id}', 'MemberController@delete')->middleware('auth')->name('delete_m_customer');
+
+    Route::get('/master/databarang/find_m_item', 'itemController@find_m_item')->middleware('auth')->name('find_m_item');
 });
