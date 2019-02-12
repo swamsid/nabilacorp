@@ -196,6 +196,7 @@
     lihatPemakaianByTanggal();
 
   });//end jquery
+
   var index = 0;
   var tamp = [];
   var nomor = 1;
@@ -213,6 +214,7 @@
     var ambilKet = $('#ip_keterangan').val();
     
     var index = tamp.indexOf(ambilIdBarang);
+   
     if (index == -1) 
     {
       if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuanId == "" || scomp == "" || spos == "") 
@@ -265,17 +267,16 @@
     }
     else
     {
-      var qtyLama = parseInt($('.qtyAmbil-'+ambilIdBarang).val())
-      ambilQty = parseInt(ambilQty);
-      $(".qtyAmbil-"+ambilIdBarang).val(qtyLama + ambilQty);
-      clearInput();
+      toastr.warning('Item sudah di pilih!');
     }
   }
 
   $(document).on('click', '.btn_remove', function(a){
-    nomor--;
-    var button_id = $(this).attr('id');
-    $('#row'+button_id).remove();
+   var button_id = $(this).attr('id');
+   var arrayIndex = tamp.findIndex(e => e === button_id);
+   tamp.splice(arrayIndex, 1);
+   $('#row'+button_id).remove();
+   nomor--;
   });
 
 
@@ -485,7 +486,7 @@
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
-          alert('Error get data from ajax');
+          alert('Maaf ada kesalahan!');
       }
     });
   }
@@ -522,8 +523,8 @@
                 +'<input type="hidden" name="fieldEditScomp[]" value="'+data.header[0].gc_id+'" id="field_edit_scomp" class="form-control">'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditQty[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty" class="form-control">'
-                +'<input type="hidden" name="fieldEditQtyLalu[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty_lalu" class="form-control">'
+                +'<input type="text" name="fieldEditQty[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty" class="form-control qtyEdit-'+data.data_isi[key-1].d_pbdt_item+'" onkeyup="editQtyPakai('+data.data_isi[key-1].d_pbdt_item+')">'
+                +'<input type="hidden" name="fieldEditQtyLalu[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty_lalu" class="form-control qtyAmbil-'+data.data_isi[key-1].d_pbdt_item+'">'
               +'</td>'
               +'<td>'
                 +'<input type="text" name="fieldEditSatTxt[]" value="'+data.data_isi[key-1].s_name+'" id="field_edit_sat_txt" class="form-control" readonly>'
@@ -531,7 +532,7 @@
                 +'<input type="hidden" name="fieldHargaSat[]" value="'+data.data_isi[key-1].harga_sat+'" id="field_edit_harga_sat" class="form-control" readonly>'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditStok[]" value="'+data.stok[key-1]+' '+data.txtSat1[key-1].s_name+'" id="field_edit_stok" class="form-control" readonly>'
+                +'<input type="text" name="fieldEditStok[]" value="'+data.stok[key-1]+' '+data.txtSat1[key-1].s_name+'" id="field_edit_stok" class="form-control qtySemula-'+data.data_isi[key-1].d_pbdt_item+'" readonly>'
               +'</td>'
               +'<td>'
                 +'<input type="text" name="fieldEditKet[]" value="'+data.data_isi[key-1].d_pbdt_keterangan+'" id="field_edit_ket" class="form-control">'
@@ -544,10 +545,23 @@
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
-          alert('Error get data from ajax');
+          alert('Maaf ada kesalahan!');
       }
     });
   }
+
+   function editQtyPakai(id)
+   {
+      var ambil = parseInt($('.qtyAmbil-'+id).val());
+      var semula = parseInt($('.qtySemula-'+id).val());
+      var edit = parseInt($('.qtyEdit-'+id).val());
+      var total = ambil + semula;
+      if(edit >= total)
+      {
+         $('.qtyEdit-'+id).val(ambil);
+         toastr.warning('Perubahan item melebihi stok semula!');
+      }
+   }
 
   function submitEdit()
   {

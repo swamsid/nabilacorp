@@ -413,14 +413,14 @@ class PemakaianBrgGdgController extends Controller
               'tgl_pakai' => date('d-m-Y',strtotime($val->d_pb_date))
             );
         }
- 
+     
         foreach ($dataIsi as $val2) 
         {
             $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val2->i_id' AND s_comp = '".$data['id_gdg']."' AND s_position = '".$data['id_gdg']."' limit 1) ,'0') as qtyStok"));
             $stok[] = (int)$query[0]->qtyStok;
             $txtSat1[] = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val2->i_sat1)->first();
         }
-        //auth
+         //auth
         $staff['nama'] = Auth::user()->m_name;
         $staff['id'] = Auth::User()->m_id;
         // dd($dataIsi);
