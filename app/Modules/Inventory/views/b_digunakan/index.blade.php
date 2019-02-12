@@ -147,12 +147,6 @@
       $('#btn_simpan').attr('disabled', false);
     });
 
-    $(document).on('click', '.btn_remove', function(){
-      nomor--;
-      var button_id = $(this).attr('id');
-      $('#row'+button_id+'').remove();
-    });
-
     //validasi
     $("#form-pakai-barang").validate({
       rules:{
@@ -202,11 +196,11 @@
     lihatPemakaianByTanggal();
 
   });//end jquery
-
+  var index = 0;
+  var tamp = [];
   var nomor = 1;
   function addItemRow() 
   {
-    var i = randString(5);
     var ambilSatuanId = $("#ip_sat option:selected").val();
     var ambilSatuanTxt = $("#ip_sat option:selected").text();
     $('#ip_sat').empty();
@@ -217,52 +211,74 @@
     var ambilQty = $('#ip_qtyreq').val();
     var ambilStok = $('#ip_qtyStok').val();
     var ambilKet = $('#ip_keterangan').val();
-    if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuanId == "" || scomp == "" || spos == "") 
+    
+    var index = tamp.indexOf(ambilIdBarang);
+    if (index == -1) 
     {
-      iziToast.warning({
-        position: 'center',
-        title: 'Pemberitahuan',
-        message: "Terdapat kolom yang kosong, dimohon cek lagi !"
-      });
-      clearInput();
-      $('#ip_barang').focus();
+      if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuanId == "" || scomp == "" || spos == "") 
+      {
+        iziToast.warning({
+          position: 'center',
+          title: 'Pemberitahuan',
+          message: "Terdapat kolom yang kosong, dimohon cek lagi !"
+        });
+        clearInput();
+        $('#ip_barang').focus();
 
-    } 
+      } 
+      else
+      {
+        $('#div_item').append(
+          '<tr class="tbl_form_row" id="row'+ambilIdBarang+'">'
+            +'<td style="text-align:center">'+nomor+'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
+              +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control">'
+              +'<input type="hidden" name="fieldIpSpos[]" value="'+spos+'" id="field_ip_spos" class="form-control">'
+              +'<input type="hidden" name="fieldIpScomp[]" value="'+scomp+'" id="field_ip_scomp" class="form-control">'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpQty[]" value="'+ambilQty+'" id="field_ip_qty" class="form-control qtyAmbil-'+ambilIdBarang+'" required readonly>'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpSatTxt[]" value="'+ambilSatuanTxt+'" id="field_ip_sat_txt" class="form-control" required readonly>'
+              +'<input type="hidden" name="fieldIpSatId[]" value="'+ambilSatuanId+'" id="field_ip_sat_id" class="form-control" required readonly>'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpStok[]" value="'+ambilStok+'" id="field_ip_stok" class="form-control" required readonly>'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpKet[]" value="'+ambilKet+'" id="field_ip_ket" class="form-control" readonly>'
+            +'</td>'
+            +'<td>'
+              +'<button name="remove" id="'+ambilIdBarang+'" class="btn btn-danger btn_remove">X</button>'
+            +'</td>'
+          +'</tr>');
+        nomor++;
+        //kosongkan field setelah append row
+        clearInput();
+        // totalPembelian();
+      }
+
+      index++;
+      tamp.push(ambilIdBarang);
+    }
     else
     {
-      $('#div_item').append(
-        '<tr class="tbl_form_row" id="row'+i+'">'
-          +'<td style="text-align:center">'+nomor+'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
-            +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control">'
-            +'<input type="hidden" name="fieldIpSpos[]" value="'+spos+'" id="field_ip_spos" class="form-control">'
-            +'<input type="hidden" name="fieldIpScomp[]" value="'+scomp+'" id="field_ip_scomp" class="form-control">'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpQty[]" value="'+ambilQty+'" id="field_ip_qty" class="form-control" required readonly>'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpSatTxt[]" value="'+ambilSatuanTxt+'" id="field_ip_sat_txt" class="form-control" required readonly>'
-            +'<input type="hidden" name="fieldIpSatId[]" value="'+ambilSatuanId+'" id="field_ip_sat_id" class="form-control" required readonly>'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpStok[]" value="'+ambilStok+'" id="field_ip_stok" class="form-control" required readonly>'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpKet[]" value="'+ambilKet+'" id="field_ip_ket" class="form-control" readonly>'
-          +'</td>'
-          +'<td>'
-            +'<button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button>'
-          +'</td>'
-        +'</tr>');
-      i = randString(5);
-      nomor++;
-      //kosongkan field setelah append row
+      var qtyLama = parseInt($('.qtyAmbil-'+ambilIdBarang).val())
+      ambilQty = parseInt(ambilQty);
+      $(".qtyAmbil-"+ambilIdBarang).val(qtyLama + ambilQty);
       clearInput();
-      // totalPembelian();
     }
   }
+
+  $(document).on('click', '.btn_remove', function(a){
+    nomor--;
+    var button_id = $(this).attr('id');
+    $('#row'+button_id).remove();
+  });
+
+
 
   function submitPakai() {
     var memComp = $('.mem_comp').val();
@@ -718,6 +734,18 @@
   function refreshTabelHistory()
   {
     $('#tbl-history').DataTable().ajax.reload(); 
+  }
+
+  function setQty()
+  {
+    var stok = $('#ip_qtyStok').val();
+    var isiQty = $('#ip_qtyreq').val();
+    var stok = parseInt(stok);
+    if(stok <= isiQty)
+    {
+      $('#ip_qtyreq').val(stok);
+    }
+
   }
   
 </script>
