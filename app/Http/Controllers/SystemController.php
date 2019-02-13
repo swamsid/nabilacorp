@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use DB;
+use File;
+use Auth;
 
 class SystemController extends Controller
 {
@@ -34,7 +38,69 @@ class SystemController extends Controller
 
     public function profil()
     {
-        return view('/system/profilperusahaan/profil');
+        $data = DB::table('d_company_profile')
+            ->first();
+        return view('/system/profilperusahaan/profil', compact('data'));
+    }
+
+    public function updateProfil(Request $request)
+    {   dd($request->all());
+        DB::beginTransaction();
+        try {
+            $nama = $request->companyname;
+            $owner = $request->ownername;
+            $since = Carbon::createFromFormat('d-m-Y', $request->companydate)->format('Y-m-d');
+            $alamat = $request->companyaddress;
+            $telp = $request->telp;
+            $telp2 = $request->telp2;
+            $fax = $request->fax;
+            $email = $request->email;
+            $imagePath = null;
+            $file = $request->file('fileImage');
+            $tgl = carbon::now('Asia/Jakarta');
+            $folder = $tgl->year . $tgl->month . $tgl->timestamp;
+            $dir = 'assets/images/uploads/profil/';
+            $this->deleteDir($dir);
+            $childPath = $dir . '/';
+            $path = $childPath;
+            $name = null;
+            if ($file != null) {
+                $name = $folder . '.' . $file->getClientOriginalExtension();
+                if (!File::exists($path)) {
+                    if (File::makeDirectory($path, 0777, true)) {
+                        $file->move($path, $name);
+                        $imagePath = $childPath . $name;
+                    } else
+                        $imgPath = null;
+                } else {
+                    return 'already exist';
+                }
+            }
+
+            DB::table('d_company_profile')
+                ->where('cp_id', '=', 1)
+                ->update([
+                    'cp_name' => $nama,
+                    'cp_owner' => $owner,
+                    'cp_address' => $alamat,
+                    'cp_date' => $since,
+                    'cp_telp' => $telp,
+                    'cp_telp2' => $telp2,
+                    'cp_fax' => $fax,
+                    'cp_email' => $email,
+                    'cp_image' => $imagePath
+                ]);
+        DB::commit();
+        return response()->json([
+            'status' => 'sukses'
+        ]);
+        } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'data' => $e
+        ]);
+        }
     }
 
     public function finansial()

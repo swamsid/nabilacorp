@@ -17,6 +17,7 @@ Route::group(['namespace' => 'App\Modules\Produksi\Controllers', 'middleware'=>[
 	Route::get('/produksi/spk/lihat-detail', 'spkProductionController@lihatFormula');
 	Route::get('/produksi/spk/ubah-status-spk/{id}', 'spkProductionController@ubahStatusSpk');
 	Route::get('/produksi/o_produksi/select2/pilihspk/{x}', 'ManOutputProduksiController@selectDataSpk');
+	Route::get('produksi/spk/input-data', 'spkProductionController@inputData');
 /* selesai spk*/
 //mahmud output produksi
 	Route::get('/produksi/hasil-produksi/index', 'ManOutputProduksiController@index')->middleware('auth');
@@ -29,6 +30,9 @@ Route::group(['namespace' => 'App\Modules\Produksi\Controllers', 'middleware'=>[
 	Route::get('/produksi/produksi/produksi2', 'ProduksiController@produksi2')->middleware('auth');
 	Route::get('/produksi/waste/waste', 'ProduksiController@waste')->middleware('auth');		
 	Route::get('/produksi/o_produksi/tambah_produksi', 'ProduksiController@tambah_produksi')->middleware('auth');
+//Actual SPK
+	Route::get('/produksi/data_actual/tabel/{tgl1}/{tgl2}', 'dataActualController@tableActual');
+	Route::get('/produksi/o_produksi/save/actual/{id}', 'spkProductionController@saveActual');
 //ITEM PRODUKSI
 	Route::get('/seach-item-Produksi', 'hasilProduksiController@seachItemProduksi');
 	Route::get('/seach-item-mutasi', 'hasilProduksiController@seachItemMutasi');
