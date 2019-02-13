@@ -48,7 +48,7 @@
                                                 </div>
 
                                                 <div class="col-md-12 text-center text" style="padding-top: 15px;">
-                                                    <a href="">
+                                                    <a href="{{ Route('transaksi.kas.index') }}">
                                                         Transaksi Kas
                                                     </a>
                                                 </div>    
@@ -64,7 +64,7 @@
                                                 </div>
 
                                                 <div class="col-md-12 text-center text" style="padding-top: 15px;">
-                                                    <a href="">
+                                                    <a href="{{ Route('transaksi.bank.index') }}">
                                                         Transaksi Bank
                                                     </a>
                                                 </div>    
@@ -80,7 +80,7 @@
                                                 </div>
 
                                                 <div class="col-md-12 text-center text" style="padding-top: 15px;">
-                                                    <a href="">
+                                                    <a href="{{ Route('transaksi.memorial.index') }}">
                                                         Transaksi Memorial
                                                     </a>
                                                 </div>    
