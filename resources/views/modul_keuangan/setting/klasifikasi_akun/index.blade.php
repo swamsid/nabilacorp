@@ -191,7 +191,7 @@
                                                             <table class="table table-stripped table-bordered table-mini">
                                                                 <tbody>
                                                                     <tr v-for="lvl1 in level_1">
-                                                                        <td class="text-center" width="8%">@{{ lvl1.id }}</td>
+                                                                        <td class="text-center" width="8%" style="vertical-align: middle;">@{{ lvl1.id }}</td>
                                                                         <td>
                                                                             <input type="text" name="lvl1[]" style="border: 0px; width: 70%" :value="lvl1.nama" :id="'input-'+lvl1.id" :data-value="lvl1.nama" @blur="checkValue">
 
@@ -280,13 +280,15 @@
                                                             <table class="table table-stripped table-bordered table-mini">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td width="5%" class="text-center">*</td>
+                                                                        <td width="8%" class="text-center">*</td>
                                                                         <td class="text-center" style="position: sticky; top: 0px; background: white;"> Nama </td>
                                                                     </tr>
 
                                                                     <tr v-for="data in dataSubclassPrint" v-if="data.nama != 'Tidak Memiliki'">
-                                                                        <td class="text-center">
-                                                                            <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Hierarki Ini." @click="hapusHierarkiSubclass(data.id)"></i>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <i class="fa fa-lock" v-if="data.status == 'locked'" title="Subclass Dikunci Tidak Bisa Dihapus"></i>
+
+                                                                            <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Subclass Ini." @click="hapusHierarkiSubclass(data.id)"></i>
                                                                         </td>
 
                                                                         <td>
@@ -396,7 +398,7 @@
                                                                     </tr>
 
                                                                     <tr v-for="data in data2Print">
-                                                                        <td class="text-center">
+                                                                        <td class="text-center" style="vertical-align: middle;">
                                                                             <i class="fa fa-lock" v-if="data.status == 'locked'" title="Hierarki Dikunci Tidak Bisa Dihapus"></i>
 
                                                                             <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Hierarki Ini." @click="hapusHierarki2(data.id)"></i>

@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Laporan Neraca Saldo</title>
+		<title>Laporan Hutang</title>
         
 		<link rel="stylesheet" type="text/css" href="{{ asset('modul_keuangan/bootstrap_4_1_3/css/bootstrap.min.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('modul_keuangan/font-awesome_4_7_0/css/font-awesome.min.css') }}">
@@ -97,27 +97,27 @@
 		    }
 
 		    #table-data{
-		    	font-size: 8pt;
+		    	font-size: 9pt;
 		    }
 
-		    #table-data td {
+		    #table-data td{
 		    	padding: 5px 10px;
 		    	border: 1px solid #eee;
 		    }
 
 		    #table-data th{
+		    	padding: 5px 10px;
 		    	background-color: #0099CC;
 		    	color: white;
-		    	padding: 5px 10px;
 		    	border: 1px solid white;
+		    	vertical-align: middle;
 		    }
 
 		    #table-data td.head{
-		    	border: 1px solid white;
+		    	border: 1px solid #0099CC;
 		    	background: #0099CC;
 		    	color: white;
 		    	font-weight: bold;
-		    	text-align: center;
 		    }
 
 		    #table-data td.sub-head{
@@ -125,6 +125,10 @@
 		    	color: #333;
 		    	font-weight: bold;
 		    	text-align: center;
+		    }
+
+		    #table-data td.divide{
+		    	background-color: #eee;
 		    }
 
 		    #contentnya{
@@ -145,13 +149,13 @@
           }
 
           .ctn-nav{
-            display: none;
+          	display: none;
           }
 
           #contentnya{
           	width: 100%;
           	padding: 0px;
-          	margin-top: -80px;
+          	margin-top: -50px;
           }
 
           #table-data th{
@@ -160,13 +164,13 @@
              -webkit-print-color-adjust: exact;
           }
 
-          #table-data td.not-same{
-             color: red !important;
+          #table-data td.divide{
+             background-color: #eee !important;
              -webkit-print-color-adjust: exact;
           }
 
           .page-break { display: block; page-break-before: always; }
-      </style>
+      	</style>
 	</head>
 
 	<body>
@@ -242,7 +246,8 @@
 				<div id="contentnya">
 
 					<?php 
-						$tanggal_1 = switchBulan(explode('/', $_GET['d1'])[0]).' '.explode('/', $_GET['d1'])[1];
+						$tanggal_1 = explode('/', $_GET['d1'])[0].' '.switchBulan(explode('/', $_GET['d1'])[1]).' '.explode('/', $_GET['d1'])[2];
+						$type = ($_GET['type'] == "Hutang_Supplier") ? 'Supplier' : 'Karyawan';
 					?>					
 
 					{{-- Judul Kop --}}
@@ -250,7 +255,7 @@
 						<table width="100%" border="0" style="border-bottom: 1px solid #333;" v-if="pageNow == 1" v-cloak>
 				          <thead>
 				            <tr>
-				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Laporan Neraca Saldo <small>(x1000)</small></th>
+				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Laporan Hutang {{ $type }} ({{ $_GET['jenis'] }})</th>
 				            </tr>
 
 				            <tr>
@@ -261,7 +266,7 @@
 				              <th style="text-align: left; font-size: 8pt; font-weight: 500; padding-bottom: 10px;">(Angka Disajikan Dalam Rupiah, Kecuali Dinyatakan Lain)</th>
 
 				              <th class="text-right" style="font-size: 8pt; font-weight: normal;">
-				              	<b>Bulan {{ $tanggal_1 }}</b>
+				              	<b>Per Tanggal {{ $tanggal_1 }}</b>
 				              </th>
 				            </tr>
 				          </thead>
@@ -270,93 +275,159 @@
 				    {{-- End Judul Kop --}}
 
 			    	<div style="padding-top: 20px;">
+			    		<template v-if="'{{ $_GET["jenis"] }}' == 'rekap'">
+							<table class="table" id="table-data" v-cloak>
 
-						<table class="table" id="table-data" v-cloak>
-							<tbody>
-								<tr>
-									<th width="8%" class="head" rowspan="2">Kode Akun</th>
-									<th width="10%" class="head" rowspan="2">Saldo Awal</th>
+								<thead>
+									<tr>
+										<th rowspan="2" width="2%">No</th>
+										<th rowspan="2" width="22%">Nama Kreditur</th>
+										<th rowspan="2" width="12%">Jumlah Hutang</th>
+										<th rowspan="2" width="12%">Belum Jatuh Tempo</th>
+										<th colspan="4">Sudah Jatuh Tempo</th>
+									</tr>
 
-									<th class="head" colspan="2">Mutasi Kas</th>
-									<th class="head" colspan="2">Mutasi Bank</th>
-									<th class="head" colspan="2">Mutasi Memorial</th>
-									<th class="head" colspan="2">Total Mutasi</th>
-									<th width="10%" class="head" rowspan="2">Saldo Akhir</th>
-								</tr>
+									<tr>
+										<th width="12%">0 - 30 Hari</th>
+										<th width="12%">30 - 60 Hari</th>
+										<th width="12%">60 - 90 Hari</th>
+										<th width="12%">> 90 Hari</th>
+									</tr>
+								</thead>
 
-								<tr>
-									<th width="8%" class="head">Debet</th>
-									<th width="8%" class="head">Kredit</th>
+								<tbody>
+									<template v-for="(data, idx) in dataPrint">
+										<tr>
+											<td style="text-align: center;">@{{ (idx+1) }}</td>
+											<td>@{{ data.nama_supplier }}</td>
+											<td style="text-align: right; font-weight: 600;">@{{ humanizePrice(data.total_hutang) }}</td>
+											<td style="text-align: right; font-weight: 600; color: #007E33;">@{{ humanizePrice(data.belum_jatuh_tempo) }}</td>
+											<td style="text-align: right; font-weight: 600; color: #CC0000;">@{{ humanizePrice(data.first) }}</td>
+											<td style="text-align: right; font-weight: 600; color: #CC0000;">@{{ humanizePrice(data.second) }}</td>
+											<td style="text-align: right; font-weight: 600; color: #CC0000;">@{{ humanizePrice(data.third) }}</td>
+											<td style="text-align: right; font-weight: 600; color: #CC0000;">@{{ humanizePrice(data.fourth) }}</td>
+										</tr>
+									</template>
+								</tbody>
+							</table>
 
-									<th width="8%" class="head">Debet</th>
-									<th width="8%" class="head">Kredit</th>
+							<table class="table" id="table-data" style="margin-top: 20px;">
+								<thead>
+									<tr>
+										<th width="25%" colspan="2" style="text-align: center;">
+											Total Seluruh Hutang
+										</th>
 
-									<th width="8%" class="head">Debet</th>
-									<th width="8%" class="head">Kredit</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtHutang) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtBelumJatuhTempo) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtFirst) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtSecond) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtThird) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtFourth) }}
+										</th>
+									</tr>
+								</thead>
+							</table>
+						</template>
 
-									<th width="8%" class="head">Debet</th>
-									<th width="8%" class="head">Kredit</th>
-								</tr>
+						<template v-if="'{{ $_GET["jenis"] }}' == 'detail'" v-cloak>
+							
+							<table class="table" id="table-data" v-for="(data, idx) in dataPrint" :style="(idx != 0) ? 'margin-top: 30px;' : ''">
 
-								<tr v-for="data in dataPrint">
-									<td>@{{ data.ak_id }}</td>
+								<thead>
+									<tr>
+										<th colspan="9" style="background-color: white; border: 0px; color: #00695c; font-size: 12pt; padding-bottom: 10px;">
+											| @{{ data.nama_supplier }} |
+										</th>
+									</tr>
+									<tr>
+										<th width="2%">No</th>
+										<th width="12%">Tanggal</th>
+										<th width="12%">Tanggal Jatuh Tempo</th>
+										<th width="14%">Nomor Referensi</th>
+										<th width="12%">Belum Jatuh Tempo</th>
+										<th width="12%">0 - 30 Hari</th>
+										<th width="12%">30 - 60 Hari</th>
+										<th width="12%">60 - 90 Hari</th>
+										<th width="12%">> 90 Hari</th>
+									</tr>
+								</thead>
 
-									<td class="text-right">
-										@{{ (data.saldo_awal < 0) ? '('+humanizePrice(data.saldo_awal)+')' : humanizePrice(data.saldo_awal) }}
-									</td>
+								<tbody>
+									<template v-for="(detail, index) in data.detail">
+										<tr>
+											<td style="text-align: center;">@{{ index+1 }}</td>
+											<td style="text-align: center;">@{{ humanizeDate(detail.tanggal) }}</td>
+											<td style="text-align: center;">@{{ humanizeDate(detail.jatuh_tempo) }}</td>
+											<td style="text-align: center;">@{{ detail.nomor_referensi }}</td>
+											<td style="text-align: right; font-weight: 600;">@{{ humanizePrice(detail.belum_jatuh_tempo) }}</td>
+											<td style="text-align: right; font-weight: 600;">@{{ humanizePrice(detail.first) }}</td>
+											<td style="text-align: right; font-weight: 600;">@{{ humanizePrice(detail.second) }}</td>
+											<td style="text-align: right; font-weight: 600;">@{{ humanizePrice(detail.third) }}</td>
+											<td style="text-align: right; font-weight: 600;">@{{ humanizePrice(detail.fourth) }}</td>
+										</tr>
+									</template>
+								</tbody>
 
-									<td class="text-right">
-										@{{ humanizePrice(data.kas_debet) }}
-									</td>
-									<td class="text-right">
-										@{{ humanizePrice(data.kas_kredit) }}
-									</td>
+								<tfoot>
+									<tr>
+										<td colspan="4" style="text-align: center; background-color: #eee; border: 1px solid #fff; font-weight: 600;">
+											Saldo @{{ data.nama_supplier }}
+										</td>
+										<td style="text-align: right; background-color: #eee; border: 1px solid #fff; font-weight: 600; color: #00695c;">
+											@{{ humanizePrice(saldoInfo.parrent[data.id].tot_belum_jatuh_tempo) }}
+										</td>
+										<td style="text-align: right; background-color: #eee; border: 1px solid #fff; font-weight: 600; color: #00695c;">
+											@{{ humanizePrice(saldoInfo.parrent[data.id].tot_first) }}
+										</td>
+										<td style="text-align: right; background-color: #eee; border: 1px solid #fff; font-weight: 600; color: #00695c;">
+											@{{ humanizePrice(saldoInfo.parrent[data.id].tot_second) }}
+										</td>
+										<td style="text-align: right; background-color: #eee; border: 1px solid #fff; font-weight: 600; color: #00695c;">
+											@{{ humanizePrice(saldoInfo.parrent[data.id].tot_third) }}
+										</td>
+										<td style="text-align: right; background-color: #eee; border: 1px solid #fff; font-weight: 600; color: #00695c;">
+											@{{ humanizePrice(saldoInfo.parrent[data.id].tot_fourth) }}
+										</td>
+									</tr>
+								</tfoot>
+							</table>
 
-									<td class="text-right">
-										@{{ humanizePrice(data.bank_debet) }}
-									</td>
-									<td class="text-right">
-										@{{ humanizePrice(data.bank_kredit) }}
-									</td>
+							<table class="table" id="table-data" style="margin-top: 30px;" v-if="nextDisabled" v-cloak>
+								<thead>
+									<tr>
+										<th colspan="4"> Total Seluruh Kreditur</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtBelumJatuhTempo) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtFirst) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtSecond) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtThird) }}
+										</th>
+										<th width="12%" style="text-align: right;">
+											@{{ humanizePrice(saldoInfo.gtFourth) }}
+										</th>
+									</tr>
+								</thead>
+							</table>
 
-									<td class="text-right">
-										@{{ humanizePrice(data.memorial_debet) }}
-									</td>
-									<td class="text-right">
-										@{{ humanizePrice(data.memorial_kredit) }}
-									</td>
-
-									<td class="text-right">
-										@{{ humanizePrice((data.kas_debet + data.bank_debet + data.memorial_debet)) }}
-									</td>
-									<td class="text-right">
-										@{{ humanizePrice((data.kas_kredit + data.bank_kredit + data.memorial_kredit)) }}
-									</td>
-
-									<td class="text-right">
-										@{{ (data.saldo_akhir < 0) ? '('+humanizePrice(data.saldo_akhir)+')' : humanizePrice(data.saldo_akhir) }}
-									</td>
-								</tr>
-
-								<tr>
-									<th></th>
-									<th></th>
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKasDebet) }}</th>
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKasKredit) }}</th>
-
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totBankDebet) }}</th>
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totBankKredit) }}</th>
-
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totMemorialDebet) }}</th>
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totMemorialKredit) }}</th>
-
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totDebet) }}</th>
-									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKredit) }}</th>
-
-									<th></th>
-								</tr>
-							</tbody>
-						</table>
+						</template>
 
 					</div>
 				</div>
@@ -374,35 +445,80 @@
 	        </div>
 
 	        <div class="ez-popup" id="setting-popup">
-	            <div class="layout" style="width: 35%; min-height: 150px;">
+	            <div class="layout" style="width: 35%; min-height: 250px;">
 	                <div class="top-popup" style="background: none;">
 	                    <span class="title">
-	                        Setting Laporan Neraca Saldo
+	                        Setting Laporan Hutang
 	                    </span>
 
 	                    <span class="close"><i class="fa fa-times" style="font-size: 12pt; color: #CC0000"></i></span>
 	                </div>
 	                
 	                <div class="content-popup">
-	                	<form id="form-setting" method="get" action="{{ route('laporan.keuangan.neraca_saldo') }}">
+	                	<form id="form-setting" method="get" action="{{ route('laporan.keuangan.hutang') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
 	                    <div class="col-md-12">
 
 	                        <div class="row mt-form">
 	                            <div class="col-md-4">
-	                                <label class="modul-keuangan">Periode Bulan</label>
+	                                <label class="modul-keuangan">Pilih Tanggal</label>
 	                            </div>
 
-	                            <div class="col-md-4">
+	                            <div class="col-md-8">
 	                            	<table width="100%" border="0">
 	                            		<tr>
 	                            			<td>
-	                            				<vue-datepicker :name="'d1'" :id="'d1'" :title="'Tidak Boleh Kosong'" :readonly="true" :placeholder="'Pilih Tanggal'" :format="'mm/yyyy'" @input="d1Change" :styles="'font-size: 9pt;'"></vue-datepicker>
+	                            				<vue-datepicker :name="'d1'" :id="'d1'" :title="'Tidak Boleh Kosong'" :readonly="true" :placeholder="'Pilih Tanggal'" :format="'dd/mm/yyyy'" @input="d1Change" :styles="'font-size: 9pt;'"></vue-datepicker>
 	                            			</td>
 	                            		</tr>
 	                            	</table>
 	                            </div>
 	                        </div>
+
+	                        <div class="row mt-form">
+	                            <div class="col-md-4">
+	                                <label class="modul-keuangan">Type Hutang</label>
+	                            </div>
+
+	                            <div class="col-md-7">
+	                                <vue-select :name="'type'" :id="'type'" :options="type" :styles="'width:100%'" @input="typeChange"></vue-select>
+	                            </div>
+	                        </div>
+
+	                        <div class="row mt-form">
+	                            <div class="col-md-4">
+	                                <label class="modul-keuangan">Jenis Laporan</label>
+	                            </div>
+
+	                            <div class="col-md-7">
+	                                <vue-select :name="'jenis'" :id="'jenis'" :options="jenis" :styles="'width:100%'"></vue-select>
+	                            </div>
+	                        </div>
+
+	                        <div class="row mt-form">
+	                            {{-- <div class="col-md-3">
+	                                <label class="modul-keuangan"></label>
+	                            </div> --}}
+
+	                            <div class="col-md-12">
+	                                <input type="checkbox" name="semua" title="Centang Untuk Menambahkan Nilai Lebih Bayar Ke Akun Dana Titipan" v-model="semua">
+
+                                	<span style="font-size: 8pt; margin-left: 5px;">Tampilkan Semua Kreditur Yang Memiliki Hutang</span>
+	                            </div>
+	                        </div>
+
+	                        <template v-if='!semua'>
+		                        <div class="row mt-form" style="border-top: 1px solid #eee; padding-top: 20px;">
+		                            <div class="col-md-4">
+		                                <label class="modul-keuangan">Pilih Kreditur</label>
+		                            </div>
+
+		                            <div class="col-md-7">
+		                                <vue-select :name="'kreditur'" :id="'kreditur'" :options="kreditur" :styles="'width:100%'"></vue-select>
+		                            </div>
+		                        </div>
+		                    </template>
+
 	                    </div>
 
 	                    <div class="col-md-12" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
@@ -418,6 +534,14 @@
 		                    	</div>
 		                    </div>
 	                    </div>
+
+	                    {{-- <div class="col-md-12" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 0px; background-color: #0099CC;">
+	                    	<div class="row">
+		                    	<div class="col-md-12" style="padding: 5px 10px; color: white; font-size: 8pt;">
+	                                <i class="fa fa-info-circle"></i> &nbsp;Laporan Hanya Menampilkan Kreditur Yang Memiliki Hutang. 
+	                            </div>
+		                    </div>
+	                    </div> --}}
 
 	                    </form>
 	                </div>
@@ -448,12 +572,13 @@
 			    				textLoading: "",
 			    				statMessage: "Sedang Menyiapkan Laporan..",
 			    				stat: "standby",
+			    				showLawan: true,
 			    				url: new URL(window.location.href),
 
 			    				firstElement: 0,
 			    				dataPage: 1,
 			    				pageNow: 0,
-			    				rowsCount: 25,
+			    				rowsCount: ('{{ $_GET['jenis'] }}' == 'detail') ? 5 : 25,
 
 			    				nextDisabled: false,
 			    				previousDisabled: true,
@@ -464,15 +589,24 @@
 
 			    				// setting
 			    					semua: true,
-			    					lawanAkun: [
+			    					supplier: [],
+			    					karyawan: [],
+			    					kreditur: [],
+			    					type: [
 			    						{
-			    							id: 'true',
-			    							text: 'Tampilkan Akun Lawan'
-			    						},
+			    							id: 'Hutang_Supplier',
+			    							text: 'Hutang Supplier'
+			    						}
+			    					],
 
+			    					jenis: [
 			    						{
-			    							id: 'false',
-			    							text: 'Jangan Tampilkan Akun Lawan'
+			    							id: 'rekap',
+			    							text: 'Rekapan Laporan'
+			    						},
+			    						{
+			    							id: 'detail',
+			    							text: 'Laporan Detail'
 			    						}
 			    					],
 			    			},
@@ -487,10 +621,12 @@
 				            	$('#loading-popup').ezPopup('show');
 
 				            	$('#d1').val('{{ $_GET['d1'] }}');
+				            	$('#type').val('{{ $_GET['type'] }}').trigger('change.select2');
+				            	$('#jenis').val('{{ $_GET['jenis'] }}').trigger('change.select2');
 
 				            	that = this;
 
-				            	axios.get('{{route('laporan.keuangan.neraca_saldo.data_resource')}}?'+that.url.searchParams)
+				            	axios.get('{{route('laporan.keuangan.hutang.data_resource')}}?'+that.url.searchParams)
 			                            .then((response) => {
 
 			                                if(response.data.data.length){
@@ -515,7 +651,27 @@
 			                                	this.pageNow = 1;
 			                                }
 
+			                                if(response.data.supplier.length > 0){
+			                                	this.supplier = response.data.supplier;
+			                                }
+
+			                                if(response.data.karyawan.length > 0){
+			                                	this.karyawan = response.data.karyawan;
+			                                }
+
+			                                this.semua = (response.data.requestSemua == 'on') ? true : false;
+
+			                                if(!this.semua){
+
+			                                	setTimeout(function(){
+		                                			$('#kreditur').val(response.data.kreditur).trigger('change.select2');
+			                                	}, 0);
+
+			                                }
+
+			                                this.typeChange($('#type').val());
 			                                $('#loading-popup').ezPopup('close');
+			                                this.calculatingDK();
 			                            })
 			                            .catch((e) => {
 			                            	this.textLoading = "Data Laporan Bermasalah. Segera Hubungi Developer. message : "+e;
@@ -523,40 +679,71 @@
 				            },
 
 				            computed: {
-				            	totSum: function(){
+				            	saldoInfo: function(){
 				            		that = this;
-				            		var clock;
+				                	var dataParrent = {};
+				                	var gtHutang = gtBelumJatuhTempo = gtFirst = gtSecond = gtThird = gtFourth = 0;
 
-				            		var kd = kk = bd = bk = md = mk = td = tk = 0;
+				                	if('{{ $_GET['jenis'] }}' == 'detail'){
 
-				                	$.each(this.dataSource, function(a, b){
-				                		
-				                		kd += parseFloat(b.kas_debet);
-				                		kk += parseFloat(b.kas_kredit);
+				                		$.each(this.dataPrint, function(alpha, parrent){
+				                			
+				                			var totBelumJatuhTempo = totFirst = totSecond = totThird = totFourth = 0;
 
-				                		bd += parseFloat(b.bank_debet);
-				                		bk += parseFloat(b.bank_kredit);
+				                			$.each(parrent.detail, function(beta, detail){
+				                				totBelumJatuhTempo += parseFloat(detail.belum_jatuh_tempo);
+				                				totFirst += parseFloat(detail.first);
+				                				totSecond += parseFloat(detail.second);
+				                				totThird += parseFloat(detail.third);
+				                				totFourth += parseFloat(detail.fourth);
+				                			})
 
-				                		md += parseFloat(b.memorial_debet);
-				                		mk += parseFloat(b.memorial_kredit);
+				                			dataParrent[parrent.id] = {
+				                				tot_belum_jatuh_tempo 	: totBelumJatuhTempo,
+				                				tot_first 				: totFirst, 
+				                				tot_second 				: totSecond,
+				                				tot_third 				: totThird,
+				                				tot_fourth 				: totFourth
+				                			}
 
-				                		td += (parseFloat(b.kas_debet) + parseFloat(b.bank_debet) + parseFloat(b.memorial_debet));
-				                		tk += (parseFloat(b.kas_kredit) + parseFloat(b.bank_kredit) + parseFloat(b.memorial_kredit));
+				                			gtBelumJatuhTempo += totBelumJatuhTempo;
+				                			gtFirst += totFirst
+				                			gtSecond += totSecond;
+				                			gtThird += totThird;
+				                			gtFourth += totFourth;
 
-				                	})
+				                		})
 
-				                	clock = {
-				                		totKasDebet 	: kd,
-				                		totKasKredit 	: kk,
-				                		totBankDebet 	: bd,
-				                		totBankKredit 	: bk,
-				                		totMemorialDebet : md,
-				                		totMemorialKredit : mk,
-				                		totDebet : td,
-				                		totKredit : tk
+				                		var clock = {
+					                		parrent : dataParrent,
+					                		gtBelumJatuhTempo : gtBelumJatuhTempo,
+					                		gtFirst : gtFirst,
+					                		gtSecond : gtSecond,
+					                		gtThird : gtThird,
+					                		gtFourth : gtFourth
+					                	}
+
+				                	}else{
+				                		$.each(this.dataPrint, function(alpha, parrent){
+
+				                			gtHutang += parrent.total_hutang;
+				                			gtBelumJatuhTempo += parrent.belum_jatuh_tempo;
+				                			gtFirst += parrent.first;
+				                			gtSecond += parrent.second;
+				                			gtThird += parrent.third;
+				                			gtFourth += parrent.fourth;
+
+				                		})
+
+				                		var clock = {
+				                			gtHutang : gtHutang,
+					                		gtBelumJatuhTempo : gtBelumJatuhTempo,
+					                		gtFirst : gtFirst,
+					                		gtSecond : gtSecond,
+					                		gtThird : gtThird,
+					                		gtFourth : gtFourth
+					                	}
 				                	}
-
-				                	console.log(clock);
 
 				                	return clock;
 				            	}
@@ -622,7 +809,7 @@
 			                            stack: false
 									});
 
-				                    $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print.pdf')}}?'+that.url.searchParams)
+				                    $('#pdfIframe').attr('src', '{{route('laporan.keuangan.hutang.print.pdf')}}?'+that.url.searchParams)
 
 				            	},
 
@@ -641,7 +828,7 @@
 			                            stack: false
 			                        });
 
-			                        $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print.excel')}}?'+that.url.searchParams)
+			                        $('#pdfIframe').attr('src', '{{route('laporan.keuangan.hutang.print.excel')}}?'+that.url.searchParams)
 				            	},
 
 				            	print: function(evt){
@@ -659,13 +846,13 @@
 			                            stack: false
 			                        });
 
-				            		window.print();
+				            		// window.print();
 
-				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print')}}?'+that.url.searchParams)
+				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.hutang.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){
-				            	  var kl = alpha.toString().replace('-', '');
+				                  var kl = alpha.toString().replace('-', '');
 				                  bilangan = kl;
 				                  var commas = '00';
 
@@ -700,10 +887,11 @@
 				                	$('#d2').datepicker("setStartDate", e);
 				                },
 
-				                akunChange:function(e){
-				                	var ak2 = $.grep(this.akun, function(alpha){ return alpha.id >= e });
-
-				                	this.akun2 = ak2;
+				                typeChange: function(e){
+				                	if(e == "Hutang_Supplier")
+				                		this.kreditur = this.supplier;
+				                	else
+				                		this.kreditur = this.karyawan;
 				                },
 
 				                prosesLaporan: function(evt){

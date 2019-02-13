@@ -589,7 +589,6 @@
 
 			                                if(!this.semua){
 
-
 			                                	setTimeout(function(){
 		                                			$('#akun1').val(response.data.akun1).trigger('change.select2');
 			                                		$('#akun2').val(response.data.akun2).trigger('change.select2');
@@ -614,13 +613,13 @@
 				                	$.each(this.dataPrint, function(a, b){
 				                		
 				                		var stack = [];
-				                		movement = b.ak_saldo_awal;
+				                		movement = parseFloat(b.ak_saldo_awal);
 
 				                		$.each(b.jurnal_detail, function(c, d){
 				                			if(d.jrdt_dk != b.ak_posisi)
-				                				movement -= d.jrdt_value;
+				                				movement -= parseFloat(d.jrdt_value);
 				                			else
-				                				movement += d.jrdt_value;
+				                				movement += parseFloat(d.jrdt_value);
 
 				                			stack.push(movement)
 				                		})	
@@ -740,7 +739,8 @@
 				            	},
 
 				            	humanizePrice: function(alpha){
-				                  var bilangan = alpha.toString();
+				                  var kl = alpha.toString().replace('-', '');
+				                  bilangan = kl;
 				                  var commas = '00';
 
 

@@ -775,7 +775,17 @@
 				            					var level2 = 0;
 
 				            					$.each(level_2.akun, function(idx4, akun){
-				            						level2 += parseFloat(akun.saldo_akhir);
+				            						if(level_1.hls_id == "1"){
+				            							if(akun.ak_posisi == 'D')
+				            								level2 += parseFloat(akun.saldo_akhir);
+				            							else
+				            								level2 += parseFloat(akun.saldo_akhir) * -1;
+				            						}else{
+				            							if(akun.ak_posisi == 'K')
+				            								level2 += parseFloat(akun.saldo_akhir);
+				            							else
+				            								level2 += parseFloat(akun.saldo_akhir) * -1;
+				            						}
 				            					})
 
 				            					subClass += parseFloat(level2);
