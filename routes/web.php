@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 	Route::get('/penjualan/POSretail/retail/distroy/{id}', 'Penjualan\POSRetailController@distroy')->middleware('auth');
 	Route::get('/penjualan/POSretail/retail/update/{id}', 'Penjualan\POSRetailController@update')->middleware('auth');
    //company profile
-    Route::get('profil-perusahaan', 'SystemController@profil');
+    Route::get('system/profil-perusahaan/index', 'SystemController@profil');
     Route::post('profil-perusahaan/update', 'SystemController@updateProfil');
 	/*Keuangan*/
 	Route::get('/keuangan/p_inputtransaksi/transaksi', 'KeuanganController@transaksi')->middleware('auth');

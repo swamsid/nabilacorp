@@ -92,51 +92,49 @@
                             <div class="icon-bg bg-orange"></div>
                         </i>
                         <span class="menu-title">Master</span><span class="fa arrow"></span>
-                        <!-- for filter -->
-                        <span class="hidden">Master Data Suplier , Master Data Customer , Master Data Item Bahan Baku ,
-                            Master Data Jenis Produksi , Master Data Pegawai , Master Data Akun Keuangan , Master Data
-                            Transaksi Keuangan , Master Data Barang</span>
-                        <!-- =========== -->
                     </a>
                     <ul class="nav nav-second-level">
+
                         <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a
                                 href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Master Data
                                     Suplier</span></a>
                         </li>
+
                         <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a
                                 href="{{ url('/master/membership/member') }}"><span class="submenu-title">Master Member</span></a>
                         </li>
+
                         <li class="menu-sekunder {{ Request::is('master/datacust/cust') ? 'active' : '' || Request::is('master/datacust/*') ? 'active' : '' }}"><a
                                 href="{{ url('/master/datacust/cust') }}"><span class="submenu-title">Master Data
                                     Customer</span></a>
                         </li>
-                        <!--   <li class="menu-sekunder {{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Master Data Item Bahan Baku</span></a>
-                            </li> -->
-                        <!-- <li class="menu-sekunder {{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Master Data Jenis Produksi</span></a>
-                            </li> -->
+
                         <li class="menu-sekunder {{ Request::is('master/modul/keuangan/master/akun') ? 'active' : '' || Request::is('master/modul/keuangan/master/akun/*') ? 'active' : '' }}"><a
                                 href="{{ url('master/modul/keuangan/master/akun') }}"><span class="submenu-title">Master
                                     Data Akun Keuangan</span></a>
                         </li>
-                        <!--   <li class="menu-sekunder {{ Request::is('master/datatransaksi/transaksi') ? 'active' : '' || Request::is('master/datatransaksi/*') ? 'active' : '' }}"><a href="{{ url('/master/datatransaksi/transaksi') }}"><span class="submenu-title">Master Data Transaksi Keuangan</span></a>
-                            </li> -->
+
                         <li class="menu-sekunder {{ Request::is('master/item/index') ? 'active' : '' || Request::is('/master/item/*') ? 'active' : '' }}"><a
                                 href="{{ url('/master/item/index') }}"><span class="submenu-title">Master Data Barang</span></a>
                         </li>
+
                         <li class="menu-sekunder {{ Request::is('master/item_titipan/index') ? 'active' : '' || Request::is('/master/item_titipan/*') ? 'active' : '' }}"><a
                                 href="{{ url('/master/item_titipan/index') }}"><span class="submenu-title">Master Data
                                     Barang Titipan</span></a>
                         </li>
+
                         <li class="menu-sekunder {{ Request::is('master/grouphargakhusus/index') ? 'active' : '' || Request::is('master/grouphargakhusus/*') ? 'active' : '' }}"><a
                                 href="{{ url('master/grouphargakhusus/index') }}"><span class="submenu-title">Group
                                     Harga Khusus</span></a>
                         </li>
+
                         @if(Auth::user()->punyaAkses('Master Formula','ma_read'))
                         <li class="{{ Request::is('master/masterproduksi/index') ? 'active' : '' || Request::is('master/masterproduksi/*') ? 'active' : '' }}">
                             <a href="{{ url('master/masterproduksi/index') }}"><span class="submenu-title">Master
                                     Formula</span><span class="hidden">Master</span></a>
                         </li>
                         @endif
+
                         @if(Auth::user()->punyaAkses('Data Jabatan','ma_read'))
                         <li class="{{ Request::is('master/datajabatan') ? 'active' : '' || Request::is('master/datajabatan/*') ? 'active' : '' }}">
                             <a href="{{ url('/master/datajabatan')}}">
@@ -157,6 +155,7 @@
                             <a href="{{ url('/master/divisi/pos/index') }}"><span class="submenu-title">Data Divisi &
                                     Posisi</span><span class="hidden">Master</span></a>
                         </li>
+
                         @endif
                         @if(Auth::user()->punyaAkses('Data Lowongan','ma_read'))
                         <li class="{{ Request::is('master/datalowongan/index') ? 'active' : '' || Request::is('master/datalowongan/*') ? 'active' : '' }}">
@@ -178,6 +177,7 @@
                                     class="hidden">Master</span></a>
                         </li>
                         @endif
+
                     </ul>
                 </li>
 
@@ -185,42 +185,49 @@
                         href="#"><i class="fa fa-credit-card fa-fw">
                             <div class="icon-bg bg-green"></div>
                         </i><span class="menu-title">Purchasing</span><span class="fa arrow"></span>
-                        <!-- for filter -->
-                        <span class="hidden">Rencana Bahan Baku Produksi , Rencana Pembelian , Order Pembelian ,
-                            Belanja Harian , Return Pembelian</span></a>
-                    <!-- ========== -->
+                        <span class="hidden">
+                            Rencana Bahan Baku Produksi 
+                            Rencana Pembelian 
+                            Manajemen SPK 
+                            Manajemen
+                            Output Produksi 
+                            Manajemen Sampah (Waste)
+                        </span>
                     <ul class="nav nav-second-level">
+
+                        @if(Auth::user()->punyaAkses('Rencana Bahan Baku Produksi','ma_read'))
                         <li class="menu-sekunder {{ Request::is('purchasing/rencanabahanbaku/bahan') ? 'active' : '' || Request::is('purchasing/rencanabahanbaku/*') ? 'active' : '' }}">
-                            <a href="{{ url('/purchasing/rencanabahanbaku/bahan') }}"><span class="submenu-title">Rencana
-                                    Bahan Baku Produksi</span><span class="hidden">Purchasing</span></a>
+                            <a href="{{ url('/purchasing/rencanabahanbaku/bahan') }}"><span class="submenu-title">Rencana Bahan Baku Produksi</span><span class="hidden">Purchasing</span></a>
                         </li>
+                        @endif
+
+                        @if(Auth::user()->punyaAkses('Rencana Pembelian','ma_read'))
                         <li class="menu-sekunder {{ Request::is('purcahse-plan/plan-index') ? 'active' : '' || Request::is('purchasing/rencanapembelian/*') ? 'active' : '' }}">
-                            <a href="{{ url('/purcahse-plan/plan-index') }}"><span class="submenu-title">Rencana
-                                    Pembelian</span><span class="hidden">Purchasing</span></a>
+                            <a href="{{ url('/purcahse-plan/plan-index') }}"><span class="submenu-title">
+                            Rencana Pembelian</span><span class="hidden">Purchasing</span></a>
                         </li>
+                        @endif
+
+                        @if(Auth::user()->punyaAkses('Belanja Harian','ma_read'))
                         <li class="menu-sekunder {{ Request::is('purcahse-order/order-index') ? 'active' : '' || Request::is('purchasing/order/*') ? 'active' : '' }}">
                             <a href="{{ url('/purcahse-order/order-index') }}"><span class="submenu-title">Order
                                     Pembelian</span><span class="hidden">Purchasing</span></a>
                         </li>
-                        <!-- <li class="menu-sekunder {{ Request::is('purchasing/orderpembelian/order') ? 'active' : '' || Request::is('purchasing/orderpembelian/*') ? 'active' : '' }}">
-                            <a href="{{ url('/purchasing/orderpembelian/order') }}"><span class="submenu-title">Order Pembelian Barang Stok</span><span class="hidden">Purchasing</span></a>
-                            </li> -->
-                        <!-- <li class="menu-sekunder {{ Request::is('purchasing/belanjaharian/belanja') ? 'active' : '' || Request::is('purchasing/belanjaharian/*') ? 'active' : '' }}">
-                            <a href="{{ url('/purchasing/belanjaharian/belanja') }}"><span class="submenu-title">Belanja Harian Barang Non Stok</span><span class="hidden">Purchasing</span></a>
-                            </li> -->
+                        @endif
+
                         @if(Auth::user()->punyaAkses('Belanja Harian','ma_read'))
                         <li class="{{ Request::is('purchasing/belanjaharian/belanja') ? 'active' : '' || Request::is('purchasing/belanjaharian/*') ? 'active' : '' }}">
                             <a href="{{ url('/purchasing/belanjaharian/belanja') }}"><span class="submenu-title">Belanja
                                     Harian</span><span class="hidden">Purchasing</span></a>
                         </li>
                         @endif
+
+                        @if(Auth::user()->punyaAkses('Belanja Harian','ma_read'))
                         <li class="menu-sekunder {{ Request::is('purchasing/returnpembelian/pembelian') ? 'active' : '' || Request::is('purchasing/returnpembelian/*') ? 'active' : '' }}">
                             <a href="{{ url('/purchasing/returnpembelian/pembelian') }}"><span class="submenu-title">Return
                                     Pembelian</span><span class="hidden">Purchasing</span></a>
                         </li>
-
-
-
+                        @endif
 
                         @if(Auth::user()->punyaAkses('Laporan Pembelian','ma_read'))
                         <li class="{{ Request::is('purchasing/lap-pembelian/index') ? 'active' : '' || Request::is('purchasing/lap-pembelian/*') ? 'active' : '' }}">
@@ -229,14 +236,12 @@
                         </li>
                         @endif
 
-                        {{-- @if(Auth::user()->punyaAkses('Return Pembelian','ma_read')) --}}
+                        @if(Auth::user()->punyaAkses('Return Pembelian','ma_read'))
                         <li class="{{ Request::is('purchasing/pembayaran_hutang') ? 'active' : '' || Request::is('purchasing/pembayaran_hutang/*') ? 'active' : '' }}">
                             <a href="{{ url('/purchasing/pembayaran_hutang/index') }}"><span class="submenu-title">Pelunasan
                                     Hutang</span><span class="hidden">Purchasing</span></a>
                         </li>
-                        <!-- <li class="menu-sekunder {{ Request::is('purchasing/belanjasuplier/suplier') ? 'active' : '' || Request::is('purchasing/belanjasuplier/suplier*') ? 'active' : '' }}">
-                            <a href="{{ url('/purchasing/belanjasuplier/suplier') }}"><span class="submenu-title">Belanja Suplier</span></a>
-                            </li> -->
+                        @endif
                     </ul>
                 </li>
 
@@ -245,9 +250,15 @@
                             <div class="icon-bg bg-green"></div>
                         </i><span class="menu-title">Inventory</span><span class="fa arrow"></span>
                         <!-- for filter -->
-                        <span class="hidden">Penerimaan Barang Suplier, Pengiriman Barang Hasil Produksi, Penerimaan
-                            Barang Hasil Produksi , Penerimaan Barang Return Customer , Barang Digunakan , Stock Opname</span>
-                        <!-- =========== -->
+                        <span class="hidden">
+                            Monitoring Order & Stock 
+                            Rencana Produksi 
+                            Manajemen SPK 
+                            Manajemen
+                            Output Produksi 
+                            Manajemen Sampah (Waste)
+                        </span>
+                        <!-- ========== -->
                     </a>
                     <ul class="nav nav-second-level">
                         <li class="menu-sekunder {{ Request::is('inventory/p_suplier/suplier') ? 'active' : '' || Request::is('inventory/p_suplier/*') ? 'active' : '' }}"><a
@@ -429,13 +440,6 @@
                         href="#"><i class="fa fa-users fa-fw">
                             <div class="icon-bg bg-green"></div>
                         </i><span class="menu-title">HRD</span><span class="fa arrow"></span>
-                        <span class="hidden">Data Administrasi Pegawai
-                            Data Lembur Pegawai
-                            Scoreboard Pegawai Per Hari
-                            Payroll
-                            Manajemen KPI Pegawai
-                            Training Pegawai
-                            Recruitment</span>
                     </a>
                     <ul class="nav nav-second-level">
                         @if(Auth::user()->punyaAkses('Absensi','ma_read'))
@@ -513,10 +517,6 @@
                         href="#"><i class="fa fa-money fa-fw">
                             <div class="icon-bg bg-green"></div>
                         </i><span class="menu-title">Keuangan</span><span class="fa arrow"></span>
-                        <span class="hidden">Manajemen SPK , Proses Input Transaksi , Laporan Hutang Piutang , Laporan
-                            Keuangan , Analisa Progress Terhadap Perencanaan , Analisa Net Profit Terhadap OCF ,
-                            Analisa Pertumbuhan Aset , Analisa Cashflow , Analisa Common Size dan Index , Analisa Rasio
-                            Keuangan , Analisa Three Bottom Line , Analisa ROE</span>
                     </a>
                     <ul class="nav nav-second-level">
                         <li class="menu-sekunder {{ Request::is('konfirmasi-purchase/index') ? 'active' : '' }}"><a
@@ -546,7 +546,6 @@
                                 href="{{ url('keuangan/modul/keuangan/analisa') }}"><span class="submenu-title">Analisa
                                     Keuangan</span><span class="hidden">Keuangan</span></a>
                         </li>
-
                     </ul>
                 </li>
 
@@ -554,47 +553,23 @@
                         href="#"><i class="fa fa-cog fa-fw fa-spin">
                             <div class="icon-bg bg-green"></div>
                         </i><span class="menu-title">System</span><span class="fa arrow"></span>
-                        <span class="hidden">
-                            Manajemen User
-                            Manajemen Hak Akses
-                            Profil Perusahaan
-                            Tahun Finansial
-                        </span>
                     </a>
-
-
                     <ul class="nav nav-second-level">
-                        <li class="menu-sekunder {{ Request::is('system/hakuser/index') ? 'active' : '' || Request::is('system/hakuser/*') ? 'active' : '' }}"><a
+                        <li class="{{ Request::is('system/hakuser/index') ? 'active' : '' || Request::is('system/hakuser/*') ? 'active' : '' }}"><a
                                 href="{{ url('/system/hakuser/index') }}"><span class="submenu-title">Manajemen User</span><span
                                     class="hidden">System</span></a>
                         </li>
-                        <li class="menu-sekunder {{ Request::is('system/hakakses/akses') ? 'active' : '' || Request::is('system/hakakses/*') ? 'active' : '' }}"><a
-                                href="{{ url('/system/hakakses/akses') }}"><span class="submenu-title">Manajemen Hak
-                                    Akses</span><span class="hidden">System</span></a>
-                        </li>
-                        <li class="menu-sekunder {{ Request::is('profil-perusahaan') ? 'active' : '' || Request::is('profil-perusahaan/*') ? 'active' : '' }}"><a
-                                href="{{ url('/profil-perusahaan') }}"><span class="submenu-title">Profil
+                        <li class="{{ Request::is('system/profil-perusahaan/index') ? 'active' : '' || Request::is('system/profil-perusahaan/*') ? 'active' : '' }}"><a
+                                href="{{ url('/system/profil-perusahaan/index') }}"><span class="submenu-title">Profil
                                     Perusahaan</span><span class="hidden">System</span></a>
                         </li>
                     </ul>
                 </li>
-                <li class="menu-primer {{Request::is('nabila') ? 'active' : '' || Request::is('nabila/*') ? 'active' : '' }}"><a
-                        href="#"><i class="fa fa-fw">N
+                <li class="menu-primer {{Request::is('nabila') ? 'active' : '' || Request::is('nabila/*') ? 'active' : '' }}">
+                    <a href="#"><i class="fa fa-fw fa-spin">
                             <div class="icon-bg bg-green"></div>
                         </i><span class="menu-title">Nabila Moslem</span><span class="fa arrow"></span>
-                        <span class="hidden">
-                            Membership
-                            Belanja Karyawan
-                            Voucher Belanja
-                            Reseller
-                            Marketer Online
-                            Return
-                            Purchasing Plan
-                            Purchasing
-                        </span>
                     </a>
-
-
                     <ul class="nav nav-second-level">
                         <li class="menu-sekunder {{ Request::is('nabila/belanjamember/index') ? 'active' : '' || Request::is('nabila/membership/*') ? 'active' : '' }}"><a
                                 href="{{ url('/nabila/belanjamember/index') }}"><span class="submenu-title">Membership</span><span
