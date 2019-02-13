@@ -25,7 +25,7 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
              <label>No Nota</label>
            </div>     
-
+           <input type="hidden" name="s_kasir" value="{{$machine->m_id}}">
            <div class="col-md-3 col-sm-6 col-xs-12">
              <div class="form-group">
                <input type="text" class="form-control input-sm reset" name="s_note" id="s_note" placeholder="(Auto)" disabled="">
@@ -380,7 +380,7 @@
     <input class="minu mx f2 nominal alignAngka nominal" style="width:90%" type="" name="sp_nominal[]"
      id="nominal" 
      onkeyup="totalPembayaran('nominal');rege(event,'nominal');"      
-     onblur="setRupiah(event,'nominal')" onclick="setAwal(event,'nominal')
+     onblur="setRupiah(event,'nominal')" onclick="setAwal(event,'nominal')"
     autocomplete="off">
       </td>
   </tbody>

@@ -147,12 +147,6 @@
       $('#btn_simpan').attr('disabled', false);
     });
 
-    $(document).on('click', '.btn_remove', function(){
-      nomor--;
-      var button_id = $(this).attr('id');
-      $('#row'+button_id+'').remove();
-    });
-
     //validasi
     $("#form-pakai-barang").validate({
       rules:{
@@ -178,7 +172,7 @@
       //reset all input txt field
       $('#form-pakai-barang')[0].reset();
       //empty select2 field
-      $('#head_gudang').empty();
+  
       //set datepicker to today 
       $('.datepicker2').datepicker('setDate', 'today');
       //remove class all jquery validation error
@@ -203,10 +197,11 @@
 
   });//end jquery
 
+  var index = 0;
+  var tamp = [];
   var nomor = 1;
   function addItemRow() 
   {
-    var i = randString(5);
     var ambilSatuanId = $("#ip_sat option:selected").val();
     var ambilSatuanTxt = $("#ip_sat option:selected").text();
     $('#ip_sat').empty();
@@ -217,54 +212,77 @@
     var ambilQty = $('#ip_qtyreq').val();
     var ambilStok = $('#ip_qtyStok').val();
     var ambilKet = $('#ip_keterangan').val();
-    if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuanId == "" || scomp == "" || spos == "") 
+    
+    var index = tamp.indexOf(ambilIdBarang);
+   
+    if (index == -1) 
     {
-      iziToast.warning({
-        position: 'center',
-        title: 'Pemberitahuan',
-        message: "Terdapat kolom yang kosong, dimohon cek lagi !"
-      });
-      clearInput();
-      $('#ip_barang').focus();
+      if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuanId == "" || scomp == "" || spos == "") 
+      {
+        iziToast.warning({
+          position: 'center',
+          title: 'Pemberitahuan',
+          message: "Terdapat kolom yang kosong, dimohon cek lagi !"
+        });
+        clearInput();
+        $('#ip_barang').focus();
 
-    } 
+      } 
+      else
+      {
+        $('#div_item').append(
+          '<tr class="tbl_form_row" id="row'+ambilIdBarang+'">'
+            +'<td style="text-align:center">'+nomor+'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
+              +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control">'
+              +'<input type="hidden" name="fieldIpSpos[]" value="'+spos+'" id="field_ip_spos" class="form-control">'
+              +'<input type="hidden" name="fieldIpScomp[]" value="'+scomp+'" id="field_ip_scomp" class="form-control">'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpQty[]" value="'+ambilQty+'" id="field_ip_qty" class="form-control qtyAmbil-'+ambilIdBarang+'" required readonly>'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpSatTxt[]" value="'+ambilSatuanTxt+'" id="field_ip_sat_txt" class="form-control" required readonly>'
+              +'<input type="hidden" name="fieldIpSatId[]" value="'+ambilSatuanId+'" id="field_ip_sat_id" class="form-control" required readonly>'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpStok[]" value="'+ambilStok+'" id="field_ip_stok" class="form-control" required readonly>'
+            +'</td>'
+            +'<td>'
+              +'<input type="text" name="fieldIpKet[]" value="'+ambilKet+'" id="field_ip_ket" class="form-control" readonly>'
+            +'</td>'
+            +'<td>'
+              +'<button name="remove" id="'+ambilIdBarang+'" class="btn btn-danger btn_remove">X</button>'
+            +'</td>'
+          +'</tr>');
+        nomor++;
+        //kosongkan field setelah append row
+        clearInput();
+        // totalPembelian();
+      }
+
+      index++;
+      tamp.push(ambilIdBarang);
+    }
     else
     {
-      $('#div_item').append(
-        '<tr class="tbl_form_row" id="row'+i+'">'
-          +'<td style="text-align:center">'+nomor+'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
-            +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control">'
-            +'<input type="hidden" name="fieldIpSpos[]" value="'+spos+'" id="field_ip_spos" class="form-control">'
-            +'<input type="hidden" name="fieldIpScomp[]" value="'+scomp+'" id="field_ip_scomp" class="form-control">'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpQty[]" value="'+ambilQty+'" id="field_ip_qty" class="form-control" required readonly>'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpSatTxt[]" value="'+ambilSatuanTxt+'" id="field_ip_sat_txt" class="form-control" required readonly>'
-            +'<input type="hidden" name="fieldIpSatId[]" value="'+ambilSatuanId+'" id="field_ip_sat_id" class="form-control" required readonly>'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpStok[]" value="'+ambilStok+'" id="field_ip_stok" class="form-control" required readonly>'
-          +'</td>'
-          +'<td>'
-            +'<input type="text" name="fieldIpKet[]" value="'+ambilKet+'" id="field_ip_ket" class="form-control" readonly>'
-          +'</td>'
-          +'<td>'
-            +'<button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button>'
-          +'</td>'
-        +'</tr>');
-      i = randString(5);
-      nomor++;
-      //kosongkan field setelah append row
-      clearInput();
-      // totalPembelian();
+      toastr.warning('Item sudah di pilih!');
     }
   }
 
+  $(document).on('click', '.btn_remove', function(a){
+   var button_id = $(this).attr('id');
+   var arrayIndex = tamp.findIndex(e => e === button_id);
+   tamp.splice(arrayIndex, 1);
+   $('#row'+button_id).remove();
+   nomor--;
+  });
+
+
+
   function submitPakai() {
+    var memComp = $('.mem_comp').val();
     iziToast.question({
       close: false,
       overlay: true,
@@ -285,7 +303,7 @@
               $('#btn_simpan').text('Saving...');
               $('#btn_simpan').attr('disabled',true);
               $.ajax({
-                url : baseUrl + "/inventory/b_digunakan/simpan-data-pakai",
+                url : baseUrl + "/inventory/b_digunakan/simpan-data-pakai/" + memComp,
                 type: "GET",
                 dataType: "JSON",
                 data: $('#form-pakai-barang').serialize(),
@@ -401,7 +419,7 @@
   {
     var tgl1 = $('#tanggal3').val();
     var tgl2 = $('#tanggal4').val();
-    var tampil = $('#tampil_data').val();
+    var tampil = $('.mem_comp').val();
     $('#tbl-history').dataTable({
       "destroy": true,
       "processing" : true,
@@ -415,7 +433,7 @@
         {"data" : "tglPakai", "width" : "10%"},
         {"data" : "d_pb_code", "width" : "10%"},
         {"data" : "i_name", "width" : "15%"},
-        {"data" : "m_sname", "width" : "5%"},
+        {"data" : "s_name", "width" : "5%"},
         {"data" : "qty_pakai", "width" : "10%"},
         {"data" : "d_pb_peminta", "width" : "15%"},
         {"data" : "d_pb_keperluan", "width" : "20%"},
@@ -456,8 +474,8 @@
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
                           +'<td>'+data.data_isi[key-1].qty_pakai+'</td>'
-                          +'<td>'+data.data_isi[key-1].m_sname+'</td>'
-                          +'<td>'+data.stok[key-1]+' '+data.txtSat1[key-1].m_sname+'</td>'
+                          +'<td>'+data.data_isi[key-1].s_name+'</td>'
+                          +'<td>'+data.stok[key-1]+' '+data.txtSat1[key-1].s_name+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pbdt_keterangan+'</td>'
                           +'</tr>');
           key++;
@@ -468,7 +486,7 @@
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
-          alert('Error get data from ajax');
+          alert('Maaf ada kesalahan!');
       }
     });
   }
@@ -501,20 +519,20 @@
                 +'<input type="text" name="fieldEditBarang[]" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" id="field_edit_barang" class="form-control" required readonly>'
                 +'<input type="hidden" name="fieldEditItem[]" value="'+data.data_isi[key-1].d_pbdt_item+'" id="field_edit_item" class="form-control">'
                 +'<input type="hidden" name="fieldEditIdDet[]" value="'+data.data_isi[key-1].d_pbdt_id+'" id="field_edit_id_det" class="form-control">'
-                +'<input type="hidden" name="fieldEditSpos[]" value="'+data.header[0].cg_id+'" id="field_edit_spos" class="form-control">'
-                +'<input type="hidden" name="fieldEditScomp[]" value="'+data.header[0].cg_id+'" id="field_edit_scomp" class="form-control">'
+                +'<input type="hidden" name="fieldEditSpos[]" value="'+data.header[0].gc_id+'" id="field_edit_spos" class="form-control">'
+                +'<input type="hidden" name="fieldEditScomp[]" value="'+data.header[0].gc_id+'" id="field_edit_scomp" class="form-control">'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditQty[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty" class="form-control">'
-                +'<input type="hidden" name="fieldEditQtyLalu[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty_lalu" class="form-control">'
+                +'<input type="text" name="fieldEditQty[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty" class="form-control qtyEdit-'+data.data_isi[key-1].d_pbdt_item+'" onkeyup="editQtyPakai('+data.data_isi[key-1].d_pbdt_item+')">'
+                +'<input type="hidden" name="fieldEditQtyLalu[]" value="'+data.data_isi[key-1].qty_pakai+'" id="field_edit_qty_lalu" class="form-control qtyAmbil-'+data.data_isi[key-1].d_pbdt_item+'">'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditSatTxt[]" value="'+data.data_isi[key-1].m_sname+'" id="field_edit_sat_txt" class="form-control" readonly>'
+                +'<input type="text" name="fieldEditSatTxt[]" value="'+data.data_isi[key-1].s_name+'" id="field_edit_sat_txt" class="form-control" readonly>'
                 +'<input type="hidden" name="fieldEditSatId[]" value="'+data.data_isi[key-1].d_pbdt_sat+'" id="field_edit_sat_id" class="form-control" readonly>'
                 +'<input type="hidden" name="fieldHargaSat[]" value="'+data.data_isi[key-1].harga_sat+'" id="field_edit_harga_sat" class="form-control" readonly>'
               +'</td>'
               +'<td>'
-                +'<input type="text" name="fieldEditStok[]" value="'+data.stok[key-1]+' '+data.txtSat1[key-1].m_sname+'" id="field_edit_stok" class="form-control" readonly>'
+                +'<input type="text" name="fieldEditStok[]" value="'+data.stok[key-1]+' '+data.txtSat1[key-1].s_name+'" id="field_edit_stok" class="form-control qtySemula-'+data.data_isi[key-1].d_pbdt_item+'" readonly>'
               +'</td>'
               +'<td>'
                 +'<input type="text" name="fieldEditKet[]" value="'+data.data_isi[key-1].d_pbdt_keterangan+'" id="field_edit_ket" class="form-control">'
@@ -527,10 +545,23 @@
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
-          alert('Error get data from ajax');
+          alert('Maaf ada kesalahan!');
       }
     });
   }
+
+   function editQtyPakai(id)
+   {
+      var ambil = parseInt($('.qtyAmbil-'+id).val());
+      var semula = parseInt($('.qtySemula-'+id).val());
+      var edit = parseInt($('.qtyEdit-'+id).val());
+      var total = ambil + semula;
+      if(edit >= total)
+      {
+         $('.qtyEdit-'+id).val(ambil);
+         toastr.warning('Perubahan item melebihi stok semula!');
+      }
+   }
 
   function submitEdit()
   {
@@ -548,7 +579,7 @@
           $('#btn_update').attr('disabled',true); //set button disable 
           $.ajax({
             url : baseUrl + "/inventory/b_digunakan/update-data-pakai",
-            type: "POST",
+            type: "GET",
             dataType: "JSON",
             data: $('#form-edit-pakai').serialize(),
             success: function(response)
@@ -615,7 +646,7 @@
         ['<button><b>Ya</b></button>', function (instance, toast) {
           $.ajax({
             url : baseUrl + "/inventory/b_digunakan/delete-data-pakai",
-            type: "POST",
+            type: "GET",
             dataType: "JSON",
             data: {id:id, "_token": "{{ csrf_token() }}"},
             success: function(response)
@@ -717,6 +748,18 @@
   function refreshTabelHistory()
   {
     $('#tbl-history').DataTable().ajax.reload(); 
+  }
+
+  function setQty()
+  {
+    var stok = $('#ip_qtyStok').val();
+    var isiQty = $('#ip_qtyreq').val();
+    var stok = parseInt(stok);
+    if(stok <= isiQty)
+    {
+      $('#ip_qtyreq').val(stok);
+    }
+
   }
   
 </script>

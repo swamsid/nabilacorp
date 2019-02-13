@@ -29,7 +29,7 @@ class RencanaBahanController extends Controller
       
       $tambah=view('Purchase::rencanabahanbaku.tambah');
       $modalDetail=view('Purchase::rencanabahanbaku.modal-detail');
-      return view('Purchase::rencanabahanbaku/index',compact('tambah','modalDetail'));  
+      return view('Purchase::rencanabahanbaku.index',compact('tambah','modalDetail'));  
 
     }
 
@@ -47,13 +47,13 @@ class RencanaBahanController extends Controller
       $dataHeader = spk_formula::join('d_spk', 'spk_formula.fr_spk', '=', 'd_spk.spk_id')
                 ->join('m_item','spk_formula.fr_formula','=','m_item.i_id')
                 ->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')
-                ->select(
-                    'd_spk.*',
+                ->select('d_spk.*',
                     'spk_formula.*',
                     'm_item.i_id as item_id',
                     'm_item.i_name',
                     'm_item.i_code',
                     'm_item.i_sat1',
+                    'm_satuan.s_name',
                     DB::raw('IFNULL(
                               (SELECT SUM(fr_value) FROM spk_formula 
                               JOIN d_spk on spk_formula.fr_spk = d_spk.spk_id 
@@ -65,11 +65,8 @@ class RencanaBahanController extends Controller
                                 FROM d_purchaseplan_dt 
                                 WHERE ppdt_created BETWEEN '".$tanggalMenit1."' AND '".$tanggalMenit2."'
                                 AND ppdt_item = item_id) ,'0') 
-                                as qtyOrderPlan")
-                )
+                                as qtyOrderPlan"))
                 ->where('d_spk.spk_status', '=', 'DR')
-                ->where('spk_formula.fr_status', '=', 'N')
-                // ->where('d_spk.spk_status', '!=', 'AP')  
                 ->whereBetween('d_spk.spk_date', [$tanggal1, $tanggal2])
                 ->groupBy('i_id')
                 ->orderBy('i_name', 'ASC')
@@ -103,32 +100,26 @@ class RencanaBahanController extends Controller
             // return $position;
             //CARI STOCK BARANG
             $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '".$itemType[$i]->i_id."' AND s_comp = '$position' AND s_position = '$position' limit 1) ,'0') as qtyStok"));
-            
             // return $query;
             // CARI SATUAN
             $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $sat1[$counter])->first();
             // return json_encode($satUtama);
-            
             $data['stok'][$i] = $query[0]->qtyStok;
             $data['satuan'][$i] = $satUtama->s_name;
             $counter++;
           }
           elseif ($itemType[$i]->i_type == "BB") //bahan baku
           {
-
             $position=DB::table('d_gudangcabang')
                       ->where('gc_gudang',DB::raw("'GUDANG BAHAN BAKU'"))
                       ->where('gc_comp',$cabang)
                       ->select('gc_id')->first(); 
             $position=$position->gc_id;
-
             $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '".$itemType[$i]->i_id."' AND s_comp = '$position' AND s_position = '$position' limit 1) ,'0') as qtyStok"));
             $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $sat1[$counter])->first();
-            
             $data['stok'][$i] = $query[0]->qtyStok;
             $data['satuan'][$i] = $satUtama->s_name;
             $counter++;
-
           }
           elseif ($itemType[$i]->i_type == "BP") //bahan produksi
           {
@@ -137,10 +128,8 @@ class RencanaBahanController extends Controller
                       ->where('gc_comp',$cabang)
                       ->select('gc_id')->first(); 
             $position=$position->gc_id;
-
             $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '".$itemType[$i]->i_id."' AND s_comp = '$position' AND s_position = '$position' limit 1) ,'0') as qtyStok"));
             $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $sat1[$counter])->first();
-            
             $data['stok'][$i] = $query[0]->qtyStok;
             $data['satuan'][$i] = $satUtama->s_name;
             $counter++;
@@ -155,6 +144,7 @@ class RencanaBahanController extends Controller
           $dataHeader[$j]['tanggal2'] = $tanggal2;
         }
       }
+      // dd($data);
       // return Response::json($dataHeader);
 
       return DataTables::of($dataHeader)
@@ -306,17 +296,15 @@ class RencanaBahanController extends Controller
       $tanggalMenit1 = date('Y-m-d '.$menit ,strtotime($request->tgl1));
       $tanggalMenit2 = date('Y-m-d '.$menit ,strtotime($request->tgl2));
 
-      $list_item = DB::table('d_supplier_brg')->select('d_sb_itemid')->where('d_sb_supid', $request->idsup)->get();
-      
+      $list_item = DB::table('d_item_supplier')->where('is_supplier', $request->idsup)->get();
 
       if (count($list_item) > 0) 
       {
         $d_item = [];
         for ($i=0; $i <count($list_item); $i++) 
         { 
-          $aa = DB::table('m_item')->select('i_id','i_name','i_code')->where('i_id', $list_item[$i]->d_sb_itemid)->first();
-          //$bb = DB::table('spk_formula')->select('fr_formula')->where('fr_spk', $request->idspk)->where('fr_formula', $list_item[$i]->d_sb_itemid)->first();
-          $bb = DB::table('spk_formula')->select('fr_formula')->where('fr_formula', $list_item[$i]->d_sb_itemid)->first();
+          $aa = DB::table('m_item')->select('i_id','i_name','i_code')->where('i_id', $list_item[$i]->is_item)->first();
+          $bb = DB::table('spk_formula')->select('fr_formula')->where('fr_formula', $list_item[$i]->is_item)->first();
           if ($request->item != $aa->i_id) {
             if (!empty($bb->fr_formula)) {
               $d_item[] = array('item_id' => $aa->i_id, 'item_txt'=> $aa->i_name, 'item_code'=> $aa->i_code);
@@ -430,7 +418,6 @@ class RencanaBahanController extends Controller
         {
           // return $request->itemid;
           $list_sup = DB::table('d_item_supplier')->select('is_supplier')->where('is_item', $request->itemid)->groupBy('is_supplier')->get();
-          // $list_sup = DB::table('d_barang_sup')->select('d_bs_supid')->where('d_bs_itemid', $request->itemid)->get();
           foreach ($list_sup as $val) 
           {
             // return $val->is_supplier;
@@ -462,15 +449,18 @@ class RencanaBahanController extends Controller
       {
         $kode_plan = $this->kodeRencanaPembelian();        
         $id_peg = Auth::User()->m_id;
-
         //insert to table d_purchasingplan
         $plan = new d_purchase_plan;
-        $plan->p_code = $kode_plan;
-        $plan->p_supplier = $request->i_sup;
-        $plan->p_comp=Session::get('user_comp');
-        $plan->p_mem = $id_peg;
         $plan->p_date= Carbon::now('Asia/Jakarta')->format('Y-m-d');
-        /*$plan->d_pcsp_created = Carbon::now('Asia/Jakarta');*/
+        // $plan->p_comp = ;
+        // $plan->p_gudang = ;
+        // $plan->p_code = $kode_plan;
+        // $plan->p_supplier = $request->i_sup;
+        // $plan->p_mem = $id_peg;
+        // $plan->p_confirm = ;
+        // $plan->p_status = ;
+        // $plan->p_status_date = ;
+        $plan->p_created = Carbon::now();
         $plan->save();
 
         //get last id plan then insert id to d_purchasingplan_dt

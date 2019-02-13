@@ -48,7 +48,7 @@
           $('[name="is_supplier[]"]').select2({
               width : '100%',
               ajax : {
-                url : '{{ route("find_m_suplier") }}',
+                url : '{{ route("find_m_supplier") }}',
                 datatype : 'json',
                 cache : true,
                 delay : 250,
@@ -128,7 +128,7 @@
             html.find('select').select2({
               width : '100%',
               ajax : {
-                url : '{{ route("find_m_suplier") }}',
+                url : '{{ route("find_m_supplier") }}',
                 datatype : 'json',
                 cache : true,
                 delay : 250,

@@ -127,9 +127,39 @@ function tglf(){
     
 }
 
-$(document).ready(function(){      
-  $("[name='s_nama_cus']").select2({
+$(document).ready(function(){
+  $('[name="is_member"]').change(function(){
+    var is_member = $(this).val();
+    var member_exists = $('[is-member="1"]');
+    var member_non_exists = $('[is-member="0"]');
+    if(is_member == 1) {
+      if( member_exists.hasClass('hidden') ) {
+          member_exists.removeClass('hidden');
+      }
+      
+      if( !member_non_exists.hasClass('hidden') ) {
+          member_non_exists.addClass('hidden');
+      }
+
+      member_exists.find('select').removeAttr('disabled');
+      member_non_exists.find('input').attr('disabled', 'disabled');
+    }
+    else {
+      if( member_non_exists.hasClass('hidden') ) {
+          member_exists.removeClass('hidden');
+      }
+      
+      if( !member_exists.hasClass('hidden') ) {
+          member_non_exists.addClass('hidden');
+      } 
+      member_non_exists.find('input').removeAttr('disabled');
+      member_exists.find('select').attr('disabled', 'disabled');
+    }
+  });
+
+  $("[is-member='1'] [name='s_nama_cus']").select2({
       placeholder: "Pilih Member",
+      width : '100%',
       ajax: {
         url: '{{ url("/nabila/belanjamember/find_customer") }}',
         dataType: 'json',
@@ -147,7 +177,7 @@ $(document).ready(function(){
      }, 
   });
 
-  $("[name='s_nama_cus']").change(function(){
+  $("[is-member='1'] [name='s_nama_cus']").change(function(){
         var data = $(this).select2('data')[0];
         var alamat = data.c_address;
         $('#s_alamat_cus').val(alamat);
@@ -155,7 +185,12 @@ $(document).ready(function(){
 
 $("#searchitem").autocomplete({        
     source: function(request, response) {
-        $.getJSON(baseUrl+"/item", {term:$('#searchitem').val(),harga: $('#harga').val() }, 
+        $.getJSON( "{{ route('item_belanjamember') }}" , 
+          {
+            term:$('#searchitem').val(),
+            s_nama_cus: $('[is-member="1"] #s_nama_cus').val(), 
+            is_member: $('#is_member').val(), 
+          }, 
           response);
     },
     minLength: 1,
@@ -338,9 +373,9 @@ function table(){
        columns: [
             {data: 's_date', name: 's_date'},
             {data: 's_note', name: 's_note'},            
-            {data: 'c_nama', name: 'c_nama'},            
+            {data: 'c_name', name: 'c_name'},            
             {data: 's_alamat_cus', name: 's_alamat_cus'},            
-            {data: 's_kasir', name: 's_kasir'},            
+            {data: 'm_name', name: 'm_name'},            
             /*{data: 'item', name: 'item'}, */
             {data: 's_gross', name: 's_gross'}, 
             {data: 's_disc_percent', name: 's_disc_percent'}, 
@@ -360,9 +395,14 @@ function table(){
 },{
     "targets": 7,
     "className": "text-right",
-},{
+},
+{
     "targets": 8,
     "className": "text-right",
+},
+{
+    "targets": 9,
+    "className": "text-center",
 }
 ],
             //responsive: true,
@@ -1257,21 +1297,22 @@ else if(e.which==27){
 
 
 function buttonSimpanPos($status){      
-  if($('#s_id').val()!='' && $status=='draft'){
+  if($('#s_id').val() !='' && $status=='draft'){
     iziToast.error({
-      position:'topRight',
-      timeout: 1500,
-      title: '',
-      message: "Ma'af, data telah di simpan sebagai draft.",
-  });
+        position:'topRight',
+        timeout: 1500,
+        title: '',
+        message: "Ma'af, data telah di simpan sebagai draft.",
+    });
     return false;
 }
 
 
 if($('#proses').is(':visible')==false){           
   if($('#grand_biaya').val()!='' && $('#grand_biaya').val()!='0'){
-   modalShow();
-}else{
+    modalShow();
+  }
+else{
     iziToast.error({
         position:'topRight',
         timeout: 1500,
@@ -1281,27 +1322,20 @@ if($('#proses').is(':visible')==false){
 
 
 }
-}else if($('#proses').is(':visible')==true){
+}
+else if($('#proses').is(':visible')==true){
     $chekTotal=angkaDesimal($('#akumulasiTotal').val())-angkaDesimal($('#totalBayar').val());            
+    
+    if($chekTotal<=0){                 
 
-    if($('#s_jenis_bayar').val()=='1'){
-      if($chekTotal<=0){                 
-
-        if($('#s_id').val()==''){
-          simpanPos('final');
-      }else if($('#s_id').val()!=''){
-          perbaruiData();
-      }
+      if($('#s_id').val()==''){
+        simpanPos('final');
+    }else if($('#s_id').val()!=''){
+        perbaruiData();
+    }
 
       /*simpanPos($status);*/
-  }else{
-      iziToast.error({
-          position:'topRight',
-          timeout: 1500,
-          title: '',
-          message: "Ma'af, Pembayaran tunai harus lunas.",
-      });
-  }
+  
 }
 
 

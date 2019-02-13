@@ -222,7 +222,7 @@ class hargaKhususController extends Controller
     {
         
         $search = $request->term;        
-        $groupName=['BTPN','BJ','BP'];
+        $groupName=['BTPN','BJ','BP', 'BNM'];
         $sql=DB::table('m_item')             
              ->join('m_satuan','m_satuan.s_id','=','i_sat1')
              ->where('i_name','like','%'.$search.'%')                                    

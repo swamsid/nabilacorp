@@ -25,7 +25,7 @@ class m_itemm extends Model
               ->where('i_type', '!=', 'BTPN')
               ->get();
          return Datatables::of($data)->editColumn('action', function ($data) {                            
-                                return '<div class="">
+                                return '<div class="btn-group">
                                         <a href="#" class="btn btn-warning btn-xs" title="Edit" onclick="edit('.$data->i_id.')"><i class="glyphicon glyphicon-pencil"></i></a>
                                         <a href="#" class="btn btn-danger btn-xs" title="Hapus" onclick="hapus('.$data->i_id.')"><i class="glyphicon glyphicon-trash"></i></a>
                                       </div>';
@@ -47,7 +47,6 @@ class m_itemm extends Model
                       ->where('gc_gudang',DB::raw("'GUDANG PENJUALAN'"))
                       ->where('gc_comp',$cabang)
                       ->select('gc_id')->first();   
-        
         $comp=$position->gc_id;
         $position=$position->gc_id;
 
@@ -159,7 +158,7 @@ class m_itemm extends Model
         $search = $item->term;
         $groupName=['BTPN','BJ','BP'];
         $sql=DB::table('m_item')             
-             ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+             ->join('m_satuan','m_satuan.s_id','=','i_satuan')
              ->where('i_name','like','%'.$search.'%')                                    
              ->whereIn('i_type',$groupName)
              ->orWhere('i_code','like','%'.$search.'%')
@@ -190,7 +189,7 @@ class m_itemm extends Model
               s_name,
               group_concat(DISTINCT i_price separator ',') as i_price,sum(s_qty) as s_qty
               from m_item
-              join m_satuan on i_sat1=s_id
+              join m_satuan on i_satuan=s_id
               join m_group on g_id=i_group
               join d_stock on s_item=i_id 
               where FIND_IN_SET (s_comp,(select ag_gudang from m_acces_gudangitem where ag_fitur='Penjualan'))
@@ -233,12 +232,7 @@ class m_itemm extends Model
         // return json_encode($position);
         $comp=$position->gc_id;
         $position=$position->gc_id;
-        $type = $item->gudang;
-        if ($type == 'GUDANG PENJUALAN') {
-          $tp = 'BJ';
-        }elseif ($type == 'GUDANG BAHAN BAKU') {
-          $tp = 'BB';
-        }
+
 
         $sql=DB::table('m_item')
             ->leftjoin('d_item_supplier',function($join) use ($id_supplier) {
@@ -251,12 +245,12 @@ class m_itemm extends Model
                   $join->where('s_comp',$comp); 
                   $join->where('s_position',$position);
              })
-             ->join('m_satuan as ms_1','ms_1.s_id','=','i_sat1')
+             ->join('m_satuan as ms_1','ms_1.s_id','=','i_satuan')
              ->join('m_satuan as ms_2','ms_2.s_id','=','i_sat2')
              ->join('m_satuan as ms_3','ms_3.s_id','=','i_sat3')
              ->leftjoin('m_price as prc','prc.m_pitem','=','i_id')
              ->leftjoin('d_item_supplier as is_sup','is_sup.is_item','=','i_id')
-             ->select('i_id','i_name','i_sat1','i_sat2','i_sat3','ms_1.s_name as satuan_1','ms_2.s_name as satuan_2','ms_3.s_name as satuan_3','s_qty','i_code','m_pbuy1','m_pbuy2','m_pbuy3','is_sup.is_price1 as m_isup_price1','is_sup.is_price2 as m_isup_price2','is_sup.is_price3 as m_isup_price3');
+             ->select('i_id','i_name','i_satuan','i_sat2','i_sat3','ms_1.s_name as satuan_1','ms_2.s_name as satuan_2','ms_3.s_name as satuan_3','s_qty','i_code','m_pbuy1','m_pbuy2','m_pbuy3','is_sup.is_price1 as m_isup_price1','is_sup.is_price2 as m_isup_price2','is_sup.is_price3 as m_isup_price3');
 
         if($search!='' && $id_supplier!=''){          
             $sql->where(function ($query) use ($search,$groupName) {
@@ -272,7 +266,7 @@ class m_itemm extends Model
         }
 
                
-        $sql=$sql->where('i_type',$tp)->limit(10)->get();
+        $sql=$sql->limit(10)->get();
 
         // return $sql;
 
@@ -289,7 +283,7 @@ class m_itemm extends Model
                     'satuan_1' => $data->satuan_1,
                     'satuan_2' => $data->satuan_2,
                     'satuan_3' => $data->satuan_3,
-                    'sat1_id'  => $data->i_sat1,
+                    'sat1_id'  => $data->i_satuan,
                     'sat2_id'  => $data->i_sat2,
                     'sat3_id'  => $data->i_sat3,
                     'm_pbuy1'  => number_format($data->m_pbuy1,0,',','.'),
@@ -339,7 +333,7 @@ class m_itemm extends Model
                     $join->where('s_comp',$comp); 
                     $join->where('s_position',$position); 
              })
-             ->LEFTjoin('m_satuan','m_satuan.s_id','=','i_sat1')
+             ->LEFTjoin('m_satuan','m_satuan.s_id','=','i_satuan')
              /*->join('m_group','g_id','=','i_group')*/
              ->select('i_id','i_name','m_satuan.s_name as s_name','is_price1','s_qty','i_code');
 
@@ -409,7 +403,7 @@ class m_itemm extends Model
 
 
              })
-             ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+             ->join('m_satuan','m_satuan.s_id','=','i_satuan')
              /*->join('m_group','g_id','=','i_group')*/
              ->select('i_id','i_name','m_satuan.s_name as s_name','i_price','s_qty','i_code','i_hpp');
              
@@ -473,7 +467,7 @@ class m_itemm extends Model
 
 
              })
-             ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+             ->join('m_satuan','m_satuan.s_id','=','i_satuan')
              /*->join('m_group','g_id','=','i_group')*/
              ->select('i_id','i_name','m_satuan.s_name as s_name','i_price','s_qty','i_code');
              
@@ -513,44 +507,55 @@ class m_itemm extends Model
     // barang spk
     public static function itemSpk($item){
     
+    
         $search = $item->term;
-        $groupName=['BPD','BP'];      
+
+        $groupName=['BPD','BP'];
+
+
+            
+
         $sql=DB::table('m_item')
+
              ->join('m_satuan','m_satuan.s_id','=','i_sat1')
              ->where('i_active','Y')
-             ->select('i_id','i_name','m_satuan.s_name as s_name','i_price','i_code');
+             ->select('i_id','i_name','m_satuan.s_name as s_name','i_code');
+
              
-        if($search!='')
-        {          
+
+        if($search!=''){          
             $sql->where(function ($query) use ($search,$groupName) {
                   $query->where('i_name','like','%'.$search.'%');                                    
                   $query->whereIn('i_type',$groupName);                                     
+
                   $query->orWhere('i_code','like','%'.$search.'%');                                    
                   $query->whereIn('i_type',$groupName); 
                   });
-        }
-        else
-        {
+        }else{
           $results[] = [ 'id' => null, 'label' =>'Data belum lengkap'];
           return Response::json($results);
         }
                
-        $sql=$sql->get();        
+        $sql=$sql->get();
+        
+        
 
-        $results = array();         
+        $results = array();
+                        
         if (count($sql)==0) {
           $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
         } else {
           foreach ($sql as $data)
           {
-            $results[] = ['label' => $data->i_name.'  (Rp. ' .number_format($data->i_price,0,',','.').')', 'i_id' => $data->i_id,'satuan' =>$data->s_name,'i_code' =>$data->i_code,'i_price' =>number_format($data->i_price,0,',','.'),'item' => $data->i_name];
+            $results[] = ['label' => $data->i_name, 'i_id' => $data->i_id,'satuan' =>$data->s_name,'i_code' =>$data->i_code,'item' => $data->i_name];
           }
         } 
         return Response::json($results);
+
   }
 
   function m_satuan() {
-    $res = $this->belongsTo('App\m_satuan', 'i_sat1', 's_id');
+    $res = $this->belongsTo('App\m_satuan', 'i_satuan', 's_id');
 
         return $res;
   }

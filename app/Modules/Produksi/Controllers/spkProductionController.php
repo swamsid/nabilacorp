@@ -279,6 +279,10 @@ class spkProductionController extends Controller
             $spk = d_spk::find($spk_id);
             $spk->spk_status = 'FN';
             $spk->save();
+            d_productplan::where('pp_id', $spk->spk_ref)
+                    ->update([
+                        'pp_isspk' => 'C'
+                    ]);
         }
         DB::commit();
         return response()->json([
@@ -388,7 +392,7 @@ class spkProductionController extends Controller
         $actual = spk_actual::where('ac_spk', $request->x)
             ->first();
 
-        return view('produksi.spk.table-inputactual', compact('spk', 'actual'));
+        return view('Produksi::spk.table-inputactual', compact('spk', 'actual'));
     }
 
     public

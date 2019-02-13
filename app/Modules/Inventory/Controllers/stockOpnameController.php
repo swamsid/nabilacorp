@@ -32,23 +32,91 @@ class stockOpnameController extends Controller
 
     public function tableOpname(Request $request, $comp)
     {
-      $term = $request->term;
-      $results = array();
-      $queries = m_itemm::
-        select('i_id',
-               'i_code',
-               'i_name',
-               's_name',
-               's_qty')
-        ->where('m_item.i_name', 'LIKE', '%'.$term.'%')
-        ->where('i_active','Y')
-        ->leftJoin('d_stock',function($join)use($comp){
-        	$join->on('i_id','=','s_item');
-        	$join->on('s_comp','=',DB::raw($comp));
-        	$join->on('s_position','=',DB::raw($comp));
-        })
-        ->leftJoin('m_satuan','m_satuan.s_id','=','i_sat1')
-        ->take(15)->get();
+      $cekGudang = d_gudangcabang::where('gc_id',$comp)->first();
+      if ($cekGudang->gc_gudang == 'GUDANG BAHAN BAKU') 
+      {
+        $term = $request->term;
+        $results = array();
+        $queries = m_itemm::
+          select('i_id',
+                'i_code',
+                'i_name',
+                's_name',
+                's_qty')
+          ->where('m_item.i_name', 'LIKE', '%'.$term.'%')
+          ->where('i_active','Y')
+          ->where('i_type','BB')
+          ->leftJoin('d_stock',function($join)use($comp){
+            $join->on('i_id','=','s_item');
+            $join->on('s_comp','=',DB::raw($comp));
+            $join->on('s_position','=',DB::raw($comp));
+          })
+          ->leftJoin('m_satuan','m_satuan.s_id','=','i_sat1')
+          ->take(15)->get();
+      }
+      else if ($cekGudang->gc_gudang == 'GUDANG PENJUALAN') 
+      {
+        $term = $request->term;
+        $results = array();
+        $queries = m_itemm::
+          select('i_id',
+                'i_code',
+                'i_name',
+                's_name',
+                's_qty')
+          ->where('m_item.i_name', 'LIKE', '%'.$term.'%')
+          ->where('i_active','Y')
+          ->where('i_type','!=','BB')
+          ->leftJoin('d_stock',function($join)use($comp){
+            $join->on('i_id','=','s_item');
+            $join->on('s_comp','=',DB::raw($comp));
+            $join->on('s_position','=',DB::raw($comp));
+          })
+          ->leftJoin('m_satuan','m_satuan.s_id','=','i_sat1')
+          ->take(15)->get();
+      }
+      else if ($cekGudang->gc_gudang == 'GUDANG PRODUKSI') 
+      {
+        $term = $request->term;
+        $results = array();
+        $queries = m_itemm::
+          select('i_id',
+                'i_code',
+                'i_name',
+                's_name',
+                's_qty')
+          ->where('m_item.i_name', 'LIKE', '%'.$term.'%')
+          ->where('i_active','Y')
+          ->where('i_type','BP')
+          ->leftJoin('d_stock',function($join)use($comp){
+            $join->on('i_id','=','s_item');
+            $join->on('s_comp','=',DB::raw($comp));
+            $join->on('s_position','=',DB::raw($comp));
+          })
+          ->leftJoin('m_satuan','m_satuan.s_id','=','i_sat1')
+          ->take(15)->get();
+      }
+      else
+      {
+        $term = $request->term;
+        $results = array();
+        $queries = m_itemm::
+          select('i_id',
+                'i_code',
+                'i_name',
+                's_name',
+                's_qty')
+          ->where('m_item.i_name', 'LIKE', '%'.$term.'%')
+          ->where('i_active','Y')
+          ->leftJoin('d_stock',function($join)use($comp){
+            $join->on('i_id','=','s_item');
+            $join->on('s_comp','=',DB::raw($comp));
+            $join->on('s_position','=',DB::raw($comp));
+          })
+          ->leftJoin('m_satuan','m_satuan.s_id','=','i_sat1')
+          ->take(15)->get();
+      }
+      
       if ($queries == null) {
         $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
       } else {

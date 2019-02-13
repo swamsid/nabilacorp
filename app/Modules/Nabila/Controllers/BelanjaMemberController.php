@@ -59,10 +59,74 @@ class BelanjaMemberController extends Controller
       return view('Nabila::POSpenjualan/POSpenjualan',compact('pilihan'));
     }
     //auto complete barang
-    public function item(Request $item)
-    {      
-      return m_item::seachItem($item);
+    
+    public static function item(Request $item) {      
+        //cari barang jual
+        $results = array();
+        $search = $item->term;
+
+        $harga = $item->harga;
+        $s_nama_cus = $item->s_nama_cus;
+        $s_nama_cus = $s_nama_cus != null ? $s_nama_cus : 0;
+
+        $cabang=Session::get('user_comp');                
+
+        $position=DB::table('d_gudangcabang')
+                      ->where('gc_gudang',DB::raw("'GUDANG NABILAMOSLEM'"))
+                      ->where('gc_comp',$cabang)
+                      ->select('gc_id')->first();   
+        $comp=$position->gc_id;
+        $position=$position->gc_id;
+
+
+        $groupName=['BTPN','BJ','BP'];
+
+
+        /*dd($harga); */   
+
+        $sql = DB::table('m_item')
+             ->leftjoin('d_stock',function($join) use ($comp,$position) {
+                  $join->on('s_item','=','i_id');
+                  $join->where('s_comp',$comp); 
+                  $join->where('s_position',$position);
+
+             })
+             ->leftJoin('m_satuan','m_satuan.s_id','=','i_sat1')           
+             ->leftJoin('m_item_price','ip_item','=','i_id');
+        $sql = $sql->where('i_type', 'BNM');
+        if($search!=''){          
+            $sql = $sql->where('i_name','like','%'.$search.'%')->orWhere('i_code','like','%'.$search.'%');
+        }                                                 
+        else{
+
+          $results[] = [ 'id' => null, 'label' =>'Data belum lengkap'];
+          return response()->json($results);
+        }
+        
+        
+          $price = "IFNULL( (SELECT ip_price FROM m_item_price MP JOIN m_price_group PG ON MP.ip_group = PG.pg_id JOIN m_customer ON pg_id = c_class WHERE c_id = $s_nama_cus AND MP.ip_item = i_id), (SELECT IFNULL(ip_price, 0) FROM m_item_price IP WHERE IP.ip_item = i_id AND ip_group = 4))";
+          $ip_price = DB::raw($price . " AS i_price");
+        
+
+        $ip_edit = DB::raw("IFNULL( (SELECT ip_edit FROM m_item_price MP JOIN m_price_group PG ON MP.ip_group = PG.pg_id JOIN m_customer ON pg_id = c_class WHERE c_id = $s_nama_cus AND MP.ip_item = i_id), (SELECT IFNULL(ip_edit, 'N') FROM m_item_price IP WHERE IP.ip_item = i_id LIMIT 0, 1)) AS ip_edit");
+
+        $label = DB::raw("CONCAT(i_name, ' - Rp ' , $price ) AS label");
+        $satuan = DB::raw('s_name AS satuan');
+        $item = DB::raw('i_name AS item');
+        $comp = DB::raw("$comp AS comp");
+        $position = DB::raw("$position AS position");
+        $stok = DB::raw("IFNULL(s_qty, 0) AS stok");
+
+
+        $sql = $sql->select($label, $item, $satuan, $comp, $position, 'i_id', 'i_code', 'i_name', $stok, $ip_edit, $ip_price);
+        $sql = $sql->groupBy('i_id')->get();                        
+
+        return response()->json($sql);
+
     }
+
+
+
     public function searchItemCode(Request $item)
     {      
       return m_item::searchItemCode($item);
@@ -100,14 +164,10 @@ class BelanjaMemberController extends Controller
 
     function create(Request $request){      
       return DB::transaction(function () use ($request) {   
-          if($request->s_nama_cus==""){
-            $data=['status'=>'gagal','data'=>'Nama pelanggan harus di isi'];
-            return $data;
-          }
-          if($request->s_alamat_cus==""){
-            $data=['status'=>'gagal','data'=>'Alamat pelanggan harus di isi'];
-            return $data;
-          }
+        if($request->s_nama_cus==""){
+          $data=['status'=>'gagal','data'=>'Nama pelanggan harus di isi'];
+          return $data;
+        }
 
       $query = DB::select(DB::raw("SELECT MAX(RIGHT(r_code,4)) as kode_max from d_receivable WHERE DATE_FORMAT(r_created, '%Y-%m') = DATE_FORMAT(CURRENT_DATE(), '%Y-%m')"));
       $kd = "";
@@ -125,29 +185,40 @@ class BelanjaMemberController extends Controller
         $kd = "00001";
       }
 
-$r_code = "DPR-".date('ym')."-".$kd;
+      $r_code = "DPR-".date('ym')."-".$kd;
 
-          $s_gross = format::format($request->s_gross);
-          $s_ongkir = format::format($request->s_ongkir);          
-          $s_disc_value = format::format($request->s_disc_value);
-          $s_disc_percent = format::format($request->s_disc_percent);
-          $s_net= format::format($request->s_net);
-           $kembalian= format::format($request->kembalian);
-          $bayar= format::format($request->s_bayar);
-          $s_bulat= format::format($request->s_bulat);
+      $is_member = format::format($request->is_member);
+      if( $is_member == 1 ) {
+          $s_channel = 'member';
+      }
+      else {
+        $s_channel = 'nonmember';
+      }
 
-          $s_id=d_sales::max('s_id')+1;             
-          $note='MEMBER-'.$s_id.'/'.date('Y.m.d');
-          if($request->s_customer==''){
-            $request->s_customer=0;
-          }
-          
+
+      $s_kasir = format::format($request->s_kasir);
+      $s_gross = format::format($request->s_gross);
+      $s_ongkir = format::format($request->s_ongkir);          
+      $s_disc_value = format::format($request->s_disc_value);
+      $s_disc_percent = format::format($request->s_disc_percent);
+      $s_net= format::format($request->s_net);
+      $kembalian= format::format($request->kembalian);
+      $bayar= format::format($request->s_bayar);
+      $s_bulat= format::format($request->s_bulat);
+      $s_id=d_sales::max('s_id')+1;             
+      $note= strtoupper($s_channel) . '-'.$s_id.'/'.date('Y.m.d');
+      if($request->s_customer==''){
+        $request->s_customer=0;
+      }
+          $s_date = date('Y-m-d',strtotime($request->s_date));
+
           d_sales::create([
                     's_id' =>$s_id ,
                     's_comp'=>Session::get('user_comp'),                    
-                    's_channel'=>'member',
+                    's_kasir' => $s_kasir,
+                    's_channel' => $s_channel,
                     's_jenis_bayar'=>$request->s_jenis_bayar,
-                    's_date'=>date('Y-m-d',strtotime($request->s_date)),
+                    's_date' => $s_date,
                     's_duedate'=>date('Y-m-d',strtotime($request->s_duedate)),
                     's_finishdate'=>date('Y-m-d',strtotime($request->s_finishdate)),
                     's_note'=>$note,
@@ -179,30 +250,30 @@ $r_code = "DPR-".date('ym')."-".$kd;
           }
 
           
-          d_receivable::create([
-                'r_id'=>$r_id,
-                'r_date'=>date('Y-m-d',strtotime($request->s_date)),
-                'r_duedate'=>date('Y-m-d',strtotime($request->s_duedate)),
-                'r_type' =>'belanja member',
-                'r_code'=>$r_code,
-                /*'r_mem',*/
-                'r_customer_name'=>$request->s_nama_cus,
-                'r_alamat_cus'=>$request->s_alamat_cus,
-                'r_ref'=>$note,
-                'r_value'=>$s_net,
-                'r_pay'=>$r_pay,
-                'r_outstanding'=>$p_outstanding,              
+        //   d_receivable::create([
+        //         'r_id'=>$r_id,
+        //         'r_date'=>date('Y-m-d',strtotime($request->s_date)),
+        //         'r_duedate'=>date('Y-m-d',strtotime($request->s_duedate)),
+        //         'r_type' =>'belanja member',
+        //         'r_code'=>$r_code,
+        //         /*'r_mem',*/
+        //         'r_customer_name'=>$request->s_nama_cus,
+        //         'r_alamat_cus'=>$request->s_alamat_cus,
+        //         'r_ref'=>$note,
+        //         'r_value'=>$s_net,
+        //         'r_pay'=>$r_pay,
+        //         'r_outstanding'=>$p_outstanding,              
 
-            ]);
-        if($bayar!=0){
-          d_receivable_dt::create([
-              'rd_receivable' =>$r_id,
-              'rd_detailid'   =>1,
-              'rd_datepay'    =>date('Y-m-d',strtotime($request->s_date)),             
-              'rd_value'      =>$r_pay,
-              'rd_status'     =>'Y'
-          ]);
-        }
+        //     ]);
+        // if($bayar!=0){
+        //   d_receivable_dt::create([
+        //       'rd_receivable' =>$r_id,
+        //       'rd_detailid'   =>1,
+        //       'rd_datepay'    =>date('Y-m-d',strtotime($request->s_date)),             
+        //       'rd_value'      =>$r_pay,
+        //       'rd_status'     =>'Y'
+        //   ]);
+        // }
 
   
           for ($i=0; $i <count($request->sd_item); $i++) {  
@@ -241,7 +312,17 @@ $r_code = "DPR-".date('ym')."-".$kd;
                             'sd_total'=>$sd_total-$sd_disc_value-$sd_disc_percentvalue,
                   ]);
 
-          
+                  mutasi::mutasiStok(
+                      $request->sd_item[$i],
+                      $sd_qty,
+                      $comp,
+                      $position,
+                      'pengurangan stok nabilamoslem',
+                      $note,
+                      '',
+                      $s_date,
+                      '102'
+                  );
         }
 
 /*dd($request->all());*/
@@ -486,12 +567,23 @@ $totalBayar=0;
         $to=date('Y-m-d',strtotime($request->tanggal2));
 
                
-        $d_sales = DB::table('d_sales')
-                  ->join('m_machine','m_id','=','s_machine')                
-                  ->leftJoin('m_pegawai_man', 's_nama_cus', '=', 'c_id')
+        $d_sales_member = DB::table('d_sales')
+                  ->join('m_machine','m_id','=','s_machine')        
+
+
+                  ->leftJoin('m_customer', 's_nama_cus', '=', 'c_id')
                   ->where('s_channel','member')
-                   ->whereBetween('s_date', [$from, $to])->where('s_comp',Session::get('user_comp'))->get();
-      
+                   ->whereBetween('s_date', [$from, $to])->where('s_comp',Session::get('user_comp'))
+                   ->select('s_id', 's_comp', 's_channel', 's_jenis_bayar', 's_date', 's_finishdate', 's_duedate', 's_note', 's_note', 's_kasir', 's_type_price', 's_machine', 's_create_by', 's_create_by', 's_update_by', 's_customer', 's_nama_cus', 's_alamat_cus', 's_gross', 's_disc_percent', 's_disc_value', 's_tax', 's_ongkir', 's_bulat', 's_net', 's_bayar', 's_kembalian', 's_komisi', 's_jurnal', 's_status', 'c_name', 'm_name');
+
+        $d_sales_nonmember = DB::table('d_sales')
+                  ->join('m_machine','m_id','=','s_machine')                
+                  ->where('s_channel','nonmember')
+                  ->whereBetween('s_date', [$from, $to])->where('s_comp',Session::get('user_comp'))
+                  ->select('s_id', 's_comp', 's_channel', 's_jenis_bayar', 's_date', 's_finishdate', 's_duedate', 's_note', 's_note', 's_kasir', 's_type_price', 's_machine', 's_create_by', 's_create_by', 's_update_by', 's_customer', 's_nama_cus', 's_alamat_cus', 's_gross', 's_disc_percent', 's_disc_value', 's_tax', 's_ongkir', 's_bulat', 's_net', 's_bayar', 's_kembalian', 's_komisi', 's_jurnal', 's_status', DB::raw('s_nama_cus AS c_name'), 'm_name');
+
+        $d_sales = $d_sales_member->union($d_sales_nonmember)->get();
+
           return Datatables::of($d_sales)
                          ->addColumn('item', function ($d_sales) {
                             return'<button onclick=dataDetailView(
