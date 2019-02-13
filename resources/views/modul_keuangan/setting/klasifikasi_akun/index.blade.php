@@ -79,7 +79,7 @@
 
                 <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 
-                <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                <li><i></i>&nbsp;Setting&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 
                 <li class="active">Setting Klasifikasi Akun</li>
             </ol>
@@ -97,7 +97,7 @@
                       </div>
 
                       <ul id="generalTab" class="nav nav-tabs">
-                        <li class="active"><a href="#alert-tab" data-toggle="tab">Input Data Akun Keuangan</a></li>
+                        <li class="active"><a href="#alert-tab" data-toggle="tab">Setting Klasifikasi Akun</a></li>
                       </ul>
 
                       <div id="generalTabContent" class="tab-content responsive" style="padding-left: 50px;">

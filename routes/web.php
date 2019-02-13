@@ -428,7 +428,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// klasifikasi akun
 
-					Route::get('modul/keuangan/setting/klasifikasi-akun', [
+					Route::get('system/modul/keuangan/setting/klasifikasi-akun', [
 						"uses"	=> 'modul_keuangan\setting\klasifikasi_akun\klasifikasi_akun_controller@index'
 					])->name('setting.klasifikasi_akun.index');
 

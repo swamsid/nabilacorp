@@ -564,6 +564,10 @@
 
 
                     <ul class="nav nav-second-level">
+                        <li class="menu-sekunder {{ Request::is('system/modul/keuangan/setting/klasifikasi-akun') ? 'active' : '' || Request::is('system/modul/keuangan/setting/klasifikasi-akun/*') ? 'active' : '' }}"><a
+                                href="{{ url('system/modul/keuangan/setting/klasifikasi-akun') }}"><span class="submenu-title">Klasifikasi Akun</span><span
+                                    class="hidden">System</span></a>
+                        </li>
                         <li class="menu-sekunder {{ Request::is('system/hakuser/index') ? 'active' : '' || Request::is('system/hakuser/*') ? 'active' : '' }}"><a
                                 href="{{ url('/system/hakuser/index') }}"><span class="submenu-title">Manajemen User</span><span
                                     class="hidden">System</span></a>
