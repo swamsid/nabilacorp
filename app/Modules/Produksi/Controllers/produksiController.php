@@ -72,7 +72,7 @@ class produksiController extends Controller
 
      public function waste()
     {
-        return view('/produksi/waste/waste');
+        return view('Produksi::waste.index');
     }
     public function tambah_produksi()
     {

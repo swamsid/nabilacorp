@@ -78,7 +78,9 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 	Route::get('/penjualan/POSretail/retail/edit_sales/{id}', 'Penjualan\POSRetailController@edit_sales')->middleware('auth');
 	Route::get('/penjualan/POSretail/retail/distroy/{id}', 'Penjualan\POSRetailController@distroy')->middleware('auth');
 	Route::get('/penjualan/POSretail/retail/update/{id}', 'Penjualan\POSRetailController@update')->middleware('auth');
-
+   //company profile
+    Route::get('profil-perusahaan', 'SystemController@profil');
+    Route::post('profil-perusahaan/update', 'SystemController@updateProfil');
 	/*Keuangan*/
 	Route::get('/keuangan/p_inputtransaksi/transaksi', 'KeuanganController@transaksi')->middleware('auth');
 	Route::get('/keuangan/l_hutangpiutang/hutang', 'KeuanganController@hutang')->middleware('auth');

@@ -392,7 +392,7 @@ class spkProductionController extends Controller
         $actual = spk_actual::where('ac_spk', $request->x)
             ->first();
 
-        return view('produksi.spk.table-inputactual', compact('spk', 'actual'));
+        return view('Produksi::spk.table-inputactual', compact('spk', 'actual'));
     }
 
     public
