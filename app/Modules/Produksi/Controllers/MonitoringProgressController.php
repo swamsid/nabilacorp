@@ -33,11 +33,10 @@ class MonitoringProgressController extends Controller
   }
 
   public function tabel(Request $request){
-
+      $date = date('Y-m-d');
       if($request->fil=='A')
       {
          $comp=Session::get('user_comp');   
-         $date = date('Y-m-d'); 
          $salesPlan=DB::table('d_sales_plan')
                   ->select('spdt_item','sp_date','sp_id','spdt_qty','spdt_salesplan')
                   ->join('d_salesplan_dt','sp_id','=','spdt_salesplan');
