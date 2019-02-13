@@ -583,14 +583,9 @@
                     this.singleData.ak_nomor = conteks['ak_id'].substring(cek);
                     this.singleData.ak_nama = conteks['ak_nama'];
                     this.singleData.ak_id = conteks['ak_id'];
-
-                    if(conteks['ak_type'] == 'detail'){
-                        $('#ak_posisi').val(conteks['ak_posisi']).trigger('change.select2');
-                        $('#ak_opening').val(conteks['ak_opening']);
-                        $('#ak_group_neraca').val(conteks['ak_group_neraca']).trigger('change.select2');
-                        $('#ak_group_lr').val(conteks['ak_group_lr']).trigger('change.select2');
-                        $('#ak_group_ak').val(conteks['ak_group_ak']).trigger('change.select2');
-                    }
+                    
+                    $('#ak_posisi').val(conteks['ak_posisi']).trigger('change.select2');
+                    $('#ak_opening').val(conteks['ak_opening']);
 
                     if(this.list_data_table[idx].ak_status == 'locked'){
                         this.locked = true;
