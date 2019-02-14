@@ -100,9 +100,16 @@
 		    	font-size: 8pt;
 		    }
 
-		    #table-data td, #table-data th {
+		    #table-data td {
 		    	padding: 5px 10px;
 		    	border: 1px solid #eee;
+		    }
+
+		    #table-data th{
+		    	background-color: #0099CC;
+		    	color: white;
+		    	padding: 5px 10px;
+		    	border: 1px solid white;
 		    }
 
 		    #table-data td.head{
@@ -120,7 +127,46 @@
 		    	text-align: center;
 		    }
 
+		    #contentnya{
+	          width: 100%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+          @page { size: landscape; }
+          nav{
+            display: none;
+          }
+
+          .ctn-nav{
+            display: none;
+          }
+
+          #contentnya{
+          	width: 100%;
+          	padding: 0px;
+          	margin-top: -80px;
+          }
+
+          #table-data th{
+             background-color: #0099CC !important;
+             color: white;
+             -webkit-print-color-adjust: exact;
+          }
+
+          #table-data td.not-same{
+             color: red !important;
+             -webkit-print-color-adjust: exact;
+          }
+
+          .page-break { display: block; page-break-before: always; }
+      </style>
 	</head>
 
 	<body>
@@ -193,7 +239,7 @@
 			</div>
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-12" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
 						$tanggal_1 = switchBulan(explode('/', $_GET['d1'])[0]).' '.explode('/', $_GET['d1'])[1];
@@ -204,7 +250,7 @@
 						<table width="100%" border="0" style="border-bottom: 1px solid #333;" v-if="pageNow == 1" v-cloak>
 				          <thead>
 				            <tr>
-				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Laporan Neraca Saldo</th>
+				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Laporan Neraca Saldo <small>(x1000)</small></th>
 				            </tr>
 
 				            <tr>
@@ -228,28 +274,28 @@
 						<table class="table" id="table-data" v-cloak>
 							<tbody>
 								<tr>
-									<td width="8%" class="head" rowspan="2">Kode Akun</td>
-									<td width="10%" class="head" rowspan="2">Saldo Awal</td>
+									<th width="8%" class="head" rowspan="2">Kode Akun</th>
+									<th width="10%" class="head" rowspan="2">Saldo Awal</th>
 
-									<td class="head" colspan="2">Mutasi Kas</td>
-									<td class="head" colspan="2">Mutasi Bank</td>
-									<td class="head" colspan="2">Mutasi Memorial</td>
-									<td class="head" colspan="2">Total Mutasi</td>
-									<td width="10%" class="head" rowspan="2">Saldo Akhir</td>
+									<th class="head" colspan="2">Mutasi Kas</th>
+									<th class="head" colspan="2">Mutasi Bank</th>
+									<th class="head" colspan="2">Mutasi Memorial</th>
+									<th class="head" colspan="2">Total Mutasi</th>
+									<th width="10%" class="head" rowspan="2">Saldo Akhir</th>
 								</tr>
 
 								<tr>
-									<td width="8%" class="head">Debet</td>
-									<td width="8%" class="head">Kredit</td>
+									<th width="8%" class="head">Debet</th>
+									<th width="8%" class="head">Kredit</th>
 
-									<td width="8%" class="head">Debet</td>
-									<td width="8%" class="head">Kredit</td>
+									<th width="8%" class="head">Debet</th>
+									<th width="8%" class="head">Kredit</th>
 
-									<td width="8%" class="head">Debet</td>
-									<td width="8%" class="head">Kredit</td>
+									<th width="8%" class="head">Debet</th>
+									<th width="8%" class="head">Kredit</th>
 
-									<td width="8%" class="head">Debet</td>
-									<td width="8%" class="head">Kredit</td>
+									<th width="8%" class="head">Debet</th>
+									<th width="8%" class="head">Kredit</th>
 								</tr>
 
 								<tr v-for="data in dataPrint">
@@ -293,21 +339,21 @@
 								</tr>
 
 								<tr>
-									<td></td>
-									<td></td>
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKasDebet) }}</td>
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKasKredit) }}</td>
+									<th></th>
+									<th></th>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKasDebet) }}</th>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKasKredit) }}</th>
 
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totBankDebet) }}</td>
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totBankKredit) }}</td>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totBankDebet) }}</th>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totBankKredit) }}</th>
 
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totMemorialDebet) }}</td>
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totMemorialKredit) }}</td>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totMemorialDebet) }}</th>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totMemorialKredit) }}</th>
 
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totDebet) }}</td>
-									<td class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKredit) }}</td>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totDebet) }}</th>
+									<th class="text-right" style="background-color: #0099CC; color: #ffffff;">@{{ humanizePrice(totSum.totKredit) }}</th>
 
-									<td></td>
+									<th></th>
 								</tr>
 							</tbody>
 						</table>
@@ -611,7 +657,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

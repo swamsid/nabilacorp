@@ -295,7 +295,7 @@
                         else
                             return '-';
                     }},
-                    {name: 'Type Akun', context: 'ak_type', width: '20%', childStyle: 'text-align: center'},
+                    {name: 'Tanggal Dibuat', context: 'created_at', width: '20%', childStyle: 'text-align: center'},
                     {name: 'Aktif', context: 'ak_isactive', width: '20%', childStyle: 'text-align: center', override: function(e){
                         if(e === '1')
                             return '<i class="fa fa-check-square-o" style="color: #007E33;"></i>';
@@ -556,7 +556,7 @@
                     this.list_data_table = [];
                     this.onAjaxLoading = true;
 
-                    axios.get('{{ Request('/') }}/modul/keuangan/master/akun/datatable?type='+$('#ak_type').val())
+                    axios.get('{{ Route('akun.datatable') }}?type='+$('#ak_type').val())
                             .then((response) => {
                                 console.log(response.data);
                                 if(response.data.length){

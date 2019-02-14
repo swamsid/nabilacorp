@@ -100,9 +100,14 @@
 		    	font-size: 8pt;
 		    }
 
-		    #table-data td, #table-data th {
+		    #table-data td{
 		    	padding: 5px 10px;
 		    	border: 1px solid #eee;
+		    }
+
+		    #table-data th{
+		    	padding: 5px 10px;
+		    	border: 1px solid #0099CC;
 		    }
 
 		    #table-data td.head{
@@ -119,7 +124,50 @@
 		    	text-align: center;
 		    }
 
+		    #table-data td.divide{
+		    	background-color: #eee;
+		    }
+
+		    #contentnya{
+	          width: 80%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+          @page { size: portrait; }
+          nav{
+            display: none;
+          }
+
+          .ctn-nav{
+          	display: none;
+          }
+
+          #contentnya{
+          	width: 100%;
+          	padding: 0px;
+          	margin-top: -50px;
+          }
+
+          #table-data th{
+             background-color: #0099CC !important;
+             color: white;
+             -webkit-print-color-adjust: exact;
+          }
+
+          #table-data td.divide{
+             background-color: #eee !important;
+             -webkit-print-color-adjust: exact;
+          }
+
+          .page-break { display: block; page-break-before: always; }
+      	</style>
 	</head>
 
 	<body>
@@ -192,7 +240,7 @@
 			</div>
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-12" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
 						$tanggal_1 = switchBulan(explode('/', $_GET['d1'])[0]).' '.explode('/', $_GET['d1'])[1];
@@ -234,7 +282,7 @@
 						<table class="table" id="table-data" v-for="(data, index) in dataPrint" :style="(index > 0) ? 'margin-top: 40px;' : '0px'" v-cloak>
 							<tbody>
 								<tr>
-									<td class="head" colspan="8"> @{{ data.ak_id+" - "+data.ak_nama }} </td>
+									<th class="head" colspan="8" style="background-color: #0099CC; color: white; text-align: left;"> @{{ data.ak_id+" - "+data.ak_nama }} </th>
 								</tr>
 
 								<tr>
@@ -268,7 +316,7 @@
 								</tr>
 
 								<tr>
-									<td colspan="8" style="background-color: #eee;"></td>
+									<td colspan="8" class="divide"></td>
 								</tr>
 
 								<template v-for="(detail, idx) in data.jurnal_detail">
@@ -313,7 +361,7 @@
 									</template>
 
 									<tr v-if="showLawan">
-										<td colspan="8" style="background-color: #eee;"></td>
+										<td colspan="8" style="background-color: #eee;" class="divide"></td>
 									</tr>
 								</template>
 								
@@ -686,7 +734,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.buku_besar.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.buku_besar.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

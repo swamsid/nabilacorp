@@ -120,7 +120,46 @@
 		    	text-align: center;
 		    }
 
+		    #contentnya{
+	          width: 80%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+          @page { size: portrait; }
+          nav{
+            display: none;
+          }
+
+          .ctn-nav{
+            display: none;
+          }
+
+          #contentnya{
+          	width: 100%;
+          	padding: 0px;
+          	margin-top: -80px;
+          }
+
+          #table-data td, #table-data th {
+	    	padding: 5px 5px;
+	    	border: none;
+	    	border-bottom: 1px dotted #ccc;
+		  }
+
+		  #table-data td.left{
+		  	border-bottom: 1px dotted #ccc;
+		  	border-right: 1px dotted #eee;
+		  }
+
+          .page-break { display: block; page-break-before: always; }
+      	</style>
 	</head>
 
 	<body>
@@ -193,7 +232,7 @@
 			</div> --}}
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-8 offset-2" style="background: white; border-radius: 5px; margin-bottom: 70px; padding-bottom: 20px;">
+				<div id="contentnya">
 
 					<?php 
 						if($_GET['type'] == 'bulan')
@@ -237,7 +276,7 @@
 									</tr>
 
 									<tr>
-										<td>
+										<td class="left">
 											<table width="100%" style="font-size: 10pt;">
 												<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 1">
 													<tr>
@@ -864,7 +903,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

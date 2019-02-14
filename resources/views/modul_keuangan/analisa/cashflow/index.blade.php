@@ -102,7 +102,11 @@
 
 		    #table-data td, #table-data th {
 		    	padding: 5px 10px;
-		    	border: 1px solid #eee;
+		    	border: 1px solid #cfcfcf;
+		    }
+
+		    #table-data td{
+		    	font-size: 8pt;
 		    }
 
 		    #table-data td.head{
@@ -120,7 +124,40 @@
 		    	text-align: center;
 		    }
 
+		    #contentnya{
+	          width: 100%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+          @page { size: landscape; }
+          nav{
+            display: none;
+          }
+
+          #contentnya{
+            margin-top: -80px;
+           }
+
+          #table-data th{
+             background-color: #0099CC !important;
+             color: white;
+             -webkit-print-color-adjust: exact;
+          }
+
+          #table-data td.not-same{
+             color: red !important;
+             -webkit-print-color-adjust: exact;
+          }
+
+          .page-break { display: block; page-break-before: always; }
+      </style>
 	</head>
 
 	<body>
@@ -145,7 +182,7 @@
 			          	<i class="fa fa-print" title="Print Laporan" @click="print"></i>
 			        </li>
 
-			        <li class="nav-item dropdown" title="Download Laporan">
+			        {{-- <li class="nav-item dropdown" title="Download Laporan">
 			          	<i class="fa fa-download" id="dropdownMenuButton" data-toggle="dropdown"></i>
 
 			            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -153,13 +190,13 @@
 						    	<i class="fa fa-file-pdf-o" style="font-weight: bold;"></i> &nbsp; Download PDF
 						    </a>
 
-						    {{-- <div class="dropdown-divider"></div>
+						    <div class="dropdown-divider"></div>
 
 						    <a class="dropdown-item" href="#" style="font-size: 10pt;" @click='downloadExcel'>
 						    	<i class="fa fa-file-excel-o" style="font-weight: bold;"></i> &nbsp; Download Excel
-						    </a> --}}
+						    </a>
 					    </div>
-			        </li>
+			        </li> --}}
 
 			        <li class="nav-item">
 			          <i class="fa fa-sliders" title="Pengaturan Laporan" @click="showSetting"></i>
@@ -169,31 +206,8 @@
 			    </div>
 			</nav>
 
-			{{-- <div class="col-md-4 offset-4 ctn-nav" v-cloak>
-				<div class="row" style="color: white; padding: 8px 0px;">
-					<table width="100%" border="0">
-						<tbody>
-							<tr>
-								<td class="text-center" width="40%" style="border-left: 0px solid #999; font-style: italic;">Menampilkan Halaman</td>
-								<td class="text-center" width="10%" style="border-left: 1px solid #999;">@{{ pageNow }}</td>
-								<td class="text-center" width="10%" style="border-left: 1px solid #999;">
-									/
-								</td>
-								<td class="text-center" width="10%" style="border-left: 1px solid #999;">@{{ dataPage }}</td>
-								<td class="text-center" width="15%" style="border-left: 1px solid #999;">
-									<i class="fa fa-arrow-left" :style="(!previousDisabled) ? 'cursor: pointer; color: #fff' : 'cursor: no-drop; color: #888'" @click="previousPage"></i>
-								</td>
-								<td class="text-center" width="15%">
-									<i class="fa fa-arrow-right" :style="(!nextDisabled) ? 'cursor: pointer; color: #fff' : 'cursor: no-drop; color: #888'" @click="nextPage"></i>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div> --}}
-
-			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-12" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+			<div class="container-fluid" id="contentnya" style="background: none; margin-top: 70px; padding: 10px 30px;">
+				<div id="contentnya">
 
 					<?php 
 						if($_GET['type'] == 'bulan')
@@ -205,7 +219,7 @@
 						<table width="100%" border="0" style="border-bottom: 1px solid #333;" v-if="pageNow == 1" v-cloak>
 				          <thead>
 				            <tr>
-				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Analisa Cashflow</th>
+				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Analisa Cashflow <small>( x1000 )</small></th>
 				            </tr>
 
 				            <tr>
@@ -224,28 +238,115 @@
 
 				    {{-- End Judul Kop --}}
 
-			    	<div style="padding-top: 20px;">
+			    	<div style="padding-top: 20px;" v-cloak>
 						<table class="table" id="table-data" v-cloak>
 							<thead>
 								<tr>
-									<th width="10%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Keterangan</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Januari</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Februari</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Maret</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">April</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Mei</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Juni</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Juli</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Agustus</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">September</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Oktober</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">November</th>
-									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Desember</th>
+									<th width="4%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Keterangan</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Januari</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Februari</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Maret</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">April</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Mei</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Juni</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Juli</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Agustus</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">September</th>
+									<th width="8%"style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Oktober</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">November</th>
+									<th width="8%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Desember</th>
 								</tr>
 							</thead>
 								
 							<tbody>
-								
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; text-align: center; color: #0099CC;">Saldo Awal</td>
+									<td style="text-align: right; font-weight: bold; color: #0099CC" v-for="data in dataPrint">
+										@{{ (data.saldo_awal < 0) ? '('+humanizePrice(data.saldo_awal)+')' : humanizePrice(data.saldo_awal) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; background-color: #eee;">OCF IN</td>
+									<td style="text-align: right; font-weight: 600; background-color: #eee;" v-for="data in dataPrint">
+										@{{ (data.ocfIn < 0) ? '('+humanizePrice(data.ocfIn)+')' : humanizePrice(data.ocfIn) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; background-color: #eee;">OCF OUT</td>
+									<td style="text-align: right; font-weight: 600; background-color: #eee;" v-for="data in dataPrint">
+										@{{ (data.ocfOut < 0) ? '('+humanizePrice(data.ocfOut)+')' : humanizePrice(data.ocfOut) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; text-align: center; color: #0099CC;">Total OCF</td>
+									<td style="text-align: right; font-weight: bold; color: #0099CC;" v-for="data in dataPrint">
+										@{{ (parseFloat(data.ocfIn) - parseFloat(data.ocfOut) < 0) ? '('+humanizePrice(parseFloat(data.ocfIn) - parseFloat(data.ocfOut))+')' : humanizePrice(parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; background-color: #eee;">ICF IN</td>
+									<td style="text-align: right; font-weight: 600; background-color: #eee;" v-for="data in dataPrint">
+										@{{ (data.icfIn < 0) ? '('+humanizePrice(data.icfIn)+')' : humanizePrice(data.icfIn) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; background-color: #eee;">ICF OUT</td>
+									<td style="text-align: right; font-weight: 600; background-color: #eee;" v-for="data in dataPrint">
+										@{{ (data.icfOut < 0) ? '('+humanizePrice(data.icfOut)+')' : humanizePrice(data.icfOut) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; text-align: center; color: #0099CC">Total ICF</td>
+									<td style="text-align: right; font-weight: bold; color: #0099CC" v-for="data in dataPrint">
+										@{{ (parseFloat(data.icfIn) - parseFloat(data.icfOut) < 0) ? '('+humanizePrice(parseFloat(data.icfIn) - parseFloat(data.icfOut))+')' : humanizePrice(parseFloat(data.icfIn) - parseFloat(data.icfOut)) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; background-color: #eee;">FCF IN</td>
+									<td style="text-align: right; font-weight: 600; background-color: #eee;" v-for="data in dataPrint">
+										@{{ (data.fcfIn < 0) ? '('+humanizePrice(data.fcfIn)+')' : humanizePrice(data.fcfIn) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; background-color: #eee;">FCF OUT</td>
+									<td style="text-align: right; font-weight: 600; background-color: #eee;" v-for="data in dataPrint">
+										@{{ (data.fcfOut < 0) ? '('+humanizePrice(data.fcfOut)+')' : humanizePrice(data.fcfOut) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; text-align: center; color: #0099CC">Total FCF</td>
+									<td style="text-align: right; font-weight: bold; color: #0099CC" v-for="data in dataPrint">
+										@{{ (parseFloat(data.fcfIn) - parseFloat(data.fcfOut) < 0) ? '('+humanizePrice(parseFloat(data.fcfIn) - parseFloat(data.fcfOut))+')' : humanizePrice(parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td colspan="13">&nbsp;</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; text-align: center; color: #0099CC;">Total Cashflow</td>
+									<td style="text-align: right; font-weight: bold; vertical-align: middle;" v-for="data in dataPrint">
+										@{{ ( ((parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) + (parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) + (parseFloat(data.icfIn) - parseFloat(data.icfOut))) < 0) ? '('+humanizePrice(((parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) + (parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) + (parseFloat(data.icfIn) - parseFloat(data.icfOut))))+')' : humanizePrice(((parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) + (parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) + (parseFloat(data.icfIn) - parseFloat(data.icfOut)))) }}
+									</td>
+								</tr>
+
+								<tr>
+									<td style="font-weight: bold; font-size: 7.8pt; text-align: center; color: #0099CC;">Saldo Akhir</td>
+									<td style="text-align: right; font-weight: bold; vertical-align: middle;" v-for="data in dataPrint">
+										@{{ ( (parseFloat(data.saldo_awal) + ((parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) + (parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) + (parseFloat(data.icfIn) - parseFloat(data.icfOut)))) < 0) ? '('+humanizePrice((parseFloat(data.saldo_awal) + ((parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) + (parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) + (parseFloat(data.icfIn) - parseFloat(data.icfOut)))))+')' : humanizePrice((parseFloat(data.saldo_awal) + ((parseFloat(data.ocfIn) - parseFloat(data.ocfOut)) + (parseFloat(data.fcfIn) - parseFloat(data.fcfOut)) + (parseFloat(data.icfIn) - parseFloat(data.icfOut))))) }}
+									</td>
+								</tr>
+
 							</tbody>
 						</table>
 					</div>
@@ -274,7 +375,7 @@
 	                </div>
 	                
 	                <div class="content-popup">
-	                	<form id="form-setting" method="get" action="{{ route('analisa.keuangan.pertumbuhan_aset') }}">
+	                	<form id="form-setting" method="get" action="{{ route('analisa.keuangan.cashflow') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
 	                    <div class="col-md-12">
 
@@ -569,7 +670,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('analisa.keuangan.cashflow.print')}}?'+that.url.searchParams)
+			                        window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('analisa.keuangan.cashflow.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

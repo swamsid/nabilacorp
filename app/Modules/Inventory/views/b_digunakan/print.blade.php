@@ -110,7 +110,7 @@
 		@for($i=0;$i<count($dataIsi);$i++)
 		
 			<div class="div-page-break">
-					<h1 class="s16">TAMMA ROBAH INDONESIA</h1>
+					<h1 class="s16">CV. Nabila Cake Bakery & Pastry</h1>
 					<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
 						<tr>
 							<td class="s16 underline bold text-center" colspan="3">FORM PEMAKAIAN BARANG GUDANG</td>
@@ -142,8 +142,8 @@
 								<td class="text-center">{{$j+1}}</td>
 								<td>{{$dataIsi[$i][$j]['i_code']}} {{$dataIsi[$i][$j]['i_name']}}</td>
 								<td class="text-center">{{$dataIsi[$i][$j]['qty_pakai']}}</td>
-								<td>{{$dataIsi[$i][$j]['m_sname']}}</td>
-								<td>{{ $val_stock[$i][$j] }} {{ $txt_satuan[$i][$j]->m_sname }}</td>
+								<td>{{$dataIsi[$i][$j]['s_name']}}</td>
+								<td>{{ $val_stock[$i][$j] }} {{ $txt_satuan[$i][$j]->s_name }}</td>
 								<td>{{$dataIsi[$i][$j]['d_pbdt_keterangan']}}</td>
 							</tr>
 						@endfor
@@ -252,8 +252,8 @@
 								<td class="text-center">{{$j+1}}</td>
 								<td>{{$dataIsi[$i][$j]['i_code']}} {{$dataIsi[$i][$j]['i_name']}}</td>
 								<td class="text-center">{{$dataIsi[$i][$j]['qty_pakai']}}</td>
-								<td>{{$dataIsi[$i][$j]['m_sname']}}</td>
-								<td>{{ $val_stock[$i][$j] }} {{ $txt_satuan[$i][$j]->m_sname }}</td>
+								<td>{{$dataIsi[$i][$j]['s_name']}}</td>
+								<td>{{ $val_stock[$i][$j] }} {{ $txt_satuan[$i][$j]->s_name }}</td>
 								<td>{{$dataIsi[$i][$j]['d_pbdt_keterangan']}}</td>
 							</tr>
 						@endfor

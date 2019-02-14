@@ -596,7 +596,7 @@ class d_salesb extends Model
                  ->where('s_id',$s_id)->first();
           $sales_dt=DB::table('d_sales_dt')
                     ->join('m_item','sd_item','=','i_id')
-                    ->join('m_satuan','s_id','=','i_satuan')
+                    ->join('m_satuan','s_id','=','i_sat1')
                     ->where('sd_sales',$s_id)
                     ->get();
           $data['sales']=$sales;

@@ -44,7 +44,7 @@ class transaksi_bank_controller extends Controller
         $tanggalNext = date('Y-m-d', strtotime('+1 months', strtotime($tanggal)));
         $type = substr($request->type, 0, 1);
 
-        $data = transaksi::with('detail')->where(DB::raw('substring(tr_type, 1, 1)'), $request->type)->get();
+        $data = transaksi::with('detail')->where(DB::raw('substring(tr_type, 1, 1)'), $type)->get();
 
         return json_encode($data);
     }
