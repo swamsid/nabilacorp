@@ -55,9 +55,19 @@ class MemberController extends Controller {
         return view('Master::member/preview', $data); 
     }
 
-    public function get_data_all()
+    public function get_data_all(Request $req)
     {
-        $all = m_customer::orderBy('c_insert', 'desc')->get();
+        $start = $req->start;
+        $length = $req->length;
+        $search = $req->search;
+        $keyword = $search['value'];
+        $keyword = $keyword != '' ? $keyword : '';
+
+        $all = m_customer::orderBy('c_insert', 'desc');
+        if($keyword != '') {
+            $all = $all->where([['c_name', 'LIKE', DB::raw("'%$keyword%'")]]);
+        }
+        $all = $all->skip($start)->take($length)->get();
 
         $res = ['data' => $all];
         return response()->json($res);
