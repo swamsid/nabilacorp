@@ -103,12 +103,12 @@
                             <!-- <li class="menu-sekunder {{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Master Data Jenis Produksi</span></a>
                             </li> -->
 
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
 
-                <li class="menu-primer {{Request::is('purchasing') ? 'active' : '' || Request::is('purcahse-plan/*') ? 'active' : '' || Request::is('purcahse-order/*') ? 'active' : ''  }}"><a
-                        href="#"><i class="fa fa-credit-card fa-fw">
-                            <div class="icon-bg bg-green"></div>
+                    <li class="menu-primer {{Request::is('purchasing') ? 'active' : '' || Request::is('purcahse-plan/*') ? 'active' : '' || Request::is('purcahse-order/*') ? 'active' : ''  }}"><a href="#"><i class="fa fa-credit-card fa-fw">
+                        <div class="icon-bg bg-green"></div>
+
                         </i><span class="menu-title">Purchasing</span><span class="fa arrow"></span>
                         <span class="hidden">
                             Rencana Bahan Baku Produksi 
