@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use Session;
+
 use Response;
 
 class m_item extends Model
@@ -20,6 +22,10 @@ class m_item extends Model
     const CREATED_AT = 'i_insert';
     const UPDATED_AT = 'i_update';
 
+    static function perusahaan(){                                            
+        $comp=DB::table('m_comp')->where('c_id','=',Session::get('user_comp'))->first();
+        return $comp;
+    }
      public static function seachItem($item) {      
 
 
