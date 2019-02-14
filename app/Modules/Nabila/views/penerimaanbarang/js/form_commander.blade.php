@@ -58,10 +58,28 @@
 	   		"createdRow": function( row, data, dataIndex ) {
 	   				// Function untuk mengkalkulasi subtotal dan grand total
 	          		var stbdt_qtyconfirm = $(row).find('[name="stbdt_qty[]"]');
+          			var spodt_qty = $(row).find('[name="spodt_qty[]"]').val();
+          			var qty_masuk = $(row).find('[name="qty_masuk[]"]').val();
+          			if(qty_masuk >= spodt_qty) {
+          				stbdt_qtyconfirm.attr('readonly', 'readonly');
+          			}
 	          		stbdt_qtyconfirm.on('change keyup', function(){
 	          			var qtyconfirm = $(this).val();
 	          			qtyconfirm = qtyconfirm != '' ? qtyconfirm : 0;
 	          			var tr = $(this).parents('tr');
+	          			// Menghitung batas maksimal pengambilan barang
+	          			var spodt_qty = tr.find('[name="spodt_qty[]"]').val();
+	          			var qty_masuk = tr.find('[name="qty_masuk[]"]').val();
+	          			var selisih = spodt_qty - qty_masuk;
+	          			if(qtyconfirm > selisih) {
+	          				iziToast.error({
+			                    title: 'Info',
+			                    message: 'Jumlah yang anda masukkan melebihi batas maksimal.'
+			                });
+			                $(this).val(0);
+			                qtyconfirm = 0;
+	          			}
+
 	          			var price = tr.find('[name="stbdt_price[]"]').val();
 	          			var subtotal = qtyconfirm * price;
 	          			subtotal = 'Rp ' + accounting.formatMoney(subtotal, '', 0, '.', 
