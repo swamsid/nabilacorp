@@ -18,7 +18,7 @@ class d_sales_dt extends Model
 	static function penjualanDt($sd_sales=''){		
 
 		return DB::table('d_sales_dt')->join('m_item','sd_item','=','i_id')
-		->join('m_satuan','s_id','=','i_satuan')->where('sd_sales',$sd_sales)
+		->join('m_satuan','s_id','=','i_sat1')->where('sd_sales',$sd_sales)
 		->leftjoin('d_stock',function($join){
 			$join->on('s_item','=','i_id');
 			$join->on('s_comp','=','sd_comp');

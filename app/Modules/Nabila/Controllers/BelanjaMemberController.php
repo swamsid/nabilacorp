@@ -98,7 +98,6 @@ class BelanjaMemberController extends Controller
             $sql = $sql->where('i_name','like','%'.$search.'%')->orWhere('i_code','like','%'.$search.'%');
         }                                                 
         else{
-
           $results[] = [ 'id' => null, 'label' =>'Data belum lengkap'];
           return response()->json($results);
         }
