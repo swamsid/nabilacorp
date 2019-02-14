@@ -542,9 +542,9 @@
 
 				            			$.each(n.detail, function(x, y){
 				            				if(y.jrdt_dk == "D")
-				            					d += y.jrdt_value;
+				            					d += parseFloat(y.jrdt_value);
 				            				else
-				            					k += y.jrdt_value;
+				            					k += parseFloat(y.jrdt_value);
 				            			})
 
 				            			clock.push({debet: d, kredit: k})
@@ -725,9 +725,9 @@
 
 				            			$.each(n.detail, function(x, y){
 				            				if(y.jrdt_dk == "D")
-				            					d += y.jrdt_value;
+				            					d += parseFloat(y.jrdt_value);
 				            				else
-				            					k += y.jrdt_value;
+				            					k += parseFloat(y.jrdt_value);
 				            			})
 
 				            		})

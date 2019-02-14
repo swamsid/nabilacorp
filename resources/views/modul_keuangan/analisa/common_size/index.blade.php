@@ -103,6 +103,7 @@
 		    #table-data td, #table-data th {
 		    	padding: 5px 10px;
 		    	border: 1px solid #eee;
+		    	vertical-align: middle;
 		    }
 
 		    #table-data td.head{
@@ -120,7 +121,48 @@
 		    	text-align: center;
 		    }
 
+		    #table-data td.grey{
+		    	background-color: #eee;
+		    	text-align: center;
+		    	font-weight: bold;
+		    }
+
+		    #contentnya{
+	          width: 100%;
+	          padding: 0px 20px;
+	          background: white;
+	          min-height: 700px;
+	          border-radius: 2px;
+	          margin: 0 auto;
+	        }
+
 		</style>
+
+		<style type="text/css" media="print">
+	          @page { size: landscape; }
+	          nav{
+	            display: none;
+	          }
+
+	          #contentnya{
+	          	width: 100%;
+	          	padding: 0px;
+	          	margin-top: -50px;
+	          }
+
+	          #table-data th{
+	             background-color: #0099CC !important;
+	             color: white;
+	             -webkit-print-color-adjust: exact;
+	          }
+
+	          #table-data td.grey{
+	             background-color: #eee !important;
+	             -webkit-print-color-adjust: exact;
+	          }
+
+	          .page-break { display: block; page-break-before: always; }
+	    </style>
 	</head>
 
 	<body>
@@ -193,11 +235,10 @@
 			</div> --}}
 
 			<div class="container-fluid" style="background: none; margin-top: 70px; padding: 10px 30px;">
-				<div class="col-md-8 offset-2" style="background: white; min-height: 700px; border-radius: 5px; margin-bottom: 70px;">
+				<div id="contentnya">
 
 					<?php 
-						if($_GET['type'] == 'bulan')
-							$tanggal_1 = explode('/', $_GET['d1'])[0];
+						$tanggal_1 = explode('/', $_GET['d1'])[0];
 					?>					
 
 					{{-- Judul Kop --}}
@@ -205,7 +246,7 @@
 						<table width="100%" border="0" style="border-bottom: 1px solid #333;" v-if="pageNow == 1" v-cloak>
 				          <thead>
 				            <tr>
-				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Analisa Common Size</th>
+				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Analisa Common Size Pada Laporan {{ ucfirst($_GET['type']) }}</th>
 				            </tr>
 
 				            <tr>
@@ -213,7 +254,7 @@
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 8pt; font-weight: 500; padding-bottom: 10px;">(Angka Disajikan Dalam Rupiah, Kecuali Dinyatakan Lain)</th>
+				              <th style="text-align: left; font-size: 8pt; font-weight: 500; padding-bottom: 10px;">(Angka Disajikan Dalam Persentase, Kecuali Dinyatakan Lain)</th>
 
 				              <th class="text-right" style="font-size: 8pt; font-weight: normal;">
 				              	<b>Periode {{ $tanggal_1 }}</b>
@@ -228,17 +269,227 @@
 						<table class="table" id="table-data" v-cloak>
 							<thead>
 								<tr>
-									<th width="20%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Akun</th>
+									<th style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Akun</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
+									<th width="7%" style="text-align: center; border: 1px solid #eee; background-color: #0099CC; color: white;">Jan 2019</th>
 								</tr>
 							</thead>
-								
-							<tbody>
-								<template v-for="(dta, index) in dataPrint">
-									<tr>
-										
-									</tr>
+							
+							<template v-for="(stropper, alpha) in dataPrint">
+								<template v-if="'{{ $_GET['type'] }}' == 'neraca'">
+									<tbody>
+										<tr>
+											<td class="grey"> Aktiva </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == '1'">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+
+										<tr><td colspan="13"></td></tr>
+
+										<tr>
+											<td class="grey"> Pasiva </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] != '1'">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 800;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Pasiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+									</tbody>
 								</template>
-							</tbody>
+
+								<template v-if="'{{ $_GET['type'] }}' == 'laba_rugi'">
+									<tbody>
+										<tr>
+											<td class="grey"> @{{ stropper.level_1[0].hls_nama }} </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == stropper.level_1[0].hls_id">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+
+										<tr><td colspan="13"></td></tr>
+
+										<tr>
+											<td class="grey"> @{{ stropper.level_1[1].hls_nama }} </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == stropper.level_1[1].hls_id">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+
+										<tr><td colspan="13"></td></tr>
+
+										<tr>
+											<td class="grey"> @{{ stropper.level_1[2].hls_nama }} </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == stropper.level_1[2].hls_id">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+
+										<tr><td colspan="13"></td></tr>
+
+										<tr>
+											<td class="grey"> @{{ stropper.level_1[3].hls_nama }} </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == stropper.level_1[3].hls_id">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+
+										<tr><td colspan="13"></td></tr>
+
+										<tr>
+											<td class="grey"> @{{ stropper.level_1[4].hls_nama }} </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == stropper.level_1[4].hls_id">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+
+										<tr><td colspan="13"></td></tr>
+
+										<tr>
+											<td class="grey"> @{{ stropper.level_1[5].hls_nama }} </td>
+											<td class="grey" colspan="12"></td>
+										</tr>
+										<template v-for="(akun, beta) in stropper.detail" v-if="beta.split('.')[0] == stropper.level_1[5].hls_id">
+											<tr>
+												<td>@{{ akun[0].nama }}</td>
+												<template v-for="(detail, gamma) in akun">
+													<td style="text-align: center; font-weight: 600;">
+														@{{ persentase(beta, gamma) }}
+													</td>
+												</template>
+											</tr>
+										</template>
+										{{-- <tr>
+											<td class="grey"> Total Aktiva </td>
+											<template v-for="(tot, cod) in stropper.total">
+												<td class="grey" style="text-align: center;">
+													<b>@{{ (!isNaN((tot.aktiva / tot.aktiva) * 100)) ? (tot.aktiva / tot.aktiva) * 100 : 0.00 }}</b>
+												</td>
+											</template>
+										</tr> --}}
+									</tbody>
+								</template>
+							</template>
 						</table>
 					</div>
 				</div>
@@ -266,7 +517,7 @@
 	                </div>
 	                
 	                <div class="content-popup">
-	                	<form id="form-setting" method="get" action="{{ route('analisa.keuangan.pertumbuhan_aset') }}">
+	                	<form id="form-setting" method="get" action="{{ route('analisa.keuangan.common_size') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
 	                    <div class="col-md-12">
 
@@ -286,7 +537,7 @@
 	                                <label class="modul-keuangan">Periode</label>
 	                            </div>
 
-	                            <div class="col-md-7" v-show="type == 'bulan'">
+	                            <div class="col-md-7">
                     				<vue-datepicker :name="'d1'" :id="'d1'" :title="'Tidak Boleh Kosong'" :readonly="true" :placeholder="'Pilih Tanggal'" :format="'yyyy'" :styles="'font-size: 9pt;'"></vue-datepicker>
 	                            </div>
 
@@ -361,21 +612,14 @@
 			    					kelompok: [],
 			    					typeLaporan: [
 				    					{
-				    						id: 'bulan',
-				    						text: 'Laporan Analisa Dalam Bulan',
-				    					}
-				    				],
-
-				    				tampilan: [
-				    					{
-				    						id: 'tabular',
-				    						text: 'Tampilan Table',
+				    						id: 'neraca',
+				    						text: 'Common Size Pada Lapoan Neraca',
 				    					},
 
-				    					{
-				    						id: 'menurun',
-				    						text: 'Tampilan Menurun'
-				    					}
+				    					// {
+				    					// 	id: 'laba_rugi',
+				    					// 	text: 'Common Size Pada Laporan Laba Rugi Bulanan'
+				    					// }
 				    				],
 			    			},
 
@@ -396,6 +640,8 @@
 
 				            	axios.get('{{route('analisa.keuangan.common_size.data_resource')}}?'+that.url.searchParams)
 			                            .then((response) => {
+
+			                            	console.log(response.data.data.length);
 
 			                                if(response.data.data.length){
 			                                	this.dataSource = response.data.data;
@@ -433,33 +679,8 @@
 
 				            computed: {
 				            	detail: function(){
-				            		that = this;
-				            		var clock = []; grandAktiva = grandPasiva = 0; $a = 0;
-				            		var level2Bucket = {}; level1Bucket = {OCF: 0, ICF: 0, FCF:0};
-				            		var bucket = {};
-
-				            		$.each(this.dataPrint, function(idx1, level_2){
-				            			var level2 = 0;
-
-				            			$.each(level_2.akun, function(idx2, akun){
-				            				level2 += akun.saldo_akhir
-				            			})
-
-				            			level2Bucket['_'+level_2.hld_id] = level2
-
-				            			level1Bucket[level_2.hld_cashflow] += level2;
-
-				            		})
-
-				            		bucket = {
-				            			level1 : level1Bucket,
-				            			level2 : level2Bucket,
-				            			// grandAktiva : grandAktiva,
-				            			// grandPasiva : grandPasiva
-				            		}
-
-				                	console.log(bucket);
-				                	return bucket;
+				            		
+				                	return null;
 				            	}
 				            },
 
@@ -477,7 +698,7 @@
 				            		}
 
 				            		this.dataPrint = dump;
-				            		console.log(this.dataPrint);
+				            		console.log(this.dataSource);
 				            	}
 				            },
 
@@ -561,7 +782,9 @@
 			                            stack: false
 			                        });
 
-				            		$('#pdfIframe').attr('src', '{{route('analisa.keuangan.common_size.print')}}?'+that.url.searchParams)
+				            		window.print();
+
+				            		// $('#pdfIframe').attr('src', '{{route('analisa.keuangan.common_size.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){
@@ -616,26 +839,18 @@
 				                },
 
 				                validate: function(){
-				                	if($('#d1').val() == '' || $('#d2').val() == ''){
-				                		$.toast({
-				                            text: "Harap Lengkapi Data Inputan",
-				                            showHideTransition: 'slide',
-				                            position: 'top-right',
-				                            icon: 'error',
-				                            hideAfter: false
-				                        });
-
-				                        return false;
-				                	}
-
 				                	return true;
 				                },
 
-				                getNamaKelompok: function(index){
-				                	var idx = this.kelompok.findIndex(alpha => alpha.ak_kelompok == index);
+				                persentase: function(akun, index){
+				                	var parrent = akun.split('.')[0];
+				                	var saldoAkun   = parseFloat(this.dataPrint[0].detail[akun][index].saldo_akhir);
+				                	var total = (parrent == 1) ? parseFloat(this.dataPrint[0].total[index].aktiva) : parseFloat(this.dataPrint[0].total[index].pasiva);
 
-				                	return this.kelompok[idx].ak_nama;
-				                },
+				                	var callback = ((saldoAkun / total) * 100).toFixed(2);
+				                	
+				                	return((!isNaN(callback)) ? Math.abs(callback) : '0.00');
+				                }
 				            }
 			    		})
     	</script>

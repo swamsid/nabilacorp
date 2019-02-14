@@ -531,17 +531,17 @@
 
 				                	$.each(this.dataSource, function(a, b){
 				                		
-				                		kd += b.kas_debet;
-				                		kk += b.kas_kredit;
+				                		kd += parseFloat(b.kas_debet);
+				                		kk += parseFloat(b.kas_kredit);
 
-				                		bd += b.bank_debet;
-				                		bk += b.bank_kredit;
+				                		bd += parseFloat(b.bank_debet);
+				                		bk += parseFloat(b.bank_kredit);
 
-				                		md += b.memorial_debet;
-				                		mk += b.memorial_kredit;
+				                		md += parseFloat(b.memorial_debet);
+				                		mk += parseFloat(b.memorial_kredit);
 
-				                		td += (b.kas_debet + b.bank_debet + b.memorial_debet);
-				                		tk += (b.kas_kredit + b.bank_kredit + b.memorial_kredit);
+				                		td += (parseFloat(b.kas_debet) + parseFloat(b.bank_debet) + parseFloat(b.memorial_debet));
+				                		tk += (parseFloat(b.kas_kredit) + parseFloat(b.bank_kredit) + parseFloat(b.memorial_kredit));
 
 				                	})
 
@@ -555,6 +555,8 @@
 				                		totDebet : td,
 				                		totKredit : tk
 				                	}
+
+				                	console.log(clock);
 
 				                	return clock;
 				            	}

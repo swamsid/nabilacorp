@@ -169,15 +169,9 @@ public static function hapusMutasi($item,$permintaan,$comp,$position,$flag,$sm_r
             
 			$updateStock=d_stock::where('s_item',$item)->where('s_comp',$comp)->where('s_position',$position);		
 
-            if(!$updateStock->first()->s_qty){
-                $idStock=d_stock::max('s_id')+1;
-                d_stock::create([
-                        's_id'=>$idStock,
-                        's_comp'=>$comp,
-                        's_position'=>$position,
-                        's_item'=>$item,
-                        's_qty'=>$totalPermintaan,
-                    ]);
+            if(empty($updateStock->first())) {
+                 $data=['true'=>false,'totalHpp'=>$totalHpp,'text'=>"Ma'af, Stok Tidak Mencukupi"];
+                 return $data;
             }else{
     			if($updateStock->first()->s_qty>=$totalPermintaan){
     				$qty=$updateStock->first()->s_qty-$totalPermintaan;				

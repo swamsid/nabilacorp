@@ -240,7 +240,7 @@
 
                     function inputData(id) {
                         $.ajax({
-                            url: baseUrl + "/produksi/spk/input-data/",
+                            url: baseUrl + "/produksi/spk/input-data",
                             type: "get",
                             data: {x: id},
                             success: function (response) {

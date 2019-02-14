@@ -59,8 +59,10 @@ Vue.component('vue-datatable',{
     search: function(value){
       if(value == ""){ this.dataTab = this.data_resource; return }
 
-      idx = $('#vue-datatable-search-context').children('option:selected').html();
+      this.search_context = $('#vue-datatable-search-context').val();
       mine = this;
+
+      // console.log(this.data_resource);
 
       var data = this.data_resource.filter(function(o){
         if(o[mine.search_context].toUpperCase().includes(value.toUpperCase())) return o;

@@ -17,6 +17,7 @@ Route::group(['namespace' => 'App\Modules\Produksi\Controllers', 'middleware'=>[
 	Route::get('/produksi/spk/lihat-detail', 'spkProductionController@lihatFormula');
 	Route::get('/produksi/spk/ubah-status-spk/{id}', 'spkProductionController@ubahStatusSpk');
 	Route::get('/produksi/o_produksi/select2/pilihspk/{x}', 'ManOutputProduksiController@selectDataSpk');
+	Route::get('produksi/spk/input-data', 'spkProductionController@inputData');
 /* selesai spk*/
 //mahmud output produksi
 	Route::get('/produksi/hasil-produksi/index', 'ManOutputProduksiController@index')->middleware('auth');
@@ -24,11 +25,14 @@ Route::group(['namespace' => 'App\Modules\Produksi\Controllers', 'middleware'=>[
 	// Route::get('/produksi/o_produksi/select2/spk/{tgl1}/{comp}', 'ManOutputProduksiController@setSpk');
 	Route::get('/produksi/o_produksi/store', 'ManOutputProduksiController@store');
 //mahmud output produksi
-	Route::get('/produksi/bahanbaku/baku', 'ProduksiController@baku')->middleware('auth');
-	Route::get('/produksi/sdm/sdm', 'ProduksiController@sdm')->middleware('auth');
-	Route::get('/produksi/produksi/produksi2', 'ProduksiController@produksi2')->middleware('auth');
-	Route::get('/produksi/waste/waste', 'ProduksiController@waste')->middleware('auth');		
-	Route::get('/produksi/o_produksi/tambah_produksi', 'ProduksiController@tambah_produksi')->middleware('auth');
+	Route::get('/produksi/bahanbaku/baku', 'produksiController@baku')->middleware('auth');
+	Route::get('/produksi/sdm/sdm', 'produksiController@sdm')->middleware('auth');
+	Route::get('/produksi/produksi/produksi2', 'produksiController@produksi2')->middleware('auth');
+	Route::get('/produksi/waste/waste', 'produksiController@waste')->middleware('auth');		
+	Route::get('/produksi/o_produksi/tambah_produksi', 'produksiController@tambah_produksi')->middleware('auth');
+//Actual SPK
+	Route::get('/produksi/data_actual/tabel/{tgl1}/{tgl2}', 'dataActualController@tableActual');
+	Route::get('/produksi/o_produksi/save/actual/{id}', 'spkProductionController@saveActual');
 //ITEM PRODUKSI
 	Route::get('/seach-item-Produksi', 'hasilProduksiController@seachItemProduksi');
 	Route::get('/seach-item-mutasi', 'hasilProduksiController@seachItemMutasi');

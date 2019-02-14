@@ -58,124 +58,187 @@
 
         // laba_rugi
             $laba_rugi = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=";
+
+
+        // hutang
+            $hutang = "_token=".csrf_token()."&d1=".date('d/m/Y')."&jenis=rekap&type=Hutang_Supplier&semua=on";
+
+        // Piutang
+            $piutang = "_token=".csrf_token()."&d1=".date('d/m/Y')."&jenis=rekap&type=Piutang_Customer&semua=on";
     ?>
 
-    <!--BEGIN PAGE WRAPPER-->
-    <div id="page-wrapper">
-        <!--BEGIN TITLE & BREADCRUMB PAGE-->
-        <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-            <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                <div class="page-title">Laporan Keuangan</div>
-            </div>
-            <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
-
-                <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-
-                <li><i></i>&nbsp;Keuangan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-
-                <li class="active">Laporan Keuangan</li>
-            </ol>
-            <div class="clearfix">
-            </div>
+    <div class="col-md-12" style="background: none;">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 content-title">
+                    Laporan Keuangan
+                </div>
+            </div>  
         </div>
 
-        <div class="page-content fadeInRight">
-            <div id="tab-general">
-                <div class="row mbl">
-                    <div class="col-lg-12">
-                      <div class="col-md-12">
-                          <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
-                          </div>
-                      </div>
+        <div class="col-md-12 table-content">
+            <div class="row" style="padding: 10px 30px;">
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ route('laporan.keuangan.jurnal_umum', $jurnalRequest) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
 
-                      <ul id="generalTab" class="nav nav-tabs">
-                        <li class="active"><a href="#alert-tab" data-toggle="tab">Pilih Laporan Keuangan</a></li>
-                      </ul>
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ route('laporan.keuangan.jurnal_umum', $jurnalRequest) }}">
+                                Jurnal Umum
+                            </a>
+                        </div>    
+                    </div>
+                </div>
 
-                      <div id="generalTabContent" class="tab-content responsive">
-                          <div id="alert-tab" class="tab-pane fade in active">
-                            <div class="row text-center" style="padding-left: 7em;">
-                                <a href="{{ route('laporan.keuangan.jurnal_umum', $jurnalRequest) }}">
-                                    <div class="col-md-3" style="margin-left: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-clipboard" style="font-size: 24pt; color: #ffbb33;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Laporan Jurnal
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ route('laporan.keuangan.buku_besar', $buku_besar) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
 
-                                <a href="{{ route('laporan.keuangan.buku_besar', $buku_besar) }}">
-                                    <div class="col-md-3" style="margin-left: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-book" style="font-size: 24pt; color: #ffbb33;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Buku Besar
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ route('laporan.keuangan.buku_besar', $buku_besar) }}">
+                                Buku Besar
+                            </a>
+                        </div>    
+                    </div>
+                </div>
 
-                                <a href="{{ Route('laporan.keuangan.neraca_saldo', $neraca_saldo) }}">
-                                    <div class="col-md-3" style="margin-left: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-bar-chart" style="font-size: 24pt; color: #ffbb33;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Neraca Saldo
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ Route('laporan.keuangan.neraca_saldo', $neraca_saldo) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
 
-                                <a href="{{ Route('laporan.keuangan.neraca', $neraca) }}">
-                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-balance-scale" style="font-size: 24pt; color: #33b5e5;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Laporan Neraca
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ Route('laporan.keuangan.neraca_saldo', $neraca_saldo) }}">
+                                Neraca Saldo
+                            </a>
+                        </div>    
+                    </div>
+                </div>
 
-                                <a href="{{ Route('laporan.keuangan.laba_rugi', $laba_rugi) }}">
-                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-list-ul" style="font-size: 24pt; color: #33b5e5;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Laba Rugi
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ Route('laporan.keuangan.neraca', $neraca) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
 
-                                <a href="{{ Route('laporan.keuangan.arus_kas', $laba_rugi) }}">
-                                    <div class="col-md-3" style="margin-left: 30px; margin-top: 30px;">
-                                        <div class="row" style="box-shadow: 0px 0px 10px #ccc; padding: 30px 20px;">
-                                            <div class="col-md-12 text-center">
-                                                <i class="fa fa-random" style="font-size: 24pt; color: #33b5e5;"></i>
-                                            </div>
-                                            <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                                Arus Kas
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </a>
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ Route('laporan.keuangan.neraca', $neraca) }}">
+                                Neraca
+                            </a>
+                        </div>    
+                    </div>
+                </div>
 
-                            </div>
-                          </div>
-                      </div>
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ Route('laporan.keuangan.laba_rugi', $laba_rugi) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ Route('laporan.keuangan.laba_rugi', $laba_rugi) }}">
+                                Laba Rugi
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="#">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ Route('laporan.keuangan.arus_kas', $laba_rugi) }}">
+                                Arus Kas
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="padding: 20px 30px 10px 30px; border-top: 1px solid #eee; margin-top: 20px;">
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ Route('laporan.keuangan.hutang', $hutang) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ Route('laporan.keuangan.hutang', $hutang) }}">
+                                Laporan Hutang
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="{{ Route('laporan.keuangan.piutang', $piutang) }}">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-center text">
+                            <a href="{{ Route('laporan.keuangan.piutang', $piutang) }}">
+                                Laporan Piutang
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="padding: 20px 30px 10px 30px; border-top: 1px solid #eee; margin-top: 20px;">
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="#">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-center text">
+                            <a href="#">
+                                Penyusutan Aktiva Tetap
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="padding: 10px 30px;">
+                    <div class="row laporan-wrap">
+                        <div class="col-md-12 text-center">
+                            <a href="#">
+                                <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-center text">
+                            <a href="#">
+                                Saldo Akun
+                            </a>
+                        </div>    
                     </div>
                 </div>
             </div>

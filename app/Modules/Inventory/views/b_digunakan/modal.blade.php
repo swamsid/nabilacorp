@@ -114,7 +114,7 @@
                        <input type="text" id="ip_barang" class="form-control ui-autocomplete-input input-sm" placeholder="Masukkan nama barang" autocomplete="off" name="ipBarang">
                     </td>
                     <td width="10%;">
-                       <input type="text" id="ip_qtyreq" class="form-control input-sm numberinput" value="" name="ipQtyReq">
+                       <input type="text" id="ip_qtyreq" class="form-control input-sm numberinput" value="" name="ipQtyReq" onkeyup="setQty()">
                     </td>
                     <td width="10%;">
                        <select class="form-control input-sm" id="ip_sat" name="ipSat" style="width: 100%;">

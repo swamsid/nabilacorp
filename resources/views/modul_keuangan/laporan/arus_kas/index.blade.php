@@ -376,7 +376,7 @@
 										Saldo Akhir Kas Seharusnya (Periode {{ $tanggal_1 }})
 									</td>
 									<td style="text-align: right; font-weight: bold; padding-right: 20px; border-top: 1px solid #ccc; color: #0099CC;">
-											@{{ (saldoAwal + (detail.level1['OCF'] + detail.level1['ICF'] + detail.level1['FCF']) < 0) ? '('+humanizePrice(saldoAwal + (detail.level1['OCF'] + detail.level1['ICF'] + detail.level1['FCF']))+')' : humanizePrice(saldoAwal + (detail.level1['OCF'] + detail.level1['ICF'] + detail.level1['FCF'])) }}
+											@{{ (parseFloat(saldoAwal + (detail.level1['OCF']) + parseFloat(detail.level1['ICF']) + parseFloat(detail.level1['FCF'])) < 0) ? '('+humanizePrice(parseFloat(saldoAwal + (detail.level1['OCF']) + parseFloat(detail.level1['ICF']) + parseFloat(detail.level1['FCF'])))+')' : humanizePrice(parseFloat(saldoAwal + (detail.level1['OCF']) + parseFloat(detail.level1['ICF']) + parseFloat(detail.level1['FCF']))) }}
 									</td>
 								</tr>
 
@@ -585,7 +585,7 @@
 				            			var level2 = 0;
 
 				            			$.each(level_2.akun, function(idx2, akun){
-				            				level2 += akun.saldo_akhir
+				            				level2 += parseFloat(akun.saldo_akhir)
 				            			})
 
 				            			level2Bucket['_'+level_2.hld_id] = level2

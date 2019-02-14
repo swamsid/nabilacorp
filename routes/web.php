@@ -78,7 +78,9 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 	Route::get('/penjualan/POSretail/retail/edit_sales/{id}', 'Penjualan\POSRetailController@edit_sales')->middleware('auth');
 	Route::get('/penjualan/POSretail/retail/distroy/{id}', 'Penjualan\POSRetailController@distroy')->middleware('auth');
 	Route::get('/penjualan/POSretail/retail/update/{id}', 'Penjualan\POSRetailController@update')->middleware('auth');
-
+   //company profile
+    Route::get('system/profil-perusahaan/index', 'SystemController@profil');
+    Route::post('profil-perusahaan/update', 'SystemController@updateProfil');
 	/*Keuangan*/
 	Route::get('/keuangan/p_inputtransaksi/transaksi', 'KeuanganController@transaksi')->middleware('auth');
 	Route::get('/keuangan/l_hutangpiutang/hutang', 'KeuanganController@hutang')->middleware('auth');
@@ -426,7 +428,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// klasifikasi akun
 
-					Route::get('modul/keuangan/setting/klasifikasi-akun', [
+					Route::get('system/modul/keuangan/setting/klasifikasi-akun', [
 						"uses"	=> 'modul_keuangan\setting\klasifikasi_akun\klasifikasi_akun_controller@index'
 					])->name('setting.klasifikasi_akun.index');
 
@@ -710,6 +712,24 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 						Route::get('modul/keuangan/analisa/cashflow/print/pdf', [
 							'uses'	=> 'modul_keuangan\analisa\cashflow\analisa_cashflow_controller@pdf'
 						])->name('analisa.keuangan.cashflow.print.pdf');
+
+					// Analisa Rasio Keuangan
+						Route::get('modul/keuangan/analisa/rasio', [
+							'uses'	=> 'modul_keuangan\analisa\rasio\analisa_rasio_controller@index'
+						])->name('analisa.keuangan.rasio');
+
+						Route::get('modul/keuangan/analisa/rasio/data_resource', [
+							'uses'	=> 'modul_keuangan\analisa\rasio\analisa_rasio_controller@dataResource'
+						])->name('analisa.keuangan.rasio.data_resource');
+
+						Route::get('modul/keuangan/analisa/rasio/print', [
+							'uses'	=> 'modul_keuangan\analisa\rasio\analisa_rasio_controller@print'
+						])->name('analisa.keuangan.rasio.print');
+
+						Route::get('modul/keuangan/analisa/rasio/print/pdf', [
+							'uses'	=> 'modul_keuangan\analisa\rasio\analisa_rasio_controller@pdf'
+						])->name('analisa.keuangan.rasio.print.pdf');
+
 
 			// Analisa Keuangan
 

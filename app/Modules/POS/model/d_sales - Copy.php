@@ -108,10 +108,12 @@ class d_sales extends Model
 
                   $item_titipan=d_item_titipan::join('d_itemtitipan_dt','it_id','=','idt_itemtitipan')->where('it_comp',Session::get('user_comp'))->where('it_status','!=','lunas')->where('idt_item',$request->sd_item[$i]);
                   
-                  $item_titipan->update([
+                if(!empty($item_titipan_qty)){
+                    $item_titipan->update([
                                   'idt_terjual'=>$item_titipan_qty->idt_terjual+$sd_qty,
                                   'idt_sisa'=>$item_titipan_qty->idt_sisa-$sd_qty
                                   ]);
+                    }
 
                   
 
