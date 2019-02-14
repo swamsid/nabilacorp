@@ -146,6 +146,7 @@ public function simpan(Request $request){
             'i_type' => $i_type,
             'i_name' => $i_name,
             'i_sat1' => $i_sat1,
+            'i_satuan' => $i_sat1,
             'i_sat2' => $i_sat2,
             'i_sat3' => $i_sat3,
             'i_sat_isi1' => $i_sat_isi1,
@@ -153,6 +154,7 @@ public function simpan(Request $request){
             'i_sat_isi3' => $i_sat_isi3,
             'i_min_stock' => $i_min_stock,
             'i_det' => $i_det,
+            'i_hpp' => $its_price1,
             'i_status' => 'Y',
             'i_active' => 'Y',
             'i_insert' => Carbon::now('Asia/Jakarta')
@@ -274,6 +276,7 @@ public function simpan(Request $request){
           ->update([
             'i_group' => $i_group,
             'i_name' => $i_name,
+            'i_satuan' => $i_sat1,
             'i_sat1' => $i_sat1,
             'i_sat2' => $i_sat2,
             'i_sat3' => $i_sat3,
@@ -282,6 +285,7 @@ public function simpan(Request $request){
             'i_sat_isi3' => $i_sat_isi3,
             'i_min_stock' => $i_min_stock,
             'i_det' => $i_det,
+            'i_hpp' => $its_price1,
             'i_update' => Carbon::now('Asia/Jakarta')
           ]);
       

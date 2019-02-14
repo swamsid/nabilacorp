@@ -26,9 +26,9 @@ class m_item_titipan extends Model
               ->select('i_id', 'i_code', 'i_name', 's_name', 'i_hpp', 'its_price1', 'g_name')
               ->get();
          return Datatables::of($data)->editColumn('action', function ($data) {                            
-                                return '<div class="">
-                                        <a href="#" class="btn btn-warning btn-xs" title="Edit" onclick="edit('.$data->i_id.')"><i class="glyphicon glyphicon-pencil"></i></a>
-                                        <a href="#" class="btn btn-danger btn-xs" title="Hapus" onclick="hapus('.$data->i_id.')"><i class="glyphicon glyphicon-trash"></i></a>
+                                return '<div class="btn-group">
+                                        <a href="#" class="btn btn-warning btn-sm" title="Edit" onclick="edit('.$data->i_id.')"><i class="fa fa-pencil"></i></a>
+                                        <a href="#" class="btn btn-danger btn-sm" title="Hapus" onclick="hapus('.$data->i_id.')"><i class="fa fa-trash-o"></i></a>
                                       </div>';
                         })->make(true);        
     }
