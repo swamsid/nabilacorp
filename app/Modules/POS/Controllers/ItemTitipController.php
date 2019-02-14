@@ -27,7 +27,7 @@ use Auth;
 
 
 
-class ItemTitipController extends Controller
+class itemTitipController extends Controller
 {    
     public function __construct()
     {
