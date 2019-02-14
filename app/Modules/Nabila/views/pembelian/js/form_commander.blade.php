@@ -6,6 +6,10 @@
 			format : 'dd-mm-yyyy'
 		})
 
+		$('#spo_date').val(
+	      moment().format('DD/MM/YYYY')
+	    );
+
 		$('#spo_supplier').select2({
           placeholder: "Pilih Supplier",
           ajax: {

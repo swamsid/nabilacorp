@@ -93,90 +93,15 @@
                         </i>
                         <span class="menu-title">Master</span><span class="fa arrow"></span>
                     </a>
-                    <ul class="nav nav-second-level">
-
-                        <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a
-                                href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Master Data
-                                    Suplier</span></a>
-                        </li>
-
-                        <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a
-                                href="{{ url('/master/membership/member') }}"><span class="submenu-title">Master Member</span></a>
-                        </li>
-
-                        <li class="menu-sekunder {{ Request::is('master/datacust/cust') ? 'active' : '' || Request::is('master/datacust/*') ? 'active' : '' }}"><a
-                                href="{{ url('/master/datacust/cust') }}"><span class="submenu-title">Master Data
-                                    Customer</span></a>
-                        </li>
-
-                        <li class="menu-sekunder {{ Request::is('master/modul/keuangan/master/akun') ? 'active' : '' || Request::is('master/modul/keuangan/master/akun/*') ? 'active' : '' }}"><a
-                                href="{{ url('master/modul/keuangan/master/akun') }}"><span class="submenu-title">Master
-                                    Data Akun Keuangan</span></a>
-                        </li>
-
-                        <li class="menu-sekunder {{ Request::is('master/item/index') ? 'active' : '' || Request::is('/master/item/*') ? 'active' : '' }}"><a
-                                href="{{ url('/master/item/index') }}"><span class="submenu-title">Master Data Barang</span></a>
-                        </li>
-
-                        <li class="menu-sekunder {{ Request::is('master/item_titipan/index') ? 'active' : '' || Request::is('/master/item_titipan/*') ? 'active' : '' }}"><a
-                                href="{{ url('/master/item_titipan/index') }}"><span class="submenu-title">Master Data
-                                    Barang Titipan</span></a>
-                        </li>
-
-                        <li class="menu-sekunder {{ Request::is('master/grouphargakhusus/index') ? 'active' : '' || Request::is('master/grouphargakhusus/*') ? 'active' : '' }}"><a
-                                href="{{ url('master/grouphargakhusus/index') }}"><span class="submenu-title">Group
-                                    Harga Khusus</span></a>
-                        </li>
-
-                        @if(Auth::user()->punyaAkses('Master Formula','ma_read'))
-                        <li class="{{ Request::is('master/masterproduksi/index') ? 'active' : '' || Request::is('master/masterproduksi/*') ? 'active' : '' }}">
-                            <a href="{{ url('master/masterproduksi/index') }}"><span class="submenu-title">Master
-                                    Formula</span><span class="hidden">Master</span></a>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->punyaAkses('Data Jabatan','ma_read'))
-                        <li class="{{ Request::is('master/datajabatan') ? 'active' : '' || Request::is('master/datajabatan/*') ? 'active' : '' }}">
-                            <a href="{{ url('/master/datajabatan')}}">
-                                <span class="submenu-title">Data Jabatan</span>
-                            </a>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->punyaAkses('Data Pegawai','ma_read'))
-                        <li class="{{ Request::is('master/datapegawai/pegawai') ? 'active' : '' || Request::is('master/datapegawai/*') ? 'active' : '' }}">
-                            <a href="{{ url('/master/datapegawai/pegawai') }}"><span class="submenu-title">Data Pegawai</span><span
-                                    class="hidden">Master</span></a>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->punyaAkses('Data Divisi & Posisi','ma_read'))
-                        <li class="{{ Request::is('master/divisi/pos/index') ? 'active' : '' || Request::is('master/divisi/pos/*') ? 'active' : '' }}">
-                            <a href="{{ url('/master/divisi/pos/index') }}"><span class="submenu-title">Data Divisi &
-                                    Posisi</span><span class="hidden">Master</span></a>
-                        </li>
-
-                        @endif
-                        @if(Auth::user()->punyaAkses('Data Lowongan','ma_read'))
-                        <li class="{{ Request::is('master/datalowongan/index') ? 'active' : '' || Request::is('master/datalowongan/*') ? 'active' : '' }}">
-                            <a href="{{ url('/master/datalowongan/index') }}"><span class="submenu-title">Data Lowongan</span><span
-                                    class="hidden">Master</span></a>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->punyaAkses('Data Scoreboard','ma_read'))
-                        <li class="{{ Request::is('master/datascore/index') ? 'active' : '' || Request::is('master/datascore/*') ? 'active' : '' }}">
-                            <a href="{{ url('/master/datascore/index') }}"><span class="submenu-title">Data Scoreboard</span><span
-                                    class="hidden">Master</span></a>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->punyaAkses('Data KPI','ma_read'))
-                        <li class="{{ Request::is('master/datakpi/index') ? 'active' : '' || Request::is('master/datakpi/*') ? 'active' : '' }}">
-                            <a href="{{ url('/master/datakpi/index') }}"><span class="submenu-title">Data KPI</span><span
-                                    class="hidden">Master</span></a>
-                        </li>
-                        @endif
+                        <ul class="nav nav-second-level">
+                            <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Master Data Suplier</span></a>
+                            </li>
+                            <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/membership/member') }}"><span class="submenu-title">Master Member</span></a>
+                            </li>
+                          <!--   <li class="menu-sekunder {{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Master Data Item Bahan Baku</span></a>
+                            </li> -->
+                            <!-- <li class="menu-sekunder {{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Master Data Jenis Produksi</span></a>
+                            </li> -->
 
                     </ul>
                 </li>

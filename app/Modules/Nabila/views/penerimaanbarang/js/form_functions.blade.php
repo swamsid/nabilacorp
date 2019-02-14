@@ -119,9 +119,11 @@
           for(x = 0;x < response.d_shop_purchaseorder_dt.length;x++) {
             unit = response.d_shop_purchaseorder_dt[x];
             stbdt_item = "<input type='hidden' name='stbdt_item[]' value='" + unit.i_id + "'>" + unit.i_code + " - " + unit.i_name; 
-            stbdt_qty = "<input type='hidden' value='" + unit.spodt_qty + "'>" + unit.spodt_qty; 
-            qty_masuk = unit.qty_masuk;
-            stbdt_qtyconfirm = "<input type='number' name='stbdt_qty[]' value='" + unit.spodt_qty + "' class='form-control' style='text-align:right'>";
+            stbdt_qty = "<input type='hidden' name='spodt_qty[]' value='" + unit.spodt_qty + "'>" + unit.spodt_qty; 
+            qty_masuk = "<input type='hidden' name='qty_masuk[]' value='" + unit.qty_masuk + "'>" + unit.qty_masuk;
+            qty_sisa = unit.spodt_qty - unit.qty_masuk;
+
+            stbdt_qtyconfirm = "<input type='number' name='stbdt_qty[]' value='" + qty_sisa + "' class='form-control' style='text-align:right'>";
             stbdt_satuan = "<input type='hidden' name='stbdt_sat[]' value='" + unit.s_id + "'>" + unit.s_name; 
             price = unit.spodt_price;
             price_label = 'Rp ' + accounting.formatMoney(price, '', 0, '.', 
