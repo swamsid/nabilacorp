@@ -158,6 +158,10 @@ function table(){
                   'createdCell':  function (td) {
                      $(td).attr('align', 'right'); 
                   }
+               },
+               {
+                  'targets': 7,
+                  'className':  'text-center'
                }
             ],
             responsive: false,
