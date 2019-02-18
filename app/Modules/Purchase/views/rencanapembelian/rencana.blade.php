@@ -58,98 +58,86 @@
 {!!$modalEdit!!}
 @endsection
 @section("extra_scripts")
-    <script type="text/javascript">
- $(document).ready(function() {
-     $(".modal").on("hidden.bs.modal", function(){        
-      $('tr').remove('.tbl_modal_detail_row');
-      $('tr').remove('.tbl_modal_edit_row');      
-      $("#txt_span_status").removeClass();
-      $('#txt_span_status_edit').removeClass();
-    });
-  });
+   <script type="text/javascript">
+   $(document).ready(function() {
 
-
-date(); 
-function resetData(){  
-  date();
-  table();
-}
-function cari(){  
-  table();
-}
-
-function date(){
-  var d = new Date();
-    d.setDate(d.getDate()-7);
-    $('#tanggal1').datepicker({
+      var d = new Date();
+      d.setDate(d.getDate()-7);
+      $('#tanggal1').datepicker({
           format:"dd-mm-yyyy",        
           autoclose: true,
-    }).datepicker( "setDate", d);
-    $('#tanggal2').datepicker({
+      }).datepicker( "setDate", d);
+      $('#tanggal2').datepicker({
           format:"dd-mm-yyyy",        
           autoclose: true,
-    }).datepicker( "setDate", new Date());
-}
+      }).datepicker( "setDate", new Date());
 
-var tablex;
-setTimeout(function () {
+      $(".modal").on("hidden.bs.modal", function(){        
+         $('tr').remove('.tbl_modal_detail_row');
+         $('tr').remove('.tbl_modal_edit_row');      
+         $("#txt_span_status").removeClass();
+         $('#txt_span_status_edit').removeClass();
+      });
+
       table();
-      }, 1500);
+
+   });
+
+   function resetData(){  
+      table();
+   }
+
 
   function editPlanAll (argument){
     window.location.href=(baseUrl+'/purcahse-plan/get-edit-plan/'+argument);
   }
 
-
-function table(){
-    $('#tablePlan').dataTable().fnDestroy();
-    tablex = $("#tablePlan").DataTable({        
-         responsive: true,
-        "language": dataTableLanguage,
-    processing: true,
-            serverSide: true,
-            ajax: {
-              "url": "{{ url("/purcahse-plan/data-plan") }}",
-              "type": "get",
-              data: {
-                    "_token": "{{ csrf_token() }}",                    
-                    "tanggal1" :$('#tanggal1').val(),
-                    "tanggal2" :$('#tanggal2').val(),
-                    },
-              },
-            columns: [
-            {data: 'p_date', name: 'p_date'},
-            {data: 'p_code', name: 'p_code'},            
-            {data: 's_company', name: 's_company'},                        
-            {data: 'status', name: 'status'}, 
-            {data: 'tglConfirm', name: 'tglConfirm'},                         
-            {data: 'aksi', name: 'aksi'},
-           
-            ],
-             'columnDefs': [
-                
-               {
-                    "targets": 3,
-                    "className": "text-center",
-               }
+   function table()
+   {
+      $('#tablePlan').dataTable().fnDestroy();
+      tablex = $("#tablePlan").DataTable({        
+            responsive: true,
+           "language": dataTableLanguage,
+      processing: true,
+               serverSide: true,
+               ajax: {
+                 "url": "{{ url("/purcahse-plan/data-plan") }}",
+                 "type": "get",
+                 data: {
+                       "_token": "{{ csrf_token() }}",                    
+                       "tanggal1" :$('#tanggal1').val(),
+                       "tanggal2" :$('#tanggal2').val(),
+                       },
+                 },
+               columns: [
+               {data: 'tglBuat', name: 'tglBuat', "width": "15%"},
+               {data: 'p_code', name: 'p_code', "width": "15%"},            
+               {data: 'm_name', name: 'm_name', "width": "15%"},
+               {data: 's_name', name: 's_name', "width": "15%"},                        
+               {data: 'status', name: 'status', "width": "10%"}, 
+               {data: 'tglConfirm', name: 'tglConfirm', "width": "15%"},                         
+               {data: 'aksi', name: 'aksi', "width": "15%"},
+              
                ],
-            //responsive: true,
+               //responsive: true,
 
-            "pageLength": 10,
-            "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-            
-             "rowCallback": function( row, data, index ) {
-                    
-                    
+               "pageLength": 10,
+               "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+               
+                "rowCallback": function( row, data, index ) {
+                       
+                       
 
-                if (data['s_status']=='draft') {
-                     $('td', row).addClass('warning');
-                } 
-              }   
-           
-    });
-}
-  function detailPlanAll(argument) {
+                   if (data['s_status']=='draft') {
+                        $('td', row).addClass('warning');
+                   } 
+                 }   
+              
+      });
+   }
+
+  function detailPlanAll(argument) 
+  {
     $.ajax({
           url     :  baseUrl+'/purcahse-plan/get-detail-plan/'+argument,
           type    : 'GET', 
@@ -188,7 +176,7 @@ function table(){
 
           }
       });
-  }
+   }
 
       </script>
 @endsection()

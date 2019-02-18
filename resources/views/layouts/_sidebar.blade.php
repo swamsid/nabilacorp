@@ -165,7 +165,6 @@
 
                     <li class="menu-primer {{Request::is('purchasing') ? 'active' : '' || Request::is('purcahse-plan/*') ? 'active' : '' || Request::is('purcahse-order/*') ? 'active' : ''  }}"><a href="#"><i class="fa fa-credit-card fa-fw">
                         <div class="icon-bg bg-green"></div>
-
                         </i><span class="menu-title">Purchasing</span><span class="fa arrow"></span>
                         <span class="hidden">
                             Rencana Bahan Baku Produksi 
@@ -175,14 +174,13 @@
                             Output Produksi 
                             Manajemen Sampah (Waste)
                         </span>
+                        </a>
                     <ul class="nav nav-second-level">
-
                         @if(Auth::user()->punyaAkses('Rencana Bahan Baku Produksi','ma_read'))
                         <li class="menu-sekunder {{ Request::is('purchasing/rencanabahanbaku/bahan') ? 'active' : '' || Request::is('purchasing/rencanabahanbaku/*') ? 'active' : '' }}">
                             <a href="{{ url('/purchasing/rencanabahanbaku/bahan') }}"><span class="submenu-title">Rencana Bahan Baku Produksi</span><span class="hidden">Purchasing</span></a>
                         </li>
                         @endif
-
                         @if(Auth::user()->punyaAkses('Rencana Pembelian','ma_read'))
                         <li class="menu-sekunder {{ Request::is('purcahse-plan/plan-index') ? 'active' : '' || Request::is('purchasing/rencanapembelian/*') ? 'active' : '' }}">
                             <a href="{{ url('/purcahse-plan/plan-index') }}"><span class="submenu-title">
