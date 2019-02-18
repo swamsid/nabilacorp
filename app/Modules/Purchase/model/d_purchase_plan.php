@@ -31,68 +31,20 @@ class d_purchase_plan extends Model
     const CREATED_AT = 'p_created';
     const UPDATED_AT = 'p_updated';
     
-     protected $fillable = ['p_id','p_date','p_code','p_supplier','p_position','p_mem','p_confirm','p_status','p_status_date','p_comp','p_gudang'];
+     protected $fillable = ['p_id',
+                            'p_date',
+                            'p_code',
+                            'p_supplier',
+                            'p_position',
+                            'p_mem',
+                            'p_confirm',
+                            'p_status',
+                            'p_status_date',
+                            'p_comp',
+                            'p_gudang'
+                          ];
 
-     static function simpan ($request){      
-      // return DB::transaction(function () use ($request) {     
-      // dd($request->all());
-      // return 'a';      
-      $p_id=d_purchase_plan::max('p_id')+1;
-     
-      $query = DB::select(DB::raw("SELECT MAX(RIGHT(p_code,4)) as kode_max from d_purchase_plan WHERE DATE_FORMAT(p_created, '%Y-%m') = DATE_FORMAT(CURRENT_DATE(), '%Y-%m')"));
-     
-      $kd = "";
 
-      if(count($query)>0)
-      {
-        foreach($query as $k)
-        {
-          $tmp = ((int)$k->kode_max)+1;
-          $kd = sprintf("%05s", $tmp);
-        }
-      }
-      else
-      {
-        $kd = "00001";
-      }
-      
-       // dd($request->all());
-      $p_code = "PO-".date('ym')."-".$kd;
-
-      d_purchase_plan::create([
-              'p_id'=>$p_id,
-              'p_comp'=>Session::get('user_comp'),
-              'p_position'=>Session::get('user_comp'),
-              'p_gudang'=>$request->gudang,
-              'p_date'=>date('Y-m-d',strtotime($request->p_date)),
-              'p_code'=>$p_code,
-              'p_status'=>'WT',
-              'p_supplier'=>$request->id_supplier,
-              'p_mem'=>Auth::user()->m_id,                      
-        ]);
-        // dd($request->all());
-        for ($i=0; $i <count($request->ppdt_item); $i++) {  
-          // dd($request->index_satuan[$i]);
-        $ppdt_prevcost= format::format($request->is_price[$i]);
-        $detailid=d_purchaseplan_dt::where('ppdt_pruchaseplan',$p_id)->max('ppdt_detailid')+1;
-
-         d_purchaseplan_dt::create([
-                          'ppdt_pruchaseplan'=>$p_id,
-                          'ppdt_detailid'=>$detailid,
-                          'ppdt_item'=>$request->ppdt_item[$i],
-                          'ppdt_qty'=>$request->ppdt_qty[$i],  
-                          'ppdt_totalcost'=>$request->harga_total[$i],
-                          'ppdt_prevcost'=>$ppdt_prevcost,
-                          'ppdt_satuan'=>$request->satuan_pilih[$i],
-                          'ppdt_isconfirm'=>'TRUE',
-                          'ppdt_satuan_position'=>$request->index_satuan[$i],
-                           ]);
-       }
-
-        $data=['status'=>'sukses'];
-        return json_encode($data);
-
-      }
 
 
     static function perbaruiPlan ($request){

@@ -25,7 +25,7 @@
             
 
               <div class="col-md-3 col-sm-6 col-xs-12" align="center">
-                <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="cari()">
+                <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="resetData()">
                   <strong>
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </strong>
@@ -38,7 +38,7 @@
               </div>
 
               <div class="col-md-3 col-sm-6 col-xs-12" align="right">
-                  <button type="button" class="btn btn-xs btn-primary btn-disabled btn-flat" onclick="tambah()">
+                  <button type="button" class="btn btn-box-tool" onclick="tambah()">
                         <i class="fa fa fa-plus"></i> &nbsp;&nbsp;Tambah Data
                   </button>
               </div>
@@ -55,12 +55,13 @@
         <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tablePlan">
               <thead>
                   <tr>                    
-                    <th width="10%">Tgl Buat</th>     
-                    <th width="10%">No rencana</th>
-                    <th width="15%">Suplier</th>                                      
-                    <th width="10%">Status</th>
-                    <th width="10%">tgl Status</th>
-                    <th width="10%">Aksi</th>
+                    <th>Tgl Pembuatan</th>     
+                    <th>Kode rencana</th>
+                    <th>Staff</th>
+                    <th>Suplier</th>                                      
+                    <th>Status</th>
+                    <th>Tgl Setujui</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
