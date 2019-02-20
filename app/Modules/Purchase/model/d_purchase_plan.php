@@ -249,12 +249,7 @@ class d_purchase_plan extends Model
 
     }
 
-    static function deletePlan($id){
-        d_purchase_plan::where('p_id',$id)->delete();
-        d_purchaseplan_dt::where('ppdt_pruchaseplan',$id)->delete();
-        $data=['sukses'=>'sukses'];
-        return json_encode($data);
-    }
+    
 
 
 

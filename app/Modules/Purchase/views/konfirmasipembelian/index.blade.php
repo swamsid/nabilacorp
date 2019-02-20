@@ -208,7 +208,6 @@
 
    function konfirmasiPlanAll(id) 
    {
-      alert('a');
       $.ajax({
       url : baseUrl + "/keuangan/konfirmasipembelian/confirm-plan/"+id+"/all",
       type: "GET",
@@ -962,10 +961,8 @@
             data: $('#form-confirm-order').serialize(),
             success: function(response)
             {
-              alert(response.status);
               if(response.status == "sukses")
               {
-                alert(response.status+'11');
                 instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
                 iziToast.success({
                   position: 'center', //center, bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
@@ -1027,7 +1024,6 @@
           {
             if(response.status == "sukses")
             {
-                alert(response.pesan);
                 $('#modal-confirm-return').modal('hide');
                 $('#button_confirm_return').text('Konfirmasi'); //change button text
                 $('#button_confirm_return').attr('disabled',false); //set button enable 
@@ -1035,7 +1031,6 @@
             }
             else
             {
-                alert(response.pesan);
                 $('#modal-confirm-return').modal('hide');
                 $('#button_confirm_return').text('Konfirmasi'); //change button text
                 $('#button_confirm_return').attr('disabled',false); //set button enable 
