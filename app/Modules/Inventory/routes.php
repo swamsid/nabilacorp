@@ -61,11 +61,13 @@ Route::group(['namespace' => 'App\Modules\Inventory\Controllers', 'middleware'=>
 
 //penerimaan supplier
 	Route::get('/inventory/p_suplier/suplier', 'PenerimaanBrgSupController@index')->middleware('auth');
-	Route::get('/inventory/p_suplier/get-penerimaan-by-tgl/{tgl1}/{tgl2}/{akses}/{comp}', 'PenerimaanBrgSupController@get_penerimaan_by_tgl');
+	Route::get('/inventory/p_suplier/get-penerimaan-by-tgl/{tgl1}/{tgl2}', 'PenerimaanBrgSupController@getPenerimaanByTgl');
 	Route::get('/inventory/p_suplier/lookup-data-pembelian', 'PenerimaanBrgSupController@lookupDataPembelian');
 	Route::get('/inventory/p_suplier/get-data-form/{id}', 'PenerimaanBrgSupController@getdataform');
 	Route::get('/inventory/p_suplier/get-data-detail/{id}', 'PenerimaanBrgSupController@getdatadetail');
 	Route::get('/inventory/p_suplier/simpan-penerimaan', 'PenerimaanBrgSupController@simpan_penerimaan');
-
+	Route::get('/inventory/p_suplier/get-list-waiting-bytgl/{tgl1}/{tgl2}', 'PenerimaanBrgSupController@getListWaitingByTgl');
+	Route::get('/inventory/p_suplier/get-list-received-bytgl/{tgl1}/{tgl2}', 'PenerimaanBrgSupController@getListReceivedByTgl');
+	Route::get('/inventory/p_suplier/simpan-penerimaan', 'PenerimaanBrgSupController@simpanPenerimaan');
 
 });

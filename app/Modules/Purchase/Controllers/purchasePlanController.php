@@ -16,7 +16,7 @@ use Datatables;
 use Session;
 use Response;
 use Auth;
-
+use App\d_gudangcabang;
 
 class purchasePlanController extends Controller
 { 
@@ -232,7 +232,8 @@ class purchasePlanController extends Controller
                                        'm_name',
                                        's_name',
                                        'p_status',
-                                       'p_status_date'
+                                       'p_status_date',
+                                       'p_id'
                                     )
                ->join('m_supplier','d_purchase_plan.p_supplier','=','m_supplier.s_id')
                ->join('d_mem','d_purchase_plan.p_mem','=','d_mem.m_id')
@@ -309,9 +310,6 @@ class purchasePlanController extends Controller
       ->make(true);
    }
 
-   public function getDetailPlan($id){     
-      return d_purchase_plan::getDetailPlan($id);
-   }
    public function getEditPlan($id){     
       return d_purchase_plan::getEditPlan($id);
    }
@@ -346,5 +344,150 @@ class purchasePlanController extends Controller
     {
         return view('/purchasing/rencanabahanbaku/bahan');
     }
+
+   public function getDetailPlan($id,$type)
+   {
+      $dataHeader = d_purchase_plan::select('p_id',
+                                          'p_code',
+                                          's_company',
+                                          'p_status',
+                                          'p_created',
+                                          'p_status_date', 
+                                          'd_mem.m_id', 
+                                          'd_mem.m_name')
+         ->join('m_supplier','d_purchase_plan.p_supplier','=','m_supplier.s_id')
+         ->join('d_mem','d_purchase_plan.p_mem','=','d_mem.m_id')
+         ->where('p_id', '=', $id)
+         ->orderBy('p_created', 'DESC')
+         ->get();
+         // dd($dataHeader);
+      $statusLabel = $dataHeader[0]->p_status;
+      if ($statusLabel == "WT") 
+      {
+        $spanTxt = 'Waiting';
+        $spanClass = 'label-info';
+      }
+      elseif ($statusLabel == "DE")
+      {
+        $spanTxt = 'Dapat Diedit';
+        $spanClass = 'label-warning';
+      }
+      else
+      {
+        $spanTxt = 'Di setujui';
+        $spanClass = 'label-success';
+      }
+
+      if ($type == "all") 
+      {
+        $dataIsi = d_purchaseplan_dt::select('d_purchaseplan_dt.ppdt_item',
+                                             'm_item.i_code',
+                                             'm_item.i_name',
+                                             'm_item.i_sat1',
+                                             'm_satuan.s_name',
+                                             'd_purchaseplan_dt.ppdt_qty',
+                                             'd_purchaseplan_dt.ppdt_qtyconfirm'
+                                             )
+            ->join('d_purchase_plan','d_purchaseplan_dt.ppdt_pruchaseplan','=','d_purchase_plan.p_id')
+            ->join('m_item', 'd_purchaseplan_dt.ppdt_item', '=', 'm_item.i_id')
+            ->join('m_satuan', 'd_purchaseplan_dt.ppdt_satuan', '=', 'm_satuan.s_id')
+            ->where('d_purchaseplan_dt.ppdt_pruchaseplan', '=', $id)
+            ->orderBy('d_purchaseplan_dt.ppdt_created', 'DESC')
+            ->get();
+      }
+      else
+      {
+         $dataIsi = d_purchasingplan_dt::select('d_purchasingplan_dt.ppdt_item',
+                                         'm_item.i_code',
+                                         'm_item.i_name',
+                                         'm_item.i_sat1',
+                                         'm_satuan.s_name',
+                                         'd_purchasingplan_dt.ppdt_qty',
+                                         'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
+                                )
+            ->join('d_purchase_plan','d_purchasingplan_dt.ppdt_pruchaseplan','=','d_purchase_plan.p_id')
+            ->join('m_item', 'd_purchaseplan_dt.ppdt_item', '=', 'm_item.i_id')
+            ->join('m_satuan', 'd_purchaseplan_dt.ppdt_satuan', '=', 'm_satuan.s_id')
+            ->where('d_purchaseplan_dt.ppdt_pruchaseplan', '=', $id)
+            ->where('d_purchaseplan_dt.ppdt_isconfirm', '=', "TRUE")
+            ->orderBy('d_purchaseplan_dt.ppdt_created', 'DESC')
+            ->get();
+      }
+
+      foreach ($dataIsi as $val) 
+      {
+          //cek item type
+          $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->ppdt_item)->first();
+          //get satuan utama
+          $sat1[] = $val->i_sat1;
+      }
+
+      //variabel untuk count array
+      $counter = 0;
+
+      //ambil value stok by item type
+      $comp = Session::get('user_comp');
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+      //dd($dataStok);
+      
+      return Response()->json([
+          'status' => 'sukses',
+          'header' => $dataHeader,
+          'data_isi' => $dataIsi,
+          'data_stok' => $dataStok['val_stok'],
+          'data_satuan' => $dataStok['txt_satuan'],
+          'spanTxt' => $spanTxt,
+          'spanClass' => $spanClass
+      ]);
+   }
+
+   public function getStokByType($arrItemType, $arrSatuan, $counter, $comp)
+   {
+      foreach ($arrItemType as $val) 
+      {
+         if ($val->i_type == "BJ") //brg jual
+         {
+            $gc_id = d_gudangcabang::select('gc_id')
+                  ->where('gc_gudang','GUDANG PENJUALAN')
+                  ->where('gc_comp',$comp)
+                  ->first();
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->s_name;
+            $counter++;
+         }
+         elseif ($val->i_type == "BB") //bahan baku
+         {
+            $gc_id = d_gudangcabang::select('gc_id')
+                  ->where('gc_gudang','GUDANG BAHAN BAKU')
+                  ->where('gc_comp',$comp)
+                  ->first();
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->s_name;
+            $counter++;
+         }
+         elseif ($val->i_type == "BL") //bahan lain
+         {
+            $gc_id = d_gudangcabang::select('gc_id')
+                  ->where('gc_gudang','GUDANG BAHAN BAKU')
+                  ->where('gc_comp',$comp)
+                  ->first();
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->s_name;
+            $counter++;
+         }
+      }
+
+      $data = array('val_stok' => $stok, 'txt_satuan' => $satuan);
+      return $data;
+   }
+
 }
- /*<button class="btn btn-outlined btn-info btn-sm" type="button" data-target="#detail" data-toggle="modal">Detail</button>*/

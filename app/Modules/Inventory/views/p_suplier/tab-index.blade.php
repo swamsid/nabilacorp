@@ -50,7 +50,6 @@
                 <th class="wd-20p">Suplier</th>
                 <th class="wd-15p">Kode Po</th>
                 <th class="wd-15p">Tgl Po</th>
-                <th class="wd-15p">Status</th>
                 <th class="wd-15p" style="text-align: center;">Aksi</th>
               </tr>
             </thead>
