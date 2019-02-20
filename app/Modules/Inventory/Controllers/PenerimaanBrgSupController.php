@@ -30,7 +30,7 @@ class PenerimaanBrgSupController extends Controller
       $tabModal = view('Inventory::p_suplier.modal');
       $tabModDetail = view('Inventory::p_suplier.modal-detail');
       $tabDetItem = view('Inventory::p_suplier.modal-detail-peritem');
-      $ssss = Session::get('user_comp') ;
+      $ssss = Session::get('user_comp');
       return view('Inventory::p_suplier.index',compact('tabIndex','tabWait','tabFinish','tabModal','tabModDetail','tabDetItem','ssss'));
     }
 
@@ -40,7 +40,16 @@ class PenerimaanBrgSupController extends Controller
         $term = trim($request->q);
         if (empty($term)) 
         {
-            $purchase = DB::table('d_purchasing_dt')->join('d_purchasing', 'd_purchasing_dt.d_pcs_id', '=', 'd_purchasing.d_pcs_id')->select('d_purchasing_dt.d_pcs_id', 'd_purchasing.d_pcs_code')->where('d_pcsdt_isreceived','=','FALSE')->where('d_purchasing_dt.d_pcsdt_isconfirm','=','TRUE')->orderBy('d_pcs_code', 'DESC')->limit(5)->groupBy('d_pcs_id')->get();
+            $purchase = DB::table('d_purchasing_dt')
+                ->join('d_purchasing', 'd_purchasing_dt.d_pcs_id', '=', 'd_purchasing.d_pcs_id')
+                ->select('d_purchasing_dt.d_pcs_id', 'd_purchasing.d_pcs_code')
+                ->where('d_pcsdt_isreceived','=','FALSE')
+                ->where('d_purchasing_dt.d_pcsdt_isconfirm','=','TRUE')
+                ->where('p_pcs_comp',Session::get('user_comp'))
+                ->orderBy('d_pcs_code', 'DESC')
+                ->limit(5)
+                ->groupBy('d_pcs_id')
+                ->get();
             foreach ($purchase as $val) 
             {
                 $formatted_tags[] = ['id' => $val->d_pcs_id, 'text' => $val->d_pcs_code];
@@ -49,7 +58,16 @@ class PenerimaanBrgSupController extends Controller
         }
         else
         {
-            $purchase = DB::table('d_purchasing_dt')->join('d_purchasing', 'd_purchasing_dt.d_pcs_id', '=', 'd_purchasing.d_pcs_id')->select('d_purchasing_dt.d_pcs_id', 'd_purchasing.d_pcs_code')->where('d_purchasing_dt.d_pcsdt_isreceived','=','FALSE')->where('d_purchasing.d_pcs_code', 'LIKE', '%'.$term.'%')->where('d_purchasing_dt.d_pcsdt_isconfirm','=','TRUE')->orderBy('d_purchasing.d_pcs_code', 'DESC')->limit(5)->groupBy('d_pcs_id')->get();
+            $purchase = DB::table('d_purchasing_dt')
+               ->join('d_purchasing', 'd_purchasing_dt.d_pcs_id', '=', 'd_purchasing.d_pcs_id')
+               ->select('d_purchasing_dt.d_pcs_id', 'd_purchasing.d_pcs_code')
+               ->where('d_purchasing_dt.d_pcsdt_isreceived','=','FALSE')
+               ->where('d_purchasing.d_pcs_code', 'LIKE', '%'.$term.'%')
+               ->where('d_purchasing_dt.d_pcsdt_isconfirm','=','TRUE')
+               ->where('p_pcs_comp',Session::get('user_comp'))
+               ->orderBy('d_purchasing.d_pcs_code', 'DESC')
+               ->limit(5)
+               ->groupBy('d_pcs_id')->get();
 
             foreach ($purchase as $val) 
             {

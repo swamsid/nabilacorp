@@ -171,78 +171,95 @@ class purchaseOrderController extends Controller
 
    }
 
-   public function getDataDetail(Request $request,$id)
-   {
-      // return 'a';
-      $dataHeader = d_purchase_order::join('m_supplier', 's_id', '=', 'po_supplier')
-                         ->join('d_mem','m_id','=','po_mem')
-                         ->where('po_id',$id)->first();
-      // $dataHeader = d_purchase_order::where('po_id',$id)->first();
-      $dataIsi = d_purchaseorder_dt::
-                             join('d_purchase_order','podt_purchaseorder','=','po_id')
-                             ->leftjoin('m_item','podt_item','=','i_id')
-                             // ->leftjoin('d_item_supplier','is_item','=','i_id')
-                             // ->leftjoin('m_price','m_pitem','=','i_id')
-                             ->leftjoin('m_satuan', 's_id', '=', 'podt_satuan')
-                             // ->leftjoin('d_stock','s_item','=','i_id')
-                             ->where('podt_purchaseorder', '=', $id)
-                             // ->where('po_comp',$gudang->p_comp)
-                             // ->where('popen(command, mode)_gudang',$gudang->p_gudang)
-                             // ->where('podt_ispo', '=', "FALSE")
-                             // ->where('podt_isconfirm', '=', "TRUE")
-                             ->orderBy('podt_created', 'DESC')
-                             ->get();
-         // $prev_harga = [];
-         $harga = [];
+   public function getDataDetail($id)
+    {
+        $dataHeader = d_purchasing::select('d_purchasing.*', 
+                                          'm_supplier.s_company', 
+                                          'm_supplier.s_name',
+                                          'd_mem.m_id',
+                                          'd_mem.m_name')
+               ->join('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
+               ->join('d_mem','d_purchasing.d_pcs_staff','=','d_mem.m_id')
+               ->where('d_pcs_id', '=', $id)
+               ->orderBy('d_pcs_date_created', 'DESC')
+               ->get();
 
-         for ($i=0; $i <count($dataIsi) ; $i++) {
-           // $prev_harga = '';
-           $prev_harga[$i] = DB::table('d_item_supplier')
-                             ->where('is_item',$dataIsi[$i]->i_id)
-                             ->get();
+        $statusLabel = $dataHeader[0]->d_pcs_status;
+        if ($statusLabel == "WT") 
+        {
+          $spanTxt = 'Waiting';
+          $spanClass = 'label-default';
+        }
+        elseif ($statusLabel == "DE")
+        {
+          $spanTxt = 'Dapat Diedit';
+          $spanClass = 'label-warning';
+        }
+        elseif ($statusLabel == "CF")
+        {
+          $spanTxt = 'Di setujui';
+          $spanClass = 'label-info';
+        }
+        else
+        {
+          $spanTxt = 'Barang telah diterima';
+          $spanClass = 'label-success';
+        }
 
-             if ($dataIsi[$i]->satuan_position == 1) {
-               if ($dataIsi[$i]->is_price1 != null) {
-                   $harga[$i] = $dataIsi[$i]->is_price1;
-               }else{
-                   $harga[$i] = 0;
-               }
-             }elseif ($dataIsi[$i]->satuan_position == 2) {
-               if ($dataIsi[$i]->is_price2 != null) {
-                   $harga[$i] = $dataIsi[$i]->is_price2;
-               }else{
-                   $harga[$i] = 0;
-               }
-             }elseif ($dataIsi[$i]->satuan_position == 3) {
-               if ($dataIsi[$i]->is_price3 != null) {
-                   $harga[$i] = $dataIsi[$i]->is_price3;
-               }else{
-                   $harga[$i] = 0;
-               }
-             }
-         }
+        foreach ($dataHeader as $val) 
+        {
+          $data = array(
+              'hargaBruto' => 'Rp. '.number_format($val->d_pcs_total_gross,2,",","."),
+              'nilaiDiskon' => 'Rp. '.number_format($val->d_pcs_discount + $val->d_pcs_disc_value,2,",","."),
+              'nilaiPajak' => 'Rp. '.number_format($val->d_pcs_tax_value,2,",","."),
+              'hargaNet' => 'Rp. '.number_format($val->d_pcs_total_net,2,",",".")
+          );
+        }
 
-         // return $prev_harga;
-         // return $harga;
+        $dataIsi = d_purchasing_dt::join('m_item', 'd_purchasing_dt.i_id', '=', 'm_item.i_id')
+                ->join('m_satuan', 'd_purchasing_dt.d_pcsdt_sat', '=', 'm_satuan.s_id')
+                ->select('d_purchasing_dt.d_pcsdt_id',
+                         'd_purchasing_dt.d_pcs_id',
+                         'd_purchasing_dt.i_id',
+                         'm_item.i_name',
+                         'm_item.i_code',
+                         'm_item.i_sat1',
+                         'm_satuan.s_name',
+                         'm_satuan.s_id',
+                         'd_purchasing_dt.d_pcsdt_prevcost',
+                         'd_purchasing_dt.d_pcsdt_qty',
+                         'd_purchasing_dt.d_pcsdt_price',
+                         'd_purchasing_dt.d_pcsdt_total'
+                )
+                ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+                ->orderBy('d_purchasing_dt.d_pcsdt_created', 'DESC')
+                ->get();
 
+        foreach ($dataIsi as $val) 
+        {
+            //cek item type
+            $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+            //get satuan utama
+            $sat1[] = $val->i_sat1;
+        }
 
-      return response()->json([
-         'status' => 'sukses',
-         'data_isi' => $dataIsi,
-         'header' => $dataHeader,
-         'data_prev' => $harga,
-      ]);
-   }
-
-   public function deleteDataOrder(Request $request)
-   {
-      $dataHeader = d_purchase_order::where('po_id',$request->idPo)->delete();
-      $dataDetail = d_purchaseorder_dt::where('podt_purchaseorder',$request->idPo)->delete();
-       // dd($request->all()); 
+        //variabel untuk count array
+        $counter = 0;
+        //ambil value stok by item type
+         $comp = Session::get('user_comp');
+         $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+        
         return response()->json([
             'status' => 'sukses',
+            'header' => $dataHeader,
+            'header2' => $data,
+            'data_isi' => $dataIsi,
+            'data_stok' => $dataStok['val_stok'],
+            'data_satuan' => $dataStok['txt_satuan'],
+            'spanTxt' => $spanTxt,
+            'spanClass' => $spanClass,
         ]);
-   }
+    }
 
    public function getDataEdit($id)
    {    
@@ -522,6 +539,7 @@ class purchaseOrderController extends Controller
                                     'd_mem.m_name')
             ->join('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
             ->join('d_mem','d_purchasing.d_pcs_staff','=','d_mem.m_id')
+            ->where('p_pcs_comp',Session::get('user_comp'))
             ->whereBetween('d_purchasing.d_pcs_date_created', [$tanggal1, $tanggal2])
             ->orderBy('d_pcs_created', 'DESC')
             ->get();
@@ -625,5 +643,272 @@ class purchaseOrderController extends Controller
       ->rawColumns(['status', 'action'])
       ->make(true);
    }
+
+   public function getDataTabelHistory($tgl1, $tgl2, $tampil)
+    {
+        $y = substr($tgl1, -4);
+        $m = substr($tgl1, -7,-5);
+        $d = substr($tgl1,0,2);
+        $tanggal1 = $y.'-'.$m.'-'.$d;
+
+        $y2 = substr($tgl2, -4);
+        $m2 = substr($tgl2, -7,-5);
+        $d2 = substr($tgl2,0,2);
+        $tanggal2 = $y2.'-'.$m2.'-'.$d2;
+
+        if ($tampil == 'wait') {
+          $isConfirm = "FALSE";
+          $indexStatus = "WT";
+        }elseif ($tampil == 'edit') {
+          $isConfirm = "TRUE";
+          $indexStatus = "DE";
+        }elseif ($tampil == 'confirm') {
+          $isConfirm = "TRUE";
+          $indexStatus = "CF";
+        }else if ($tampil == 'received') {
+          $isConfirm = "TRUE";
+          $indexStatus = "RC";
+        }else {
+          $isConfirm = "TRUE";
+          $indexStatus = "RV";
+        }
+
+        $data = DB::table('d_purchasing_dt')
+            ->select('d_purchasing_dt.*', 
+                     'd_purchasing.*', 
+                     'm_item.i_name', 
+                     'm_supplier.s_company', 
+                     'm_satuan.s_name', 
+                     'd_terima_pembelian_dt.d_tbdt_qty')
+            ->leftJoin('d_purchasing','d_purchasing_dt.d_pcs_id','=','d_purchasing.d_pcs_id')
+            ->leftJoin('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
+            ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
+            ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.s_id')
+            ->leftJoin('d_terima_pembelian_dt','d_purchasing_dt.d_pcsdt_idpdt','=','d_terima_pembelian_dt.d_tbdt_idpcsdt')
+            ->where('d_purchasing_dt.d_pcsdt_isconfirm','=',$isConfirm)
+            ->where('d_purchasing.d_pcs_status','=',$indexStatus)
+            ->where('p_pcs_comp',Session::get('user_comp'))
+            ->whereBetween('d_purchasing.d_pcs_date_created', [$tanggal1, $tanggal2])
+            ->get();
+
+        for ($z=0; $z < count($data); $z++) 
+        {   
+          //variabel untuk menyimpan penjumlahan array qty penerimaan
+          $hasil_qty_rcv = 0;
+          //get data qty received
+          $qtyRcv = DB::select(DB::raw("SELECT IFNULL(sum(d_tbdt_qty), 0) as zz FROM d_terima_pembelian_dt where d_tbdt_idpcsdt = '".$data[$z]->d_pcsdt_id."'"));
+          
+          foreach ($qtyRcv as $nilai) 
+          {
+            $hasil_qty_rcv = (int)$nilai->zz;
+          }
+          //create new object properties and assign value
+          $data[$z]->qty_received = $hasil_qty_rcv;
+        }
+
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->editColumn('status', function ($data)
+          {
+          if ($data->d_pcs_status == "WT") 
+          {
+            return '<span class="label label-default">Waiting</span>';
+          }
+          elseif ($data->d_pcs_status == "DE") 
+          {
+            return '<span class="label label-warning">Dapat diedit</span>';
+          }
+          elseif ($data->d_pcs_status == "CF") 
+          {
+            return '<span class="label label-info">Disetujui</span>';
+          }
+          elseif ($data->d_pcs_status == "RC") 
+          {
+            return '<span class="label label-success">Diterima</span>';
+          }
+          else
+          {
+            return '<span class="label label-warning">Revisi</span>';
+          }
+        })
+        ->editColumn('tglBuat', function ($data) 
+        {
+            if ($data->d_pcs_date_created == null) 
+            {
+                return '-';
+            }
+            else 
+            {
+                return $data->d_pcs_date_created ? with(new Carbon($data->d_pcs_date_created))->format('d M Y') : '';
+            }
+        })
+        ->editColumn('tglTerima', function ($data) 
+        {
+            if ($data->d_pcs_date_received == null) 
+            {
+                return '-';
+            }
+            else 
+            {
+                return $data->d_pcs_date_received ? with(new Carbon($data->d_pcs_date_received))->format('d M Y') : '';
+            }
+        })
+        ->editColumn('qtyTerima', function ($data) 
+        {
+            $qty = ($data->qty_received == null) ? '-' : $data->qty_received;
+            return $qty;
+        })
+        ->addColumn('action', function($data)
+        {
+          if ($data->d_pcs_status == "WT" || $data->d_pcs_status == "DE" || $data->d_pcs_status == "CF" || $data->d_pcs_status == "RV") 
+          {
+            return '<div class="text-center"> - </div>'; 
+          }
+          elseif ($data->d_pcs_status == "RC") 
+          {
+            return '<div class="text-center">
+                      <button class="btn btn-sm btn-success" title="Detail"
+                          onclick=detailMasukPeritem("'.$data->d_pcsdt_id.'")><i class="fa fa-eye"></i> 
+                      </button>
+                    </div>'; 
+          }
+          
+        })
+        ->rawColumns(['status', 'action'])
+        ->make(true);
+   }
+
+   public function getEditOrder($id)
+    {
+      $dataHeader = d_purchasing::join('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
+                ->join('d_mem','d_purchasing.d_pcs_staff','=','d_mem.m_id')
+                ->select('d_purchasing.*', 'm_supplier.s_company', 'm_supplier.s_name', 'd_mem.m_name', 'd_mem.m_id')
+                ->where('d_pcs_id', '=', $id)
+                ->orderBy('d_pcs_date_created', 'DESC')
+                ->get();
+
+      // $hitHutang = d_purchasing::select('d_pcs_sisapayment')
+      // ->where('d_pcs_sisapayment','!=','0')
+      // ->where('s_id',$dataHeader[0]->s_id)
+      // ->get();
+      
+      // $totHutang = 0;
+      // for ($i=0; $i < count($hitHutang) ; $i++) { 
+      //   $totHutang += $hitHutang[$i]->d_pcs_sisapayment;
+      // }
+      // //end Hitung Hutang
+      // //Hitung Plafon
+      // $plafon = DB::table('d_supplier')
+      //   ->select('s_limit','s_top')
+      //   ->where('s_id',$dataHeader[0]->s_id)
+      //   ->first();
+
+      // $batasPlafon = $plafon->s_limit - $totHutang;
+      // if ($plafon->s_limit == '0') {
+      //   $batasPlafon = '0';
+      // }
+      // $cariSisa = d_purchasing::select('d_pcs_sisapayment')
+      // ->where('s_id',$dataHeader[0]->s_id)
+      // ->where('d_pcs_sisapayment','!=','0.00')
+      // ->get();
+      // $totalSisa = 0;
+      // for ($i=0; $i <count($cariSisa) ; $i++) 
+      // { 
+        
+      //   $totalSisa += $cariSisa[$i]->d_pcs_sisapayment;
+      // }
+      // $batasPlafon = $plafon->s_limit - $totalSisa;
+
+      $statusLabel = $dataHeader[0]->d_pcs_status;
+      if ($statusLabel == "WT") 
+      {
+        $spanTxt = 'Waiting';
+        $spanClass = 'label-default';
+      }
+      elseif ($statusLabel == "DE")
+      {
+        $spanTxt = 'Dapat Diedit';
+        $spanClass = 'label-warning';
+      }
+      elseif ($statusLabel == "CF")
+      {
+        $spanTxt = 'Di setujui';
+        $spanClass = 'label-info';
+      }
+      else
+      {
+        $spanTxt = 'Barang telah diterima';
+        $spanClass = 'label-success';
+      }
+
+      $dataIsi = d_purchasing_dt::join('m_item', 'd_purchasing_dt.i_id', '=', 'm_item.i_id')
+                ->join('m_satuan', 'd_purchasing_dt.d_pcsdt_sat', '=', 'm_satuan.s_id')
+                ->select('d_purchasing_dt.*', 'm_item.*', 'm_satuan.s_name', 'm_satuan.s_id')
+                ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+                ->orderBy('d_purchasing_dt.d_pcsdt_created', 'DESC')
+                ->get();
+
+      foreach ($dataIsi as $val) 
+      {
+        //cek item type
+        $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+        //get satuan utama
+        $sat1[] = $val->i_sat1;
+      }
+
+      //variabel untuk count array
+      $counter = 0;
+      //ambil value stok by item type
+      $comp = Session::get('user_comp');
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+      
+      return response()->json([
+        'status' => 'sukses',
+        'header' => $dataHeader,
+        'data_isi' => $dataIsi,
+        'data_stok' => $dataStok['val_stok'],
+        'data_satuan' => $dataStok['txt_satuan'],
+        'spanTxt' => $spanTxt,
+        'spanClass' => $spanClass
+        // 'plafon' => $plafon->s_limit,
+        // 'batasPlafon' => $batasPlafon,
+        // 'plafonRp' => number_format($plafon->s_limit,2,",","."),
+        // 'batasPlafonRp' => number_format( $batasPlafon,2,",",".")
+      ]);
+   }
+
+   public function deleteDataOrder(Request $request)
+    {
+      //dd($request->all());
+      DB::beginTransaction();
+      try {
+        //update d_purchasingplan_dt ispo
+        DB::table('d_purchaseplan_dt')
+            ->where('ppdt_pruchaseplan', $request->idPo)
+            ->where('ppdt_ispo', "TRUE")
+            ->update(['ppdt_ispo' => "FALSE", 
+                     'ppdt_pruchaseplan' => "0"
+                  ]);
+
+        //delete row table d_purchasing_dt
+        $deleteOrderDt = d_purchasing_dt::where('d_pcs_id', $request->idPo)->delete();
+        //delete row table d_purchasing
+        $deleteOrder = d_purchasing::where('d_pcs_id', $request->idPo)->delete();
+
+        DB::commit();
+        return response()->json([
+            'status' => 'sukses',
+            'pesan' => 'Data Order Pembelian Berhasil Dihapus'
+        ]);
+      } 
+      catch (\Exception $e) 
+      {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+        ]);
+      }
+    }
 
 }

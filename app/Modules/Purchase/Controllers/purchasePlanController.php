@@ -313,8 +313,23 @@ class purchasePlanController extends Controller
    public function getEditPlan($id){     
       return d_purchase_plan::getEditPlan($id);
    }
-   public function deletePlan($id){     
-      return d_purchase_plan::deletePlan($id);
+   public function deletePlan($id)
+   {     
+      DB::beginTransaction();
+      try {
+         d_purchase_plan::where('p_id',$id)->delete();
+         d_purchaseplan_dt::where('ppdt_pruchaseplan',$id)->delete();
+      DB::commit();
+      return response()->json([
+          'status' => 'sukses'
+         ]);
+       } catch (\Exception $e) {
+       DB::rollback();
+       return response()->json([
+           'status' => 'gagal',
+           'data' => $e
+         ]);
+       }
    }
    public function updatePlan(Request $request){         
       return d_purchase_plan::perbaruiPlan($request);

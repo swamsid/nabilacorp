@@ -236,31 +236,49 @@ function editPlan(id,code,supplier,date,statusLabel,mem)
 
   }
 
-  function deletePlan(id,code,supplier,date,statusLabel,mem) 
-  {
+  function deletePlan(id){
+    iziToast.show({
+      color: 'red',
+      title: 'Peringatan',
+      message: 'Apakah anda yakin!',
+      position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+      progressBarColor: 'rgb(0, 255, 184)',
+      buttons: [
+        [
+          '<button>Ok</button>',
+          function (instance, toast) {
+            instance.hide({
+              transitionOut: 'fadeOutUp'
+            }, toast);
     $.ajax({
       url : baseUrl + "/purcahse-plan/get-delete-plan/"+id,
-      type: 'delete',
-      dataType: "JSON",
-       data: {"_token": "{{ csrf_token() }}"},              
-      success: function(response)
-      {
-        if(response.sukses='sukses'){
-              iziToast.success({
-                position:'topRight',
-                timeout: 2000,
-                title: '',
-                message: "Data berhasil dihapus.",
-              });
-              tablex.ajax.reload();
-
+      type: 'GET',
+      success : function(response){
+        if (response.status=='sukses') {
+          iziToast.success({timeout: 5000, 
+                          position: "topRight",
+                          icon: 'fa fa-chrome', 
+                          title: '', 
+                          message: 'Data berhasil di hapus.'});
+          tablex.ajax.reload();
+        }else{
+          iziToast.error({position: "topRight",
+                        title: '', 
+                        message: 'Data gagal di hapus.'});
         }
-       
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
       }
     });
+    }
+        ],
+        [
+          '<button>Close</button>',
+           function (instance, toast) {
+            instance.hide({
+              transitionOut: 'fadeOutUp'
+            }, toast);
+          }
+        ]
+      ]
+    }); 
   }
   </script>
