@@ -117,13 +117,13 @@
 	
 		<div class="div-width">
 		
-						<div class="s16 bold">
+				{{-- 		<div class="s16 bold">
 							TAMMA ROBAH INDONESIA
 						</div>
 						<div>
 							Jl. Raya Randu no.74<br>
 							Sidotopo Wetan - Surabaya 60123<br>
-						</div>
+						</div> --}}
 						<div class="bold" style="margin-top: 15px;">
 							Laporan : Penjualan Per Barang - Detail <br>
 							Pembayaran : Kredit &nbsp;&nbsp;&nbsp; PPn : Gabungan <br>

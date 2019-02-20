@@ -185,7 +185,7 @@
         {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"},
         {"data" : "d_pcs_code", "width" : "15%"},
         {"data" : "d_pcs_method", "width" : "10%"},
-        {"data" : "s_name", "width" : "10%"},
+        {"data" : "m_name", "width" : "10%"},
         {"data" : "s_company", "width" : "30%"},
         {"data" : "tglOrder", "width" : "10%"},
         {"data" : "nett", "width" : "20%"}

@@ -103,6 +103,7 @@ class purchaseOrderController extends Controller
       try {
           //insert to table d_purchasing
           $dataHeader = new d_purchasing;
+          $dataHeader->d_pcs_id = $p_id;
           $dataHeader->d_pcsp_id = $request->cariKodePlan;
           $dataHeader->s_id = $request->cariSup;
           $dataHeader->p_pcs_comp = $comp;
