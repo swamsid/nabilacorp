@@ -97,40 +97,6 @@
       endDate: 'today'
     });//datepicker("setDate", "0");
 
-    $('#tbl-index').dataTable({
-        "destroy": true,
-        "processing" : true,
-        "serverside" : true,
-        "ajax" : {
-          url: baseUrl + "/purcahse-order/data-order",
-          type: 'GET'
-        },
-        "columns" : [
-          {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
-          {"data" : "tglOrder", "width" : "10%"},
-          {"data" : "po_code", "width" : "10%"},
-          {"data" : "m_name", "width" : "10%"},
-          {"data" : "s_company", "width" : "13%"},
-          {"data" : "po_method", "width" : "5%"},
-          {"data" : "hargaTotalNet", "width" : "10%"},
-          {"data" : "tglMasuk", "width" : "10%"},
-          {"data" : "status", "width" : "7%"},
-          {"data" : "action", orderable: false, searchable: false, "width" : "15%"}
-        ],
-        "language": {
-          "searchPlaceholder": "Cari Data",
-          "emptyTable": "Tidak ada data",
-          "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-          "sSearch": '<i class="fa fa-search"></i>',
-          "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-          "infoEmpty": "",
-          "paginate": {
-                "previous": "Sebelumnya",
-                "next": "Selanjutnya",
-             }
-        }
-    });
-
     // fungsi jika modal hidden
     $(".modal").on("hidden.bs.modal", function(){
       $('tr').remove('.tbl_modal_row');
@@ -212,7 +178,57 @@
       lihatHistorybyTgl();
     })
 
+    lihatOrderByTanggal();
+
   });
+
+  function lihatOrderByTanggal()
+  {
+    var tgl1 = $('#tanggal1').val();
+    var tgl2 = $('#tanggal2').val();
+    $('#tbl-index').dataTable({
+      "destroy": true,
+      "processing" : true,
+      "serverside" : true,
+      "ajax" : {
+        url: baseUrl + "/purchasing/orderpembelian/get-order-by-tgl/"+tgl1+"/"+tgl2,
+        type: 'GET'
+      },
+      columnDefs: [
+        {
+          targets: 6 ,
+          className: 'right format_money'
+        },
+      ],
+      "columns" : [
+        {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+        {"data" : "tglOrder", "width" : "10%"},
+        {"data" : "d_pcs_code", "width" : "10%"},
+        {"data" : "m_name", "width" : "7%"},
+        {"data" : "s_company", "width" : "13%"},
+        {"data" : "d_pcs_method", "width" : "5%"},
+        {"data" : "hargaTotalNet", "width" : "12%"},
+        {"data" : "tglMasuk", "width" : "10%"},
+        {"data" : "status", "width" : "7%"},
+        {"data" : "action", orderable: false, searchable: false, "width" : "17%"}
+      ],
+      "responsive":true,
+      "pageLength": 10,
+      "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+      "language": {
+        "searchPlaceholder": "Cari Data",
+        "emptyTable": "Tidak ada data",
+        "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+        "sSearch": '<i class="fa fa-search"></i>',
+        "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+        "infoEmpty": "",
+        "paginate": {
+              "previous": "Sebelumnya",
+              "next": "Selanjutnya",
+        }
+      }
+    });
+  }
 
   function detailOrder(id) 
   {

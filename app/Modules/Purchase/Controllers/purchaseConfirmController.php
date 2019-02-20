@@ -7,17 +7,18 @@ use Illuminate\Http\Request;
 use App\m_customer;
 use Carbon\carbon;
 use DB;
-
 use App\m_item;
-
 use App\Http\Controllers\Controller;
-
+use Session;
 use App\mMember;
 use App\Modules\Purchase\model\d_purchase_plan;
+use App\Modules\Purchase\model\d_purchaseplan_dt;
 use App\Modules\Purchase\model\d_purchase_order;
 use App\Modules\Purchase\model\d_purchaseorder_dt;
 use App\d_purchasing;
 use Datatables;
+use App\d_gudangcabang;
+use App\Modules\Purchase\model\d_purchasing_dt;
 
 class purchaseConfirmController extends Controller
 {
@@ -57,81 +58,6 @@ class purchaseConfirmController extends Controller
      $mc =view('Purchase::konfirmasipembelian/modal-confirm');
 
      return view('Purchase::konfirmasipembelian/index',compact('tbh','td','to','tr','mcb','mco','mcr','mc'));
-   }
-public function getDataRencanaPembelian(Request $request)
-  {
-    $data = d_purchase_plan::join('m_supplier','d_purchase_plan.p_supplier','=','m_supplier.s_id')
-              ->join('d_mem','d_purchase_plan.p_mem','=','d_mem.m_id')
-            // ->select('d_pcsp_id','d_pcsp_code','d_pcsp_code','s_company','d_pcsp_status','d_pcsp_datecreated','d_pcsp_dateconfirm', 'd_mem.m_id', 'd_mem.m_name')
-            // ->orderBy('d_pcsp_datecreated', 'DESC')
-            ->get();
-    // return $data;
-    return DataTables::of($data)
-    ->addIndexColumn()
-    ->editColumn('status', function ($data)
-      {
-      if ($data->p_status == "WT")
-      {
-        return '<span class="label label-info">Waiting</span>';
-      }
-      elseif ($data->p_status == "DE")
-      {
-        return '<span class="label label-warning">Dapat diedit</span>';
-      }
-      elseif ($data->p_status == "CF")
-      {
-        return '<span class="label label-success">Finish</span>';
-      }
-    })
-    ->editColumn('tglBuat', function ($data)
-    {
-        if ($data->p_date == null)
-        {
-            return '-';
-        }
-        else
-        {
-            return $data->p_date ? with(new Carbon($data->p_date))->format('d M Y') : '';
-        }
-    })
-    ->editColumn('tglConfirm', function ($data)
-    {
-        if ($data->p_confirm == null)
-        {
-            return '-';
-        }
-        else
-        {
-            return $data->p_confirm ? with(new Carbon($data->p_confirm))->format('d M Y') : '';
-        }
-    })
-    ->addColumn('action', function($data)
-      {
-        if ($data->p_status == "WT")
-        {
-            return '<div class="text-center">
-                      <button class="btn btn-sm btn-primary" title="Ubah Status"
-                          onclick=konfirmasiPlanAll("'.$data->p_id.'")><i class="fa fa-check"></i>
-                      </button>
-                  </div>';
-        }
-        else
-        {
-            return ' ';
-        }
-      })
-    ->rawColumns(['status', 'action'])
-    ->make(true);
-  }
-
-
-   public function confirmRencanaPembelian($id,$type){
-      return d_purchase_plan::confirmRencanaPembelian($id,$type);
-   }
-
-   public function konfirmasiPurchasePlan(Request $request){
-   /*dd($request->all());   */
-      return d_purchase_plan::konfirmasiPurchasePlan($request);
    }
 
    public function konfirmasiOrder(Request $request,$id,$type){
@@ -223,73 +149,6 @@ public function getDataRencanaPembelian(Request $request)
     ]);
       // return d_purchase_plan::konfirmasiOrder($request);
    }
-   public function getdatatableOrder()
-   {
-      // return 'a';
-     $data = d_purchase_order::join('m_supplier','d_purchase_order.po_supplier','=','m_supplier.s_id')
-              ->join('d_mem','d_purchase_order.po_mem','=','d_mem.m_id')
-            // ->select('d_pcsp_id','d_pcsp_code','d_pcsp_code','s_company','d_pcsp_status','d_pcsp_datecreated','d_pcsp_dateconfirm', 'd_mem.m_id', 'd_mem.m_name')
-            // ->orderBy('d_pcsp_datecreated', 'DESC')
-            ->get();
-    // return $data;
-    return DataTables::of($data)
-    ->addIndexColumn()
-    ->editColumn('status', function ($data){
-      if ($data->po_status == "WT")
-      {
-        return '<span class="label label-info">Waiting</span>';
-      }
-      elseif ($data->po_status == "DE")
-      {
-        return '<span class="label label-warning">Dapat diedit</span>';
-      }
-      elseif ($data->po_status == "CF")
-      {
-        return '<span class="label label-success">Finish</span>';
-      }
-    })
-    ->editColumn('tglBuat', function ($data)
-    {
-        if ($data->po_date == null)
-        {
-            return '-';
-        }
-        else
-        {
-            return $data->po_date ? with(new Carbon($data->po_date))->format('d M Y') : '';
-        }
-    })
-    ->editColumn('tglConfirm', function ($data)
-    {
-        if ($data->po_date_confirm == null)
-        {
-            return '-';
-        }
-        else
-        {
-            return $data->po_date_confirm ? with(new Carbon($data->po_date_confirm))->format('d M Y') : '';
-        }
-    })
-    ->addColumn('action', function($data)
-      {
-        if ($data->po_status == "WT")
-        {
-            return '<div class="text-center">
-                      <button class="btn btn-sm btn-primary" title="Ubah Status"
-                          onclick=konfirmasiOrder("'.$data->po_id.'")><i class="fa fa-check"></i>
-                      </button>
-                  </div>';
-        }
-        else
-        {
-            return ' ';
-        }
-      })
-    ->rawColumns(['status', 'action'])
-    ->make(true);
-   }
-
-
 
    public function formPlan()
     {
@@ -351,107 +210,532 @@ public function getDataRencanaPembelian(Request $request)
         return view('/purchasing/rencanabahanbaku/bahan');
     }
 
-  public function confirmOrderPembelian($id,$type)
-  {
-    // return 'a';
-    // dd($request->all());
+   public function confirmOrderPembelian($id,$type)
+   {
+   // dd('a');
+      $dataHeader = d_purchasing::select('d_pcs_date_created',
+                                          'd_pcs_id', 
+                                          'd_pcs_duedate', 
+                                          'd_pcsp_id',
+                                          'd_pcs_code',
+                                          's_company',
+                                          'd_pcs_staff',
+                                          'd_pcs_method',
+                                          'd_pcs_total_net',
+                                          'd_pcs_date_received',
+                                          'd_pcs_status',
+                                          'd_mem.m_name',
+                                          'd_mem.m_id',
+                                          'd_purchasing.s_id as supp_id')
+               ->join('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
+               ->join('d_mem','d_purchasing.d_pcs_staff','=','d_mem.m_id')
+               ->where('d_pcs_id', '=', $id)
+               ->orderBy('d_pcs_date_created', 'DESC')
+               ->get();
 
-    $dataHeader = d_purchase_order::join('m_supplier','d_purchase_order.po_supplier','=','m_supplier.s_id')
-                ->join('d_mem','d_purchase_order.po_mem','=','d_mem.m_id')
-                ->select('po_created','s_company','po_id','po_code', 'po_duedate','d_mem.m_name','d_mem.m_id','po_status')
-                ->where('po_id', '=', $id)
-                // ->orderBy('d_pcs_date_created', 'DESC')
-                ->get();
-    // return $dataHeader;
+      $statusLabel =  $dataHeader[0]->d_pcs_status;
+      if ($statusLabel == "WT") 
+      {
+         $spanTxt = 'Waiting';
+         $spanClass = 'label-info';
+      }
+      elseif ($statusLabel == "DE")
+      {
+         $spanTxt = 'Dapat Diedit';
+         $spanClass = 'label-warning';
+      }
+      else
+      {
+         $spanTxt = 'Di setujui';
+         $spanClass = 'label-success';
+      }
 
-    $statusLabel = $dataHeader[0]->po_status;
-    if ($statusLabel == "WT")
-    {
-        $spanTxt = 'Waiting';
-        $spanClass = 'label-info';
-    }
-    elseif ($statusLabel == "DE")
-    {
-        $spanTxt = 'Dapat Diedit';
-        $spanClass = 'label-warning';
-    }
-    elseif ($statusLabel == "CF")
-    {
-        $spanTxt = 'Di setujui';
-        $spanClass = 'label-success';
-    }
+      if ($type == "all") 
+      {
+         $dataIsi = d_purchasing_dt::select('d_purchasing_dt.*', 'm_item.*', 'm_satuan.*')
+            ->join('m_item', 'd_purchasing_dt.i_id', '=', 'm_item.i_id')
+            ->join('m_satuan', 'd_purchasing_dt.d_pcsdt_sat', '=', 'm_satuan.s_id')
+            ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+            ->orderBy('d_purchasing_dt.d_pcsdt_created', 'DESC')
+            ->get();
+      }
+      else
+      {
+         $dataIsi = d_purchasing_dt::select('d_purchasing_dt.*', 'm_item.*', 'm_satuan.*')
+            ->join('m_item', 'd_purchasing_dt.i_id', '=', 'm_item.i_id')
+            ->join('m_satuan', 'd_purchasing_dt.d_pcsdt_sat', '=', 'm_satuan.s_id')
+            ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+            ->where('d_purchasing_dt.d_pcsdt_isconfirm', '=', "TRUE")
+            ->orderBy('d_purchasing_dt.d_pcsdt_created', 'DESC')
+            ->get();
+      }
 
-    if ($type == "all")
-    {
-      $dataIsi = d_purchaseorder_dt::join('m_item', 'd_purchaseorder_dt.i_id', '=', 'm_item.i_id')
-                ->join('m_satuan', 'd_purchaseorder_dt.d_pcsdt_sat', '=', 'm_satuan.m_sid')
-                ->select('d_purchaseorder_dt.*', 'm_item.*', 'm_satuan.*')
-                ->where('d_purchaseorder_dt.d_pcs_id', '=', $id)
-                ->orderBy('d_purchaseorder_dt.d_pcsdt_created', 'DESC')
-                ->get();
-    }
-    else
-    {
-      $dataIsi = d_purchaseorder_dt::join('m_item', 'd_purchaseorder_dt.podt_item', '=', 'm_item.i_id')
-                ->join('m_satuan', 'd_purchaseorder_dt.podt_satuan', '=', 'm_satuan.s_id')
-                ->select('d_purchaseorder_dt.*', 'm_item.*','m_satuan.*')
-                ->where('podt_purchaseorder',$id)
-                // ->where('d_purchase_order.d_pcsdt_isconfirm', '=', "TRUE")
-                // ->orderBy('d_purchase_order.d_pcsdt_created', 'DESC')
-                ->get();
-    }
-    // return $dataIsi;
-    foreach ($dataIsi as $val)
-    {
+      foreach ($dataIsi as $val) 
+      {
       //cek item type
-      $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+         $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
       //get satuan utama
-      $sat1[] = $val->i_sat1;
-    }
-    // return $sat1;
-    // return $itemType;
-    for ($i=0; $i <count($itemType) ; $i++) {
-       $dataStok = DB::table('d_stock')->where('s_item',$itemType[$i]->i_id)->get();
-    }
-    // return $dataStok;
-    //variabel untuk count array
-    $counter = 0;
-    //ambil value stok by item type
-    // $dataStok = $this->getStokByType($itemType, $sat1, $counter);
-    // return
-    return Response()->json([
-        'status' => 'sukses',
-        'header' => $dataHeader,
-        'data_isi' => $dataIsi,
-        // 'data_stok' => $dataStok['val_stok'],
-        // 'data_satuan' => $dataStok['txt_satuan'],
-        'spanTxt' => $spanTxt,
-        'spanClass' => $spanClass,
-    ]);
+         $sat1[] = $val->i_sat1;
+      }
+      //variabel untuk count array
+      $counter = 0;
+      // dd($dataIsi);
+      //ambil value stok by item type
+      $comp = Session::get('user_comp');
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+      return Response()->json([
+         'status' => 'sukses',
+         'header' => $dataHeader,
+         'data_isi' => $dataIsi,
+         'data_stok' => $dataStok['val_stok'],
+         'data_satuan' => $dataStok['txt_satuan'],
+         'spanTxt' => $spanTxt,
+         'spanClass' => $spanClass
+      ]);
+   }
+
+//mahmud
+  public function getDataRencanaPembelian()
+  {
+    $data = d_purchase_plan::select('p_id',
+                                    'p_code',
+                                    's_company',
+                                    'p_status',
+                                    'p_created',
+                                    'p_status_date', 
+                                    'd_mem.m_id', 
+                                    'd_mem.m_name')
+            ->join('m_supplier','m_supplier.s_id','=','d_purchase_plan.p_supplier')
+            ->join('d_mem','d_purchase_plan.p_mem','=','d_mem.m_id')
+            ->orderBy('p_created', 'DESC')
+            ->get();
+    // dd($data);    
+    return DataTables::of($data)
+    ->addIndexColumn()
+    ->editColumn('status', function ($data)
+      {
+      if ($data->p_status == "WT") 
+      {
+        return '<span class="label label-info">Waiting</span>';
+      }
+      elseif ($data->p_status == "DE") 
+      {
+        return '<span class="label label-warning">Dapat diedit</span>';
+      }
+      elseif ($data->p_status == "FN") 
+      {
+        return '<span class="label label-success">Finish</span>';
+      }
+    })
+    ->editColumn('tglBuat', function ($data) 
+    {
+        if ($data->p_created == null) 
+        {
+            return '-';
+        }
+        else 
+        {
+            return date('d M Y', strtotime($data->p_created)) . ', ' . date('H:i:s', strtotime($data->p_created));
+        }
+    })
+    ->editColumn('tglConfirm', function ($data) 
+    {
+        if ($data->p_status_date == null) 
+        {
+            return '-';
+        }
+        else 
+        {
+            return $data->p_status_date ? with(new Carbon($data->p_status_date))->format('d M Y') : '';
+        }
+    })
+    ->addColumn('action', function($data)
+      {
+        if ($data->p_status == "WT") 
+        {
+            return '<div class="text-center">
+                      <button class="btn btn-sm btn-primary" title="Ubah Status"
+                          onclick=konfirmasiPlanAll("'.$data->p_id.'")><i class="fa fa-check"></i>
+                      </button>
+                  </div>'; 
+        }
+        else 
+        {
+            return '<div class="text-center">
+                      <button class="btn btn-sm btn-primary" title="Ubah Status"
+                          onclick=konfirmasiPlan("'.$data->p_id.'")><i class="fa fa-check"></i>
+                      </button>
+                  </div>'; 
+        }
+      })
+    ->rawColumns(['status', 'action'])
+    ->make(true);
   }
 
-  public function confirmOrderSubmit(Request $request)
-  {
+   public function getDataOrderPembelian()
+   {
+      $data = d_purchasing::select('d_pcs_date_created',
+                                 'd_pcs_id', 
+                                 'd_pcsp_id',
+                                 'd_pcs_code',
+                                 's_company',
+                                 'd_pcs_staff',
+                                 'd_pcs_method',
+                                 'd_pcs_total_net',
+                                 'd_pcs_date_received', 
+                                 'd_pcs_date_confirm',
+                                 'd_pcs_status',
+                                 'd_mem.m_id',
+                                 'd_mem.m_name')
+               ->join('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
+               ->join('d_mem','d_purchasing.d_pcs_staff','=','d_mem.m_id')
+               ->orderBy('d_pcs_date_created', 'DESC')
+               ->get();
+    //dd($data);    
+      return DataTables::of($data)
+      ->addIndexColumn()
+      ->editColumn('status', function ($data)
+      {
+         if ($data->d_pcs_status == "WT") 
+         {
+            return '<span class="label label-default">Waiting</span>';
+         }
+         elseif ($data->d_pcs_status == "DE") 
+         {
+            return '<span class="label label-warning">Dapat diedit</span>';
+         }
+         elseif ($data->d_pcs_status == "CF") 
+         {
+            return '<span class="label label-success">Dikonfirmasi</span>';
+         }
+         elseif ($data->d_pcs_status == "RC") 
+         {
+            return '<span class="label label-info">Received</span>';
+         }
+         else
+         {
+            return '<span class="label label-primary">Revisi</span>';
+         }
+      })
 
-// dd($request->all());
-    if ($request->statusOrderConfirm == 'CF') {
-        $dataHeader = DB::table('d_purchase_order')->where('po_id',$request->idOrder)->update([
-          'po_status'=>'CF'
-        ]);
+      ->editColumn('tglOrder', function ($data) 
+      {
+         if ($data->d_pcs_date_created == null) 
+         {
+            return '-';
+         }
+         else 
+         {
+            return $data->d_pcs_date_created ? with(new Carbon($data->d_pcs_date_created))->format('d M Y') : '';
+         }
+      })
+      ->editColumn('tglConfirm', function ($data) 
+      {
+         if ($data->d_pcs_date_confirm == null) 
+         {
+            return '-';
+         }
+         else 
+         {
+            return $data->d_pcs_date_confirm ? with(new Carbon($data->d_pcs_date_confirm))->format('d M Y') : '';
+         }
+      })
 
-        for ($i=0; $i <count($request->fieldConfirmOrder) ; $i++) {
-          $dataisi = DB::table('d_purchaseorder_dt')->where('podt_purchaseorder',$request->idOrder)->where('podt_detailid',$request->fieldIdDtOrder[$i])->update([
-            'podt_qtyconfirm'=>$request->fieldConfirmOrder[$i]
-          ]);
+      ->editColumn('hargaTotalNet', function ($data) 
+      {
+         return '<div>Rp.
+                   <span class="pull-right">
+                     '.number_format($data->d_pcs_total_net,2,",",".").'
+                   </span>
+                 </div>';
+      })
+
+      ->addColumn('action', function($data)
+      {
+         if ($data->d_pcs_status == "WT") 
+         {
+           return '<div class="text-center">
+                     <button class="btn btn-sm btn-primary" title="Ubah Status"
+                         onclick=konfirmasiOrder("'.$data->d_pcs_id.'","all")><i class="fa fa-check"></i>
+                     </button>
+                 </div>'; 
+         }
+         else 
+         {
+           return '<div class="text-center">
+                     <button class="btn btn-sm btn-primary" title="Ubah Status"
+                         onclick=konfirmasiOrder("'.$data->d_pcs_id.'","confirmed")><i class="fa fa-check"></i>
+                     </button>
+                 </div>'; 
+         }
+      })
+      ->rawColumns(['status', 'action', 'hargaTotalNet'])
+      ->make(true);
+   }
+
+   public function confirmRencanaPembelian($id,$type)
+   {
+      $dataHeader = d_purchase_plan::select('p_id',
+                                             'p_code',
+                                             's_company',
+                                             'p_created', 
+                                             'p_status',
+                                             'p_status_date', 
+                                             'd_mem.m_id', 
+                                             'd_mem.m_name')
+                        ->join('m_supplier','d_purchase_plan.p_supplier','=','m_supplier.s_id')
+                        ->join('d_mem','d_purchase_plan.p_mem','=','d_mem.m_id')
+                        ->where('p_id', '=', $id)
+                        ->orderBy('p_created', 'DESC')
+                        ->get();
+
+      $statusLabel = $dataHeader[0]->p_status;
+      if ($statusLabel == "WT") 
+      {
+         $spanTxt = 'Waiting';
+         $spanClass = 'label-info';
+      }
+      elseif ($statusLabel == "DE")
+      {
+         $spanTxt = 'Dapat Diedit';
+         $spanClass = 'label-warning';
+      }
+      else
+      {
+         $spanTxt = 'Di setujui';
+         $spanClass = 'label-success';
+      }
+
+      if ($type == "all") 
+      {
+         $dataIsi = d_purchaseplan_dt::select('ppdt_pruchaseplan',
+                                             'ppdt_item',
+                                             'm_item.i_code',
+                                             'm_item.i_sat1',
+                                             'm_item.i_name',
+                                             'm_satuan.s_name',
+                                             'm_satuan.s_id',
+                                             'd_purchaseplan_dt.ppdt_qty',
+                                             'd_purchaseplan_dt.ppdt_prevcost',
+                                             'd_purchaseplan_dt.ppdt_qtyconfirm')
+                                 ->join('d_purchase_plan','d_purchaseplan_dt.ppdt_pruchaseplan','=','d_purchase_plan.p_id')
+                                 ->join('m_item', 'd_purchaseplan_dt.ppdt_item', '=', 'm_item.i_id')
+                                 ->join('m_satuan', 'd_purchaseplan_dt.ppdt_satuan', '=', 'm_satuan.s_id')
+                                 ->where('d_purchaseplan_dt.ppdt_pruchaseplan', '=', $id)
+                                 ->orderBy('d_purchaseplan_dt.ppdt_created', 'DESC')
+                                 ->get();
+      }
+      else
+      {
+         $dataIsi = d_purchaseplan_dt::select('d_purchaseplan_dt.ppdt_pruchaseplan',
+                                             'd_purchaseplan_dt.ppdt_item',
+                                             'm_item.i_code',
+                                             'm_item.i_sat1',
+                                             'm_item.i_name',
+                                             'm_satuan.s_name',
+                                             'm_satuan.s_id',
+                                             'd_purchaseplan_dt.ppdt_qty',
+                                             'd_purchaseplan_dt.ppdt_prevcost',
+                                             'd_purchaseplan_dt.ppdt_qtyconfirm')
+                              ->join('d_purchase_plan','d_purchaseplan_dt.ppdt_pruchaseplan','=','d_purchase_plan.p_id')
+                              ->join('m_item', 'd_purchaseplan_dt.ppdt_item', '=', 'm_item.i_id')
+                              ->join('m_satuan', 'd_purchaseplan_dt.ppdt_satuan', '=', 'm_satuan.s_id')
+                              ->where('d_purchaseplan_dt.ppdt_pruchaseplan', '=', $id)
+                              ->where('d_purchaseplan_dt.ppdt_isconfirm', '=', "TRUE")
+                              ->orderBy('d_purchaseplan_dt.ppdt_created', 'DESC')
+                              ->get();
+      }
+
+      foreach ($dataIsi as $val) 
+      {
+         //cek item type
+         $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->ppdt_item)->first();
+         //get satuan utama
+         $sat1[] = $val->i_sat1;
+      }
+      //variabel untuk count array
+      $counter = 0;
+      //ambil value stok by item type
+      $comp = Session::get('user_comp');
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+
+      return Response()->json([
+         'status' => 'sukses',
+         'header' => $dataHeader,
+         'data_isi' => $dataIsi,
+         'data_stok' => $dataStok['val_stok'],
+         'data_satuan' => $dataStok['txt_satuan'],
+         'spanTxt' => $spanTxt,
+         'spanClass' => $spanClass,
+      ]);
+   }
+
+   public function getStokByType($arrItemType, $arrSatuan, $counter, $comp)
+   {
+      foreach ($arrItemType as $val) 
+      {
+         if ($val->i_type == "BJ") //brg jual
+         {
+            $gc_id = d_gudangcabang::select('gc_id')
+                  ->where('gc_gudang','GUDANG PENJUALAN')
+                  ->where('gc_comp',$comp)
+                  ->first();
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->s_name;
+            $counter++;
+         }
+         elseif ($val->i_type == "BB") //bahan baku
+         {
+            $gc_id = d_gudangcabang::select('gc_id')
+                  ->where('gc_gudang','GUDANG BAHAN BAKU')
+                  ->where('gc_comp',$comp)
+                  ->first();
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->s_name;
+            $counter++;
+         }
+         elseif ($val->i_type == "BL") //bahan lain
+         {
+            $gc_id = d_gudangcabang::select('gc_id')
+                  ->where('gc_gudang','GUDANG BAHAN BAKU')
+                  ->where('gc_comp',$comp)
+                  ->first();
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->s_name;
+            $counter++;
+         }
+      }
+
+      $data = array('val_stok' => $stok, 'txt_satuan' => $satuan);
+      return $data;
+   }
+
+   public function submitRencanaPembelian(Request $request)
+   {
+    DB::beginTransaction();
+    try {
+      //update table d_purchasingplan
+      $plan = d_purchase_plan::find($request->idPlan);
+      if ($request->statusConfirm != "WT") 
+      {
+         $plan->p_status_date = date('Y-m-d',strtotime(Carbon::now()));
+         $plan->p_status = $request->statusConfirm;
+         $plan->p_updated = Carbon::now();
+         $plan->save();
+
+         //update table d_purchasingplan_dt
+         $hitung_field = count($request->fieldIdDt);
+         for ($i=0; $i < $hitung_field; $i++) 
+         {
+             $plandt = d_purchaseplan_dt::find($request->fieldIdDt[$i]);
+             $plandt->ppdt_qtyconfirm = str_replace('.', '', $request->fieldConfirm[$i]);
+             $plandt->ppdt_updated = Carbon::now();
+             $plandt->ppdt_isconfirm = "TRUE";
+             $plandt->save();
+         }
+      }
+      else
+      {
+         $plan->p_status_date = null;
+         $plan->p_status = $request->statusConfirm;
+         $plan->p_updated = Carbon::now();
+         $plan->save();
+
+         //update table d_purchasingplan_dt
+         $hitung_field = count($request->fieldIdDt);
+         for ($i=0; $i < $hitung_field; $i++) 
+         {
+             $plandt = d_purchaseplan_dt::find($request->fieldIdDt[$i]);
+             $plandt->ppdt_qtyconfirm = str_replace('.', '', $request->fieldConfirm[$i]);
+             $plandt->ppdt_updated = Carbon::now();
+             $plandt->ppdt_isconfirm = "FALSE";
+             $plandt->save();
+         }
+      }
+
+      DB::commit();
+      return response()->json([
+         'status' => 'sukses',
+         'pesan' => 'Data Rencana Order Berhasil Diupdate'
+      ]);
+      } 
+      catch (\Exception $e) 
+      {
+      DB::rollback();
+      return response()->json([
+         'status' => 'gagal',
+         'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+      ]);
+      }
+   }
+
+   public function submitOrderPembelian(Request $request)
+   { 
+      DB::beginTransaction();
+      try {
+        //update table d_purchasing
+        $purchase = d_purchasing::find($request->idOrder);
+        if ($request->statusOrderConfirm != "WT") 
+        {
+            $purchase->d_pcs_date_confirm = date('Y-m-d',strtotime(Carbon::now()));
+            $purchase->d_pcs_status = $request->statusOrderConfirm;
+            // $purchase->d_pcs_sisapayment = $purchase->d_pcs_total_net;
+            $purchase->d_pcs_updated = Carbon::now();
+            $purchase->save();
+
+            //update table d_purchasing_dt
+            $hitung_field = count($request->fieldConfirmOrder);
+            for ($i=0; $i < $hitung_field; $i++) 
+            {
+                $purchasedt = d_purchasing_dt::find($request->fieldIdDtOrder[$i]);
+                $purchasedt->d_pcsdt_qtyconfirm = str_replace('.', '', $request->fieldConfirmOrder[$i]);
+                $purchasedt->d_pcsdt_updated = Carbon::now();
+                $purchasedt->d_pcsdt_isconfirm = "TRUE";
+                $purchasedt->save();
+            }
         }
-    }else{
-      // return 'ini belum ';
+        else
+        {   
+            $purchase->d_pcs_date_confirm = null;
+            $purchase->d_pcs_status = $request->statusOrderConfirm;
+            $purchase->d_pcs_updated = Carbon::now();
+            $purchase->save();
+
+            //update table d_purchasing_dt
+            $hitung_field = count($request->fieldConfirmOrder);
+            for ($i=0; $i < $hitung_field; $i++) 
+            {
+                $purchasedt = d_purchasing_dt::find($request->fieldIdDtOrder[$i]);
+                $purchasedt->d_pcsdt_qtyconfirm = str_replace('.', '', $request->fieldConfirmOrder[$i]);
+                $purchasedt->d_pcsdt_updated = Carbon::now();
+                $purchasedt->d_pcsdt_isconfirm = "FALSE";
+                $purchasedt->save();
+            }
+        }
+
+        DB::commit();
+        return response()->json([
+            'status' => 'sukses',
+            'pesan' => 'Data Konfirmasi Order Berhasil Diupdate'
+        ]);
+    } 
+    catch (\Exception $e) 
+    {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+        ]);
     }
-
-    return response()->json(['status'=>'sukses']);
-
-
   }
 
 }
- /*<button class="btn btn-outlined btn-info btn-sm" type="button" data-target="#detail" data-toggle="modal">Detail</button>*/

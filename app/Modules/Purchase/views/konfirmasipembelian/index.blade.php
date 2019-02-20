@@ -28,20 +28,20 @@
           </div>
              
           <ul id="generalTab" class="nav nav-tabs">
-            {{-- <li class="active"><a href="#alert-tab" data-toggle="tab">Daftar Rencana Pembelian</a></li> --}}
-            <li class="active"><a href="#order-tab" data-toggle="tab" onclick="daftarTabelOrder()">Daftar Order Pembelian</a></li>
+            <li class="active"><a href="#alert-tab" data-toggle="tab">Daftar Rencana Pembelian</a></li>
+            <li><a href="#order-tab" data-toggle="tab" onclick="daftarTabelOrder()">Daftar Order Pembelian</a></li>
             <li><a href="#return-tab" data-toggle="tab" onclick="daftarTabelReturn()">Daftar Return Pembelian</a></li>
             <li><a href="#belanjaharian-tab" data-toggle="tab" onclick="daftarTabelBelanja()">Daftar Belanja Harian</a></li>
           </ul>
 
           <div id="generalTabContent" class="tab-content responsive">
             <!-- tab daftar pembelian plan -->            
-            {{-- {!!$td!!}             --}}
+            {!!$td!!}             
             <!-- tab daftar pembelian order -->
-            {!!$to!!}            
+            {!!$to!!}  
             <!-- tab daftar return pembelian -->            
             {!!$tr!!}                        
-            <!-- tab daftar belanja harian -->
+            {{--  tab daftar belanja harian --}}
             {!!$tbh!!}            
           </div>
         </div>
@@ -51,7 +51,7 @@
   <!--END TITLE & BREADCRUMB PAGE-->
   <!-- modal -->
     <!--modal confirm orderplan-->    
-    {{-- {!!$mc!!}          --}}
+    {!!$mc!!}         
     <!--modal confirm order-->
     {!!$mco!!}         
     <!--modal confirm return-->
@@ -150,7 +150,7 @@
     });
 
     //event onblur input harga
-    $(document).on('blur', '.field_qty_confirm',  function(e){
+   $(document).on('blur', '.field_qty_confirm',  function(e){
       var getid = $(this).attr("id");
       var qtyConfirm = $(this).val();
       var harga = convertToAngka($('#price_'+getid+'').text());
@@ -158,40 +158,37 @@
       var valueHargaTotal = convertToRupiah(qtyConfirm * harga);
       $('#total_'+getid+'').text(valueHargaTotal);
       $('#button_confirm_order').attr('disabled', false);
-    });
+   });
+
+   $.fn.maskFunc = function(){
+      $('.currency').inputmask("currency", {
+        radixPoint: ",",
+        groupSeparator: ".",
+        digits: 0,
+        autoGroup: true,
+        prefix: '', //Space after $, this will not truncate the first character.
+        rightAlign: false,
+        oncleared: function () { self.Value(''); }
+      });
+    }
 
   //end jquery
   });
 
-  function randString(angka) 
-  {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < angka; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-  } 
-daftarTabelOrder() ;
-  function daftarTabelOrder() 
-  {
-    $('#tbl-order').dataTable({
+   $('#tbl-daftar').dataTable({
         "destroy": true,
         "processing" : true,
         "serverside" : true,
         "ajax" : {
-          url: baseUrl + "/keuangan/konfirmasipembelian/get-data-tabel-order",
+          url: baseUrl + "/keuangan/konfirmasipembelian/get-data-tabel-daftar",
           type: 'GET'
         },
         "columns" : [
-          {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
-          {"data" : "tglBuat", "width" : "10%"},
-          {"data" : "po_code", "width" : "10%"},
-          {"data" : "m_name", "width" : "10%"},
-          {"data" : "s_company", "width" : "25%"},
-          {"data" : "tglConfirm", "width" : "10%"},
-          {"data" : "po_total_net", "width" : "15%"},
+          {"data" : "tglBuat", "width" : "15%"},
+          {"data" : "p_code", "width" : "15%"},
+          {"data" : "m_name", "width" : "20%"},
+          {"data" : "s_company", "width" : "20%"},
+          {"data" : "tglConfirm", "width" : "15%"},
           {"data" : "status", "width" : "10%"},
           {"data" : "action", orderable: false, searchable: false, "width" : "5%"}
         ],
@@ -208,7 +205,194 @@ daftarTabelOrder() ;
              }
         }
     });
+
+   function konfirmasiPlanAll(id) 
+   {
+      alert('a');
+      $.ajax({
+      url : baseUrl + "/keuangan/konfirmasipembelian/confirm-plan/"+id+"/all",
+      type: "GET",
+      dataType: "JSON",
+      success: function(data)
+      {
+        var key = 1;
+        var i = randString(5);
+        //ambil data ke json->modal
+        $('#txt_span_status_confirm').text(data.spanTxt);
+        $("#txt_span_status_confirm").addClass('label'+' '+data.spanClass);
+        $("#id_plan").val(data.header[0].p_id);
+        $("#status_confirm").val(data.header[0].p_status);
+        $('#lblCodeConfirm').text(data.header[0].p_code);
+        $('#lblTglConfirm').text(data.header[0].p_created);
+        $('#lblStaffConfirm').text(data.header[0].m_name);
+        $('#lblSupplierConfirm').text(data.header[0].s_company);
+        
+        if ($("#status_confirm").val() != "FN") 
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_isi[key-1].ppdt_qty)+'</td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].ppdt_qty+'" name="fieldConfirm[]" class="form-control input-sm crfmField currency" style="text-align:right;"/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].ppdt_pruchaseplan+'" name="fieldIdDt[]" class="form-control"/></td>'
+                            +'<td>'+data.data_isi[key-1].s_name+'</td>'
+                            +'<td align="right">'+convertDecimalToRupiah(data.data_isi[key-1].ppdt_prevcost)+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_stok[key-1].qtyStok)+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm" disabled>X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+            $(this).maskFunc();
+          });
+        }
+        else
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_isi[key-1].ppdt_qty)+'</td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].ppdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control input-sm crfmField currency" style="text-align:right;"/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].ppdt_pruchaseplan+'" name="fieldIdDt[]" class="form-control"/></td>'
+                            +'<td>'+data.data_isi[key-1].s_name+'</td>'
+                            +'<td align="right">'+convertDecimalToRupiah(data.data_isi[key-1].ppdt_prevcost)+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_stok[key-1].qtyStok)+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm">X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+          });
+          $(this).maskFunc();
+        }
+        
+        $('#modal-confirm').modal('show');
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+          alert('Error get data from ajax');
+      }
+      });
+  }
+
+  function konfirmasiPlan(id) 
+  {
+      $.ajax({
+      url : baseUrl + "/keuangan/konfirmasipembelian/confirm-plan/"+id+"/confirmed",
+      type: "GET",
+      dataType: "JSON",
+      success: function(data)
+      {
+        var key = 1;
+        var i = randString(5);
+        //ambil data ke json->modal
+        $('#txt_span_status_confirm').text(data.spanTxt);
+        $("#txt_span_status_confirm").addClass('label'+' '+data.spanClass);
+        $("#id_plan").val(data.header[0].p_id);
+        $("#status_confirm").val(data.header[0].p_status);
+        $('#lblCodeConfirm').text(data.header[0].p_code);
+        $('#lblTglConfirm').text(data.header[0].p_created);
+        $('#lblStaffConfirm').text(data.header[0].m_name);
+        $('#lblSupplierConfirm').text(data.header[0].s_company);
+        
+        if ($("#status_confirm").val() != "FN") 
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_isi[key-1].ppdt_qty)+'</td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].ppdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control input-sm crfmField currency" style="text-align:right;"/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].ppdt_pruchaseplan+'" name="fieldIdDt[]" class="form-control"/></td>'
+                            +'<td>'+data.data_isi[key-1].s_name+'</td>'
+                            +'<td align="right">'+convertDecimalToRupiah(data.data_isi[key-1].ppdt_prevcost)+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_stok[key-1].qtyStok)+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm" disabled>X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+            $(this).maskFunc();
+          });
+        }
+        else
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_isi[key-1].ppdt_qty)+'</td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].ppdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control input-sm crfmField currency" style="text-align:right;"/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].ppdt_pruchaseplan+'" name="fieldIdDt[]" class="form-control"/></td>'
+                            +'<td>'+data.data_isi[key-1].s_name+'</td>'
+                            +'<td align="right">'+convertDecimalToRupiah(data.data_isi[key-1].ppdt_prevcost)+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_stok[key-1].qtyStok)+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm">X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+          });
+          $(this).maskFunc();
+        }
+        
+        $('#modal-confirm').modal('show');
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+          alert('Error get data from ajax');
+      }
+      });
+  }
+
+  function randString(angka) 
+  {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < angka; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
   } 
+  daftarTabelOrder() ;
+  function daftarTabelOrder() 
+  {
+    $('#tbl-order').dataTable({
+        "destroy": true,
+        "processing" : true,
+        "serverside" : true,
+        "ajax" : {
+          url: baseUrl + "/keuangan/konfirmasipembelian/get-data-tabel-order",
+          type: 'GET'
+        },
+        "columns" : [
+          {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+          {"data" : "tglOrder", "width" : "15%"},
+          {"data" : "d_pcs_code", "width" : "15%"},
+          {"data" : "m_name", "width" : "10%"},
+          {"data" : "s_company", "width" : "10%"},
+          {"data" : "tglConfirm", "width" : "15%"},
+          {"data" : "hargaTotalNet", "width" : "15%"},
+          {"data" : "status", "width" : "10%"},
+          {"data" : "action", orderable: false, searchable: false, "width" : "5%"}
+        ],
+        "language": {
+          "searchPlaceholder": "Cari Data",
+          "emptyTable": "Tidak ada data",
+          "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+          "sSearch": '<i class="fa fa-search"></i>',
+          "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+          "infoEmpty": "",
+          "paginate": {
+                "previous": "Sebelumnya",
+                "next": "Selanjutnya",
+             }
+        }
+    });
+  }
 
   function daftarTabelReturn() 
   {
@@ -283,27 +467,51 @@ daftarTabelOrder() ;
     });
   }
 
-  function konfirmasiOrder(id,type) 
-  {
+   function konfirmasiOrder(id,type) 
+   {
     $.ajax({
       url : baseUrl + "/keuangan/konfirmasipembelian/confirm-order/"+id+"/"+type,
       type: "GET",
-      data:$('#form-confirm-order').serialize(),
       dataType: "JSON",
       success: function(data)
       {
-        // console.log(data);
         var key = 1;
         var i = randString(5);
         //ambil data ke json->modal
         $('#txt_span_status_order_confirm').text(data.spanTxt);
         $("#txt_span_status_order_confirm").addClass('label'+' '+data.spanClass);
-        $("#id_order").val(data.header[0].po_id);
+        $("#id_order").val(data.header[0].d_pcs_id);
         $("#status_order_confirm").val(data.header[0].d_pcs_status);
-        $('#lblCodeOrderConfirm').text(data.header[0].po_code);
-        $('#lblTglOrderConfirm').text(data.header[0].po_duedate);
+        var orserStatus = data.header[0].d_pcs_status;
+        if (orserStatus == 'WT') 
+        { 
+          $("#status_order_confirm option[value=WT]").show();
+          $("#status_order_confirm option[value=CF]").show();
+          $("#button_confirm_order").show();
+        }
+        else if (orserStatus == 'CF') 
+        {
+          $("#status_order_confirm option[value=WT]").hide();
+          $("#button_confirm_order").hide();
+        }
+        else if (orserStatus == 'RC') 
+        {
+          $("#status_order_confirm option[value=WT]").hide();
+          $("#status_order_confirm option[value=CF]").hide();
+          $("#button_confirm_order").hide();
+        }
+        else if (orserStatus == 'RV')
+        {
+          $("#status_order_confirm option[value=WT]").hide();
+          $("#status_order_confirm option[value=CF]").hide();
+          $("#button_confirm_order").hide();
+        }
+        $('#lblCodeOrderConfirm').text(data.header[0].d_pcs_code);
+        $('#lblTglOrderConfirm').text(data.header[0].d_pcs_date_created);
         $('#lblStaffOrderConfirm').text(data.header[0].m_name);
         $('#lblSupplierOrderConfirm').text(data.header[0].s_company);
+        var d_pcs_total_net = convertDecimalToRupiah(data.header[0].d_pcs_total_net);
+        $('#total-harga').val(d_pcs_total_net);
         if (data.header[0].d_pcs_method != "CASH") 
         {
           $('#append-modal-order div').remove();
@@ -341,73 +549,128 @@ daftarTabelOrder() ;
             $('#tabel-order-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
                             +'<td>'+key+'</td>'
                             +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                            +'<td class="qty_awal_'+data.data_isi[key-1].i_id+'">'+data.data_isi[key-1].podt_qtyconfirm+'</td>'
-                            +'<td><input type="text" value="'+data.data_isi[key-1].podt_qtyconfirm+'" name="fieldConfirmOrder[]" id="'+i+'" class="form-control numberinput input-sm  qty_confirm_'+data.data_isi[key-1].i_id+'"  onkeyup="change('+data.data_isi[key-1].i_id+');" />'
-                            // +'<td><input type="hidden" value="'+data.data_isi[key-1].podt_detailid+'" name="fieldiddetil[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm" />'
-                            +'<input type="hidden" value="'+data.data_isi[key-1].podt_detailid+'" name="fieldIdDtOrder[]" class="form-control input-sm"/></td>'
+                            +'<td align="right">'+formatAngka(data.data_isi[key-1].d_pcsdt_qty)+'</td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcsdt_qty+'" name="fieldConfirmOrder[]" id="'+i+'" class="form-control input-sm field_qty_confirm currency" readonly style="text-align:right;"/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdDtOrder[]" class="form-control input-sm"/></td>'
                             +'<td>'+data.data_isi[key-1].s_name+'</td>'
-                            +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].podt_prevcost)+'</td>'
-                            +'<td id="price_'+i+'" >'+convertDecimalToRupiah(data.data_isi[key-1].podt_price)+'</td>'
-                            +'<td id="total_'+i+'" class="total_tot_'+data.data_isi[key-1].i_id+'">'+convertDecimalToRupiah(data.data_isi[key-1].podt_total)+'</td>'
-                            +'<td hidden><input type="hidden" class="price_'+data.data_isi[key-1].i_id+'" value="'+data.data_isi[key-1].podt_price+'"></td>'
-                            +'<td hidden><input type="hidden" class="total_'+data.data_isi[key-1].i_id+'" value="'+data.data_isi[key-1].podt_total+'"></td>'
-                            // +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td align="right">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_prevcost)+'</td>'
+                            +'<td align="right" id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price)+'</td>'
+                            +'<td align="right" id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_total)+'<input type="hidden" value="'+formatAngka(data.data_isi[key-1].d_pcsdt_total)+'" name="" class="form-control input-sm hasil"/></td>'
+                            +'<td align="right">'+formatAngka(data.data_stok[key-1].qtyStok)+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
                             +'</tr>');
             i = randString(5);
             key++;
+           
           });
+          $(this).maskFunc();
         }
         else
         {
           //loop data
           Object.keys(data.data_isi).forEach(function(){
             $('#tabel-order-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
-                             +'<td>'+key+'</td>'
+                            +'<td>'+key+'</td>'
                             +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                            +'<td  class="qty_awal_'+data.data_isi[key-1].i_id+'">'+data.data_isi[key-1].podt_qtyconfirm+'</td>'
-                            +'<td><input type="text" value="" name="fieldConfirmOrder[]" id="'+i+'" class="form-control numberinput input-sm  qty_confirm_'+data.data_isi[key-1].i_id+'"  onkeyup="change('+data.data_isi[key-1].i_id+');" />'
-                            // +'<td><input type="hidden" value="'+data.data_isi[key-1].podt_detailid+'" name="fieldiddetil[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm" />'
-                            +'<input type="hidden" value="'+data.data_isi[key-1].podt_detailid+'" name="fieldIdDtOrder[]" class="form-control input-sm"/></td>'
+                            +'<td>'+formatAngka(data.data_isi[key-1].d_pcsdt_qty)+'</td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcsdt_qty+'" name="fieldConfirmOrder[]" id="'+i+'" class="form-control input-sm field_qty_confirm currency" readonly style="text-align:right;"/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdDtOrder[]" class="form-control input-sm"/></td>'
                             +'<td>'+data.data_isi[key-1].s_name+'</td>'
-                            +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].podt_prevcost)+'</td>'
-                            +'<td id="price_'+i+'" >'+convertDecimalToRupiah(data.data_isi[key-1].podt_price)+'</td>'
-                            +'<td id="total_'+i+'" class="total_tot_'+data.data_isi[key-1].i_id+'">'+convertDecimalToRupiah(data.data_isi[key-1].podt_total)+'</td>'
-                            // +'<input type="'+awal+'">'
-                            +'<td hidden><input type="hidden" class="price_'+data.data_isi[key-1].i_id+'" value="'+data.data_isi[key-1].podt_price+'"></td>'
-                            +'<td hidden><input type="hidden" class="total_'+data.data_isi[key-1].i_id+'" value="'+data.data_isi[key-1].podt_total+'"></td>'
-                            // +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
-                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
+                            +'<td align="right">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_prevcost)+'</td>'
+                            +'<td align="right" id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price)+'</td>'
+                            +'<td align="right" id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_total)+'</td>'
+                            +'<td align="right">'+formatAngka(data.data_stok[key-1].qtyStok)+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm">X</button></td>'
                             +'</tr>');
             i = randString(5);
             key++;
           });
+          $(this).maskFunc();
         }
         
         $('#modal-confirm-order').modal('show');
+         hitungJumlah();
       },
-          error: function(jqXHR, exception) {          
-            if (jqXHR.status === 0) {
-                alert('Not connect.\n Verify Network.');
-            }if (jqXHR.status === 401) {
-                alert("Ma'af, anda telah logout silahkan login kembali.");
-                window.location.reload();
-            }else if (jqXHR.status == 404) {
-                alert('Requested page not found. [404]');
-            } else if (jqXHR.status == 500) {
-                alert('Internal Server Error [500].');
-            } else if (exception === 'parsererror') {
-                alert('Requested JSON parse failed.');
-            } else if (exception === 'timeout') {
-                alert('Time out error.');
-            } else if (exception === 'abort') {
-                alert('Ajax request aborted.');
-            } else {
-                alert('Uncaught Error.\n' + jqXHR.responseText.error);
-            }
-        }
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+        alert('Error get data from ajax');
+      }
     });
-  }
+   }
+
+   function hitungJumlah()
+   {
+      var inputs = document.getElementsByClassName('hasil'),
+        hasil = [].map.call(inputs, function (input) {
+            return input.value;
+        });
+      var total = 0;
+
+      for (var i = hasil.length - 1; i >= 0; i--) {
+        hasil[i] = convertToAngka(hasil[i]);
+        hasil[i] = parseInt(hasil[i]);
+        total = total + hasil[i];
+      }
+
+      // $('#total-harga').val(total);
+      $('#total-hargaKw').val(total);
+      total = convertToRupiah(total);
+      $('#total-harga').val(total);
+      konfirmasiStatus();
+   }
+
+   function konfirmasiStatus()
+   {
+      var totalHarga = parseInt($('#total-hargaKw').val());
+      var batasPlafon = parseInt($('#batas-plafon').val());
+      if (batasPlafon == '0') 
+      {
+        iziToast.success({
+            timeout: 5000,
+            position: "topLeft",
+            icon: 'fa fa-chrome',
+            title: '',
+            message: 'Tidak ada batas plafon.'
+        });
+      }
+      else if (totalHarga > batasPlafon) 
+      {
+        iziToast.success({
+            timeout: 5000,
+            position: "topLeft",
+            icon: 'fa fa-chrome',
+            title: '',
+            message: 'Pembelian melebihi batas plafon.'
+        });
+        $('#button_confirm_order').attr('disabled', true);
+      }
+      else 
+      {
+        $('#button_confirm_order').attr('disabled', false);
+      }
+   }
+
+   $('#status_order_confirm').change(function(event) {
+      //alert($(this).val());
+      if($(this).val() != "CF")
+      {
+        $('.btn_remove_row_order').attr('disabled', true);
+        $('#button_confirm_order').attr('disabled', false);
+        
+      }
+      else
+      {
+        $('.btn_remove_row_order').attr('disabled', true); 
+        hitungJumlah();
+      }
+   });
+
+   $(document).on('click', '.btn_remove_row_order', function(event){
+     event.preventDefault();
+     var button_id = $(this).attr('id');
+     $('#row'+button_id+'').remove();
+     hitungJumlah();
+   });
 
 
   function change(argument) {
@@ -624,17 +887,14 @@ daftarTabelOrder() ;
           $('#button_confirm').text('Proses...');
           $('#button_confirm').attr('disabled',true);
           $.ajax({
-            url : baseUrl + "/konfirmasi-purchase/purchase-plane/data/confirm-purchase-plan",
-            type: "get",
+            url : baseUrl + "/keuangan/konfirmasipembelian/confirm-plan-submit",
+            type: "GET",
             dataType: "JSON",
             data: $('#form-confirm-plan').serialize(),
             success: function(response)
             {
-              alert('sukses');
-
               if(response.status == "sukses")
               {
-                alert('ss');
                 instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
                 iziToast.success({
                   position: 'center', //center, bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
@@ -697,7 +957,7 @@ daftarTabelOrder() ;
           $('#button_confirm_order').attr('disabled',true);
           $.ajax({
             url : baseUrl + "/keuangan/konfirmasipembelian/confirm-order-submit",
-            type: "get",
+            type: "GET",
             dataType: "JSON",
             data: $('#form-confirm-order').serialize(),
             success: function(response)
@@ -965,6 +1225,18 @@ daftarTabelOrder() ;
     var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
     return hasil+',00'; 
   }
+
+   function formatAngka(decimal) 
+   {
+      var angka = parseInt(decimal);
+      var fAngka = '';        
+      var angkarev = angka.toString().split('').reverse().join('');
+      for(var i = 0; i < angkarev.length; i++){
+      if(i%3 == 0) fAngka += angkarev.substr(i,3)+'.';
+      } 
+      var hasil = fAngka.split('',fAngka.length-1).reverse().join('');
+      return hasil;
+   }
 
   function refreshTabelDaftar() 
   {

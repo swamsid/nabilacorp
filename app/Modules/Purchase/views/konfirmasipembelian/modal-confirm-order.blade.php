@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-confirm-order" role="dialog">
   <div class="modal-dialog" style="width: 90%;margin: auto;">
       
-    <form method="get" id="form-confirm-order">
+    <form method="post" id="form-confirm-order">
       {{ csrf_field() }}
       <input type="hidden" name="idOrder" id="id_order">
       <!-- Modal content-->
@@ -22,8 +22,6 @@
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
                 <label id="lblCodeOrderConfirm"></label>
-                <input type="hidden" name="comp_gudang" class="comp_gudang">
-                <input type="hidden" name="position_gudang" class="position_gudang">
               </div>  
             </div>
 
@@ -56,7 +54,7 @@
                 <label id="lblSupplierOrderConfirm"></label>
               </div>
             </div>
-
+            
             <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Status</label>
             </div>
@@ -65,9 +63,22 @@
               <div class="form-group">
                 <select name="statusOrderConfirm" id="status_order_confirm" class="form-control input-sm">
                   <option value="WT">Waiting</option>
-                  <option value="DE">Dapat diedit</option>
+                  <!-- <option value="DE">Dapat diedit</option> -->
                   <option value="CF">Dikonfirmasi</option>
+              {{--     <option value="RV">Revisi</option> --}}
                 </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <label class="tebal">Total Harga</label>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <b><input id="total-harga" readonly class="form-control input-sm text-right" name=""></b>
+                <b><input id="total-hargaKw" readonly type="hidden" class="form-control input-sm text-right" name=""></b>
+                <b><input id="batas-plafon" readonly type="hidden" class="form-control input-sm text-right" name=""></b>
               </div>
             </div>
 
@@ -81,13 +92,13 @@
                 <tr>
                   <th style="text-align: center;" width="5%;">No</th>
                   <th width="20%;">Kode | Barang</th>
-                  <th width="5%;">Qty</th>
-                  <th width="5%;">Qty Confirm</th>
-                  <th width="10%;">Satuan</th>
-                  <th width="15%;">Harga prev</th>
-                  <th width="15%;">Harga Satuan</th>
+                  <th width="10%;">Qty</th>
+                  <th width="10%;">Qty Confirm</th>
+                  <th width="5%;">Satuan</th>
+                  <th width="10%;">Harga prev</th>
+                  <th width="10%;">Harga Satuan</th>
                   <th class="15%">Harga Total</th>
-                  {{-- <th width="5%;">Stok Gudang</th> --}}
+                  <th width="10%;">Stok Gudang</th>
                   <th width="5%;">Aksi</th>
                 </tr>
               </thead>
