@@ -68,6 +68,5 @@ Route::group(['namespace' => 'App\Modules\Inventory\Controllers', 'middleware'=>
 	Route::get('/inventory/p_suplier/simpan-penerimaan', 'PenerimaanBrgSupController@simpan_penerimaan');
 	Route::get('/inventory/p_suplier/get-list-waiting-bytgl/{tgl1}/{tgl2}', 'PenerimaanBrgSupController@getListWaitingByTgl');
 	Route::get('/inventory/p_suplier/get-list-received-bytgl/{tgl1}/{tgl2}', 'PenerimaanBrgSupController@getListReceivedByTgl');
-	Route::get('/inventory/p_suplier/simpan-penerimaan', 'PenerimaanBrgSupController@simpanPenerimaan');
 
 });

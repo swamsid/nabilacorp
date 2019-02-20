@@ -209,7 +209,7 @@
 
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <div class="form-group">
-                            <input type="text" readonly="" class="input-sm form-control" id="total_nett" name="totalNett_after_disc" style="text-align:right;">
+                            <input type="text" readonly="" class="input-sm form-control" id="total_nett" name="totalNett" style="text-align:right;">
                           </div>
                         </div>
 

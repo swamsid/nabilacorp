@@ -52,8 +52,10 @@ class LaporanPembelianController extends Controller {
               ->where('d_purchasing.d_pcs_status', 'RC')
               ->whereBetween('d_purchasing.d_pcs_date_created', [$tanggal1, $tanggal2])
               ->groupBy('d_purchasing.d_pcs_id')
+              ->where('p_pcs_comp',Session::get('user_comp'))
               ->orderBy('d_purchasing.d_pcs_id', 'ASC')
               ->get();
+
       //return response()->json($data);
       return DataTables::of($data)
         ->addIndexColumn()
@@ -89,6 +91,7 @@ class LaporanPembelianController extends Controller {
               ->where('d_purchasingharian.d_pcsh_status', 'CF')
               ->whereBetween('d_purchasingharian.d_pcsh_date', [$tanggal1, $tanggal2])
               ->groupBy('d_purchasingharian.d_pcsh_id')
+              ->where('p_pcs_comp',Session::get('user_comp'))
               ->orderBy('d_purchasingharian.d_pcsh_id', 'ASC')
               ->get();
       //return response()->json($data);
@@ -130,6 +133,7 @@ class LaporanPembelianController extends Controller {
               ->whereBetween('d_purchasing.d_pcs_date_created', [$tanggal1, $tanggal2])
               ->groupBy('d_purchasing.d_pcs_id')
               ->orderBy('m_supplier.s_company', 'ASC')
+              ->where('p_pcs_comp',Session::get('user_comp'))
               ->get()->toArray();
 
       $data_sum = d_purchasing::join('m_supplier','d_purchasing.s_id', '=', 'm_supplier.s_id')
@@ -141,6 +145,7 @@ class LaporanPembelianController extends Controller {
                 ->whereBetween('d_purchasing.d_pcs_date_created', [$tanggal1, $tanggal2])
                 ->groupBy('d_purchasing.s_id')
                 ->orderBy('m_supplier.s_company', 'ASC')
+                ->where('p_pcs_comp',Session::get('user_comp'))
                 ->get()->toArray();
 
       $data_sum_all = d_purchasing::join('m_supplier','d_purchasing.s_id', '=', 'm_supplier.s_id')
@@ -151,6 +156,7 @@ class LaporanPembelianController extends Controller {
                 ->where('d_purchasing.d_pcs_status', 'RC')
                 ->whereBetween('d_purchasing.d_pcs_date_created', [$tanggal1, $tanggal2])
                 ->orderBy('m_supplier.s_company', 'ASC')
+                ->where('p_pcs_comp',Session::get('user_comp'))
                 ->get()->toArray();
 
       $nama_array = [];
@@ -198,6 +204,7 @@ class LaporanPembelianController extends Controller {
                 ->whereBetween('d_purchasingharian.d_pcsh_date', [$tanggal1, $tanggal2])
                 ->groupBy('d_purchasingharian.d_pcsh_id')
                 ->orderBy('d_purchasingharian.d_pcsh_id', 'ASC')
+                ->where('p_pcs_comp',Session::get('user_comp'))
                 ->get()->toArray();
 
       $data_sum_all = d_purchasingharian::select( 
@@ -205,6 +212,7 @@ class LaporanPembelianController extends Controller {
                 ->where('d_purchasingharian.d_pcsh_status', 'CF')
                 ->whereBetween('d_purchasingharian.d_pcsh_date', [$tanggal1, $tanggal2])
                 ->orderBy('d_purchasingharian.d_pcsh_id', 'ASC')
+                ->where('p_pcs_comp',Session::get('user_comp'))
                 ->get()->toArray();
       
       $nama_array = [];
@@ -260,6 +268,7 @@ class LaporanPembelianController extends Controller {
         ->join('m_item','m_item.i_id','=','d_purchasing_dt.i_id')
         ->join('m_satuan','m_satuan.s_id','d_purchasing_dt.d_pcsdt_sat')
         ->whereBetween('d_pcs_date_created', [$tanggal1, $tanggal2])
+        ->where('p_pcs_comp',Session::get('user_comp'))
         ->get();
         // dd($pembelian);
         return DataTables::of($pembelian)
@@ -316,6 +325,7 @@ class LaporanPembelianController extends Controller {
         ->join('m_item','m_item.i_id','=','d_purchasing_dt.i_id')
         ->join('m_satuan','m_satuan.s_id','d_purchasing_dt.d_pcsdt_sat')
         ->whereBetween('d_pcs_date_created', [$tanggal1, $tanggal2])
+        ->where('p_pcs_comp',Session::get('user_comp'))
         ->get();
 
       $totalPembelian = d_purchasing_dt::select((DB::raw('SUM(d_purchasing_dt.d_pcsdt_total) as total_pembelian')))
