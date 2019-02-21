@@ -47,21 +47,21 @@
                                           <div class="col-md-6 col-sm-7 col-xs-12">
                                             <div class="form-group" style="display: ">
                                               <div class="input-daterange input-group">
-                                                <input id="tgl_awal" data-provide="datepicker" class="form-control input-sm" name="tgl_awal" type="text">
+                                                <input id="tgl_awal" class="form-control input-sm" name="tgl_awal" type="text">
                                                 <span class="input-group-addon">-</span>
-                                                <input id="tgl_akhir" data-provide="datepicker" class="input-sm form-control" name="tgl_akhir" type="text">
+                                                <input id="tgl_akhir" class="input-sm form-control" name="tgl_akhir" type="text">
                                               </div>
                                             </div>
                                           </div>
                                         </div>
 
                                         <div class="col-md-3 col-sm-3 col-xs-12" align="center">
-                                          <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="find_d_purchaseharian()">
+                                          <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="find_d_purchasingharian()">
                                             <strong>
                                               <i class="fa fa-search" aria-hidden="true"></i>
                                             </strong>
                                           </button>
-                                          <button class="btn btn-info btn-sm btn-flat" type="button" onclick="refresh_d_purchaseharian()">
+                                          <button class="btn btn-info btn-sm btn-flat" type="button" onclick="refresh_d_purchasingharian()">
                                             <strong>
                                               <i class="fa fa-undo" aria-hidden="true"></i>
                                             </strong>
@@ -84,6 +84,7 @@
                                             <th>Keperluan</th>
                                             <th>Total Biaya</th>
                                             <th>Status</th>
+                                            <th>Ubah Status</th>
                                             <th>Aksi</th>
                                           </thead>
                                           <tbody></tbody>
@@ -121,6 +122,7 @@
 
 @endsection
 @section("extra_scripts")
+    @include('Purchase::belanjaharian/includes/modal_alter_status')
     @include('Purchase::belanjaharian/js/format_currency')
     @include('Purchase::belanjaharian/js/functions')
     @include('Purchase::belanjaharian/js/commander')
