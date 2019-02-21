@@ -1,4 +1,20 @@
 <script>
+  function count_grandtotal() {
+    var qty = $('[name="d_pcshdt_qty[]"]');
+    var price = $('[name="d_pcshdt_price[]"]');
+    var item_qty, item_price, grand_total = 0;
+
+    for(x = 0;x < qty.length;x++) {
+      item_qty = parseInt( $( qty[x] ).val() );
+      item_price = parseInt( $( price[x] ).val() );
+      grand_total += ( item_qty * item_price );
+    }
+
+    $('#total_bayar').val(
+      'Rp ' + get_currency( grand_total )
+    );
+  } 
+
 	function remove_item(obj) {
 		// Function untuk menghapus item di tabel detail
 		var tr = $(obj).parents('tr');
@@ -45,7 +61,7 @@
                     message: 'Data Berhasil Tersimpan.'
                 });
 
-                location.reload();
+                location.href = '{{ url("purchasing/belanjaharian/belanja") }}';
               }
               else {
               	iziToast.error({

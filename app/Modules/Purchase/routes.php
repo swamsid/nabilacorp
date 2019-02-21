@@ -60,10 +60,12 @@ Route::get('/purchasing/belanjaproduk/produk', 'PurchasingController@produk')->m
 // Routing untuk modul belanja harian
 Route::get('/purchasing/belanjaharian/belanja', 'BelanjaHarianController@index')->middleware('auth');
 Route::get('/purchasing/belanjaharian/tambah_belanja', 'BelanjaHarianController@tambah_belanja')->middleware('auth');
+Route::get('/purchasing/belanjaharian/preview_belanja/{id}', 'BelanjaHarianController@preview_belanja')->middleware('auth')->name('preview_belanjaharian');
 Route::get('/purchasing/belanjaharian/insert_d_purchasingharian', 'BelanjaHarianController@insert_d_purchasingharian')->middleware('auth');
 Route::get('/purchasing/belanjaharian/update_d_purchasingharian', 'BelanjaHarianController@update_d_purchasingharian')->middleware('auth');
 Route::get('/purchasing/belanjaharian/update_d_purchasingharian', 'BelanjaHarianController@update_d_purchasingharian')->middleware('auth');
 Route::get('/purchasing/belanjaharian/find_d_purchasingharian', 'BelanjaHarianController@find_d_purchasingharian')->middleware('auth');
+Route::get('/purchasing/belanjaharian/update_d_pcsh_status', 'BelanjaHarianController@update_d_pcsh_status')->middleware('auth')->name('update_d_pcsh_status');
 
 Route::get('/purchasing/belanjaharian/find_m_divisi', 'BelanjaHarianController@find_m_divisi')->middleware('auth');
 Route::get('/purchasing/belanjaharian/find_m_item', 'BelanjaHarianController@find_m_item')->middleware('auth');
