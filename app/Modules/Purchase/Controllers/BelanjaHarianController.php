@@ -65,9 +65,14 @@ class BelanjaHarianController extends Controller {
     }
 
     function insert_d_purchasingharian(Request $request){
+      // Mengambil data form
       $d_pcsh_date = $request->d_pcsh_date;
       $d_pcsh_date = $d_pcsh_date != null ? $d_pcsh_date : '';
       $d_pcsh_date = preg_replace('/([0-9]+)([\/-])([0-9]+)([\/-])([0-9]+)/', '$5-$3-$1', $d_pcsh_date);;
+      $first_date = date('Y-m-01', strtotime($d_pcsh_date));
+      $last_date = date('Y-m-31', strtotime($d_pcsh_date));
+      $id_code = d_purchasingharian::whereBetween('d_pcsh_date', [$first_date, $last_date])->count('d_pcsh_id');
+      $id_code += 1;
 
       $d_pcsh_staff = $request->d_pcsh_staff;
       $d_pcsh_staff = $d_pcsh_staff != null ? $d_pcsh_staff : '';
@@ -80,7 +85,8 @@ class BelanjaHarianController extends Controller {
       try {
         $d_purchasingharian = new d_purchasingharian();
 
-        $d_pcsh_id = DB::table('d_purchasingharian')->select(DB::raw('IFNULL(MAX(d_pcsh_id), 0) + 1 AS new_id'))->get()->first()->new_id;
+        $d_pcsh_id = d_purchasingharian::count('d_pcsh_id');
+        $d_pcsh_id += 1;
         $grand_total = 0;
         
         $d_purchasingharian_dt = new d_purchasingharian_dt();
@@ -96,20 +102,23 @@ class BelanjaHarianController extends Controller {
             $d_pcshdt_price = $d_pcshdt_price != null ? $d_pcshdt_price : array();
 
             for($x = 0; $x < count($d_pcshdt_item);$x++) {
-                $d_purchasingharian_dt->d_pcshdt_id = $x + 1;
-                $d_purchasingharian_dt->d_pcshdt_pcshid = $d_pcsh_id;
-                $d_purchasingharian_dt->d_pcshdt_item = $d_pcshdt_item[$x];
-                $d_purchasingharian_dt->d_pcshdt_qty = $d_pcshdt_qty[$x];
-                $d_purchasingharian_dt->d_pcshdt_price = $d_pcshdt_price[$x];
-                
                 $pricetotal = $d_pcshdt_qty[$x] * $d_pcshdt_price[$x];
                 $grand_total += $pricetotal;
-                $d_purchasingharian_dt->d_pcshdt_pricetotal = $pricetotal;
-                $d_purchasingharian_dt->save();
+
+                d_purchasingharian_dt::insert([
+                  'd_pcshdt_id' => $x + 1,
+                  'd_pcshdt_pcshid' => $d_pcsh_id,
+                  'd_pcshdt_item' => $d_pcshdt_item[$x],
+                  'd_pcshdt_qty' => $d_pcshdt_qty[$x],
+                  'd_pcshdt_price' => $d_pcshdt_price[$x],
+                  'd_pcshdt_pricetotal' => $pricetotal
+                ]);
+                
+                
             }
         }
 
-        $d_purchasingharian->d_pcsh_code = 'BELANJAHARIAN/' . $d_pcsh_date;
+        $d_purchasingharian->d_pcsh_code = DB::raw("(SELECT CONCAT('BELANJAHARIAN/', DATE_FORMAT('$d_pcsh_date', '%m%y') , '/', LPAD($id_code, 4, 0)))");
         $d_purchasingharian->d_pcsh_id = $d_pcsh_id;
         $d_purchasingharian->d_pcsh_date = $d_pcsh_date;
         $d_purchasingharian->d_pcsh_staff = $d_pcsh_staff;
@@ -193,6 +202,30 @@ class BelanjaHarianController extends Controller {
     }
 
     // Menampilkan form untuk mengupdate data
+    function preview_belanja($d_pcsh_id) {
+      // Daftar divisi
+      $m_divisi = m_divisi::all();
+        $data = array('m_divisi' => $m_divisi);
+
+      // Membuat form update belanja harian
+      $d_purchasingharian = d_purchasingharian::leftJoin('d_mem', 'd_pcsh_staff', '=', 'm_id');
+      $d_purchasingharian = $d_purchasingharian->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'c_id');
+
+      $d_purchasingharian = $d_purchasingharian->where('d_pcsh_id', $d_pcsh_id)->get()->first();
+
+      $d_purchasingharian_dt = d_purchasingharian_dt::leftJoin('m_item', 'i_id', '=', 'd_pcshdt_item')
+        ->leftJoin('m_satuan', 'i_sat1', '=', 's_id'); 
+      $d_purchasingharian_dt = $d_purchasingharian_dt->where('d_pcshdt_pcshid', $d_pcsh_id)->get();
+
+      $res = array(
+          "d_purchasingharian" => $d_purchasingharian,
+          "d_purchasingharian_dt" => $d_purchasingharian_dt,
+          "m_divisi" => $m_divisi
+      );
+
+      return view('Purchase::belanjaharian/preview_belanja', $res);
+
+    }
     function form_perbarui($d_pcsh_id) {
       // Daftar divisi
       $m_divisi = m_divisi::all();
@@ -200,12 +233,12 @@ class BelanjaHarianController extends Controller {
 
       // Membuat form update belanja harian
       $d_purchasingharian = d_purchasingharian::leftJoin('d_mem', 'd_pcsh_staff', '=', 'm_id');
-      $d_purchasingharian = $d_purchasingharian->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'd_id');
+      $d_purchasingharian = $d_purchasingharian->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'c_id');
 
       $d_purchasingharian = $d_purchasingharian->where('d_pcsh_id', $d_pcsh_id)->get()->first();
 
       $d_purchasingharian_dt = d_purchasingharian_dt::leftJoin('m_item', 'i_id', '=', 'd_pcshdt_item')
-        ->leftJoin('m_satuan', 'i_satuan', '=', 's_id'); 
+        ->leftJoin('m_satuan', 'i_sat1', '=', 's_id'); 
       $d_purchasingharian_dt = $d_purchasingharian_dt->where('d_pcshdt_pcshid', $d_pcsh_id)->get();
 
       $res = array(
@@ -218,13 +251,35 @@ class BelanjaHarianController extends Controller {
 
     }
 
-   
+    public function update_d_pcsh_status(Request $req) {
+      $d_pcsh_id = $req->d_pcsh_id;
+      $d_pcsh_id = $d_pcsh_id != null ? $d_pcsh_id : '';
+      $d_pcsh_status = $req->d_pcsh_status;
+      $d_pcsh_status = $d_pcsh_status != null ? $d_pcsh_status : '';
+      if($d_pcsh_id != '' && $d_pcsh_status != '') {
+
+        $d_purchasingharian = d_purchasingharian::find($d_pcsh_id);
+        $d_purchasingharian->d_pcsh_status = $d_pcsh_status;
+        $d_purchasingharian->save();
+        $res = [
+          'status' => 'sukses'
+        ];
+      }
+      else {
+        $res = [
+          'status' => 'error',
+          'message' => 'Data tidak lengkap'
+        ]; 
+      }
+
+      return response()->json($res);
+   }   
 
     function find_d_purchasingharian(Request $req) {
 
        $data = array();
        $rows = d_purchasingharian::leftJoin('d_mem', 'd_pcsh_staff', '=', 'm_id');
-       $rows = $rows->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'd_id');
+       $rows = $rows->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'c_id');
 
        // Filter berdasarkan tanggal
        $tgl_awal = $req->tgl_awal;
@@ -232,12 +287,12 @@ class BelanjaHarianController extends Controller {
        $tgl_akhir = $req->tgl_akhir;
        $tgl_akhir = $tgl_akhir != null ? $tgl_akhir : '';
        if($tgl_awal != '' && $tgl_akhir != '') {
-        $tgl_awal = date('Y-d-m', strtotime($tgl_awal));
-        $tgl_akhir = date('Y-d-m', strtotime($tgl_akhir));
+        $tgl_awal = preg_replace('/([\d]+)[-\/]([\d]+)[-\/]([\d]+)/', '$3-$2-$1', $tgl_awal);
+        $tgl_akhir = preg_replace('/([\d]+)[-\/]([\d]+)[-\/]([\d]+)/', '$3-$2-$1', $tgl_akhir);
         $rows = $rows->whereBetween('d_pcsh_date', array($tgl_awal, $tgl_akhir));
        }
 
-       $rows = $rows->select('d_pcsh_id', 'd_pcsh_code', 'd_pcsh_date', 'd_pcsh_noreff', 'd_pcsh_totalprice', 'd_pcsh_keperluan', 'd_divisi', 'm_name', DB::raw("CASE d_pcsh_status WHEN 'WT' THEN 'Waiting ' WHEN 'DE' THEN 'Dapat Diedit' WHEN 'CF' THEN 'Confirmed' END AS d_pcsh_status"))->get();
+       $rows = $rows->select('d_pcsh_id', 'd_pcsh_code', 'd_pcsh_date', 'd_pcsh_noreff', 'd_pcsh_totalprice', 'd_pcsh_keperluan', 'c_divisi', 'm_name', 'd_pcsh_status', DB::raw("CASE d_pcsh_status WHEN 'WT' THEN 'Waiting ' WHEN 'DE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NAP' THEN 'Tidak Disetujui' END AS d_pcsh_status_label"))->get();
        
 
        $res = array('data' => $rows);

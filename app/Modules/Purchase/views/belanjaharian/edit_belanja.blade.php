@@ -129,7 +129,7 @@
 
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" value="{{ $d_purchasingharian->d_divisi }}" class="form-control input-sm" readonly>
+                                      <input type="text" value="{{ $d_purchasingharian->c_divisi }}" class="form-control input-sm" readonly>
                                   </div>
                                 </div>
                                 
@@ -202,9 +202,9 @@
             var total_harga = i_price * d_pcshdt_qty;
             var aksi = "<button onclick='remove_item(this)' type='button' class='btn btn-danger'><i class='glyphicon glyphicon-trash'></i></button";
 
-            d_pcshdt_qty = "<input type='hidden' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>" + d_pcshdt_qty;
-            i_price = "<input type='hidden' name='d_pcshdt_price[]' value='" + i_price + "'>" + get_currency(i_price);
-            total_harga = get_currency(total_harga);
+            d_pcshdt_qty = "<input type='text' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
+            i_price = "<input type='hidden' name='d_pcshdt_price[]' value='" + i_price + "'>Rp " + get_currency(i_price);
+            total_harga = 'Rp ' + get_currency(total_harga);
 
             tabel_d_purchasingharian_dt.row.add(
               [d_pcshdt_item, d_pcshdt_qty, s_detname, i_price, total_harga, aksi]
