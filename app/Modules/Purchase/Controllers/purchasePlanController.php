@@ -17,6 +17,7 @@ use Session;
 use Response;
 use Auth;
 use App\d_gudangcabang;
+use App\m_supplier;
 
 class purchasePlanController extends Controller
 { 
@@ -310,9 +311,63 @@ class purchasePlanController extends Controller
       ->make(true);
    }
 
-   public function getEditPlan($id){     
-      return d_purchase_plan::getEditPlan($id);
+   public function getEditPlan($id)
+   { 
+
+      $comp = Session::get('user_comp');
+      $gudang = DB::table('d_gudangcabang')
+         ->select('gc_id','gc_gudang','c_name')
+         ->join('m_comp','m_comp.c_id','=','d_gudangcabang.gc_comp')
+         ->where('gc_comp',$comp)
+         ->where(function ($query) {
+                $query->where('gc_gudang', '=', 'GUDANG PENJUALAN')
+                   ->orWhere('gc_gudang', '=', 'GUDANG BAHAN BAKU');
+         })->get();
+
+      $supplier = m_supplier::select('s_id','s_name')->get();
+
+      $data_header = d_purchase_plan::join('d_mem','m_id','=','p_mem')
+               ->join('m_supplier','p_supplier','=','s_id')
+               ->where('p_id', '=', $id)
+               ->first();
+      $dataIsi = d_purchaseplan_dt::select('i_id',
+                                  'm_item.i_code',
+                                  'm_item.i_name',
+                                  'm_item.i_sat1',
+                                  's_name',
+                                  'ppdt_qty',
+                                  'ppdt_satuan',
+                                  'ppdt_qtyconfirm',
+                                  'ppdt_pruchaseplan',
+                                  'ppdt_detailid',
+                                  'ppdt_prevcost',
+                                  'ppdt_totalcost')
+               ->join('m_item','ppdt_item','=','i_id')
+               ->join('m_satuan', 'm_satuan.s_id', '=', 'ppdt_satuan')
+               ->join('d_purchase_plan','p_id','=','ppdt_pruchaseplan')
+               ->where('ppdt_pruchaseplan', '=', $id)
+               ->get();
+               // dd($dataIsi);
+      foreach ($dataIsi as $val) 
+      {
+          //cek item type
+          $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+          //get satuan utama
+          $sat1[] = $val->i_sat1;
+      }
+      //variabel untuk count array
+      $counter = 0;
+
+      //ambil value stok by item type
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+      $dataItem = array( 'data_isi' => $dataIsi, 
+                        'data_stok' => $dataStok['val_stok'], 
+                        'data_satuan' => $dataStok['txt_satuan']
+                  );
+ 
+      return view('Purchase::rencanapembelian/edit',compact('data_header','gudang','supplier','dataItem'));
    }
+
    public function deletePlan($id)
    {     
       DB::beginTransaction();
