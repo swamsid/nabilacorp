@@ -25,7 +25,7 @@
             
 
               <div class="col-md-3 col-sm-6 col-xs-12" align="center">
-                <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="cari()">
+                <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="resetData()">
                   <strong>
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </strong>
@@ -38,7 +38,7 @@
               </div>
 
               <div class="col-md-3 col-sm-6 col-xs-12" align="right">
-                  <button type="button" class="btn btn-xs btn-primary btn-disabled btn-flat" onclick="tambah()">
+                  <button type="button" class="btn btn-box-tool" onclick="tambah()">
                         <i class="fa fa fa-plus"></i> &nbsp;&nbsp;Tambah Data
                   </button>
               </div>
@@ -55,12 +55,13 @@
         <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tablePlan">
               <thead>
                   <tr>                    
-                    <th width="10%">Tgl Buat</th>     
-                    <th width="10%">No rencana</th>
-                    <th width="15%">Suplier</th>                                      
-                    <th width="10%">Status</th>
-                    <th width="10%">tgl Status</th>
-                    <th width="10%">Aksi</th>
+                    <th>Tgl Pembuatan</th>     
+                    <th>Kode rencana</th>
+                    <th>Staff</th>
+                    <th>Suplier</th>                                      
+                    <th>Status</th>
+                    <th>Tgl Setujui</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -235,31 +236,49 @@ function editPlan(id,code,supplier,date,statusLabel,mem)
 
   }
 
-  function deletePlan(id,code,supplier,date,statusLabel,mem) 
-  {
+  function deletePlan(id){
+    iziToast.show({
+      color: 'red',
+      title: 'Peringatan',
+      message: 'Apakah anda yakin!',
+      position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+      progressBarColor: 'rgb(0, 255, 184)',
+      buttons: [
+        [
+          '<button>Ok</button>',
+          function (instance, toast) {
+            instance.hide({
+              transitionOut: 'fadeOutUp'
+            }, toast);
     $.ajax({
       url : baseUrl + "/purcahse-plan/get-delete-plan/"+id,
-      type: 'delete',
-      dataType: "JSON",
-       data: {"_token": "{{ csrf_token() }}"},              
-      success: function(response)
-      {
-        if(response.sukses='sukses'){
-              iziToast.success({
-                position:'topRight',
-                timeout: 2000,
-                title: '',
-                message: "Data berhasil dihapus.",
-              });
-              tablex.ajax.reload();
-
+      type: 'GET',
+      success : function(response){
+        if (response.status=='sukses') {
+          iziToast.success({timeout: 5000, 
+                          position: "topRight",
+                          icon: 'fa fa-chrome', 
+                          title: '', 
+                          message: 'Data berhasil di hapus.'});
+          tablex.ajax.reload();
+        }else{
+          iziToast.error({position: "topRight",
+                        title: '', 
+                        message: 'Data gagal di hapus.'});
         }
-       
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
       }
     });
+    }
+        ],
+        [
+          '<button>Close</button>',
+           function (instance, toast) {
+            instance.hide({
+              transitionOut: 'fadeOutUp'
+            }, toast);
+          }
+        ]
+      ]
+    }); 
   }
   </script>

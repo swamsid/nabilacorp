@@ -11,7 +11,7 @@
 
         <div class="modal-body">
           <label class="tebal">Status : </label>&nbsp;&nbsp;
-          <span class="label label-info" id="txt_span_status"></span>
+          <span class="" id="txt_span_status"></span>
           <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:10px;padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">                          
             <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Kode Rencana Pembelian</label>
@@ -61,9 +61,10 @@
                 <tr>
                   <th style="text-align: center;" width="5%;">No</th>
                   <th width="35%;">Kode | Barang</th>
-                  <th width="15%;">Stok Gudang</th>                  
-                  <th width="15%;">Qty</th>
                   <th width="15%;">Satuan</th>
+                  <th width="15%;">Qty</th>
+                  <th width="15%;">Qty Confirm</th>
+                  <th width="15%;">Stok Gudang</th>
                 </tr>
               </thead>
               <tbody id="div_item">
