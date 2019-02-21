@@ -2,19 +2,41 @@
                            
   <div class="row" style="margin-top: -10px;">
     
-    <div class="col-md-3 col-sm-3 col-xs-12" align="left">
-      <button class="btn btn-box-tool btn-sm btn-flat" type="button" id="btn_refresh_index" onclick="refreshTabelIndex()">
-        <i class="fa fa-undo" aria-hidden="true">&nbsp;</i> Refresh
-      </button>
-    </div>
-
-    <div class="col-md-9 col-sm-9 col-xs-12" >
-
-      <div align="right">
-        <a href="{{ url('/purcahse-order/form-order') }}" class="btn btn-box-tool" style="margin-bottom: 10px;"><i class="fa fa-plus"></i>&nbsp;Tambah Order</a>
+    <div class="col-md-2 col-sm-3 col-xs-12">
+        <label class="tebal">Tanggal Order</label>
       </div>
 
-    </div>
+      <div class="col-md-4 col-sm-7 col-xs-12">
+        <div class="form-group" style="display: ">
+          <div class="input-daterange input-group">
+            <input id="tanggal1" data-provide="datepicker" class="form-control input-sm datepicker1" name="tanggal1" type="text">
+            <span class="input-group-addon">-</span>
+            <input id="tanggal2" data-provide="datepicker" class="input-sm form-control datepicker2" name="tanggal2" type="text" value="{{ date('d-m-Y') }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12" align="center">
+        <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="lihatOrderByTanggal()">
+          <strong>
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </strong>
+        </button>
+        <button class="btn btn-info btn-sm btn-flat" type="button" onclick="refreshTabelIndex()"> 
+          <strong>
+            <i class="fa fa-undo" aria-hidden="true"></i>
+          </strong>
+        </button>
+      </div>
+
+      <div align="right">
+        <a href="{{ url('/purcahse-order/form-order') }}"><button type="button" class="btn btn-box-tool" title="Tambahkan Data Order">
+          <i class="fa fa-plus" aria-hidden="true">
+             &nbsp;
+          </i>Tambah Data
+          </button>
+        </a>
+      </div>
     
     <div class="col-md-12 col-sm-12 col-xs-12"> 
       <div class="table-responsive">
@@ -27,7 +49,7 @@
               <th>Staff</th>
               <th>Supplier</th>
               <th>Cara Bayar</th>
-              <th>Harga Total</th>
+              <th>Total</th>
               <th>Tgl Kirim</th>
               <th>Status</th>
               <th style="text-align: center;">Aksi</th>
