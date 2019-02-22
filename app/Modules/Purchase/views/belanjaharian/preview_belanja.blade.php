@@ -5,13 +5,13 @@
                 <!--BEGIN TITLE & BREADCRUMB PAGE-->
                 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
                     <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                        <div class="page-title">Form Update Belanja Harian</div>
+                        <div class="page-title">Preview Belanja Harian</div>
                     </div>
                     <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
                         <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                         <li><i></i>&nbsp;Purchasing&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                         <li class="active">Belanja Harian&nbsp;&nbsp;</li><i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Form Update Belanja Harian</li>
+                        <li class="active">Preview Belanja Harian</li>
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -27,7 +27,7 @@
                               </div>
                                 
                           <ul id="generalTab" class="nav nav-tabs">
-                            <li class="active"><a href="#alert-tab" data-toggle="tab">Form Update Belanja Harian</a></li>
+                            <li class="active"><a href="#alert-tab" data-toggle="tab">Preview Belanja Harian</a></li>
                             <!-- <li><a href="#note-tab" data-toggle="tab">2</a></li>
                             <li><a href="#label-badge-tab" data-toggle="tab">3</a></li> -->
                           </ul>
@@ -39,7 +39,7 @@
                           
                           <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: -10px;margin-bottom: 15px;">  
                            <div class="col-md-5 col-sm-6 col-xs-8" >
-                             <h4>Form Update Belanja Harian</h4>
+                             <h4>Preview Belanja Harian</h4>
                            </div>
                            <div class="col-md-7 col-sm-6 col-xs-4" align="right" style="margin-top:5px;margin-right: -25px;">
                              <a href="{{ url('purchasing/belanjaharian/belanja') }}" class="btn"><i class="fa fa-arrow-left"></i></a>
@@ -160,7 +160,6 @@
                                       <th width="5%">Satuan</th>
                                       <th>Harga Satuan</th>
                                       <th>Total Harga</th>
-                                      <th>Aksi</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -169,11 +168,7 @@
                                 </table>
                               </div>
 
-                              <div align="right" style="margin-top:20px;">
-                                <div class="form-group" align="right">
-                                  <input type="button" name="tambah_data" value="Simpan Data" class="btn btn-primary" onclick="update_d_purchasingharian()">
-                                </div>
-                              </div>
+                              
 
                             </form>
 
@@ -202,12 +197,12 @@
             var total_harga = i_price * d_pcshdt_qty;
             var aksi = "<button onclick='remove_item(this)' type='button' class='btn btn-danger'><i class='glyphicon glyphicon-trash'></i></button";
 
-            d_pcshdt_qty = "<input type='text' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
+            d_pcshdt_qty = "<input type='hidden' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>" + d_pcshdt_qty;
             i_price = "<input type='hidden' name='d_pcshdt_price[]' value='" + i_price + "'>Rp " + get_currency(i_price);
             total_harga = 'Rp ' + get_currency(total_harga);
 
             tabel_d_purchasingharian_dt.row.add(
-              [d_pcshdt_item, d_pcshdt_qty, s_detname, i_price, total_harga, aksi]
+              [d_pcshdt_item, d_pcshdt_qty, s_detname, i_price, total_harga]
             );
 
           }

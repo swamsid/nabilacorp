@@ -1,5 +1,6 @@
 vendor/
 node_modules/
+sessions/
 npm-debug.log
 
 # Laravel 4 specific
@@ -16,6 +17,6 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 
+
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
-storage/framework/sessions/zG1sYmRTwlM4pgBhX4BfZBMYPNXcqq2OS3V00SzK

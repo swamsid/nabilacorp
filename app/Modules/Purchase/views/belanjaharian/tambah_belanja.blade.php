@@ -78,7 +78,7 @@
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
                                    
-                                      <input type="text" readonly="" class="form-control input-sm">                
+                                      <input type="text" readonly="" class="form-control input-sm" placeholder="( Auto )">                
                                     
                                   </div>
                                 </div>
@@ -133,8 +133,8 @@
                                       <select name="d_pcsh_divisi" id="d_pcsh_divisi" class="form-control">
                                       @foreach ($m_divisi as $data)
                                           <option class="form-control"
-                                                  value="{{ $data->d_id }}">
-                                              {{ $data->d_divisi }}</option>
+                                                  value="{{ $data->c_id }}">
+                                              {{ $data->c_divisi }}</option>
                                       @endforeach
                                       </select>
                                   </div>

@@ -8,10 +8,24 @@
 				'columnDefs': [
 	
 			   		{
-			   			"targets": [3, 4],
+			   			"targets": [1, 3, 4],
 			   			"className": "text-right",
 			   		}
-		   		]
+		   		],
+		   		"createdRow": function( row, data, dataIndex ) {
+	          		d_pcshdt_qty = $(row).find('[name="d_pcshdt_qty[]"]');
+	          		d_pcshdt_qty.on('keyup change', function(){
+	          			count_grandtotal();
+	          			var tr = $(this).parents('tr');
+	          			var d_pcshdt_price = $("[name='d_pcshdt_price[]']").val();
+	          			d_pcshdt_price = parseInt(d_pcshdt_price);
+	          			var qty = $(this).val();
+	          			qty = qty != '' ? parseInt(qty) : 0;
+	          			var subtotal = qty * d_pcshdt_price;
+	          			subtotal = 'Rp ' + get_currency(subtotal);
+	          			tr.find('td:eq(4)').text(subtotal);
+	          		})
+			  	}
 			});
 		$('#d_pcshdt_item').autocomplete({
 			source: '{{ url("/purchasing/belanjaharian/find_m_item") }}',
@@ -43,20 +57,35 @@
 				else {
 
 					var item_selected = current_item;
-					var d_pcshdt_item = "<input type='hidden' name='d_pcshdt_item[]' value='" + item_selected.i_id + "'>" + item_selected.label;
-					var d_pcshdt_qty = $(this).val();
-					var s_detname = item_selected.s_detname;
-					var m_pbuy1 = item_selected.m_pbuy1 ;
-					var total_harga = m_pbuy1 * d_pcshdt_qty;
-					var aksi = "<button onclick='remove_item(this)' type='button' class='btn btn-danger'><i class='glyphicon glyphicon-trash'></i></button";
+					var item_exists = $('[ name="d_pcshdt_item[]"][value="' + item_selected.i_id + '"]');
+					var is_exists = item_exists.length;
+					if(is_exists > 0) {
+						var tr = item_exists.parents('tr');
+						var qty_exists = tr.find('[name="d_pcshdt_qty[]"]');
+						var qty_number = qty_exists.val();
+						var qty_append = $(this).val();
+						qty_number = qty_number != '' ? parseInt(qty_number) : 0;
+						qty_append = qty_append != '' ? parseInt(qty_append) : 0;
+						qty_number += qty_append;
+						qty_exists.val(qty_number);
+					}
+					else {
 
-					d_pcshdt_qty = "<input type='hidden' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>" + d_pcshdt_qty;
-					m_pbuy1 = "<input type='hidden' name='d_pcshdt_price[]' value='" + m_pbuy1 + "'>" + get_currency(m_pbuy1);
-					total_harga = get_currency(total_harga);
+						var d_pcshdt_item = "<input type='hidden' name='d_pcshdt_item[]' value='" + item_selected.i_id + "'>" + item_selected.label;
+						var d_pcshdt_qty = $(this).val();
+						var s_detname = item_selected.s_detname;
+						var m_pbuy1 = item_selected.m_pbuy1 ;
+						var total_harga = m_pbuy1 * d_pcshdt_qty;
+						var aksi = "<button onclick='remove_item(this)' type='button' class='btn btn-danger'><i class='glyphicon glyphicon-trash'></i></button";
 
-					tabel_d_purchasingharian_dt.row.add(
-						[d_pcshdt_item, d_pcshdt_qty, s_detname, m_pbuy1, total_harga, aksi]
-					).draw();
+						d_pcshdt_qty = "<input type='text' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
+						m_pbuy1 = "<input type='hidden' name='d_pcshdt_price[]' value='" + m_pbuy1 + "'>Rp " + get_currency(m_pbuy1);
+						total_harga = 'Rp ' + get_currency(total_harga);
+
+						tabel_d_purchasingharian_dt.row.add(
+							[d_pcshdt_item, d_pcshdt_qty, s_detname, m_pbuy1, total_harga, aksi]
+						).draw();
+					}
 
 					$(this).val('');
 					var empty_option = $('<option value=""></option>');
@@ -70,19 +99,7 @@
 
 		$('#tabel_d_purchasingharian_dt').on( 'draw.dt', function () {
 			// Menghitung grand total pembelian 
-		    var qty = $('[name="d_pcshdt_qty[]"]');
-		    var price = $('[name="d_pcshdt_price[]"]');
-		    var item_qty, item_price, grand_total = 0;
-
-		    for(x = 0;x < qty.length;x++) {
-		    	item_qty = parseInt( $( qty[x] ).val() );
-		    	item_price = parseInt( $( price[x] ).val() );
-		    	grand_total += ( item_qty * item_price );
-		    }
-
-		    $('#total_bayar').val(
-		    	get_currency( grand_total )
-		    );
+		    count_grandtotal();
 		} );
 	});
 </script>

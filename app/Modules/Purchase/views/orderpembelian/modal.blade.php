@@ -17,97 +17,64 @@
               <label class="tebal">No Order Pembelian</label>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
                 <label id="lblNoOrder"></label>
               </div>  
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <label class="tebal">Cara Pembayaran</label>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label id="lblCaraBayar"></label>
+              </div>  
+            </div>
+            
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Tanggal Order Pembelian</label>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblTglOrderShow"></label>
+                <label id="lblTglOrder"></label>
               </div>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Nama Staff</label>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
                 <label id="lblStaff"></label>
               </div>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Tanggal Pengiriman</label>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
                 <label id="lblTglKirim"></label>
               </div>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Suplier</label>
             </div>
 
-            <div class="col-sm-3 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
                 <label id="lblSupplier"></label>
               </div>
             </div>
 
-            {{-- <div id="append-modal-detail"></div> --}}
+            <div id="append-modal-detail"></div>
 
-          </div>
-
-          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top: 10px;">
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total Harga</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="totalHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total Diskon</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="diskonHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">PPN</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="ppnHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="totalHargaFinal">
-              </div>
-            </div>
           </div>
           
           <div class="table-responsive">
@@ -127,11 +94,55 @@
               <tbody id="div_item">
               </tbody>
             </table>
+
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px; padding-bottom:5px;padding-top: 10px;">
+
+              <div class="col-md-10 col-sm-12 col-xs-12">
+                <label class="tebal" style="float: right;">Total Harga : </label>
+              </div>
+
+              <div class="col-md-2 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <input type="text" readonly="" class="input-sm form-control" name="totalHarga">
+                </div>
+              </div>
+
+              <div class="col-md-10 col-sm-12 col-xs-12">
+                <label class="tebal" style="float: right;">Total Diskon : </label>
+              </div>
+
+              <div class="col-md-2 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <input type="text" readonly="" class="input-sm form-control" name="diskonHarga">
+                </div>
+              </div>
+
+              <div class="col-md-10 col-sm-12 col-xs-12">
+                <label class="tebal" style="float: right;">PPN : </label>
+              </div>
+
+              <div class="col-md-2 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <input type="text" readonly="" class="input-sm form-control" name="ppnHarga">
+                </div>
+              </div>
+
+              <div class="col-md-10 col-sm-12 col-xs-12">
+                <label class="tebal" style="float: right;">Total : </label>
+              </div>
+
+              <div class="col-md-2 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <input type="text" readonly="" class="input-sm form-control" name="totalHargaFinal">
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-    
-        <div id="btn-modal" class="modal-footer" style="border-top: none;">
-          
+
+        <div id="append-footer-detail" class="modal-footer" style="border-top: none;">
+          <!-- Button di Script di purchasing/index.blade.php -->
         </div>
 
       </div>
