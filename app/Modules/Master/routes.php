@@ -166,4 +166,13 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::get('/master/membership/delete/{id}', 'MemberController@delete')->middleware('auth')->name('delete_m_customer');
 
     Route::get('/master/databarang/find_m_item', 'itemController@find_m_item')->middleware('auth')->name('find_m_item');
+//group
+    Route::get('/master/datagroup/group', 'groupController@group')->name('group');
+    Route::get('/master/datagroup/tambah_group', 'groupController@tambah_group')->name('tambah_group');
+    Route::get('/master/datagroup/simpan_group', 'groupController@simpan_group')->name('simpan_group');
+    Route::get('/master/datagroup/hapus_group/{id}', 'groupController@hapus_group')->name('hapus_group');
+    Route::get('/master/datagroup/edit_group/{id}', 'groupController@edit_group')->name('edit_group');
+    Route::get('/master/datagroup/update_group', 'groupController@update_group')->name('update_group');
+    Route::get('/master/datagroup/datatable_group', 'groupController@datatable_group')->name('datatable_group');
+    Route::get('/master/datagroup/ubahstatus', 'groupController@ubahStatus');
 });

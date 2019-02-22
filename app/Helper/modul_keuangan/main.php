@@ -99,8 +99,13 @@
 	function modulSetting(){
 		$setting = [
 			// Container
-				'extraScripts' => 'extra_scripts',
-				'extraStyles'  => 'extra_styles',
+				'extraScripts' 		   => 'extra_scripts',
+				'extraStyles'  		   => 'extra_styles',
+
+			// modul
+				'support_cabang'	   => true,
+				'id_pusat'			   => 1,
+				'onLogin'              => 1
 		];
 
 		return $setting;
@@ -111,23 +116,47 @@
 			// setting
 				'allowJurnalToExecute'	=> true,
 				'comp'					=> 1,
-				'companyName'			=> 'CV. Nabila Bakery & Pastry',
-
-			// kelompok_akun_role
-				'kelompok_kas'						=> '1.001',
-				'kelompok_bank'						=> '1.002',
-				'kelompok_harta'					=> '1.000',
-				'kelompok_akumulasi_penyusutan'		=> '1.000',
-				'kelompok_beban_penyusutan'			=> '1.000',
-
-			// Akun Role
-				'akun_Pendapatan_aktiva' 	=> '5.002.01',
-				'akun_Kerugian_aktiva' 		=> '4.008.01',
-				'akun_hutang_usaha'			=> '2.001.01',
-				'akun_piutang_usaha'		=> '1.003.01',
+				'companyName'			=> 'Dirga Ambara Corporindo',
 		];
 
 		return (object) $setting;
+	}
+
+	function tabel(){
+		$data = [
+			// tabel cabang
+
+			'cabang'	=> [
+				'nama'	=> 'sup_cabang',
+				'kolom'	=> [
+					'id'	=> 'cab_id',
+					'nama'	=> 'cab_nama'
+				]
+			]
+		];
+
+		
+		$data = array_to_object($data);
+		
+
+		return $data;
+	}
+
+	function array_to_object($array){
+		
+		$obj = new stdClass;
+
+		foreach($array as $k => $v) {
+		    if(strlen($k)) {
+		        if(is_array($v)) {
+		           $obj->{$k} = array_to_object($v); //RECURSION
+		        } else {
+		           $obj->{$k} = $v;
+		        }
+		    }
+		}
+
+		return $obj;
 	}
 
 ?>
