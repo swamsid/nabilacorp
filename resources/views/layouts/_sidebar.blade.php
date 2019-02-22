@@ -104,6 +104,9 @@
                             </li> -->
                             <li class="menu-sekunder {{ Request::is('master/modul/keuangan/master/akun') ? 'active' : '' || Request::is('master/modul/keuangan/master/akun/*') ? 'active' : '' }}"><a href="{{ url('master/modul/keuangan/master/akun') }}"><span class="submenu-title">Master Data Akun Keuangan</span></a>
                             </li>
+                            <li class="{{ Request::is('master/datagroup/group') ? 'active' : '' || Request::is('master/datagroup/*') ? 'active' : '' }}">
+                                <a href="{{ url('/master/datagroup/group') }}"><span class="submenu-title">Data Group</span><span
+                                                class="hidden">Master</span></a>
                           <!--   <li class="menu-sekunder {{ Request::is('master/datatransaksi/transaksi') ? 'active' : '' || Request::is('master/datatransaksi/*') ? 'active' : '' }}"><a href="{{ url('/master/datatransaksi/transaksi') }}"><span class="submenu-title">Master Data Transaksi Keuangan</span></a>
                             </li> -->
                             <li class="menu-sekunder {{ Request::is('master/item/index') ? 'active' : '' || Request::is('/master/item/*') ? 'active' : '' }}"><a href="{{ url('/master/item/index') }}"><span class="submenu-title">Master Data Barang</span></a>

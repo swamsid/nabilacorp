@@ -1103,16 +1103,16 @@
         },
         {
             "name": "mike42/escpos-php",
-            "version": "v2.0.2",
+            "version": "v2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mike42/escpos-php.git",
-                "reference": "416e340f9cb90fa40611484f1b3c68df06205a84"
+                "reference": "5e904fed73704dcf22c4c4db2f31b329fb7a0b5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/416e340f9cb90fa40611484f1b3c68df06205a84",
-                "reference": "416e340f9cb90fa40611484f1b3c68df06205a84",
+                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/5e904fed73704dcf22c4c4db2f31b329fb7a0b5f",
+                "reference": "5e904fed73704dcf22c4c4db2f31b329fb7a0b5f",
                 "shasum": ""
             },
             "require": {
@@ -1154,7 +1154,7 @@
                 "print",
                 "receipt"
             ],
-            "time": "2018-06-30T03:06:21+00:00"
+            "time": "2019-02-17T05:27:07+00:00"
         },
         {
             "name": "moment/moment",
@@ -1392,16 +1392,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.0",
+            "version": "v4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "594bcae1fc0bccd3993d2f0d61a018e26ac2865a"
+                "reference": "5221f49a608808c1e4d436df32884cbc1b821ac0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/594bcae1fc0bccd3993d2f0d61a018e26ac2865a",
-                "reference": "594bcae1fc0bccd3993d2f0d61a018e26ac2865a",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/5221f49a608808c1e4d436df32884cbc1b821ac0",
+                "reference": "5221f49a608808c1e4d436df32884cbc1b821ac0",
                 "shasum": ""
             },
             "require": {
@@ -1439,7 +1439,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-01-12T16:31:37+00:00"
+            "time": "2019-02-16T20:54:15+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -2071,12 +2071,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swamsid/keuangan.git",
-                "reference": "1af8756068bdfe7b7efcbc4c912e86201f510014"
+                "reference": "2ed91ccdda2a27cda2897e8453b1191f8bef1e34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swamsid/keuangan/zipball/1af8756068bdfe7b7efcbc4c912e86201f510014",
-                "reference": "1af8756068bdfe7b7efcbc4c912e86201f510014",
+                "url": "https://api.github.com/repos/swamsid/keuangan/zipball/2ed91ccdda2a27cda2897e8453b1191f8bef1e34",
+                "reference": "2ed91ccdda2a27cda2897e8453b1191f8bef1e34",
                 "shasum": ""
             },
             "type": "laravel",
@@ -2096,7 +2096,7 @@
                 }
             ],
             "description": "Package Laravel Untuk Modul Keuangan Di Aplikasi-Aplikasi Alamraya.",
-            "time": "2019-01-30T07:59:44+00:00"
+            "time": "2019-02-19T03:19:12+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2702,7 +2702,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3521,16 +3521,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "0.9.10",
+            "version": "0.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "4876fc0c7d9e5da49712554a35c94d84ed1e9ee5"
+                "reference": "be9bf28d8e57d67883cba9fcadfcff8caab667f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/4876fc0c7d9e5da49712554a35c94d84ed1e9ee5",
-                "reference": "4876fc0c7d9e5da49712554a35c94d84ed1e9ee5",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/be9bf28d8e57d67883cba9fcadfcff8caab667f8",
+                "reference": "be9bf28d8e57d67883cba9fcadfcff8caab667f8",
                 "shasum": ""
             },
             "require": {
@@ -3582,7 +3582,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2018-11-13T20:50:16+00:00"
+            "time": "2019-02-12T16:07:13+00:00"
         },
         {
             "name": "myclabs/deep-copy",
