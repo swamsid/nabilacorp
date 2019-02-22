@@ -160,7 +160,7 @@
 
                                              </td>
                                              <td width="15%">
-                                                <input class="form-control input-sm text-right" name="ppdt_prevcost[]" value="{{ $dataItem['data_isi'][$i]['ppdt_prevcost'] }}" readonly>
+                                                <input class="form-control input-sm text-right" name="ppdt_prevcost[]" value="{{ number_format($dataItem['data_isi'][$i]['ppdt_prevcost'],2,',','.')}}" readonly>
                                              </td>
                                              <td width="20%">
                                                 <input class="form-control input-sm text-right currenc" id="qty-{{ $dataItem['data_isi'][$i]['i_id'] }}" name="ppdt_qty[]" value='{{ $dataItem['data_isi'][$i]['ppdt_qty'] }}'>
@@ -178,13 +178,16 @@
                                     </table>
                                  </div>
                               </div>
+                           </form>
+
+                              <div class="col-md-12 col-sm-12 col-xs-12" align="right">
+                                 <button type="button" class="btn btn-xs btn-primary update-plan" onclick="updatePlan({{ $data_header->p_id }})">
+                                 <i class="fa fa-save"></i> Simpan (F10)
+                                 </button>
+                              </div>
                         </div>
                      </div>
-                     <div class="col-md-12 col-sm-12 col-xs-12" align="right">
-                        <button type="button" class="btn btn-xs btn-primary btn-disabled btn-flat" onclick="simpan()" disabled="">
-                        <i class="fa fa-save"></i> Simpan (F10)
-                        </button>
-                     </div>
+                     
                   </form>
                </div>
                
@@ -427,7 +430,37 @@ $(document).ready(function(){
               return input.value;
           });
       tamp = names;
-});
+   });
+
+   function updatePlan(id)
+   {
+      $('.update-plan').attr('disabled', 'disabled');
+      $.ajax({
+         url     :  baseUrl+'/purcahse-plan/update/' + id,
+         type    : 'GET', 
+         data    :  $('#data').serialize(),
+         dataType: 'json',
+         success : function(response)
+         {    
+            if(response.status=='sukses')
+            {
+               var nota = response.nota;                     
+               iziToast.success({
+                  position: "center",
+                  title: nota, 
+                  timeout: 1000,
+                  message: 'Data berhasil di update.'
+               });
+               window.location = baseUrl+'/purcahse-plan/plan-index';
+            }
+            else
+            {                      
+               toastr.warning('Mohon melengkapi data.');
+               $('.update-plan').removeAttr('disabled', 'disabled');
+            }
+         }
+      });
+   }
 
 
     </script>
