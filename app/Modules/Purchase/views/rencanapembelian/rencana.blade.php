@@ -26,20 +26,20 @@
                
               <ul id="generalTab" class="nav nav-tabs">
                   <li class="active"><a href="#alert-tab" data-toggle="tab">Daftar Rencana Pembelian</a></li>
-            {{--       <li hidden=""><a href="#note-tab" data-toggle="tab">History Rencana Pembelian</a></li> --}}
+                  <li hidden=""><a href="#note-tab" data-toggle="tab" onclick="lihatHistorybyTgl()">History Rencana Pembelian</a></li>
                            <!--  <li><a href="#label-badge-tab" data-toggle="tab">Belanja Harian</a></li> -->
               </ul>
         <div id="generalTabContent" class="tab-content responsive">
          {!!$daftar!!}
-         {!!$history!!}
+         {!!$tabHistory!!}
               <!-- div note-tab -->
-              <div id="note-tab" class="tab-pane fade">
+{{--               <div id="note-tab" class="tab-pane fade">
                 <div class="row">
                   <div class="panel-body">
                     <!-- Isi Content -->
                   </div>
                 </div>
-              </div><!--/div note-tab -->
+              </div><!--/div note-tab --> --}}
               <!-- div label-badge-tab -->
               <div id="label-badge-tab" class="tab-pane fade">
                 <div class="row">
@@ -67,6 +67,11 @@
           format:"dd-mm-yyyy",        
           autoclose: true,
       }).datepicker( "setDate", d);
+      $('.datepicker1').datepicker({
+         autoclose: true,
+         format:"dd-mm-yyyy",
+         endDate: 'today'
+      }).datepicker("setDate", d);
       $('#tanggal2').datepicker({
           format:"dd-mm-yyyy",        
           autoclose: true,
@@ -80,6 +85,10 @@
       });
 
       table();
+
+      $('#tampil_data').on('change', function() {
+         lihatHistorybyTgl();
+       })
 
    });
 
@@ -135,6 +144,48 @@
               
       });
    }
+
+   function lihatHistorybyTgl(){
+      var tgl1 = $('#tanggal1').val();
+      var tgl2 = $('#tanggal2').val();
+      var tampil = $('#tampil_data').val();
+         $('#tbl-history').dataTable({
+         "destroy": true,
+         "processing" : true,
+         "serverside" : true,
+         "ajax" : {
+           url: baseUrl + "/purchasing/rencanapembelian/get-data-tabel-history/"+tgl1+"/"+tgl2+"/"+tampil,
+           type: 'GET'
+         },
+         "columns" : [
+           {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+           {"data" : "p_code", "width" : "10%"},
+           {"data" : "i_name", "width" : "15%"},
+           {"data" : "s_name", "width" : "10%"},
+           {"data" : "s_company", "width" : "15%"},
+           {"data" : "tglBuat", "width" : "10%"},
+           {"data" : "ppdt_qty", "width" : "5%"},
+           {"data" : "tglConfirm", "width" : "10%"},
+           {"data" : "ppdt_qtyconfirm", "width" : "5%"},
+           {"data" : "status", "width" : "10%"}
+         ],
+         /*"rowsGroup": [
+           'first:name'
+         ],*/
+         "language": {
+           "searchPlaceholder": "Cari Data",
+           "emptyTable": "Tidak ada data",
+           "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+           "sSearch": '<i class="fa fa-search"></i>',
+           "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+           "infoEmpty": "",
+           "paginate": {
+                 "previous": "Sebelumnya",
+                 "next": "Selanjutnya",
+              }
+         }
+      });
+  }
 
    function detailPlanAll(id) 
    {

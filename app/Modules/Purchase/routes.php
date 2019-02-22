@@ -16,6 +16,8 @@ Route::group(['namespace' => 'App\Modules\Purchase\Controllers', 'middleware'=>[
 	Route::get('/purcahse-plan/update-plan', 'purchasePlanController@updatePlan')->middleware('auth');
 	Route::get('/purcahse-plan/get-delete-plan/{id}', 'purchasePlanController@deletePlan')->middleware('auth');
 	Route::get('/purchasing/rencanapembelian/get-detail-plan/{id}/{type}', 'purchasePlanController@getDetailPlan');
+	Route::get('/purcahse-plan/update/{id}', 'purchasePlanController@updatePlan');
+	Route::get('/purchasing/rencanapembelian/get-data-tabel-history/{tgl1}/{tgl2}/{tampil}', 'purchasePlanController@getDataTabelHistory');
 //mahmud konfirm plan
 	Route::get('/keuangan/konfirmasipembelian/get-data-tabel-daftar', 'purchaseConfirmController@getDataRencanaPembelian');
 	Route::get('/keuangan/konfirmasipembelian/confirm-plan/{id}/{type}', 'purchaseConfirmController@confirmRencanaPembelian');
@@ -56,7 +58,7 @@ Route::group(['namespace' => 'App\Modules\Purchase\Controllers', 'middleware'=>[
 	Route::get('/purchasing/belanjasuplier/suplier', 'PurchasingController@suplier')->middleware('auth');
 	Route::get('/purchasing/belanjalangsung/langsung', 'PurchasingController@langsung')->middleware('auth');
 	Route::get('/purchasing/belanjaproduk/produk', 'PurchasingController@produk')->middleware('auth');
-
+	Route::get('/purchasing/orderpembelian/print/{id}', 'purchaseOrderController@print');
 // Routing untuk modul belanja harian
 
 Route::get('/purchasing/belanjaharian/belanja', 'BelanjaHarianController@index')->middleware('auth');
