@@ -33,7 +33,7 @@
 
               <ul id="generalTab" class="nav nav-tabs ">
                 <li class="active"><a href="#index-tab" data-toggle="tab">Order Pembelian</a></li>
-                <li><a href="#note-tab" data-toggle="tab" onclick="lihatHistorybyTgl()">History Order Pembelian</a></li>
+                <li><a href="#note-tab" data-toggle="tab">History Order Pembelian</a></li>
               </ul>
 
               <div id="generalTabContent" class="tab-content responsive">
