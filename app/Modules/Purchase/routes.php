@@ -95,6 +95,10 @@ Route::get('/purchasing/belanjaharian/hapus/{id}', 'BelanjaHarianController@hapu
 	Route::get('/purchasing/belanjapasar/pasar', 'PurchasingController@pasar')->middleware('auth');
 //purchasing dari spk
 	Route::get('/purchasing/rencanabahanbaku/bahan', 'RencanaBahanController@index');
+	Route::get('/master/supplier/table/{id}', 'RencanaBahanController@tableRelasiSup');
+	Route::get('/master/supplier/hapus/{id}', 'RencanaBahanController@deleteItemSupp');
+	Route::get('/master/supplier/tambahSupp', 'RencanaBahanController@saveItemSupp');
+	Route::get('/purchasing/get-item/autocomplete', 'RencanaBahanController@getItem');
 //selesai purchasing dari spk
 // pembelian bahan baku spk
 	Route::get('/purchasing/rencanabahanbaku/get-rencana-bytgl/{tgl1}/{tgl2}', 'RencanaBahanController@getRencanaByTgl');

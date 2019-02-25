@@ -12,9 +12,12 @@ use Datatables;
 use Auth;
 use App\d_spk;
 use App\spk_formula;
+use App\m_supplier;
+use App\d_item_supplier;
 use App\Modules\Purchase\model\d_purchase_plan;
 use App\Modules\Purchase\model\d_purchaseplan_dt;
 use Session;
+use App\m_item;
 
 class RencanaBahanController extends Controller
 {
@@ -25,10 +28,11 @@ class RencanaBahanController extends Controller
 
     public function index()
     {
-      
-      $tambah=view('Purchase::rencanabahanbaku.tambah');
-      $modalDetail=view('Purchase::rencanabahanbaku.modal-detail');
-      return view('Purchase::rencanabahanbaku.index',compact('tambah','modalDetail'));  
+      $supplier = m_supplier::select('s_id',
+                                      's_company')
+         ->where('s_active','Y')
+         ->get();
+      return view('Purchase::rencanabahanbaku.index',compact('tambah','supplier'));  
 
     }
 
@@ -570,5 +574,119 @@ class RencanaBahanController extends Controller
     {
       $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
       return (int)str_replace(',', '.', $value);
+    }
+
+   public function tableRelasiSup($id){
+      $item = d_item_supplier::select('is_id',
+                                    'is_supplier',
+                                    'i_code',
+                                    'i_name')
+         ->join('m_item','m_item.i_id','=','is_item')
+         ->where('is_supplier',$id)
+         ->get();
+      // dd($item);
+      
+      return DataTables::of($item)
+
+      ->editColumn('i_name', function ($data)
+      {
+         return $data->i_code .' - '. $data->i_name;
+      })
+
+      ->addColumn('action', function($data)
+      {
+         return '<div class="text-center">
+                  <a onclick=hapus('.$data->is_id.')
+                    class="btn btn-danger btn-sm"
+                    title="Hapus">
+                    <i class="fa fa-trash-o"></i>
+                  </a>
+                </div>';
+
+      })
+      ->rawColumns(['ip_price','action'])
+      ->make(true);
+
+    }
+
+   public function deleteItemSupp(Request $request, $id)
+   {
+      DB::beginTransaction();
+        try{
+         d_item_supplier::where('is_id',$id)
+            ->delete();
+        DB::commit();
+       return response()->json([
+             'status' => 'sukses'
+         ]);
+       } catch (\Exception $e) {
+       DB::rollback();
+       return response()->json([
+           'status' => 'gagal',
+           'data' => $e
+         ]);
+       }
+   }
+
+   public function saveItemSupp(Request $request){
+      DB::beginTransaction();
+        try{
+         $cek = d_item_supplier::where('is_supplier',$request->supplier)
+            ->where('is_item',$request->i_id)
+            ->first();
+            // dd($cek);
+         if ($cek != null) 
+         {
+            d_item_supplier::where('is_supplier',$request->supplier)
+               ->where('is_item',$request->i_id)
+               ->update([
+                  'is_item' => $request->i_id
+               ]);
+         }
+         else
+         {
+            d_item_supplier::create([
+               'is_supplier' => $request->supplier,
+               'is_item' => $request->i_id
+            ]);   
+         }
+         
+        DB::commit();
+       return response()->json([
+             'status' => 'sukses'
+         ]);
+       } catch (\Exception $e) {
+       DB::rollback();
+       return response()->json([
+           'status' => 'gagal',
+           'data' => $e
+         ]);
+       }
+   }
+
+   public function getItem(Request $request)
+   {
+      $term = $request->term;
+
+       $results = array();
+       
+       $queries = m_item::where('m_item.i_name', 'LIKE', '%'.$term.'%')
+         ->where('i_type','BB')
+         ->where('i_active','Y')
+         ->orderBy('i_name')
+         ->take(15)->get();
+       
+       if ($queries == null) {
+         $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
+       } else {
+         foreach ($queries as $query) 
+         {
+           $results[] = [  'id' => $query->i_id, 
+                           'label' => $query->i_code .' - '.$query->i_name
+                        ];
+         }
+       } 
+
+     return Response::json($results);
     }
 }
