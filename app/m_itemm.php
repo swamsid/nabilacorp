@@ -158,7 +158,7 @@ class m_itemm extends Model
         $search = $item->term;
         $groupName=['BTPN','BJ','BP'];
         $sql=DB::table('m_item')             
-             ->join('m_satuan','m_satuan.s_id','=','i_satuan')
+             ->join('m_satuan','m_satuan.s_id','=','i_sat1')
              ->where('i_name','like','%'.$search.'%')                                    
              ->whereIn('i_type',$groupName)
              ->orWhere('i_code','like','%'.$search.'%')
@@ -189,7 +189,7 @@ class m_itemm extends Model
               s_name,
               group_concat(DISTINCT i_price separator ',') as i_price,sum(s_qty) as s_qty
               from m_item
-              join m_satuan on i_satuan=s_id
+              join m_satuan on i_sat1=s_id
               join m_group on g_id=i_group
               join d_stock on s_item=i_id 
               where FIND_IN_SET (s_comp,(select ag_gudang from m_acces_gudangitem where ag_fitur='Penjualan'))
@@ -245,12 +245,12 @@ class m_itemm extends Model
                   $join->where('s_comp',$comp); 
                   $join->where('s_position',$position);
              })
-             ->join('m_satuan as ms_1','ms_1.s_id','=','i_satuan')
+             ->join('m_satuan as ms_1','ms_1.s_id','=','i_sat1')
              ->join('m_satuan as ms_2','ms_2.s_id','=','i_sat2')
              ->join('m_satuan as ms_3','ms_3.s_id','=','i_sat3')
              ->leftjoin('m_price as prc','prc.m_pitem','=','i_id')
              ->leftjoin('d_item_supplier as is_sup','is_sup.is_item','=','i_id')
-             ->select('i_id','i_name','i_satuan','i_sat2','i_sat3','ms_1.s_name as satuan_1','ms_2.s_name as satuan_2','ms_3.s_name as satuan_3','s_qty','i_code','m_pbuy1','m_pbuy2','m_pbuy3','is_sup.is_price1 as m_isup_price1','is_sup.is_price2 as m_isup_price2','is_sup.is_price3 as m_isup_price3');
+             ->select('i_id','i_name','i_sat1','i_sat2','i_sat3','ms_1.s_name as satuan_1','ms_2.s_name as satuan_2','ms_3.s_name as satuan_3','s_qty','i_code','m_pbuy1','m_pbuy2','m_pbuy3','is_sup.is_price1 as m_isup_price1','is_sup.is_price2 as m_isup_price2','is_sup.is_price3 as m_isup_price3');
 
         if($search!='' && $id_supplier!=''){          
             $sql->where(function ($query) use ($search,$groupName) {
@@ -333,7 +333,7 @@ class m_itemm extends Model
                     $join->where('s_comp',$comp); 
                     $join->where('s_position',$position); 
              })
-             ->LEFTjoin('m_satuan','m_satuan.s_id','=','i_satuan')
+             ->LEFTjoin('m_satuan','m_satuan.s_id','=','i_sat1')
              /*->join('m_group','g_id','=','i_group')*/
              ->select('i_id','i_name','m_satuan.s_name as s_name','is_price1','s_qty','i_code');
 
@@ -403,7 +403,7 @@ class m_itemm extends Model
 
 
              })
-             ->join('m_satuan','m_satuan.s_id','=','i_satuan')
+             ->join('m_satuan','m_satuan.s_id','=','i_sat1')
              /*->join('m_group','g_id','=','i_group')*/
              ->select('i_id','i_name','m_satuan.s_name as s_name','i_price','s_qty','i_code','i_hpp');
              
@@ -467,7 +467,7 @@ class m_itemm extends Model
 
 
              })
-             ->join('m_satuan','m_satuan.s_id','=','i_satuan')
+             ->join('m_satuan','m_satuan.s_id','=','i_sat1')
              /*->join('m_group','g_id','=','i_group')*/
              ->select('i_id','i_name','m_satuan.s_name as s_name','i_price','s_qty','i_code');
              
@@ -555,7 +555,7 @@ class m_itemm extends Model
   }
 
   function m_satuan() {
-    $res = $this->belongsTo('App\m_satuan', 'i_satuan', 's_id');
+    $res = $this->belongsTo('App\m_satuan', 'i_sat1', 's_id');
 
         return $res;
   }

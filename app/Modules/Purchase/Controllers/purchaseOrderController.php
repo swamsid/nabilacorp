@@ -912,4 +912,56 @@ class purchaseOrderController extends Controller
       }
     }
 
+   public function print($id)
+   {
+
+      $dataHeader = d_purchasing::join('m_supplier','d_purchasing.s_id','=','m_supplier.s_id')
+                ->join('d_mem','d_purchasing.d_pcs_staff','=','d_mem.m_id')
+                ->select('d_purchasing.*', 'm_supplier.s_company', 'm_supplier.s_name','d_mem.m_id','d_mem.m_name', DB::raw('SUM(d_purchasing.d_pcs_disc_percent) * SUM(d_purchasing.d_pcs_total_gross) as disc_total'))
+                ->where('d_pcs_id', '=', $id)
+                ->orderBy('d_pcs_date_created', 'DESC')
+                ->get()->toArray();
+
+      $dataIsi = d_purchasing_dt::join('m_item', 'd_purchasing_dt.i_id', '=', 'm_item.i_id')
+                ->join('m_satuan', 'd_purchasing_dt.d_pcsdt_sat', '=', 'm_satuan.s_id')
+                ->select('d_purchasing_dt.d_pcsdt_id',
+                         'd_purchasing_dt.d_pcs_id',
+                         'd_purchasing_dt.i_id',
+                         'm_item.i_id',
+                         'm_item.i_name',
+                         'm_item.i_code',
+                         'm_item.i_sat1',
+                         'm_satuan.s_name',
+                         'm_satuan.s_id',
+                         'd_purchasing_dt.d_pcsdt_prevcost',
+                         'd_purchasing_dt.d_pcsdt_qty',
+                         'd_purchasing_dt.d_pcsdt_price',
+                         'd_purchasing_dt.d_pcsdt_total'
+                )
+                ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+                ->orderBy('d_purchasing_dt.d_pcsdt_created', 'DESC')
+                ->get()->toArray();
+      
+      foreach ($dataIsi as $val) 
+      {
+          //cek item type
+          $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val['i_id'])->first();
+          //get satuan utama
+          $sat1[] = $val['i_sat1'];
+      }
+
+      //variabel untuk count array
+      $counter = 0;
+      //ambil value stok by item type
+      $comp = Session::get('user_comp');
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+      $dataStokQty = array_chunk($dataStok['val_stok'], 10);
+      $dataStokTxt = array_chunk($dataStok['txt_satuan'], 10);
+      $dataIsi = array_chunk($dataIsi, 10);
+
+      // return $dataStok;
+
+      return view('Purchase::orderpembelian.print', compact('dataHeader', 'dataIsi', 'dataStokQty', 'dataStokTxt'));
+   }
+
 }

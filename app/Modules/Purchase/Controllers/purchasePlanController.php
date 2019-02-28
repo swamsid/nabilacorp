@@ -217,12 +217,12 @@ class purchasePlanController extends Controller
 
    public function planIndex()
    {     
-     $daftar =view('Purchase::rencanapembelian/daftar');   
-     $history =view('Purchase::rencanapembelian/history');   
+     $daftar =view('Purchase::rencanapembelian/daftar');      
      $modalDetail =view('Purchase::rencanapembelian/modal-detail');   
-     $modalEdit =view('Purchase::rencanapembelian/modal-edit');   
+     $modalEdit =view('Purchase::rencanapembelian/modal-edit'); 
+     $tabHistory =view('Purchase::rencanapembelian/tab-history');   
      
-     return view('Purchase::rencanapembelian.rencana',compact('daftar','history','modalDetail','modalEdit'));
+     return view('Purchase::rencanapembelian.rencana',compact('daftar','history','modalDetail','modalEdit','tabHistory'));
    }
 
    public function dataPlan(Request $request)
@@ -389,8 +389,50 @@ class purchasePlanController extends Controller
          ]);
        }
    }
-   public function updatePlan(Request $request){         
-      return d_purchase_plan::perbaruiPlan($request);
+   public function updatePlan(Request $request, $id)
+   {         
+      // dd($request->all());
+      DB::beginTransaction();
+      try {
+         d_purchase_plan::where('p_id',$id)->delete();
+         d_purchaseplan_dt::where('ppdt_pruchaseplan',$id)->delete();
+
+         d_purchase_plan::create([
+                 'p_id' => $id,
+                 'p_comp' => Session::get('user_comp'),
+                 'p_mem' => Auth::user()->m_id, 
+                 'p_code' => $request->nota,
+                 'p_supplier' => $request->id_supplier,
+                 'p_status' => 'WT',
+                 'p_created' => Carbon::now()
+         ]);
+        // dd($request->all());
+        for ($i=0; $i <count($request->ppdt_item); $i++) 
+        {  
+            $detailid=d_purchaseplan_dt::where('ppdt_pruchaseplan',$id)->max('ppdt_detailid')+1;
+            d_purchaseplan_dt::create([
+               'ppdt_pruchaseplan' => $id,
+               'ppdt_detailid' => $detailid,
+               'ppdt_item' => $request->ppdt_item[$i],
+               'ppdt_qty' => str_replace('.', '', $request->ppdt_qty[$i]),
+               'ppdt_satuan' => $request->ppdt_satuan[$i],
+               'ppdt_prevcost' => str_replace('.', '', $request->ppdt_prevcost[$i]),
+               'ppdt_isconfirm' => 'FALSE'
+            ]);
+         }
+      DB::commit();
+      return response()->json([
+          'status' => 'sukses',
+          'nota' => $request->nota
+         ]);
+       } catch (\Exception $e) {
+       DB::rollback();
+       return response()->json([
+           'status' => 'gagal',
+           'data' => $e
+         ]);
+       }
+
    }
    
 
@@ -562,5 +604,89 @@ class purchasePlanController extends Controller
       $data = array('val_stok' => $stok, 'txt_satuan' => $satuan);
       return $data;
    }
+
+   public function getDataTabelHistory($tgl1, $tgl2, $tampil)
+    {
+        $y = substr($tgl1, -4);
+        $m = substr($tgl1, -7,-5);
+        $d = substr($tgl1,0,2);
+         $tanggal1 = $y.'-'.$m.'-'.$d;
+
+        $y2 = substr($tgl2, -4);
+        $m2 = substr($tgl2, -7,-5);
+        $d2 = substr($tgl2,0,2);
+        $tanggal2 = $y2.'-'.$m2.'-'.$d2;
+
+        if ($tampil == 'wait') 
+        { 
+          $is_confirm = "FALSE";
+          $status = "WT";
+        }elseif ($tampil == 'edit') 
+        {
+          $is_confirm = "TRUE";
+          $status = "DE";
+        }else
+        {
+          $is_confirm = "TRUE";
+          $status = "FN";
+        }
+
+        $data = DB::table('d_purchaseplan_dt')
+            ->select('d_purchaseplan_dt.*', 
+                     'd_purchase_plan.*', 
+                     'm_item.i_name', 
+                     'm_supplier.s_company', 
+                     'm_satuan.s_name')
+            ->leftJoin('d_purchase_plan','d_purchaseplan_dt.ppdt_pruchaseplan','=','d_purchase_plan.p_id')
+            ->leftJoin('m_supplier','d_purchase_plan.p_supplier','=','m_supplier.s_id')
+            ->leftJoin('m_item','d_purchaseplan_dt.ppdt_item','=','m_item.i_id')
+            ->leftJoin('m_satuan','d_purchaseplan_dt.ppdt_satuan','=','m_satuan.s_id')
+            ->where('d_purchaseplan_dt.ppdt_isconfirm','=',$is_confirm)
+            ->where('d_purchase_plan.p_status','=',$status)
+            ->whereBetween('d_purchase_plan.p_created', [$tanggal1, $tanggal2])
+            ->get();
+
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->editColumn('status', function ($data)
+          {
+          if ($data->p_status == "WT") 
+          {
+            return '<span class="label label-info">Waiting</span>';
+          }
+          elseif ($data->p_status == "DE") 
+          {
+            return '<span class="label label-warning">Dapat diedit</span>';
+          }
+          elseif ($data->p_status == "FN") 
+          {
+            return '<span class="label label-success">Disetujui</span>';
+          }
+        })
+        ->editColumn('tglBuat', function ($data) 
+        {
+            if ($data->p_created == null) 
+            {
+                return '-';
+            }
+            else 
+            {
+                return $data->p_created ? with(new Carbon($data->p_created))->format('d M Y') : '';
+            }
+        })
+        ->editColumn('tglConfirm', function ($data) 
+        {
+            if ($data->p_status_date == null) 
+            {
+                return '-';
+            }
+            else 
+            {
+                return $data->p_status_date ? with(new Carbon($data->p_status_date))->format('d M Y') : '';
+            }
+        })
+        ->rawColumns(['status'])
+        ->make(true);
+    }
 
 }

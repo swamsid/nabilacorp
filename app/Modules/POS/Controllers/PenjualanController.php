@@ -19,6 +19,8 @@ use App\Modules\POS\model\m_paymentmethod;
 use App\Modules\POS\model\m_machine;
 use App\Modules\POS\model\d_sales;
 use App\Modules\POS\model\d_sales_dt;
+use App\Modules\POS\model\d_salesb;
+
 
 use Datatables;
 
@@ -186,7 +188,7 @@ class PenjualanController extends Controller
 
       $bayar=$request->s_bayar;
       $kembalian=$request->kembalian;
-      $data=d_sales::printNota($id);
+      $data=d_salesb::printNota($id);
       $dt=d_sales_dt::where('sd_sales',$id)->select('sd_sales')->get();
       $jumlah=count($dt);
       
