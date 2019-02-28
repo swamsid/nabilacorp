@@ -74,7 +74,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly class="form-control input-sm" name="pr_purchase" value="{{ $d_purchase_return->pr_purchase }}">
+                                    <input readonly class="form-control input-sm" name="pr_purchase" value="{{ $d_purchase_return->po_code }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -125,7 +125,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalGross" class="form-control input-sm right" id="nilai_total_gross" value="{{ $d_purchase_return->po_code }}">
+                                    <input readonly type="text" name="nilaiTotalGross" class="form-control input-sm text-right" id="nilai_total_gross" value="{{ $d_purchase_return->po_total_gross }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -133,7 +133,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalDisc" readonly="" class="form-control input-sm right" id="nilai_total_disc" value="{{ $d_purchase_return->po_disc_value  }}">
+                                    <input readonly type="text" name="nilaiTotalDisc" readonly="" class="form-control input-sm text-right" id="nilai_total_disc" value="{{ $d_purchase_return->po_disc_value  }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -141,16 +141,16 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalTax" readonly="" class="form-control input-sm right" id="nilai_total_tax" value="{{ $d_purchase_return->po_disc_value  }}">
+                                    <input readonly type="text" name="nilaiTotalTax" readonly="" class="form-control input-sm text-right" id="nilai_total_tax" value="{{ $d_purchase_return->po_disc_value  }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
-                                 <label class="tebal">Nilai Total Pembelian (Nett)</label>
+                                 <label class="tebal">Nilai Total Pembelian (Nett) </label>
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalNett" readonly="" class="form-control input-sm right" id="nilai_total_nett">
-                                    <input readonly type="hidden" name="nilaiTotalReturnRaw" readonly="" class="form-control input-sm" id="nilai_total_return_raw" value="{{ $d_purchase_return->total_net  }}">
+                                    <input readonly type="text" name="nilaiTotalNett" readonly="" class="form-control input-sm text-right" id="nilai_total_nett" value="{{ $d_purchase_return->po_total_net  }}">
+                                    <input readonly type="hidden" name="nilaiTotalReturnRaw" readonly="" class="form-control input-sm" id="nilai_total_return_raw" >
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -158,7 +158,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input type="text" name="nilaiTotalReturn" readonly="" class="form-control input-sm right" id="prdt_pricetotal" value='{{ $d_purchase_return->pr_pricetotal }}'>
+                                    <input type="text" name="nilaiTotalReturn" readonly="" class="form-control input-sm text-right" id="prdt_pricetotal" value='{{ $d_purchase_return->pr_pricetotal }}'>
                                  </div>
                                  
                               </div>
@@ -258,19 +258,35 @@
          var s_detname = data.s_detname;
          var prdt_price = data.prdt_price ;
          var prdt_pricetotal = data.prdt_pricetotal;
-         var aksi = "<button type='button' class='btn btn-danger remove_btn'><i class='fa fa-times'></i></button";
+         var aksi = "<button type='button' class='btn btn-danger remove_btn'><i class='fa fa-trash-o'></i></button";
    
-         prdt_qty = "<input type='text' name='prdt_qtyreturn[]' value='" + prdt_qtyreturn + "'>";
-         prdt_price = "<input readonly type='hidden' name='prdt_price[]' value='" + prdt_price + "'>" + get_currency(prdt_price);
-         prdt_pricetotal = get_currency(prdt_pricetotal);
-   
+         prdt_qty = "<input type='number' class='form-control text-right' name='prdt_qtyreturn[]' value='" + prdt_qtyreturn + "'>";
+         prdt_price = "<input readonly type='hidden' name='prdt_price[]' value='" + prdt_price + "'>Rp " + accounting.formatMoney(prdt_price,"",0,'.',',');
+         prdt_pricetotal = 'Rp ' + accounting.formatMoney(prdt_pricetotal,"",0,'.',',');
+         var stock = data.stock;
+
          tabel_d_purchasereturn_dt.row.add(
-           [prdt_item, prdt_qty, s_detname, prdt_price, prdt_pricetotal, '-', aksi]
+           [prdt_item, prdt_qty, s_detname, prdt_price, prdt_pricetotal, stock, aksi]
          );
    
        }
        tabel_d_purchasereturn_dt.draw();
      }
+
+     var nilai_total_gross = $('#nilai_total_gross').val();
+nilai_total_gross = 'Rp ' + accounting.formatMoney(nilai_total_gross,"",0,'.',',');
+$('#nilai_total_gross').val(nilai_total_gross);
+var nilai_total_disc = $('#nilai_total_disc').val();
+nilai_total_disc = 'Rp ' + accounting.formatMoney(nilai_total_disc,"",0,'.',',');
+$('#nilai_total_disc').val(nilai_total_disc);
+var nilai_total_tax = $('#nilai_total_tax').val();
+nilai_total_tax = 'Rp ' + accounting.formatMoney(nilai_total_tax,"",0,'.',',');
+$('#nilai_total_tax').val(nilai_total_tax);
+var nilai_total_nett = $('#nilai_total_nett').val();
+nilai_total_nett = 'Rp ' + accounting.formatMoney(nilai_total_nett,"",0,'.',',');
+$('#nilai_total_nett').val(nilai_total_nett);
+
+
    });
 </script>    
 @endsection

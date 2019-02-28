@@ -154,6 +154,15 @@
                         </span>
                     </a>
                         <ul class="nav nav-second-level">
+                            <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Master Data Suplier</span></a>
+                            </li>
+                            <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/membership/member') }}"><span class="submenu-title">Master Member</span></a>
+                            </li>
+                          <!--   <li class="menu-sekunder {{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Master Data Item Bahan Baku</span></a>
+                            </li> -->
+                            <!-- <li class="menu-sekunder {{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Master Data Jenis Produksi</span></a>
+                            </li> -->
+
                             @if(Auth::user()->punyaAkses('Master Data Suplier','ma_read'))
                                 <li class="menu-sekunder {{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/datasuplier/suplier') }}">
                                     <span class="submenu-title">Master Data Suplier</span></a>
@@ -235,6 +244,7 @@
                                                 class="hidden">Master</span></a>
                                 </li>
                             @endif
+
 
                         </ul>
                     </li>

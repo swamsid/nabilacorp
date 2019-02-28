@@ -194,6 +194,7 @@ class d_purchase_plan extends Model
     }
 
 
+
     static function getDataRencanaPembelian()
   {
     $data = d_purchase_plan::join('m_supplier','p_supplier','=','s_id')

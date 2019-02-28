@@ -5,8 +5,11 @@
     var item_qty, item_price, grand_total = 0;
 
     for(x = 0;x < qty.length;x++) {
-      item_qty = parseInt( $( qty[x] ).val() );
-      item_price = parseInt( $( price[x] ).val() );
+      item_qty = $( qty[x] ).val() ;
+      item_qty = item_qty != '' ? parseInt(item_qty) : 0;
+      item_price = $( price[x] ).val();
+      item_price = item_price.replace(/\D/g, '');
+      item_price = item_price != '' ? parseInt(item_price) : 0;
       grand_total += ( item_qty * item_price );
     }
 

@@ -85,8 +85,11 @@ class BelanjaHarianController extends Controller {
       try {
         $d_purchasingharian = new d_purchasingharian();
 
-        $d_pcsh_id = d_purchasingharian::count('d_pcsh_id');
-        $d_pcsh_id += 1;
+        $init = d_purchasingharian::select(
+          DB::raw("IFNULL(MAX(d_pcsh_id), 0) + 1 AS d_pcsh_id")
+        )->first();
+        $d_pcsh_id = $init->d_pcsh_id;
+        // die('ID : ' . $d_pcsh_id);
         $grand_total = 0;
         
         $d_purchasingharian_dt = new d_purchasingharian_dt();
@@ -102,7 +105,9 @@ class BelanjaHarianController extends Controller {
             $d_pcshdt_price = $d_pcshdt_price != null ? $d_pcshdt_price : array();
 
             for($x = 0; $x < count($d_pcshdt_item);$x++) {
-                $pricetotal = $d_pcshdt_qty[$x] * $d_pcshdt_price[$x];
+                $pcshdt_price = $d_pcshdt_price[$x];
+                $pcshdt_price = preg_replace('/\D/', '', $pcshdt_price);
+                $pricetotal = $d_pcshdt_qty[$x] * $pcshdt_price;
                 $grand_total += $pricetotal;
 
                 d_purchasingharian_dt::insert([
@@ -110,7 +115,7 @@ class BelanjaHarianController extends Controller {
                   'd_pcshdt_pcshid' => $d_pcsh_id,
                   'd_pcshdt_item' => $d_pcshdt_item[$x],
                   'd_pcshdt_qty' => $d_pcshdt_qty[$x],
-                  'd_pcshdt_price' => $d_pcshdt_price[$x],
+                  'd_pcshdt_price' => $pcshdt_price,
                   'd_pcshdt_pricetotal' => $pricetotal
                 ]);
                 
@@ -165,20 +170,26 @@ class BelanjaHarianController extends Controller {
               $d_pcshdt_price = $d_pcshdt_price != null ? $d_pcshdt_price : array();
 
               $data_d_purchasingharian_dt = array();
+              $grandtotal = 0;
               for($x = 0; $x < count($d_pcshdt_item);$x++) {
+                  $pcshdt_price = $d_pcshdt_price[$x];
+                  $pcshdt_price = preg_replace('/\D/', '', $pcshdt_price);
+                  $pricetotal = $d_pcshdt_qty[$x] * $pcshdt_price;
+                  $grandtotal += $pricetotal;
+
                   array_push($data_d_purchasingharian_dt, array(
                     "d_pcshdt_pcshid" => $d_pcsh_id,
                     "d_pcshdt_id" => $x + 1,
                     "d_pcshdt_item" => $d_pcshdt_item[$x],
                     "d_pcshdt_qty" => $d_pcshdt_qty[$x],
-                    "d_pcshdt_price" => $d_pcshdt_price[$x],
-                    "d_pcshdt_pricetotal" => $d_pcshdt_price[$x] * $d_pcshdt_qty[$x]
+                    "d_pcshdt_price" => $pcshdt_price,
+                    "d_pcshdt_pricetotal" => $pricetotal
 
                   ));
               }
           }
           $d_purchasingharian_dt->insert($data_d_purchasingharian_dt);
-
+          d_purchasingharian::where('d_pcsh_id', $d_pcsh_id)->update([ 'd_pcsh_totalprice' => $grandtotal ]);
           DB::commit();
           $res = array(
             'status' => 'sukses'
@@ -292,7 +303,7 @@ class BelanjaHarianController extends Controller {
         $rows = $rows->whereBetween('d_pcsh_date', array($tgl_awal, $tgl_akhir));
        }
 
-       $rows = $rows->select('d_pcsh_id', 'd_pcsh_code', 'd_pcsh_date', 'd_pcsh_noreff', 'd_pcsh_totalprice', 'd_pcsh_keperluan', 'c_divisi', 'm_name', 'd_pcsh_status', DB::raw("CASE d_pcsh_status WHEN 'WT' THEN 'Waiting ' WHEN 'DE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NAP' THEN 'Tidak Disetujui' END AS d_pcsh_status_label"))->get();
+       $rows = $rows->select('d_pcsh_id', 'd_pcsh_code', 'd_pcsh_date', 'd_pcsh_noreff', 'd_pcsh_totalprice', 'd_pcsh_keperluan', 'c_divisi', 'm_name', 'd_pcsh_status', DB::raw("CASE d_pcsh_status WHEN 'WT' THEN 'Waiting ' WHEN 'DE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NA' THEN 'Tidak Disetujui' END AS d_pcsh_status_label"))->get();
        
 
        $res = array('data' => $rows);

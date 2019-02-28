@@ -3,7 +3,7 @@
           iziToast.show({
             color: 'red',
             title: 'Peringatan',
-            message: 'Apakah anda yakin!',
+            message: 'Apakah anda ingin menghapus data ini ?',
             position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
             progressBarColor: 'rgb(0, 255, 184)',
             buttons: [

@@ -129,17 +129,7 @@
       $('#btn_print').html('<a href="'+ baseUrl +'/purchasing/lap-pembelian/print-lap-beli/'+tanggal1+'/'+tanggal2+'" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print</a>');
     });
 
-    $('#tanggal3').change(function(event) {
-      tanggal3 = $(this).val();
-      $('#btn_print_harian a').remove();
-      $('#btn_print_harian').html('<a href="'+ baseUrl +'/purchasing/lap-pembelian/print-lap-bharian/'+tanggal3+'/'+tanggal4+'" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print</a>');
-    });
-
-    $('#tanggal4').change(function(event) {
-      tanggal4 = $(this).val();
-      $('#btn_print_harian a').remove();
-      $('#btn_print_harian').html('<a href="'+ baseUrl +'/purchasing/lap-pembelian/print-lap-bharian/'+tanggal3+'/'+tanggal4+'" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print</a>');
-    });
+  
 
     $('#tanggal6').change(function(event) {
       tanggal6 = $(this).val();
@@ -317,4 +307,6 @@
   }
 
 </script>
+@include('Purchase::lap-pembelian/js/functions')
+@include('Purchase::lap-pembelian/js/commander')
 @endsection()

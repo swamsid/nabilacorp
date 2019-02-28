@@ -123,7 +123,7 @@
 		<div class="div-width">
 		
 			{{-- 			<div class="s16 bold">
-							TAMMA ROBAH INDONESIA
+							NABILA
 						</div>
 						<div>
 							Jl. Raya Randu no.74<br>
@@ -138,6 +138,7 @@
 		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
 			<thead>
 				<tr>
+					<th>No</th>
 					<th>Kode</th>
 					<th>Tanggal</th>
 					<th>Staff</th>
@@ -148,25 +149,24 @@
 			</thead>
 			<tbody>
 
-				@for($i=0;$i<count($pembelian);$i++)
-					@for($j=0;$j<count($pembelian[$i]);$j++)
-						<tr>
-							<td class="text-center">{{$pembelian[$i][$j]['d_pcsh_code']}}</td>
-							<td class="text-center">{{date("d M Y", strtotime($pembelian[$i][$j]['d_pcsh_date']))}}</td>
-							<td class="text-center">{{$pembelian[$i][$j]['m_name']}}</td>
-							<td class="text-center">{{$pembelian[$i][$j]['d_pcsh_peminta']}}</td>
-							<td class="text-center">{{$pembelian[$i][$j]['d_pcsh_keperluan']}}</td>
-							<td>
-								<div class="float-left">
-									Rp. 
-								</div>
-								<div class="float-right"> 
-									{{number_format($pembelian[$i][$j]['d_pcsh_totalprice'],2,',','.')}}
-								</div>
-							</td>
-						</tr>
-					@endfor
-				@endfor
+				@foreach($data as $x => $unit)
+					<tr>
+						<td>{{ $x + 1 }}</td>
+						<td>{{ $unit->d_pcsh_code }}</td>
+						<td>{{ $unit->d_pcsh_date_label }}</td>
+						<td>{{ $unit->m_name }}</td>
+						<td>{{ $unit->c_divisi }}</td>
+						<td>{{ $unit->d_pcsh_keperluan }}</td>
+						<td>
+							<div class="float-left">
+								Rp. 
+							</div>
+							<div class="float-right"> 
+								{{ number_format( $unit->d_pcsh_totalprice,2,',','.') }}
+							</div>
+						</td>
+					</tr>
+				@endforeach
 
 			</tbody>
 
@@ -177,7 +177,7 @@
 				<tr>
 					<td>Total Biaya</td>
 					<td>:</td>
-					<td>{{number_format($data_sum_all[0]['tot_nett'],2,',','.')}}</td>
+					<td>Rp {{number_format($summary['grandtotal'],2,',','.')}}</td>
 				</tr>
 			</table>
 		</div>

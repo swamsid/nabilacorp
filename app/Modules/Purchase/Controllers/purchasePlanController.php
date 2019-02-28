@@ -17,6 +17,7 @@ use Session;
 use Response;
 use Auth;
 use App\d_gudangcabang;
+
 use App\m_supplier;
 
 class purchasePlanController extends Controller
@@ -311,6 +312,7 @@ class purchasePlanController extends Controller
       ->make(true);
    }
 
+
    public function getEditPlan($id)
    { 
 
@@ -367,6 +369,7 @@ class purchasePlanController extends Controller
  
       return view('Purchase::rencanapembelian/edit',compact('data_header','gudang','supplier','dataItem'));
    }
+
 
    public function deletePlan($id)
    {     

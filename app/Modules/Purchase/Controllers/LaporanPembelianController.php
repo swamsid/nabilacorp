@@ -37,6 +37,30 @@ class LaporanPembelianController extends Controller {
         return view('Purchase::lap-pembelian.index', compact('tabIndex','lapHarian','lapPembelian'));
     }
 
+    function find_d_purchasingharian(Request $req) {
+
+       $data = array();
+       $rows = d_purchasingharian::leftJoin('d_mem', 'd_pcsh_staff', '=', 'm_id')->leftJoin('d_purchasingharian_dt', 'd_pcsh_id', '=', 'd_pcshdt_pcshidt')->groupBy('d_pcsh_id');
+       $rows = $rows->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'c_id');
+
+       // Filter berdasarkan tanggal
+       $tgl_awal = $req->tgl_awal;
+       $tgl_awal = $tgl_awal != null ? $tgl_awal : '';
+       $tgl_akhir = $req->tgl_akhir;
+       $tgl_akhir = $tgl_akhir != null ? $tgl_akhir : '';
+       if($tgl_awal != '' && $tgl_akhir != '') {
+        $tgl_awal = preg_replace('/([\d]+)[-\/]([\d]+)[-\/]([\d]+)/', '$3-$2-$1', $tgl_awal);
+        $tgl_akhir = preg_replace('/([\d]+)[-\/]([\d]+)[-\/]([\d]+)/', '$3-$2-$1', $tgl_akhir);
+        $rows = $rows->whereBetween('d_pcsh_date', array($tgl_awal, $tgl_akhir));
+       }
+
+       $rows = $rows->select('d_pcsh_id', 'd_pcsh_code', 'd_pcsh_date', 'd_pcsh_noreff', 'd_pcsh_totalprice', 'd_pcsh_keperluan', 'c_divisi', 'm_name', 'd_pcsh_status', DB::raw("CASE d_pcsh_status WHEN 'WT' THEN 'Waiting ' WHEN 'DE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NA' THEN 'Tidak Disetujui' END AS d_pcsh_status_label", DB::raw("SUM(d_pcshdt_qty) AS total_net")))->get();
+       
+
+       $res = array('data' => $rows);
+       return response()->json($res);
+    }
+
     public function get_laporan_by_tgl($tgl1, $tgl2)
     {
       $menit = Carbon::now('Asia/Jakarta')->format('H:i:s');
@@ -190,6 +214,37 @@ class LaporanPembelianController extends Controller {
         'data_sum_all' => $data_sum_all,
       ];
       return view('Purchase::lap-pembelian/print-lap-po', $parsing);
+    }
+
+    public function print_lap_belanja_harian($tgl1, $tgl2)
+    {
+      $tgl_awal = $tgl1;
+      $tgl_akhir = $tgl2;
+
+      $data = array();
+       $rows = d_purchasingharian::leftJoin('d_mem', 'd_pcsh_staff', '=', 'm_id');
+       $rows = $rows->leftJoin('m_divisi', 'd_pcsh_divisi', '=', 'c_id');
+
+       // Filter berdasarkan tanggal
+       if($tgl_awal != '' && $tgl_akhir != '') {
+        $tgl_awal = preg_replace('/([\d]+)[-\/]([\d]+)[-\/]([\d]+)/', '$3-$2-$1', $tgl_awal);
+        $tgl_akhir = preg_replace('/([\d]+)[-\/]([\d]+)[-\/]([\d]+)/', '$3-$2-$1', $tgl_akhir);
+        $rows = $rows->whereBetween('d_pcsh_date', array($tgl_awal, $tgl_akhir));
+       }
+
+       $rows = $rows->select('d_pcsh_id', 'd_pcsh_code', 'd_pcsh_date', DB::raw('DATE_FORMAT(d_pcsh_date, "%d-%m-%Y") AS d_pcsh_date_label'), 'd_pcsh_noreff', 'd_pcsh_totalprice', 'd_pcsh_keperluan', 'c_divisi', 'm_name', 'd_pcsh_status', DB::raw("CASE d_pcsh_status WHEN 'WT' THEN 'Waiting ' WHEN 'DE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NA' THEN 'Tidak Disetujui' END AS d_pcsh_status_label", DB::raw("SUM(d_pcshdt_qty) AS total_net")))->get();
+       
+       $grandtotal = d_purchasingharian::sum('d_pcsh_totalprice');
+       $summary = [
+          'grandtotal' => $grandtotal
+       ];
+      $parsing = [
+        'data' => $rows,
+        'summary' => $summary,
+        'tgl1' => $tgl1,
+        'tgl2' => $tgl2
+      ];
+      return view('Purchase::lap-pembelian/print-lap-belanjaharian', $parsing);
     }
 
     public function print_laporan_bharian($tgl1, $tgl2)
