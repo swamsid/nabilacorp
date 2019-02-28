@@ -235,7 +235,9 @@ iframe {
   background-size: cover;
   background-position: center;
   position: relative;
-  z-index: 1;
+  z-index: -1;
+  margin-left: -100px;
+  margin-top: -100px;
 }
 
 .login100-more::before {
@@ -261,6 +263,8 @@ iframe {
   display: block;
   background-color: #f7f7f7;
   padding: 173px 55px 55px 55px;
+  box-shadow: -1px 0px 1px 1px rgba(0,0,0,.2), 
+              inset 1px 0px 1px 1px rgba(0,0,0,.1);
 }
 
 .login100-form-title {
@@ -617,4 +621,31 @@ input.input100 {
 .login100-form-social-item:hover {
   background: #333333;
   color: #fff;
+}
+
+textarea:focus, 
+input:focus, 
+select:focus, 
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+input[type="datetime"]:focus, 
+input[type="datetime-local"]:focus, 
+input[type="date"]:focus, 
+input[type="month"]:focus, 
+input[type="time"]:focus, 
+input[type="week"]:focus, 
+input[type="number"]:focus, 
+input[type="email"]:focus, 
+input[type="url"]:focus, 
+input[type="search"]:focus, 
+input[type="tel"]:focus, 
+input[type="color"]:focus, 
+.uneditable-input:focus,
+.input100:focus
+{
+  box-shadow: unset !important;
+}
+
+.wrap-input100:focus-within{
+  box-shadow: 0 0 5px 3px #E2C9B0 !important;
 }

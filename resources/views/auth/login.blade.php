@@ -34,7 +34,7 @@
     
     <div class="limiter">
         <div class="container-login100">
-            <div class="wrap-login100">
+            <div class="wrap-login100" id="parallax-js">
                 <form class="login100-form validate-form">
                     {{ csrf_field() }}
                     <span class="login100-form-title p-b-43">
@@ -56,15 +56,15 @@
                     </div>
 
                     <div class="wrap-input100 validate-input">
-                        <!-- <input class="input100" type="password" name="password" name="password"> -->
+                        
                         <select class="input100" name="akses" id="akses">
-                            <option value="0">Pilih Kasir</option>
+                            <option value="0">-- Pilih --</option>
                         @foreach(App\Modules\POS\model\m_machine::showMachine() as $data) 
                             <option value="{{$data->m_id}}">{{$data->m_name}}</option>
                         @endforeach
                         </select>
                         <span class="focus-input100"></span>
-                        <!-- <span class="label-input100">Pilih Kasir</span> -->
+                        <span class="label-input100">Pilih Kasir</span>
                     </div>
 
                     <!-- <div class="flex-sb-m w-full p-t-3 p-b-32">
@@ -107,7 +107,8 @@
                     </div>
                 </form>
 
-                <div class="login100-more" style="background-image: url('assets/img/bakery-bg1.jpg');">
+                <div class="login100-more" data-depth="0.20">
+                    <img src="{{asset('assets/img/bakery-bg1.jpg')}}">
                 </div>
             </div>
         </div>
@@ -133,7 +134,7 @@
     <script src="{{asset('assets/login-v18/vendor/countdowntime/countdowntime.js')}}"></script>
 <!--===============================================================================================-->
     <script src="{{asset('assets/login-v18/js/main.js')}}"></script>
-
+    <script src="{{asset('assets/parallax-mouseposition/parallax.js')}}"></script>
 </body>      
 <script type="text/javascript">
     var baseUrl = '{{url('/')}}';
@@ -178,5 +179,14 @@
 
       });
     }
+</script>
+<script type="text/javascript">
+    
+        var particles_js = document.getElementById('parallax-js');
+
+        var parallax = new Parallax(particles_js, {
+            pointerEvents:true
+        });
+
 </script>
 @endsection

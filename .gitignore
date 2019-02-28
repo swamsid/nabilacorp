@@ -1,6 +1,7 @@
 vendor/
 node_modules/
 sessions/
+component/
 npm-debug.log
 
 # Laravel 4 specific
