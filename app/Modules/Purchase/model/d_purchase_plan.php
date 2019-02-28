@@ -194,64 +194,6 @@ class d_purchase_plan extends Model
     }
 
 
-     static function getEditPlan($id)
-    {
-     
-      
-       $data_header = d_purchase_plan::join('d_mem','m_id','=','p_mem')
-                                ->join('m_supplier','p_supplier','=','s_id')
-                                ->where('p_id', '=', $id)
-                                ->first();
-       $dataIsi = d_purchaseplan_dt::join('m_item','ppdt_item','=','i_id')
-                            ->join('m_satuan', 's_id', '=', 'i_sat1')
-                            ->join('m_satuan as ms', 'ms.s_id', '=', 'ppdt_satuan')
-                            ->join('d_purchase_plan','p_id','=','ppdt_pruchaseplan')
-                            ->leftjoin('d_stock','s_item','=','i_id')
-                            ->select('i_id',
-                                     'm_item.i_sat1',
-                                     'ms.s_name as satuan_pilih',
-                                     'm_item.i_code',
-                                     'm_item.i_name',
-                                     'm_satuan.s_name as satuan_awal',                                         
-                                     'ppdt_qty',
-                                     'ppdt_qtyconfirm',
-                                     's_qty',
-                                     'ppdt_pruchaseplan',
-                                     'ppdt_detailid',
-                                     'ppdt_prevcost',
-                                     'ppdt_totalcost'
-                            )
-                            ->where('ppdt_pruchaseplan', '=', $id)
-                            ->where('p_comp', '=', Session::get('user_comp'))
-                            ->where('ppdt_isconfirm', '=', "TRUE")
-                            ->get();
-
-        
-        $tamp=[];
-        foreach ($dataIsi as $key => $value) {
-          $tamp[$key]=$value->i_id;
-        }     
-        $urut_index = count($tamp);
-        $tamp=array_map("strval",$tamp); 
-        
-        $gudang = DB::table('d_gudangcabang')->select('gc_id','gc_gudang','c_name')->join('m_comp','m_comp.c_id','=','d_gudangcabang.gc_comp')
-        ->where('gc_id',1)
-        ->orWhere('gc_id',7)
-        ->orWhere('gc_id',8)
-        ->groupBy('gc_id')->get();
-
-      //   return Response()->json([
-      //     'data_isi' => $dataIsi,
-      //     'data_header' => $data_header,
-      //     'gudang' => $gudang,
-      // ]);
-      return view('Purchase::rencanapembelian/edit',compact('data_header','dataIsi','gudang','tamp','urut_index'));
-
-    }
-
-    
-
-
 
     static function getDataRencanaPembelian()
   {

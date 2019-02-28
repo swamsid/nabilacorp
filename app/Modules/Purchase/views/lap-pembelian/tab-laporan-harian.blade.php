@@ -9,32 +9,33 @@
       <div class="col-md-4 col-sm-6 col-xs-12">
         <div class="form-group">
           <div class="input-daterange input-group">
-            <input id="tanggal3" class="form-control input-sm datepicker1" name="iTanggal3" type="text">
+            <input class="form-control input-sm datepicker1" name="tgl_awal_belanjaharian" type="text" id="tgl_awal_belanjaharian">
             <span class="input-group-addon">-</span>
-            <input id="tanggal4" class="input-sm form-control datepicker2" name="iTanggal4" type="text" value="{{ date('d-m-Y') }}">
+            <input class="input-sm form-control datepicker2" name="tgl_akhir_belanjaharian" id="tgl_akhir_belanjaharian" type="text" value="">
           </div>
         </div>
       </div>
 
       <div class="col-md-3 col-sm-3 col-xs-12" align="center">
-        <button class="btn btn-primary btn-sm btn-flat autoCari" type="button" onclick="lapHarianByTgl()">
+        <button class="btn btn-primary btn-sm btn-flat autoCari" type="button" onclick="search_purchasingharian()">
           <strong>
             <i class="fa fa-search" aria-hidden="true"></i>
           </strong>
         </button>
-        <button class="btn btn-info btn-sm btn-flat refresh-data-harian" type="button">
+        <button class="btn btn-info btn-sm btn-flat" type="button" onclick="refresh_purchasingharian()">
           <strong>
             <i class="fa fa-undo" aria-hidden="true"></i>
           </strong>
         </button>
       </div>
 
-      <div id="btn_print_harian" class="col-md-3 col-sm-3 col-xs-12" align="right">
+      <div id="" class="col-md-3 col-sm-3 col-xs-12" align="right">
+        <button class="btn btn-primary" onclick="print_lap_belanja_harian()"><i class="fa fa-print"></i>  Print</button>
       </div>
 
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="table-responsive">
-          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tbl-harian">
+          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tabel_d_purchaseharian">
             <thead>
               <tr>
                 <th>No</th>

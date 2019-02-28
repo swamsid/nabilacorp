@@ -42,7 +42,7 @@
                                         <h4>Form Manajemen User</h4>
                                     </div>
                                     <div class="col-md-7 col-sm-6 col-xs-4" align="right" style="margin-top:5px;margin-right: -25px;">
-                                        <a href="{{ url('system/hakuser/user') }}" class="btn"><i class="fa fa-arrow-left"></i></a>
+                                        <a href="{{ url('system/hakuser/index') }}" class="btn"><i class="fa fa-arrow-left"></i></a>
                                     </div>
 
                                     <form id="data-user">
@@ -347,7 +347,7 @@
                         title: 'Pemberitahuan',
                         message: response.pesan,
                         onClosing: function (instance, toast, closedBy) {
-                            window.location = baseUrl + '/system/hakuser/user';
+                            window.location = baseUrl + '/system/hakuser/index';
                             $('#button_save').attr('disabled', false);
                         }
                     });
@@ -357,7 +357,7 @@
                         title: 'Pemberitahuan',
                         message: response.pesan,
                         onClosing: function (instance, toast, closedBy) {
-                            window.location = baseUrl + '/system/hakuser/user';
+                            window.location = baseUrl + '/system/hakuser/index';
                             $('#button_save').attr('disabled', false);
                         }
                     });

@@ -35,7 +35,37 @@
                             <div class="row">
                            <div class="col-lg-12">
 
-                        
+                        <div class="col-md-8 col-sm-12 col-xs-12" style="padding-bottom: 10px;">
+                                        <div style="margin-left:-30px;">
+                                          <div class="col-md-3 col-sm-2 col-xs-12">
+                                            <label class="tebal">Tanggal</label>
+                                          </div>
+
+                                          <div class="col-md-6 col-sm-7 col-xs-12">
+                                            <div class="form-group" style="display: ">
+                                              <div class="input-daterange input-group">
+                                                <input id="tgl_awal" class="form-control input-sm" name="tgl_awal" type="text">
+                                                <span class="input-group-addon">-</span>
+                                                <input id="tgl_akhir" class="input-sm form-control" name="tgl_akhir" type="text">
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-3 col-xs-12" align="center">
+                                          <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="find_d_purchase_return()">
+                                            <strong>
+                                              <i class="fa fa-search" aria-hidden="true"></i>
+                                            </strong>
+                                          </button>
+                                          <button class="btn btn-info btn-sm btn-flat" type="button" onclick="refresh_d_purchase_return()">
+                                            <strong>
+                                              <i class="fa fa-undo" aria-hidden="true"></i>
+                                            </strong>
+                                          </button>
+                                        </div>
+                                        
+                                      </div>
 
 
   
@@ -48,9 +78,19 @@
     </div>
           <div class="table-responsive">
             <table class="table table-hover table-bordered" width="100%" cellspacing="0" id="tabel_d_purchase_return">
-                          <thead>
-                <tr role="row"><th class="wd-10p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="Tgl Return: activate to sort column ascending" style="width: 84.0039px;">Tgl Return</th><th class="wd-15p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="ID Return: activate to sort column ascending" style="width: 84.0039px;">ID Return</th><th class="wd-10p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="Staff: activate to sort column ascending" style="width: 44.0039px;">Staff</th><th class="wd-10p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="Metode: activate to sort column ascending" style="width: 84.0039px;">Metode</th><th class="wd-15p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="Supplier: activate to sort column ascending" style="width: 151.004px;">Supplier</th><th class="wd-15p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="Total Retur: activate to sort column ascending" style="width: 151.004px;">Total Retur</th><th class="wd-15p sorting" tabindex="0" aria-controls="tabel-return" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 44.0039px;">Status</th><th class="wd-15p sorting_disabled" style="text-align: center; width: 246px;" rowspan="1" colspan="1" aria-label="Aksi">Aksi</th></tr>
-              </thead>
+                <thead>
+                  <tr>
+                      <th >Tgl Return</th>
+                      <th>ID Return</th>
+                      <th>Staff</th>
+                      <th>Metode</th>
+                      <th>Supplier</th>
+                      <th>Total Retur</th>
+                      <th>Status</th>
+                      <th>Ubah Status</th>
+                      <th>Aksi</th>
+                  </tr>
+                </thead>
 
                           <tbody>
                           </tbody>
@@ -67,6 +107,7 @@
                             </div>
 @endsection
 @section("extra_scripts")
+    @include("Purchase::returnpembelian/includes/modal_alter_status") 
     @include("Purchase::returnpembelian/js/functions") 
     @include("Purchase::returnpembelian/js/format_currency") 
     @include("Purchase::returnpembelian/js/commander") 

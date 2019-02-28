@@ -291,12 +291,12 @@
             if(res.data.length > 0) {
               for(x = 0;x < res.data.length;x++) {
                   prdt_item = '<input type="hidden" name="prdt_item[]" value="' + res.data[x].i_id + '">' + res.data[x].i_id + ' | ' + res.data[x].i_name;
-                  prdt_qtyreturn = '<input type="hidden" name="prdt_qty[]" value="' + res.data[x].podt_qty + '"><input type="text" name="prdt_qtyreturn[]" value="' + res.data[x].podt_qty + '">';
-                  prdt_price = '<input type="hidden" name="prdt_price[]" value="' + res.data[x].podt_price + '">' + get_currency(res.data[x].podt_price);
+                  prdt_qtyreturn = '<input type="hidden" name="prdt_qty[]" value="' + res.data[x].podt_qty + '"><input type="number" name="prdt_qtyreturn[]" class="text-right form-control" value="' + res.data[x].podt_qty + '">';
+                  prdt_price = '<input type="hidden" name="prdt_price[]" value="' + res.data[x].podt_price + '">Rp ' + get_currency(res.data[x].podt_price);
                   remove_btn = '<button type="button" class="btn btn-danger remove_btn"><i class="glyphicon glyphicon-trash"></i></button>';
                   subtotal = res.data[x].podt_qty * res.data[x].podt_price;
-                  subtotal = get_currency(subtotal);
-                  stock = '-';
+                  subtotal = 'Rp ' + accounting.formatMoney(subtotal,"",0,'.',',');
+                  stock = res.data[x].stock;
                   s_name = res.data[x].s_name;
                   tabel_d_purchasereturn_dt.row.add([
                     prdt_item, prdt_qtyreturn, s_name, prdt_price, subtotal, stock, remove_btn

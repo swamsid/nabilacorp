@@ -16,6 +16,8 @@ Route::group(['namespace' => 'App\Modules\Purchase\Controllers', 'middleware'=>[
 	Route::get('/purcahse-plan/update-plan', 'purchasePlanController@updatePlan')->middleware('auth');
 	Route::get('/purcahse-plan/get-delete-plan/{id}', 'purchasePlanController@deletePlan')->middleware('auth');
 	Route::get('/purchasing/rencanapembelian/get-detail-plan/{id}/{type}', 'purchasePlanController@getDetailPlan');
+	Route::get('/purcahse-plan/update/{id}', 'purchasePlanController@updatePlan');
+	Route::get('/purchasing/rencanapembelian/get-data-tabel-history/{tgl1}/{tgl2}/{tampil}', 'purchasePlanController@getDataTabelHistory');
 //mahmud konfirm plan
 	Route::get('/keuangan/konfirmasipembelian/get-data-tabel-daftar', 'purchaseConfirmController@getDataRencanaPembelian');
 	Route::get('/keuangan/konfirmasipembelian/confirm-plan/{id}/{type}', 'purchaseConfirmController@confirmRencanaPembelian');
@@ -53,10 +55,11 @@ Route::group(['namespace' => 'App\Modules\Purchase\Controllers', 'middleware'=>[
 	Route::get('/purchasing/rencanapembelian/rencana', 'rencanapembelianController@rencana')->middleware('auth');
 	Route::get('/purchasing/rencanapembelian/create', 'rencanapembelianController@create')->middleware('auth');
 	Route::get('/purchasing/returnpembelian/pembelian', 'PurchasingController@pembelian')->middleware('auth');
+	Route::get('/purchasing/returnpembelian/update_pr_status', 'PurchasingController@update_pr_status')->middleware('auth')->name('update_pr_status');
 	Route::get('/purchasing/belanjasuplier/suplier', 'PurchasingController@suplier')->middleware('auth');
 	Route::get('/purchasing/belanjalangsung/langsung', 'PurchasingController@langsung')->middleware('auth');
 	Route::get('/purchasing/belanjaproduk/produk', 'PurchasingController@produk')->middleware('auth');
-
+	Route::get('/purchasing/orderpembelian/print/{id}', 'purchaseOrderController@print');
 // Routing untuk modul belanja harian
 
 Route::get('/purchasing/belanjaharian/belanja', 'BelanjaHarianController@index')->middleware('auth');
@@ -93,6 +96,10 @@ Route::get('/purchasing/belanjaharian/hapus/{id}', 'BelanjaHarianController@hapu
 	Route::get('/purchasing/belanjapasar/pasar', 'PurchasingController@pasar')->middleware('auth');
 //purchasing dari spk
 	Route::get('/purchasing/rencanabahanbaku/bahan', 'RencanaBahanController@index');
+	Route::get('/master/supplier/table/{id}', 'RencanaBahanController@tableRelasiSup');
+	Route::get('/master/supplier/hapus/{id}', 'RencanaBahanController@deleteItemSupp');
+	Route::get('/master/supplier/tambahSupp', 'RencanaBahanController@saveItemSupp');
+	Route::get('/purchasing/get-item/autocomplete', 'RencanaBahanController@getItem');
 //selesai purchasing dari spk
 // pembelian bahan baku spk
 	Route::get('/purchasing/rencanabahanbaku/get-rencana-bytgl/{tgl1}/{tgl2}', 'RencanaBahanController@getRencanaByTgl');
@@ -102,10 +109,12 @@ Route::get('/purchasing/belanjaharian/hapus/{id}', 'BelanjaHarianController@hapu
 	Route::get('/purchasing/rencanabahanbaku/submit-data', 'RencanaBahanController@submitData');
 // Routing laporan pembelian
 	Route::get('/purchasing/lap-pembelian/index', 'LaporanPembelianController@index');
+
+	Route::get('/purchasing/lap-pembelian/find_d_purchasingharian', 'LaporanPembelianController@find_d_purchasingharian');
 	Route::get('/purchasing/lap-pembelian/get-laporan-bytgl/{tgl1}/{tgl2}', 'LaporanPembelianController@get_laporan_by_tgl');
     Route::get('/purchasing/lap-pembelian/print-lap-beli/{tgl1}/{tgl2}', 'LaporanPembelianController@print_laporan_beli');
     Route::get('/purchasing/lap-pembelian/get-bharian-bytgl/{tgl1}/{tgl2}', 'LaporanPembelianController@get_bharian_by_tgl');
-    Route::get('/purchasing/lap-pembelian/print-lap-bharian/{tgl1}/{tgl2}', 'LaporanPembelianController@print_laporan_bharian');
+    Route::get('/purchasing/lap-pembelian/print-lap-belanja-harian/{tgl1}/{tgl2}', 'LaporanPembelianController@print_lap_belanja_harian');
     Route::get('/purchasing/lap-supplier/get-bytgl/{tgl1}/{tgl2}', 'LaporanPembelianController@getLapSupplier');
     Route::get('/purchasing/lap-pembelian/print-lap-pembelian/{tgl1}/{tgl2}', 'LaporanPembelianController@print_laporan_pembelian');
 

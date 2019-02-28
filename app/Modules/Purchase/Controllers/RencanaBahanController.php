@@ -12,10 +12,12 @@ use Datatables;
 use Auth;
 use App\d_spk;
 use App\spk_formula;
+use App\m_supplier;
+use App\d_item_supplier;
 use App\Modules\Purchase\model\d_purchase_plan;
 use App\Modules\Purchase\model\d_purchaseplan_dt;
-use App\d_purchasingplan_dt;
 use Session;
+use App\m_item;
 
 class RencanaBahanController extends Controller
 {
@@ -26,10 +28,11 @@ class RencanaBahanController extends Controller
 
     public function index()
     {
-      
-      $tambah=view('Purchase::rencanabahanbaku.tambah');
-      $modalDetail=view('Purchase::rencanabahanbaku.modal-detail');
-      return view('Purchase::rencanabahanbaku.index',compact('tambah','modalDetail'));  
+      $supplier = m_supplier::select('s_id',
+                                      's_company')
+         ->where('s_active','Y')
+         ->get();
+      return view('Purchase::rencanabahanbaku.index',compact('tambah','supplier'));  
 
     }
 
@@ -181,16 +184,12 @@ class RencanaBahanController extends Controller
         ->make(true);
     }
 
-    public function prosesPurchasePlan(Request $request)
-    {
+   public function prosesPurchasePlan(Request $request)
+   {
       $menit = Carbon::now('Asia/Jakarta')->format('H:i:s');
       $tanggalMenit1 = date('Y-m-d '.$menit ,strtotime($request->tgl1));
       $tanggalMenit2 = date('Y-m-d '.$menit ,strtotime($request->tgl2));
 
-      // $sup = DB::table('m_item')->select('i_sup_list')->where('i_id', $request->id)->first();
-      // $list_sup = explode(',', $sup->i_sup_list);
-
-      // $list_sup = DB::table('d_barang_sup')->select('d_bs_supid')->where('d_bs_itemid', $request->id)->get();
       $list_sup = DB::table('d_item_supplier')->select('is_supplier')->where('is_item', $request->id)->get();
 
 
@@ -201,7 +200,6 @@ class RencanaBahanController extends Controller
         { 
 
           $aa = DB::table('m_supplier')->select('s_id','s_company')->where('s_id', $list_sup[$i]->is_supplier)->first();
-          // $aa = DB::table('m_supplier')->select('s_id','s_company')->where('s_id', $list_sup[$i]->d_bs_supid)->first();
           $d_sup[] = array('sup_id' => $aa->s_id, 'sup_txt'=> $aa->s_company);
 
         }
@@ -217,10 +215,10 @@ class RencanaBahanController extends Controller
                           'm_item.i_code',
                           'm_item.i_sat1',
                           DB::raw("IFNULL( 
-                                    (SELECT SUM(d_pcspdt_qtyconfirm) 
-                                      FROM d_purchasingplan_dt 
-                                      WHERE d_pcspdt_created BETWEEN '".$tanggalMenit1."' AND '".$tanggalMenit2."'
-                                      AND d_pcspdt_item = item_id) ,'0') 
+                                    (SELECT SUM(ppdt_qtyconfirm) 
+                                      FROM d_purchaseplan_dt 
+                                      WHERE ppdt_created BETWEEN '".$tanggalMenit1."' AND '".$tanggalMenit2."'
+                                      AND ppdt_item = item_id) ,'0') 
                                       as qtyOrderPlan")
                       )
                       ->where('d_spk.spk_status', '=', 'DR')
@@ -288,10 +286,11 @@ class RencanaBahanController extends Controller
         $request->session()->flash('gagal', 'Tidak terdapat relasi supplier pada barang tersebut');
         return redirect('purchasing/rencanabahanbaku/bahan');
       }
-    }
+   }
 
     public function suggestItem(Request $request)
     {
+      // dd($request->all());
       $menit = Carbon::now('Asia/Jakarta')->format('H:i:s');
       $tanggalMenit1 = date('Y-m-d '.$menit ,strtotime($request->tgl1));
       $tanggalMenit2 = date('Y-m-d '.$menit ,strtotime($request->tgl2));
@@ -332,10 +331,10 @@ class RencanaBahanController extends Controller
                                             AND fr_formula = item_id), "0")
                                             as totalQTySpk'),
                                   DB::raw("IFNULL( 
-                                          (SELECT SUM(d_pcspdt_qtyconfirm) 
-                                            FROM d_purchasingplan_dt 
-                                            WHERE d_pcspdt_created BETWEEN '".$tanggalMenit1."' AND '".$tanggalMenit2."'
-                                            AND d_pcspdt_item = item_id) ,'0') 
+                                          (SELECT SUM(ppdt_qtyconfirm) 
+                                            FROM d_purchaseplan_dt 
+                                            WHERE ppdt_created BETWEEN '".$tanggalMenit1."' AND '".$tanggalMenit2."'
+                                            AND ppdt_item = item_id) ,'0') 
                                             as qtyOrderPlan")
                                 )
                                 ->where('d_spk.spk_status', '=', 'DR')
@@ -441,9 +440,8 @@ class RencanaBahanController extends Controller
         }
     }
 
-    public function submitData(Request $request)
-    {
-      //dd($request->all());
+   public function submitData(Request $request)
+   {
       DB::beginTransaction();
       try 
       {
@@ -451,15 +449,11 @@ class RencanaBahanController extends Controller
         $id_peg = Auth::User()->m_id;
         //insert to table d_purchasingplan
         $plan = new d_purchase_plan;
-        $plan->p_date= Carbon::now('Asia/Jakarta')->format('Y-m-d');
-        // $plan->p_comp = ;
-        // $plan->p_gudang = ;
-        // $plan->p_code = $kode_plan;
-        // $plan->p_supplier = $request->i_sup;
-        // $plan->p_mem = $id_peg;
-        // $plan->p_confirm = ;
-        // $plan->p_status = ;
-        // $plan->p_status_date = ;
+        $plan->p_comp = Session::get('user_comp');
+        $plan->p_code = $kode_plan;
+        $plan->p_supplier = $request->i_sup;
+        $plan->p_mem = $id_peg;
+        $plan->p_status = 'WT';
         $plan->p_created = Carbon::now();
         $plan->save();
 
@@ -469,19 +463,20 @@ class RencanaBahanController extends Controller
         {
           $lastIdPlan  = 1;
         }
-        
+
         for ($i=0; $i < count($request->itemid); $i++) 
         {
           $plandt = new d_purchaseplan_dt;
           $plandt->ppdt_pruchaseplan = $lastIdPlan;
+          $plandt->ppdt_detailid = $i + 1;
           $plandt->ppdt_item = $request->itemid[$i];
-          /*$plandt->ppdt_sat = $request->satuanid[$i];*/
           $plandt->ppdt_qty = str_replace('.', '', $request->qtyreq[$i]);
+          $plandt->ppdt_satuan = $request->satuanid[$i];
           //get prev cost
           $prevCost = DB::table('d_stock_mutation')
                           ->select('sm_hpp', 'sm_qty')
                           ->where('sm_item', '=', $request->itemid[$i])
-                          ->where('sm_mutcat', '=', "14")
+                          ->where('sm_mutcat', '=', "16")
                           ->orderBy('sm_date', 'desc')
                           ->limit(1)
                           ->first();
@@ -515,7 +510,7 @@ class RencanaBahanController extends Controller
             'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n : ".$e->getLine()
         ]);
       }
-    }
+   }
 
     public function getStokByType($arrItemType, $arrSatuan, $counter)
     { 
@@ -579,5 +574,119 @@ class RencanaBahanController extends Controller
     {
       $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
       return (int)str_replace(',', '.', $value);
+    }
+
+   public function tableRelasiSup($id){
+      $item = d_item_supplier::select('is_id',
+                                    'is_supplier',
+                                    'i_code',
+                                    'i_name')
+         ->join('m_item','m_item.i_id','=','is_item')
+         ->where('is_supplier',$id)
+         ->get();
+      // dd($item);
+      
+      return DataTables::of($item)
+
+      ->editColumn('i_name', function ($data)
+      {
+         return $data->i_code .' - '. $data->i_name;
+      })
+
+      ->addColumn('action', function($data)
+      {
+         return '<div class="text-center">
+                  <a onclick=hapus('.$data->is_id.')
+                    class="btn btn-danger btn-sm"
+                    title="Hapus">
+                    <i class="fa fa-trash-o"></i>
+                  </a>
+                </div>';
+
+      })
+      ->rawColumns(['ip_price','action'])
+      ->make(true);
+
+    }
+
+   public function deleteItemSupp(Request $request, $id)
+   {
+      DB::beginTransaction();
+        try{
+         d_item_supplier::where('is_id',$id)
+            ->delete();
+        DB::commit();
+       return response()->json([
+             'status' => 'sukses'
+         ]);
+       } catch (\Exception $e) {
+       DB::rollback();
+       return response()->json([
+           'status' => 'gagal',
+           'data' => $e
+         ]);
+       }
+   }
+
+   public function saveItemSupp(Request $request){
+      DB::beginTransaction();
+        try{
+         $cek = d_item_supplier::where('is_supplier',$request->supplier)
+            ->where('is_item',$request->i_id)
+            ->first();
+            // dd($cek);
+         if ($cek != null) 
+         {
+            d_item_supplier::where('is_supplier',$request->supplier)
+               ->where('is_item',$request->i_id)
+               ->update([
+                  'is_item' => $request->i_id
+               ]);
+         }
+         else
+         {
+            d_item_supplier::create([
+               'is_supplier' => $request->supplier,
+               'is_item' => $request->i_id
+            ]);   
+         }
+         
+        DB::commit();
+       return response()->json([
+             'status' => 'sukses'
+         ]);
+       } catch (\Exception $e) {
+       DB::rollback();
+       return response()->json([
+           'status' => 'gagal',
+           'data' => $e
+         ]);
+       }
+   }
+
+   public function getItem(Request $request)
+   {
+      $term = $request->term;
+
+       $results = array();
+       
+       $queries = m_item::where('m_item.i_name', 'LIKE', '%'.$term.'%')
+         ->where('i_type','BB')
+         ->where('i_active','Y')
+         ->orderBy('i_name')
+         ->take(15)->get();
+       
+       if ($queries == null) {
+         $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
+       } else {
+         foreach ($queries as $query) 
+         {
+           $results[] = [  'id' => $query->i_id, 
+                           'label' => $query->i_code .' - '.$query->i_name
+                        ];
+         }
+       } 
+
+     return Response::json($results);
     }
 }

@@ -15,7 +15,11 @@ class d_item_supplier extends Model
 
 	protected $table = 'd_item_supplier';
     protected $primaryKey = 'is_id';
-    protected $fillable = ['is_id', 'is_item', 'is_supplier', 'is_price', 'is_active'];
+    protected $fillable = ['is_id', 
+                          'is_item', 
+                          'is_supplier', 
+                          'is_price', 
+                          'is_active'];
 
     public $incrementing = false;
     public $remember_token = false;
