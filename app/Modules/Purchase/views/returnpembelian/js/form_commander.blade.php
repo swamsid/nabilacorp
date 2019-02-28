@@ -1,6 +1,5 @@
 <script>
 	var tabel_d_purchasereturn_dt;
-
 	 $(document).ready(function() {
     //fix to issue select2 on modal when opening in firefox
     $.fn.modal.Constructor.prototype.enforceFocus = function() {};

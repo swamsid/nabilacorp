@@ -17,14 +17,31 @@
 	          		d_pcshdt_qty.on('keyup change', function(){
 	          			count_grandtotal();
 	          			var tr = $(this).parents('tr');
-	          			var d_pcshdt_price = $("[name='d_pcshdt_price[]']").val();
-	          			d_pcshdt_price = parseInt(d_pcshdt_price);
+	          			var d_pcshdt_price = tr.find("[name='d_pcshdt_price[]']").val();
+	          			d_pcshdt_price = d_pcshdt_price.replace(/\D/g, '');
+	          			d_pcshdt_price = d_pcshdt_price != '' ? parseInt(d_pcshdt_price) : 0;
 	          			var qty = $(this).val();
 	          			qty = qty != '' ? parseInt(qty) : 0;
 	          			var subtotal = qty * d_pcshdt_price;
 	          			subtotal = 'Rp ' + get_currency(subtotal);
 	          			tr.find('td:eq(4)').text(subtotal);
 	          		})
+
+	          		d_pcshdt_price = $(row).find('[name="d_pcshdt_price[]"]');
+	          		d_pcshdt_price.maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0});
+	          		d_pcshdt_price.on('keyup change', function(){
+	          			count_grandtotal();
+	          			var tr = $(this).parents('tr');
+	          			var d_pcshdt_price = $(this).val();
+	          			d_pcshdt_price = d_pcshdt_price.replace(/\D/g, '');
+	          			d_pcshdt_price = d_pcshdt_price != '' ? parseInt(d_pcshdt_price) : 0;
+	          			var qty = tr.find("[name='d_pcshdt_qty[]']").val();
+	          			qty = qty != '' ? parseInt(qty) : 0;
+	          			var subtotal = qty * d_pcshdt_price;
+	          			subtotal = 'Rp ' + get_currency(subtotal);
+	          			tr.find('td:eq(4)').text(subtotal);
+	          		})
+
 			  	}
 			});
 		$('#d_pcshdt_item').autocomplete({
@@ -68,6 +85,7 @@
 						qty_append = qty_append != '' ? parseInt(qty_append) : 0;
 						qty_number += qty_append;
 						qty_exists.val(qty_number);
+						qty_exists.trigger('change');
 					}
 					else {
 
@@ -78,8 +96,8 @@
 						var total_harga = m_pbuy1 * d_pcshdt_qty;
 						var aksi = "<button onclick='remove_item(this)' type='button' class='btn btn-danger'><i class='glyphicon glyphicon-trash'></i></button";
 
-						d_pcshdt_qty = "<input type='text' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
-						m_pbuy1 = "<input type='hidden' name='d_pcshdt_price[]' value='" + m_pbuy1 + "'>Rp " + get_currency(m_pbuy1);
+						d_pcshdt_qty = "<input type='number' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
+						m_pbuy1 = "<input type='text' class='form-control form-control-sm text-right' name='d_pcshdt_price[]' value='Rp " + accounting.formatMoney(m_pbuy1,"",0,'.',',') + "'>";
 						total_harga = 'Rp ' + get_currency(total_harga);
 
 						tabel_d_purchasingharian_dt.row.add(

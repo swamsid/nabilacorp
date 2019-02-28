@@ -50,12 +50,12 @@
             render : function(res) {
               var classname;
               if(res.d_pcsh_status == 'DE') {
-                classname = 'label-primary';
+                classname = 'label-info';
               }
               else if(res.d_pcsh_status == 'AP') {
                 classname = 'label-success';
               }
-              if(res.d_pcsh_status == 'NAP') {
+              if(res.d_pcsh_status == 'NA') {
                 classname = 'label-danger';
               }
               var label = '<label class="label ' + classname + '">' + res.d_pcsh_status_label + '</label>'
@@ -67,7 +67,7 @@
             data : null, 
             render : function(res) {
               var is_disabled = 'disabled';
-              if(res.d_pcsh_status != 'DE') {
+              if(res.d_pcsh_status == 'DE') {
                 is_disabled = '';
               } 
                 var result = '<div class="btn-group"><button ' + is_disabled + ' type="button" class="btn btn-success" title="Ubah status" data-toggle="modal" data-target="#modal_alter_status" onclick="form_update_d_pcsh_status(this)"><i class="fa fa-check"></i></button></div>';
@@ -79,7 +79,7 @@
             data : null,
             render : function(res) {
               var is_disabled = 'disabled';
-              if(res.d_pcsh_status != 'DE') {
+              if(res.d_pcsh_status == 'DE') {
                 is_disabled = '';
               }
               var preview_btn = '<button onclick="open_form_preview(' + res.d_pcsh_id + ')" class="btn btn-success btn-sm" title="Preview"><i class="fa fa-list"></i></button>';

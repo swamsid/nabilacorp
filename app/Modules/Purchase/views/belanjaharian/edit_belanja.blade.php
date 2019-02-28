@@ -202,8 +202,8 @@
             var total_harga = i_price * d_pcshdt_qty;
             var aksi = "<button onclick='remove_item(this)' type='button' class='btn btn-danger'><i class='glyphicon glyphicon-trash'></i></button";
 
-            d_pcshdt_qty = "<input type='text' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
-            i_price = "<input type='hidden' name='d_pcshdt_price[]' value='" + i_price + "'>Rp " + get_currency(i_price);
+            d_pcshdt_qty = "<input type='number' class='form-control form-control-sm text-right' name='d_pcshdt_qty[]' value='" + d_pcshdt_qty + "'>";
+            i_price = "<input type='text' class='form-control text-right' name='d_pcshdt_price[]' value='Rp " + accounting.formatMoney(i_price,"",0,'.',',') + "'>";
             total_harga = 'Rp ' + get_currency(total_harga);
 
             tabel_d_purchasingharian_dt.row.add(

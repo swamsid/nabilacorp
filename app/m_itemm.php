@@ -22,7 +22,7 @@ class m_itemm extends Model
               ->leftJoin('m_satuan', 's_id', '=', 'i_sat1')
               ->leftJoin('d_item_supplier', 'i_id', '=', 'is_item')
               ->where('i_active', 'Y')
-              ->where('i_type', '!=', 'BTPN')
+              ->where('i_type', '!=', 'BTPN')->groupBy('i_id')
               ->get();
          return Datatables::of($data)->editColumn('action', function ($data) {                            
                                 return '<div class="btn-group">

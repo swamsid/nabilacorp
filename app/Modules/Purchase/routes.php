@@ -53,6 +53,7 @@ Route::group(['namespace' => 'App\Modules\Purchase\Controllers', 'middleware'=>[
 	Route::get('/purchasing/rencanapembelian/rencana', 'rencanapembelianController@rencana')->middleware('auth');
 	Route::get('/purchasing/rencanapembelian/create', 'rencanapembelianController@create')->middleware('auth');
 	Route::get('/purchasing/returnpembelian/pembelian', 'PurchasingController@pembelian')->middleware('auth');
+	Route::get('/purchasing/returnpembelian/update_pr_status', 'PurchasingController@update_pr_status')->middleware('auth')->name('update_pr_status');
 	Route::get('/purchasing/belanjasuplier/suplier', 'PurchasingController@suplier')->middleware('auth');
 	Route::get('/purchasing/belanjalangsung/langsung', 'PurchasingController@langsung')->middleware('auth');
 	Route::get('/purchasing/belanjaproduk/produk', 'PurchasingController@produk')->middleware('auth');
@@ -102,10 +103,12 @@ Route::get('/purchasing/belanjaharian/hapus/{id}', 'BelanjaHarianController@hapu
 	Route::get('/purchasing/rencanabahanbaku/submit-data', 'RencanaBahanController@submitData');
 // Routing laporan pembelian
 	Route::get('/purchasing/lap-pembelian/index', 'LaporanPembelianController@index');
+
+	Route::get('/purchasing/lap-pembelian/find_d_purchasingharian', 'LaporanPembelianController@find_d_purchasingharian');
 	Route::get('/purchasing/lap-pembelian/get-laporan-bytgl/{tgl1}/{tgl2}', 'LaporanPembelianController@get_laporan_by_tgl');
     Route::get('/purchasing/lap-pembelian/print-lap-beli/{tgl1}/{tgl2}', 'LaporanPembelianController@print_laporan_beli');
     Route::get('/purchasing/lap-pembelian/get-bharian-bytgl/{tgl1}/{tgl2}', 'LaporanPembelianController@get_bharian_by_tgl');
-    Route::get('/purchasing/lap-pembelian/print-lap-bharian/{tgl1}/{tgl2}', 'LaporanPembelianController@print_laporan_bharian');
+    Route::get('/purchasing/lap-pembelian/print-lap-belanja-harian/{tgl1}/{tgl2}', 'LaporanPembelianController@print_lap_belanja_harian');
     Route::get('/purchasing/lap-supplier/get-bytgl/{tgl1}/{tgl2}', 'LaporanPembelianController@getLapSupplier');
     Route::get('/purchasing/lap-pembelian/print-lap-pembelian/{tgl1}/{tgl2}', 'LaporanPembelianController@print_laporan_pembelian');
 
