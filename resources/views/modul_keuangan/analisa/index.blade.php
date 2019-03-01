@@ -32,34 +32,6 @@
 
 @section('content')
 
-    <?php 
-
-        // jurnal
-            $tanggal = date('Y-m').'-01';
-
-            $tanggalFirst = date('d/m/Y', strtotime($tanggal));
-            $tanggalNext = date('d/m/Y', strtotime("+1 months", strtotime($tanggal)));
-
-            $jurnalRequest = "_token=".csrf_token()."&d1=".$tanggalFirst."&d2=".$tanggalNext."&type=K&nama=true";
-
-        // buku besar
-            $bulan = date('Y-m');
-
-            $bulanFirst = date('m/Y', strtotime($bulan));
-            $bulanNext = date('m/Y', strtotime("+1 months", strtotime($bulan)));
-
-            $buku_besar = "_token=".csrf_token()."&d1=".$bulanFirst."&d2=".$bulanNext."&semua=on&lawan=true";
-
-        // Neraca Saldo
-            $neraca_saldo = "_token=".csrf_token()."&d1=".$bulanFirst;
-
-        // Neraca
-            $neraca = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=";
-
-        // laba_rugi
-            $laba_rugi = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=";
-    ?>
-
     <!--BEGIN PAGE WRAPPER-->
     <div id="page-wrapper">
         <!--BEGIN TITLE & BREADCRUMB PAGE-->

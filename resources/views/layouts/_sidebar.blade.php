@@ -326,8 +326,8 @@
                         @endif
 
                         @if(Auth::user()->punyaAkses('Pelunasan Hutang','ma_read'))
-                            <li class="{{ Request::is('purchasing/pembayaran_hutang') ? 'active' : '' || Request::is('purchasing/pembayaran_hutang/*') ? 'active' : '' }}">
-                                <a href="{{ url('/purchasing/pembayaran_hutang/index') }}"><span class="submenu-title">Pelunasan Hutang</span><span class="hidden">Purchasing</span></a>
+                            <li class="{{ Request::is('purchasing/modul/keuangan/transaksi/pelunasan_hutang') ? 'active' : '' || Request::is('purchasing/modul/keuangan/transaksi/pelunasan_hutang/*') ? 'active' : '' }}">
+                                <a href="{{ url('purchasing/modul/keuangan/transaksi/pelunasan_hutang') }}"><span class="submenu-title">Pelunasan Hutang</span><span class="hidden">Purchasing</span></a>
                             </li>
                         @endif
 
@@ -538,8 +538,8 @@
                     </a>
                     <ul class="nav nav-second-level">
                         @if(Auth::user()->punyaAkses('Pembayaran Piutang','ma_read'))
-                            <li class="menu-sekunder {{ Request::is('penjualan/pembayaranpiutang/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/pembayaranpiutang/index') }}">
-                                <span class="submenu-title">Pembayaran Piutang</span><span class="hidden">Penjualan</span></a>
+                            <li class="menu-sekunder {{ Request::is('penjualan/modul/keuangan/transaksi/penerimaan_piutang') ? 'active' : '' || Request::is('penjualan/modul/keuangan/transaksi/penerimaan_piutang/*') ? 'active' : '' }}"><a href="{{ url('penjualan/modul/keuangan/transaksi/penerimaan_piutang') }}">
+                                <span class="submenu-title">Penerimaan Piutang</span><span class="hidden">Penjualan</span></a>
                             </li>
                         @endif
 
@@ -856,6 +856,12 @@
                         @if(Auth::user()->punyaAkses('Klasifikasi Akun','ma_read'))
                             <li class="menu-sekunder {{ Request::is('system/modul/keuangan/setting/klasifikasi-akun') ? 'active' : '' || Request::is('system/modul/keuangan/setting/klasifikasi-akun/*') ? 'active' : '' }}"><a
                                     href="{{ url('system/modul/keuangan/setting/klasifikasi-akun') }}"><span class="submenu-title">Klasifikasi Akun</span><span class="hidden">System</span></a>
+                            </li>
+                        @endif
+
+                        @if(Auth::user()->punyaAkses('Klasifikasi Akun','ma_read'))
+                            <li class="menu-sekunder {{ Request::is('system/modul/keuangan/setting/akun-penting') ? 'active' : '' || Request::is('system/modul/keuangan/setting/akun-penting/*') ? 'active' : '' }}"><a
+                                    href="{{ url('system/modul/keuangan/setting/akun-penting') }}"><span class="submenu-title">Akun-akun Penting</span><span class="hidden">System</span></a>
                             </li>
                         @endif
 

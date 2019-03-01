@@ -68,149 +68,152 @@
 
 
 @section('content')
-    <div class="col-md-12" style="background: none; margin-bottom: 0px;" id="vue-component">
-        {{-- <div class="col-md-12" style="border-bottom: 1px solid #eee; padding-bottom: 12px;">
-            <div class="row">
-                <div class="col-md-6 content-title">
-                    Setting Klasifikasi Akun
-                </div>
-
-                <div class="col-md-6 text-right form-status">
-                    <span v-if="stat == 'standby'" v-cloak>
-                        <i class="fa fa-exclamation"></i> &nbsp; Pastikan Data Terisi Dengan Benar            
-                    </span>
-
-                    <div class="loader" v-if="stat == 'loading'" v-cloak>
-                       <div class="loading"></div> &nbsp; <span>@{{ statMessage }}</span>
-                    </div>
-                </div>
-            </div>  
-        </div> --}}
-
-        <div class="col-md-12 table-content" style="background: none; box-shadow: none; margin-top: 8px;" v-cloak>
-                <div class="row">
-                    <div class="col-md-1 offset-1" id="button-wrap">
-                        <div class="col-md-12" style="padding: 0px;">
-                            <div class="col-md-6 offset-6 text-center button-ctn active" id="inv-0">
-                                <i class="fa fa-info"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12" style="padding: 0px;">
-                            <div class="col-md-6 offset-6 text-center button-ctn" id="inv-1">
-                                <strong><small>1</small></strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8" id="main-content" v-if="stateNumber == 0">
-                        <div class="row">
-                            <div class="col-md-12 title">
-                                <span>Sekilas Tentang Akun Penting !</span> 
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 text-intro">
-                                Perlu Anda Ketahui, Beberapa Proses Pembukuan Pada System Terjadi Secara Otomatis. Untuk Itu Anda Perlu Mendefinisikan Akun-Akun Penting Yang Telah Dipilih Oleh System. Akun Penting Bukanlah Akun Baru, Melainkan Akun Yang Sudah Anda Buat, Yang Fungsinya Adalah Sebagai Rujukan Bagi System Agar Tidak Salah Dalam Melakukan Pembukuan Secara Otomatis.
-                            </div>
-                        </div>
-
-                        {{-- <div class="row">
-                            <div class="col-md-12 text-detail" style="background-color: none; margin-top: 15px; padding-left: 25px; max-height: 254px; min-height: 254px;">
-                                <div class="row">
-                                    <div class="col-md-7" style="box-shadow: 5px 0px 10px #ccc;">
-                                        <img src="{{ asset('modul_keuangan/klasifikasi.jpg') }}">
-                                    </div><br>
-                                    <div class="col-md-12 text-intro">
-                                        Hierarki Level 1 dan Level 2 Adalah Hierarki Yang Wajib Dibuat Sedangkan Untuk Sub Hierarki Bersifat Optional (Tidak Wajib).
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-
-                        <div class="row">
-                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
-                                <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-7 text-right">
-                                        <button class="btn btn-info btn-sm" @click="nextState">
-                                            <i class="fa fa-map-marker"></i> &nbsp;Mulai Kenalkan System Pada Akun-Akun Penting
-                                        </button>
-                                        &nbsp;
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <form id="data-form-lvl1" class="col-md-8" v-if="stateNumber == 1" style="padding: 0px;">
-                        <div class="col-md-12" id="main-content">
-                            <div class="row">
-                                <div class="col-md-12 title">
-                                    <span>1. Akun-Akun Penting Pada System<small>&nbsp; - {{ $cabang }}</small></span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12 text-intro">
-                                   Haloo. Jangan Biarkan Kami Tersesat, Tolong System Kami Dalam Menentukan Akun-Akun Dibawah Ini. <small style="font-weight: bold;">(Pastikan Akun Yang Anda Pilih Benar)</small>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; max-height: 254px; min-height: 254px; overflow-y: scroll;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <form id="form-data-level-1">
-                                                <table class="table table-stripped table-bordered table-mini">
-                                                    <tbody>
-                                                        <tr v-for="(lvl1, index) in level_1">
-                                                            <td class="text-center" width="5%" style="vertical-align: middle;">@{{ (index+1) }}</td>
-                                                            <td width="20%" class="text-left" style="vertical-align: middle;">
-                                                                @{{ lvl1.ap_nama }}
-                                                                <input type="hidden" name="id[]" :value="lvl1.ap_id" readonly>
-                                                            </td>
-                                                            <td width="70%">
-                                                                <vue-select :name="'akun[]'" :id="'akun'+lvl1.ap_id" :options="akun"></vue-select>
-                                                            </td>
-                                                            <td width="5%" class="text-center" style="vertical-align: middle;">
-                                                                <i class="fa fa-info-circle" :title="lvl1.ap_keterangan" style="cursor: help;"></i>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
-                                    <div class="row">
-                                        <div class="col-md-5 form-status" style="padding-top: 10px;">
-                                            
-                                        </div>
-
-                                        <div class="col-md-7 text-right">
-                                            <button class="btn btn-info btn-sm" type="button" @click="simpanLevel1" :disabled="btnDisabled">
-                                                Simpan Perubahan
-                                            </button>
-                                            &nbsp;
-                                            <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
-                                                <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!--BEGIN PAGE WRAPPER-->
+<div id="page-wrapper">
+    <!--BEGIN TITLE & BREADCRUMB PAGE-->
+    <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+        <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
+            <div class="page-title">Akun Penting</div>
         </div>
-
+        <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><i></i>&nbsp;Setting&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Akun-Akun Penting</li>
+        </ol>
+        <div class="clearfix">
+        </div>
     </div>
+    <div class="page-content fadeInRight">
+        <div id="tab-general">
+            <div class="row mbl">
+                <div class="col-lg-12">
+                    <div id="generalTabContent" class="tab-content responsive">
+                        <div id="alert-tab" class="tab-pane fade in active">
+                            <div class="row" style="margin-top:-20px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="table-responsive">
+                                        <div class="col-md-12 table-content" style="background: none; box-shadow: none; margin-top: 8px;" v-cloak>
+                                            <div class="row">
+                                                <div class="col-md-1" id="button-wrap">
+                                                    <div class="col-md-12" style="padding: 0px;">
+                                                        <div class="col-md-6 offset-6 text-center button-ctn active" id="inv-0">
+                                                            <i class="fa fa-info"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding: 0px;">
+                                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-1">
+                                                            <strong><small>1</small></strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-11" id="main-content" v-if="stateNumber == 0">
+                                                    <div class="row">
+                                                        <div class="col-md-12 title">
+                                                            <span>Sekilas Tentang Akun Penting !</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-intro">
+                                                            Perlu Anda Ketahui, Beberapa Proses Pembukuan Pada System Terjadi Secara Otomatis. Untuk Itu Anda Perlu Mendefinisikan Akun-Akun Penting Yang Telah Dipilih Oleh System. Akun Penting Bukanlah Akun Baru, Melainkan Akun Yang Sudah Anda Buat, Yang Fungsinya Adalah Sebagai Rujukan Bagi System Agar Tidak Salah Dalam Melakukan Pembukuan Secara Otomatis.
+                                                        </div>
+                                                    </div>
+                                                    {{-- <div class="row">
+                                                        <div class="col-md-12 text-detail" style="background-color: none; margin-top: 15px; padding-left: 25px; max-height: 254px; min-height: 254px;">
+                                                            <div class="row">
+                                                                <div class="col-md-7" style="box-shadow: 5px 0px 10px #ccc;">
+                                                                    <img src="{{ asset('modul_keuangan/klasifikasi.jpg') }}">
+                                                                </div><br>
+                                                                <div class="col-md-12 text-intro">
+                                                                    Hierarki Level 1 dan Level 2 Adalah Hierarki Yang Wajib Dibuat Sedangkan Untuk Sub Hierarki Bersifat Optional (Tidak Wajib).
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> --}}
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
+                                                            <div class="row">
+                                                                <div class="col-md-5"></div>
+                                                                <div class="col-md-7 text-right">
+                                                                    <button class="btn btn-info btn-sm" @click="nextState">
+                                                                    <i class="fa fa-map-marker"></i> &nbsp;Mulai Kenalkan System Pada Akun-Akun Penting
+                                                                    </button>
+                                                                    &nbsp;
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <form id="data-form-lvl1" class="col-md-11" v-if="stateNumber == 1" style="padding: 0px;">
+                                                    <div class="col-md-12" id="main-content">
+                                                        <div class="row">
+                                                            <div class="col-md-12 title">
+                                                                <span>1. Akun-Akun Penting Pada System<small>&nbsp; - {{ $cabang }}</small></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 text-intro">
+                                                                Haloo. Jangan Biarkan Kami Tersesat, Tolong System Kami Dalam Menentukan Akun-Akun Dibawah Ini. <small style="font-weight: bold;">(Pastikan Akun Yang Anda Pilih Benar)</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; max-height: 254px; min-height: 254px; overflow-y: scroll;">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <form id="form-data-level-1">
+                                                                            <table class="table table-stripped table-bordered table-mini">
+                                                                                <tbody>
+                                                                                    <tr v-for="(lvl1, index) in level_1">
+                                                                                        <td class="text-center" width="5%" style="vertical-align: middle;">@{{ (index+1) }}</td>
+                                                                                        <td width="20%" class="text-left" style="vertical-align: middle;">
+                                                                                            @{{ lvl1.ap_nama }}
+                                                                                            <input type="hidden" name="id[]" :value="lvl1.ap_id" readonly>
+                                                                                        </td>
+                                                                                        <td width="70%">
+                                                                                            <vue-select :name="'akun[]'" :id="'akun'+lvl1.ap_id" :options="akun"></vue-select>
+                                                                                        </td>
+                                                                                        <td width="5%" class="text-center" style="vertical-align: middle;">
+                                                                                            <i class="fa fa-info-circle" :title="lvl1.ap_keterangan" style="cursor: help;"></i>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
+                                                                <div class="row">
+                                                                    <div class="col-md-5 form-status" style="padding-top: 10px;">
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-md-7 text-right">
+                                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevel1" :disabled="btnDisabled">
+                                                                        Simpan Perubahan
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
+                                                                        <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
@@ -269,7 +272,7 @@
         }
 
         var app = new Vue({
-            el: '#vue-component',
+            el: '#page-wrapper',
             data: {
                 btnDisabled: false,
                 onAjaxLoading: false,

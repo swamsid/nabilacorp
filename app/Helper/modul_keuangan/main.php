@@ -116,7 +116,7 @@
 			// setting
 				'allowJurnalToExecute'	=> true,
 				'comp'					=> 1,
-				'companyName'			=> 'Dirga Ambara Corporindo',
+				'companyName'			=> 'Nabilla Bakery',
 		];
 
 		return (object) $setting;

@@ -14,251 +14,221 @@
 
 
 @section('content')
-    <div class="col-md-12" style="background: none;" id="vue-component">
-    	<div class="col-md-12">
-    		<div class="row">
-    			<div class="col-md-6 content-title">
-    				Tambah Data Transaksi Kas
-    			</div>
-
-    			<div class="col-md-6 text-right form-status">
-    				<span v-if="stat == 'standby'" v-cloak>
-                        <i class="fa fa-exclamation"></i> &nbsp; Pastikan Data Terisi Dengan Benar            
-                    </span>
-
-                    <div class="loader" v-if="stat == 'loading'" v-cloak>
-                       <div class="loading"></div> &nbsp; <span>@{{ statMessage }}</span>
-                    </div>
-    			</div>
-    		</div>	
-    	</div>
-
-    	<div class="col-md-12 table-content">
-            <form id="data-form" v-cloak>
-                <input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" readonly name="tr_id" v-model="singleData.tr_id">
-                <div class="row">
-                    <div class="col-md-6" style="background: none;">
-
-                        <div class="row mt-form">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan">Nomor Transaksi</label>
-                            </div>
-
-                            <div class="col-md-5">
-                                <input type="text" name="tr_nomor" class="form-control modul-keuangan" placeholder="Di Isi Oleh Sistem" readonly v-model="singleData.tr_nomor">
-                            </div>
-
-                            <div class="col-md-1 form-info-icon link" @click="search" v-if="!onUpdate">
-                                <i class="fa fa-search" title="Cari Group Berdasarkan Nomor dan Type Group"></i>
-                            </div>
-
-                            <div class="col-md-1 form-info-icon link" @click="formReset" v-if="onUpdate">
-                                <i class="fa fa-times" title="Bersihkan Pencarian" style="color: #CC0000;"></i>
-                            </div>
-                        </div>
-
-                        <div class="row mt-form">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan">Type Transaksi Kas</label>
-                            </div>
-
-                            <div class="col-md-5">
-                                <vue-select :name="'tr_type'" :id="'tr_type'" :options="typeTransaksi" :disabled="onUpdate" @input="typeChange"></vue-select>
-                            </div>
-
-                            <div class="col-md-1 form-info-icon" title="Parameter Type Group Digunakan Untuk Pencarian Data">
-                                <i class="fa fa-info-circle"></i>
-                            </div>
-                        </div>
-
-                        <div class="row mt-form">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan">Tanggal Transaksi *</label>
-                            </div>
-
-                            <div class="col-md-5">
-                                <vue-datepicker :name="'tr_tanggal'" :id="'tr_tanggal'" :title="'Tidak Boleh Kosong'" :readonly="true" :placeholder="'Pilih Tanggal'" @input="dateChange"></vue-datepicker>
-                            </div>
-
-                            <div class="col-md-1 form-info-icon" title="Parameter Type Group Digunakan Untuk Pencarian Data">
-                                <i class="fa fa-info-circle"></i>
-                            </div>
-                        </div>
-
-                        <div class="row mt-form" style="border-top: 1px solid #eee; padding-top: 20px;">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan">Ket. Transaksi *</label>
-                            </div>
-
-                            <div class="col-md-6">
-                                <input type="text" name="tr_nama" class="form-control modul-keuangan" :placeholder="singleData.placholderNama" v-model="singleData.tr_nama" title="Tidak Boleh Kosong">
-                            </div>
-                        </div>
-
-                        <div class="row mt-form">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan">Pilih Akun Kas</label>
-                            </div>
-
-                            <div class="col-md-6">
-                                <vue-select :name="'akun_kas'" :id="'akun_kas'" :options="akunKas" @input="akunChange"></vue-select>
-                            </div>
-                        </div>
-
-                        <div class="row mt-form">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan">Nominal Transaksi</label>
-                            </div>
-
-                            <div class="col-md-6">
-                                <vue-inputmask :name="'tr_value'" :id="'tr_value'" @input="nominalChange"></vue-inputmask>
-                            </div>
-                        </div>
-
-                        <div class="row mt-form" v-if="locked">
-                            <div class="col-md-3">
-                                <label class="modul-keuangan"></label>
-                            </div>
-
-                            <div class="col-md-7">
-                                <div class="modul-keuangan-alert primary" role="alert">
-                                  <i class="fa fa-info-circle"></i> &nbsp;&nbsp;Group Akun Dikunci. Tidak Bisa Dinonaktifkan
+<!--BEGIN PAGE WRAPPER-->
+<div id="page-wrapper">
+    <!--BEGIN TITLE & BREADCRUMB PAGE-->
+    <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+        <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
+            <div class="page-title">Transaksi Kas</div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><i></i>&nbsp;Keuangan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li>Proses Input Transaksi <i class="fa fa-angle-right"></i></li>
+            <li>Transaksi Kas</li>
+        </ol>
+        <div class="clearfix">
+        </div>
+    </div>
+    <div class="page-content fadeInRight">
+        <div id="tab-general">
+            <div class="row mbl">
+                <div class="col-lg-12">
+                    <div id="generalTabContent" class="tab-content responsive">
+                        <div id="alert-tab" class="tab-pane fade in active">
+                            <div class="row" style="margin-top:-20px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                    <div class="table-responsive">
+                                        <form id="data-form" v-cloak>
+                                            <input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" readonly name="tr_id" v-model="singleData.tr_id">
+                                            <div class="row">
+                                                <div class="col-md-6" style="background: none;">
+                                                    <div class="row mt-form">
+                                                        <div class="col-md-4">
+                                                            <label class="modul-keuangan">Nomor Transaksi</label>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <input type="text" name="tr_nomor" class="form-control modul-keuangan" placeholder="Di Isi Oleh Sistem" readonly v-model="singleData.tr_nomor">
+                                                        </div>
+                                                        <div class="col-md-1 form-info-icon link" @click="search" v-if="!onUpdate">
+                                                            <i class="fa fa-search" title="Cari Group Berdasarkan Nomor dan Type Group"></i>
+                                                        </div>
+                                                        <div class="col-md-1 form-info-icon link" @click="formReset" v-if="onUpdate">
+                                                            <i class="fa fa-times" title="Bersihkan Pencarian" style="color: #CC0000;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-form">
+                                                        <div class="col-md-4">
+                                                            <label class="modul-keuangan">Type Transaksi Kas</label>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <vue-select :name="'tr_type'" :id="'tr_type'" :options="typeTransaksi" :disabled="onUpdate" @input="typeChange"></vue-select>
+                                                        </div>
+                                                        <div class="col-md-1 form-info-icon" title="Parameter Type Group Digunakan Untuk Pencarian Data">
+                                                            <i class="fa fa-info-circle"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-form">
+                                                        <div class="col-md-4">
+                                                            <label class="modul-keuangan">Tanggal Transaksi *</label>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <vue-datepicker :name="'tr_tanggal'" :id="'tr_tanggal'" :title="'Tidak Boleh Kosong'" :readonly="true" :placeholder="'Pilih Tanggal'" @input="dateChange"></vue-datepicker>
+                                                        </div>
+                                                        <div class="col-md-1 form-info-icon" title="Parameter Type Group Digunakan Untuk Pencarian Data">
+                                                            <i class="fa fa-info-circle"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-form" style="border-top: 1px solid #eee; padding-top: 20px;">
+                                                        <div class="col-md-4">
+                                                            <label class="modul-keuangan">Ket. Transaksi *</label>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <input type="text" name="tr_nama" class="form-control modul-keuangan" :placeholder="singleData.placholderNama" v-model="singleData.tr_nama" title="Tidak Boleh Kosong">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-form">
+                                                        <div class="col-md-4">
+                                                            <label class="modul-keuangan">Pilih Akun Kas</label>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <vue-select :name="'akun_kas'" :id="'akun_kas'" :options="akunKas" @input="akunChange"></vue-select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-form">
+                                                        <div class="col-md-4">
+                                                            <label class="modul-keuangan">Nominal Transaksi</label>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <vue-inputmask :name="'tr_value'" :id="'tr_value'" @input="nominalChange"></vue-inputmask>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-form" v-if="locked">
+                                                        <div class="col-md-3">
+                                                            <label class="modul-keuangan"></label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <div class="modul-keuangan-alert primary" role="alert">
+                                                                <i class="fa fa-info-circle"></i> &nbsp;&nbsp;Group Akun Dikunci. Tidak Bisa Dinonaktifkan
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="background: none; padding: 0px; padding-right: 10px;">
+                                                    <div class="col-md-12" style="padding: 0px; min-height: 260px; background: #f7f7f7;">
+                                                        <table class="table table-stripped table-bordered table-mini">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th width="8%">*</th>
+                                                                    <th width="41%">Akun</th>
+                                                                    <th width="22%">Debet</th>
+                                                                    <th width="22%">Kredit</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="wrap">
+                                                                <tr>
+                                                                    <td class="text-center" style="padding:8px;">
+                                                                        <i class="fa fa-lock" style="color: #3F729B;"></i>
+                                                                    </td>
+                                                                    <td style="padding: 8px;">
+                                                                        <vue-select :name="'akun[]'" :id="'akunFirst'" :options="akunFirst" @input="typeChange"></vue-select>
+                                                                    </td>
+                                                                    <td class="text-right debet" style="padding: 13px 8px 0px 8px;">
+                                                                        <vue-inputmask :name="'debet[]'" :id="'debetFirst'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white; cursor:no-drop;'" :readonly="true"></vue-inputmask>
+                                                                    </td>
+                                                                    <td class="text-right kredit" style="padding: 13px 8px 0px 8px;">
+                                                                        <vue-inputmask :name="'kredit[]'" :id="'kreditFirst'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white; cursor:no-drop;'" :readonly="true"></vue-inputmask>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center" style="padding:8px;">
+                                                                        <i class="fa fa-lock" style="color: #3F729B;"></i>
+                                                                    </td>
+                                                                    <td style="padding: 8px;">
+                                                                        <vue-select :name="'akun[]'" :id="'akunSecond'" :options="akunLawan"></vue-select>
+                                                                    </td>
+                                                                    <td class="text-right debet" style="padding: 13px 8px 0px 8px;">
+                                                                        <vue-inputmask :name="'debet[]'" :id="'debet_Second'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white;'" @input="splitValue"></vue-inputmask>
+                                                                    </td>
+                                                                    <td class="text-right kredit" style="padding: 13px 8px 0px 8px;">
+                                                                        <vue-inputmask :name="'kredit[]'" :id="'kredit_Second'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white;'" @input="splitValue"></vue-inputmask>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr v-for="n in akunCount" id="cekWrap">
+                                                                    <td class="text-center" style="padding: 8px;">
+                                                                        <i class="fa fa-times" :id="'deleteAkun'+n" style="color: #ff4444; cursor: pointer;" @click="deleteAkun"></i>
+                                                                    </td>
+                                                                    <td style="padding: 8px;">
+                                                                        <vue-select :name="'akun[]'" :id="'akun'+n" :options="akunLawan"></vue-select>
+                                                                    </td>
+                                                                    <td class="text-right debet" style="padding: 13px 8px 0px 8px;">
+                                                                        <vue-inputmask :name="'debet[]'" :id="'debet_'+n" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px;'" @input="splitValue"></vue-inputmask>
+                                                                    </td>
+                                                                    <td class="text-right kredit" style="padding: 13px 8px 0px 8px;">
+                                                                        <vue-inputmask :name="'kredit[]'" :id="'kredit_'+n" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px;'" @input="splitValue"></vue-inputmask>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding: 0px; margin-top: -10px">
+                                                        <table class="table table-stripped table-bordered table-mini">
+                                                            <tr>
+                                                                <td width="8%" class="text-center" style="padding: 10px 5px 0px 5px;">
+                                                                    <i class="fa fa-plus" style="color: #00C851; cursor: pointer;" @click="addAkun"></i>
+                                                                </td>
+                                                                <td width="48%" style="background: #fff; font-weight: bold; font-style: italic; text-align: center;">Total Debit Kredit</td>
+                                                                <td width="22%" style="background: #fff;">
+                                                                    <vue-inputmask :id="'totalDebet'" :css="'border: 0px; font-size: 9pt; background: white; height: 20px; padding-right: 0px;'" :readonly="true"></vue-inputmask>
+                                                                </td>
+                                                                <td width="22%" style="background: #fff;">
+                                                                    <vue-inputmask :id="'totalKredit'" :css="'border: 0px; font-size: 9pt; background: white; height: 20px; padding-right: 0px;'" :readonly="true"></vue-inputmask>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row content-button">
+                                                <div class="col-md-6">
+                                                    {{--  <a href="{{ route('grup-akun.index') }}">
+                                                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left" :disabled="btnDisabled"></i> &nbsp;Kembali Ke Halaman Data Group Akun</button>
+                                                    </a> --}}
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <button type="button" class="btn btn-info btn-sm" @click="updateData" :disabled="btnDisabled" v-if="onUpdate"><i class="fa fa-floppy-o"></i> &nbsp;Simpan Perubahan</button>
+                                                    
+                                                    <button type="button" class="btn btn-danger btn-sm" @click="deleteData" :disabled="btnDisabled" v-if="onUpdate && dataIsActive"><i class="fa fa-times"></i> &nbsp;Hapus</button>
+                                                    <button type="button" class="btn btn-success btn-sm" @click="deleteData" :disabled="btnDisabled" v-if="onUpdate && !dataIsActive"><i class="fa fa-check-square-o"></i> &nbsp;Aktifkan</button>
+                                                    <button type="button" class="btn btn-primary btn-sm" @click="saveData" :disabled="btnDisabled" v-if="!onUpdate"><i class="fa fa-floppy-o"></i> &nbsp;Simpan</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6" style="background: none; padding: 0px; padding-right: 10px;">
-                        <div class="col-md-12" style="padding: 0px; min-height: 260px; background: #f7f7f7;">
-                            <table class="table table-stripped table-bordered table-mini">
-                                <thead>
-                                    <tr>
-                                        <th width="8%">*</th>
-                                        <th width="41%">Akun</th>
-                                        <th width="22%">Debet</th>
-                                        <th width="22%">Kredit</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody id="wrap">
-                                    <tr>
-                                        <td class="text-center" style="padding:8px;">
-                                            <i class="fa fa-lock" style="color: #3F729B;"></i>
-                                        </td>
-
-                                        <td style="padding: 8px;">
-                                            <vue-select :name="'akun[]'" :id="'akunFirst'" :options="akunFirst" @input="typeChange"></vue-select>
-                                        </td>
-
-                                        <td class="text-right debet" style="padding: 13px 8px 0px 8px;">
-                                            <vue-inputmask :name="'debet[]'" :id="'debetFirst'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white; cursor:no-drop;'" :readonly="true"></vue-inputmask>
-                                        </td>
-
-                                        <td class="text-right kredit" style="padding: 13px 8px 0px 8px;">
-                                           <vue-inputmask :name="'kredit[]'" :id="'kreditFirst'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white; cursor:no-drop;'" :readonly="true"></vue-inputmask>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="text-center" style="padding:8px;">
-                                            <i class="fa fa-lock" style="color: #3F729B;"></i>    
-                                        </td>
-
-                                        <td style="padding: 8px;">
-                                            <vue-select :name="'akun[]'" :id="'akunSecond'" :options="akunLawan"></vue-select>
-                                        </td>
-
-                                        <td class="text-right debet" style="padding: 13px 8px 0px 8px;">
-                                            <vue-inputmask :name="'debet[]'" :id="'debet_Second'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white;'" @input="splitValue"></vue-inputmask>
-                                        </td>
-
-                                        <td class="text-right kredit" style="padding: 13px 8px 0px 8px;">
-                                           <vue-inputmask :name="'kredit[]'" :id="'kredit_Second'" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px; background:white;'" @input="splitValue"></vue-inputmask>
-                                        </td>
-                                    </tr>
-
-                                    <tr v-for="n in akunCount" id="cekWrap">
-                                        <td class="text-center" style="padding: 8px;">
-                                            <i class="fa fa-times" :id="'deleteAkun'+n" style="color: #ff4444; cursor: pointer;" @click="deleteAkun"></i>
-                                        </td>
-
-                                        <td style="padding: 8px;">
-                                            <vue-select :name="'akun[]'" :id="'akun'+n" :options="akunLawan"></vue-select>
-                                        </td>
-
-                                        <td class="text-right debet" style="padding: 13px 8px 0px 8px;">
-                                            <vue-inputmask :name="'debet[]'" :id="'debet_'+n" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px;'" @input="splitValue"></vue-inputmask>
-                                        </td>
-
-                                        <td class="text-right kredit" style="padding: 13px 8px 0px 8px;">
-                                            <vue-inputmask :name="'kredit[]'" :id="'kredit_'+n" :css="'border: 0px; font-size: 9pt; height: 20px; padding-right: 0px;'" @input="splitValue"></vue-inputmask>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-md-12" style="padding: 0px; margin-top: -10px">
-
-                            <table class="table table-stripped table-bordered table-mini">
-                                <tr>
-                                    <td width="8%" class="text-center" style="padding: 10px 5px 0px 5px;">
-                                        <i class="fa fa-plus" style="color: #00C851; cursor: pointer;" @click="addAkun"></i>    
-                                    </td>
-
-                                    <td width="48%" style="background: #fff; font-weight: bold; font-style: italic; text-align: center;">Total Debit Kredit</td>
-
-                                    <td width="22%" style="background: #fff;">
-                                         <vue-inputmask :id="'totalDebet'" :css="'border: 0px; font-size: 9pt; background: white; height: 20px; padding-right: 0px;'" :readonly="true"></vue-inputmask>
-                                    </td>
-
-                                    <td width="22%" style="background: #fff;">
-                                        <vue-inputmask :id="'totalKredit'" :css="'border: 0px; font-size: 9pt; background: white; height: 20px; padding-right: 0px;'" :readonly="true"></vue-inputmask>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-button">
-                    <div class="col-md-6">
-                       {{--  <a href="{{ route('grup-akun.index') }}">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left" :disabled="btnDisabled"></i> &nbsp;Kembali Ke Halaman Data Group Akun</button>
-                        </a> --}}
-                    </div>
-
-                    <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-info btn-sm" @click="updateData" :disabled="btnDisabled" v-if="onUpdate"><i class="fa fa-floppy-o"></i> &nbsp;Simpan Perubahan</button>
-                        
-                        <button type="button" class="btn btn-danger btn-sm" @click="deleteData" :disabled="btnDisabled" v-if="onUpdate && dataIsActive"><i class="fa fa-times"></i> &nbsp;Hapus</button>
-
-                        <button type="button" class="btn btn-success btn-sm" @click="deleteData" :disabled="btnDisabled" v-if="onUpdate && !dataIsActive"><i class="fa fa-check-square-o"></i> &nbsp;Aktifkan</button>
-
-                        <button type="button" class="btn btn-primary btn-sm" @click="saveData" :disabled="btnDisabled" v-if="!onUpdate"><i class="fa fa-floppy-o"></i> &nbsp;Simpan</button>
-                    </div>
-                </div>
-            </form>
-    	</div>
-
-        <div class="ez-popup" id="data-popup">
-            <div class="layout" style="width: 70%">
-                <div class="top-popup" style="background: none;">
-                    <span class="title">
-                        Data Transaksi Kas Yang Sudah Masuk
-                    </span>
-
-                    <span class="close"><i class="fa fa-times" style="font-size: 12pt; color: #CC0000"></i></span>
-                </div>
-                
-                <div class="content-popup">
-                    <vue-datatable :data_resource="list_data_table" :columns="data_table_columns" :selectable="true" :ajax_on_loading="onAjaxLoading" :index_column="'tr_id'" @selected="dataSelected"></vue-datatable>
                 </div>
             </div>
         </div>
-
     </div>
+    <div class="ez-popup" id="data-popup">
+        <div class="layout" style="width: 70%">
+            <div class="top-popup" style="background: none;">
+                <span class="title">
+                    Data Transaksi Kas Yang Sudah Masuk
+                </span>
+                <span class="close"><i class="fa fa-times" style="font-size: 12pt; color: #CC0000"></i></span>
+            </div>
+            
+            <div class="content-popup">
+                <vue-datatable :data_resource="list_data_table" :columns="data_table_columns" :selectable="true" :ajax_on_loading="onAjaxLoading" :index_column="'tr_id'" @selected="dataSelected"></vue-datatable>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
@@ -319,7 +289,7 @@
         }
 
 		var app = new Vue({
-            el: '#vue-component',
+            el: '#page-wrapper',
             data: {
                 stat: 'standby',
                 statMessage: '',

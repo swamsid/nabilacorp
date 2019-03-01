@@ -143,7 +143,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// akun Penting
 
-					Route::get('modul/keuangan/setting/akun-penting', [
+					Route::get('system/modul/keuangan/setting/akun-penting', [
 						"uses"	=> 'modul_keuangan\setting\akun_penting\akun_penting_controller@index'
 					])->name('setting.akun_penting.index');
 
@@ -259,7 +259,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Master Data Transaksi 
 
-				Route::get('modul/keuangan/master/transaksi', [
+				Route::get('keuangan/modul/keuangan/master/transaksi', [
 					"uses"	=> 'modul_keuangan\master\transaksi\transaksi_controller@index'
 				])->name('transaksi.index');
 
@@ -358,7 +358,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Transaksi Kas
 
-				Route::get('modul/keuangan/transaksi/kas', [
+				Route::get('keuangan/modul/keuangan/transaksi/kas', [
 					"uses"	=> 'modul_keuangan\transaksi\kas\transaksi_kas_controller@index'
 				])->name('transaksi.kas.index');
 
@@ -387,7 +387,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Transaksi Bank
 
-				Route::get('modul/keuangan/transaksi/bank', [
+				Route::get('keuangan/modul/keuangan/transaksi/bank', [
 					"uses"	=> 'modul_keuangan\transaksi\bank\transaksi_bank_controller@index'
 				])->name('transaksi.bank.index');
 
@@ -416,7 +416,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Transaksi Memorial
 
-				Route::get('modul/keuangan/transaksi/memorial', [
+				Route::get('keuangan/modul/keuangan/transaksi/memorial', [
 					"uses"	=> 'modul_keuangan\transaksi\memorial\transaksi_memorial_controller@index'
 				])->name('transaksi.memorial.index');
 
@@ -445,7 +445,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Penerimaan Piutang
 
-				Route::get('modul/keuangan/transaksi/penerimaan_piutang', [
+				Route::get('penjualan/modul/keuangan/transaksi/penerimaan_piutang', [
 					"uses"	=> 'modul_keuangan\transaksi\penerimaan_piutang\penerimaan_piutang_controller@index'
 				])->name('transaksi.penerimaan_piutang.index');
 
@@ -478,7 +478,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Pelunasan Hutang
 
-				Route::get('modul/keuangan/transaksi/pelunasan_hutang', [
+				Route::get('purchasing/modul/keuangan/transaksi/pelunasan_hutang', [
 					"uses"	=> 'modul_keuangan\transaksi\pelunasan_hutang\pelunasan_hutang_controller@index'
 				])->name('transaksi.pelunasan_hutang.index');
 
@@ -511,7 +511,7 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Laporan Keuangan
 
-				Route::get('modul/keuangan/laporan', function(){
+				Route::get('keuangan/modul/keuangan/laporan', function(){
 					return view('modul_keuangan.laporan.index');
 				})->name('laporan.keuangan.index');
 
@@ -718,6 +718,10 @@ Route::group(['middleware' => ['auth', 'web']], function() {
 
 			// Analisa Keuangan
 					
+					Route::get('keuangan/modul/keuangan/analisa', function(){
+						return view('modul_keuangan.analisa.index');
+					})->name('analisa.keuangan.index');
+
 					// Analisa Net Profitt OCF
 						Route::get('modul/keuangan/analisa/npo', [
 							'uses'	=> 'modul_keuangan\analisa\net_profit_ocf\analisa_net_profit_ocf_controller@index'
