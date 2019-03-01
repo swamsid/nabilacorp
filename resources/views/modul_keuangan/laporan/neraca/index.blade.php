@@ -127,6 +127,7 @@
 	          min-height: 700px;
 	          border-radius: 2px;
 	          margin: 0 auto;
+	          padding-bottom: 20px;
 	        }
 
 		</style>
@@ -178,6 +179,10 @@
 			      	  <a href="{{ route('laporan.keuangan.index') }}" style="color: #ffbb33;">
 			          	<i class="fa fa-backward" title="Kembali Ke Menu Laporan"></i>
 			          </a>
+			        </li>
+
+			        <li class="nav-item">
+			          	<i class="fa fa-clipboard" title="Tampilkan Neraca Lampiran" @click="openLampiran"></i>
 			        </li>
 
 			        <li class="nav-item">
@@ -250,7 +255,7 @@
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }} &nbsp; - {{ $cabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -590,6 +595,7 @@
 	                <div class="content-popup">
 	                	<form id="form-setting" method="get" action="{{ route('laporan.keuangan.neraca') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+	                	<input type="hidden" readonly name="cab" value="{{ isset($_GET['cab']) ? $_GET['cab']: '' }}">
 	                    <div class="col-md-12">
 
 	                    	<div class="row mt-form">
@@ -701,11 +707,6 @@
 				    					{
 				    						id: 'tabular',
 				    						text: 'Tampilan Table',
-				    					},
-
-				    					{
-				    						id: 'menurun',
-				    						text: 'Tampilan Menurun'
 				    					}
 				    				],
 			    			},
@@ -913,9 +914,13 @@
 			                            stack: false
 			                        });
 
-				            		window.print();
+				            		// window.print();
 
-				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca.print')}}?'+that.url.searchParams)
+				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca.print')}}?'+that.url.searchParams)
+				            	},
+
+				            	openLampiran: function(evt){
+				            		window.open('{{route('laporan.keuangan.neraca_lampiran')}}?'+that.url.searchParams, '_blank');
 				            	},
 
 				            	humanizePrice: function(alpha){

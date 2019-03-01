@@ -21,7 +21,8 @@ class transaksi_controller extends Controller
 
     	$akun = DB::table('dk_akun')
     					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"), 'ak_kelompok as kelompok')
+                        ->where('ak_comp', modulSetting()['onLogin'])
+    					->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"), 'ak_kelompok as kelompok')
     					->get();
 
     	return json_encode([
@@ -34,7 +35,10 @@ class transaksi_controller extends Controller
     public function datatable(Request $request){
     	// return json_encode($request->all());
 
-    	$data = transaksi::with('detail')->where('mt_type', $request->type)->get();
+    	$data = transaksi::with('detail')
+                    ->where('mt_comp', modulSetting()['onLogin'])
+                    ->where('mt_type', $request->type)
+                    ->get();
 
 		return json_encode($data);
     }
@@ -60,6 +64,7 @@ class transaksi_controller extends Controller
 
     		DB::table('dk_master_transaksi')->insert([
     			"mt_id"		=> $id,
+                "mt_comp"   => modulSetting()['onLogin'],
     			"mt_type"	=> $request->tr_type,
     			"mt_nama"	=> $request->tr_nama,
     		]);
@@ -120,6 +125,15 @@ class transaksi_controller extends Controller
 
     public function update(Request $request){
     	// return json_encode($request->all());
+
+        if(array_search('D', $request->dk) === false || array_search('K', $request->dk) === false){
+            $response = [
+                "status"    => 'error',
+                "message"   => 'Transaksi Harus Memiliki Minimal 1 Akun Debet Dan 1 Akun Kredit, Data Gagal Disimpan..',
+            ];
+
+            return json_encode($response);
+        }
 
     	$bucket = [];
     	$transaksi = DB::table('dk_master_transaksi')->where('mt_id', $request->tr_id);

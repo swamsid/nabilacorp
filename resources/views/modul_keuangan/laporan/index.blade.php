@@ -34,13 +34,21 @@
 
     <?php 
 
+        // Cek Apakah Support Cabang;
+
+            $cabang = '';
+
+            if(modulSetting()['support_cabang'])
+                $cabang = '&cab='.modulSetting()['onLogin'];
+
+
         // jurnal
             $tanggal = date('Y-m').'-01';
 
             $tanggalFirst = date('d/m/Y', strtotime($tanggal));
             $tanggalNext = date('d/m/Y', strtotime("+1 months", strtotime($tanggal)));
 
-            $jurnalRequest = "_token=".csrf_token()."&d1=".$tanggalFirst."&d2=".$tanggalNext."&type=K&nama=true";
+            $jurnalRequest = "_token=".csrf_token()."&d1=".$tanggalFirst."&d2=".$tanggalNext."&type=K&nama=true".$cabang;
 
         // buku besar
             $bulan = date('Y-m');
@@ -48,23 +56,23 @@
             $bulanFirst = date('m/Y', strtotime($bulan));
             $bulanNext = date('m/Y', strtotime("+1 months", strtotime($bulan)));
 
-            $buku_besar = "_token=".csrf_token()."&d1=".$bulanFirst."&d2=".$bulanNext."&semua=on&lawan=true";
+            $buku_besar = "_token=".csrf_token()."&d1=".$bulanFirst."&d2=".$bulanNext."&semua=on&lawan=true".$cabang;
 
         // Neraca Saldo
-            $neraca_saldo = "_token=".csrf_token()."&d1=".$bulanFirst;
+            $neraca_saldo = "_token=".csrf_token()."&d1=".$bulanFirst.$cabang;
 
         // Neraca
-            $neraca = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=";
+            $neraca = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=".$cabang;
 
         // laba_rugi
-            $laba_rugi = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=";
+            $laba_rugi = "_token=".csrf_token()."&d1=".$bulanFirst."&type=bulan&tampilan=tabular&y1=".$cabang;
 
 
         // hutang
-            $hutang = "_token=".csrf_token()."&d1=".date('d/m/Y')."&jenis=rekap&type=Hutang_Supplier&semua=on";
+            $hutang = "_token=".csrf_token()."&d1=".date('d/m/Y')."&jenis=rekap&type=Hutang_Supplier&semua=on".$cabang;
 
         // Piutang
-            $piutang = "_token=".csrf_token()."&d1=".date('d/m/Y')."&jenis=rekap&type=Piutang_Customer&semua=on";
+            $piutang = "_token=".csrf_token()."&d1=".date('d/m/Y')."&jenis=rekap&type=Piutang_Customer&semua=on".$cabang;
     ?>
 
     <div class="col-md-12" style="background: none;">
@@ -161,7 +169,7 @@
                 <div class="col-md-3" style="padding: 10px 30px;">
                     <div class="row laporan-wrap">
                         <div class="col-md-12 text-center">
-                            <a href="#">
+                            <a href="{{ Route('laporan.keuangan.arus_kas', $laba_rugi) }}">
                                 <i class="fa fa-clipboard" style="font-size: 42pt;"></i>
                             </a>
                         </div>

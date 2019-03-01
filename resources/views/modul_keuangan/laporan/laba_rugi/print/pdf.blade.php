@@ -9,7 +9,7 @@
 		</tr>
 
 		<tr>
-			<td>{{ jurnal()->companyName }}</td>
+			<td>{{ jurnal()->companyName }} &nbsp;- {{ $data['cabang'] }}</td>
 		</tr>
 
 		<tr>

@@ -134,6 +134,7 @@
 	          min-height: 700px;
 	          border-radius: 2px;
 	          margin: 0 auto;
+	          padding-bottom: 20px;
 	        }
 
 		</style>
@@ -250,11 +251,11 @@
 						<table width="100%" border="0" style="border-bottom: 1px solid #333;" v-if="pageNow == 1" v-cloak>
 				          <thead>
 				            <tr>
-				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Laporan Neraca Saldo <small>(x1000)</small></th>
+				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Laporan Neraca Saldo {{-- <small>(x1000)</small> --}}</th>
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }} &nbsp; - {{ $cabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -299,7 +300,7 @@
 								</tr>
 
 								<tr v-for="data in dataPrint">
-									<td>@{{ data.ak_id }}</td>
+									<td>@{{ data.ak_nomor }}</td>
 
 									<td class="text-right">
 										@{{ (data.saldo_awal < 0) ? '('+humanizePrice(data.saldo_awal)+')' : humanizePrice(data.saldo_awal) }}
@@ -386,6 +387,7 @@
 	                <div class="content-popup">
 	                	<form id="form-setting" method="get" action="{{ route('laporan.keuangan.neraca_saldo') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+	                	<input type="hidden" readonly name="cab" value="{{ isset($_GET['cab']) ? $_GET['cab']: '' }}">
 	                    <div class="col-md-12">
 
 	                        <div class="row mt-form">
@@ -659,9 +661,9 @@
 			                            stack: false
 			                        });
 
-				            		window.print();
+				            		// window.print();
 
-				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print')}}?'+that.url.searchParams)
+				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.neraca_saldo.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

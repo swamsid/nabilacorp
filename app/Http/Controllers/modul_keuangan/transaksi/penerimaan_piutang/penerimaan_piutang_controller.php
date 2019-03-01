@@ -23,15 +23,17 @@ class penerimaan_piutang_controller extends Controller
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
     	$akunKas = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
     					->where('ak_kelompok', $kelompok_kas->hp_hierarki)
     					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+    					->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"))
     					->get();
 
     	$akunBank = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
     					->where('ak_kelompok', $kelompok_bank->hp_hierarki)
     					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+    					->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"))
     					->get();
 
     	$response = [
@@ -56,8 +58,8 @@ class penerimaan_piutang_controller extends Controller
                                                     'rc_nomor',
                                                     'rc_total_tagihan',
                                                     'rc_sudah_dibayar',
-                                                     DB::raw('concat(ak_1.ak_id, " - ", ak_1.ak_nama) as rc_akun_piutang'),
-                                                     DB::raw('concat(ak_2.ak_id, " - ", ak_2.ak_nama) as rc_akun_titipan')
+                                                     DB::raw('concat(ak_1.ak_nomor, " - ", ak_1.ak_nama) as rc_akun_piutang'),
+                                                     DB::raw('concat(ak_2.ak_nomor, " - ", ak_2.ak_nama) as rc_akun_titipan')
                                                 )
                                                 ->leftJoin('dk_akun as ak_1', 'ak_1.ak_id', 'dk_receivable.rc_akun_piutang')
                                                 ->leftJoin('dk_akun as ak_2', 'ak_2.ak_id', 'dk_receivable.rc_akun_titipan')
@@ -71,6 +73,7 @@ class penerimaan_piutang_controller extends Controller
                         ->whereIn('rcdt_receivable', function($query) use ($request){
                             $query->select('rc_id')
                                         ->from('dk_receivable')
+                                        ->where('rc_comp', modulSetting()['onLogin'])
                                         ->where('rc_chanel', $request->jenis)->get();
                         })
                         ->where('rcdt_tanggal', '>=', $tanggal)
@@ -85,11 +88,12 @@ class penerimaan_piutang_controller extends Controller
                     ->leftJoin('dk_akun as ak_1', 'ak_1.ak_id', '=', 'dk_receivable.rc_akun_piutang')
                     ->leftJoin('dk_akun as ak_2', 'ak_2.ak_id', '=', 'dk_receivable.rc_akun_titipan')
     				->where('dk_receivable.rc_chanel', $request->chanel)
+                    ->where('dk_receivable.rc_comp', modulSetting()['onLogin'])
     				->where(DB::raw('(rc_total_tagihan - rc_sudah_dibayar)'), '>', '0')
                     ->select(
                             'dk_receivable.*',
-                            DB::raw('concat(ak_1.ak_id, " - ", ak_1.ak_nama) as rc_akun_piutang'),
-                            DB::raw('concat(ak_2.ak_id, " - ", ak_2.ak_nama) as rc_akun_titipan'),
+                            DB::raw('concat(ak_1.ak_nomor, " - ", ak_1.ak_nama) as rc_akun_piutang'),
+                            DB::raw('concat(ak_2.ak_nomor, " - ", ak_2.ak_nama) as rc_akun_titipan'),
                             DB::raw('(dk_receivable.rc_total_tagihan - dk_receivable.rc_sudah_dibayar) as rc_sisa_tagihan'))
     				->get();
 
@@ -220,7 +224,7 @@ class penerimaan_piutang_controller extends Controller
 
             $state = ($request->jenis == 'C') ? 'KM' : 'BM';
 
-            keuangan::jurnal()->addJurnal($jurnalDetail, $tanggal, $data->first()->rc_nomor.'-'.$nomor, $request->rc_keterangan, $state, jurnal()->comp, true);
+            keuangan::jurnal()->addJurnal($jurnalDetail, $tanggal, $data->first()->rc_nomor.'-'.$nomor, $request->rc_keterangan, $state, modulSetting()['onLogin'], true);
 
             DB::commit();
 
@@ -384,7 +388,7 @@ class penerimaan_piutang_controller extends Controller
 
             $state = ($request->jenis == 'C') ? 'KM' : 'BM';
 
-            keuangan::jurnal()->addJurnal($jurnalDetail, $tanggal, $rcdt->first()->rcdt_nomor, $request->rc_keterangan, $state, jurnal()->comp, true);
+            keuangan::jurnal()->addJurnal($jurnalDetail, $tanggal, $rcdt->first()->rcdt_nomor, $request->rc_keterangan, $state, modulSetting()['onLogin'], true);
 
             DB::commit();
 
@@ -449,6 +453,8 @@ class penerimaan_piutang_controller extends Controller
             ]);
 
             $idJurnal = DB::table('dk_jurnal')->where('jr_ref', $nomor)->first();
+
+            // return json_encode($idJurnal);
 
             if($idJurnal){
                 keuangan::jurnal()->dropJurnal($idJurnal->jr_id);

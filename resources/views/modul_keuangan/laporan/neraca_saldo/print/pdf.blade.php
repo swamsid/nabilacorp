@@ -5,11 +5,11 @@
 <table width="100%">
 	<thead>
 		<tr>
-			<td style="font-weight: 800">Laporan Neraca Saldo <small>(x1000)</small></td>
+			<td style="font-weight: 800">Laporan Neraca Saldo</td>
 		</tr>
 
 		<tr>
-			<td>{{ jurnal()->companyName }}</td>
+			<td>{{ jurnal()->companyName }} &nbsp; - {{ $data['cabang'] }}</td>
 		</tr>
 
 		<tr>
@@ -53,7 +53,7 @@
 
 			@foreach($data['data'] as $key => $akun)
 				<tr>
-					<td style="text-align: center; padding: 5px;">{{ $akun->ak_id }}</td>
+					<td style="text-align: center; padding: 5px;">{{ $akun->ak_nomor }}</td>
 					<td style="text-align: right; padding: 5px;">
 						{{ ($akun->saldo_awal < 0 ) ? '('.number_format(str_replace('-', '', $akun->saldo_awal), 2).')' : number_format($akun->saldo_awal, 2) }}
 					</td>

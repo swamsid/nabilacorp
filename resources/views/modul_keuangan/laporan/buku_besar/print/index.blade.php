@@ -1,5 +1,36 @@
 <style type="text/css" media="print">
-    @page { size: landscape; }
+	@page { size: landscape; }
+
+	body{
+	  	margin: 5mm;
+	}
+
+	nav{
+		display: none;
+	}
+
+	.ctn-nav{
+		display: none;
+	}
+
+	#contentnya{
+		width: 100%;
+		padding: 0px;
+		margin-top: -50px;
+	}
+
+	#table-data td.head{
+	 background-color: #0099CC !important;
+	 color: white;
+	 -webkit-print-color-adjust: exact;
+	}
+
+	#table-data td.divide{
+	 background-color: #eee !important;
+	 -webkit-print-color-adjust: exact;
+	}
+
+	.page-break { display: block; page-break-before: always; }
 </style>
 
 <?php 
@@ -20,7 +51,7 @@
 		</tr>
 
 		<tr>
-			<td>{{ jurnal()->companyName }}</td>
+			<td>{{ jurnal()->companyName }} &nbsp;- {{ $namaCabang }}</td>
 		</tr>
 
 		<tr>
@@ -37,10 +68,10 @@
 		$margin =  ($key > 0) ? 'margin-top: 40px;' : '';
 	?>
 
-	<table width="100%" style="font-size: 9.5pt; {{ $margin  }}">
+	<table id="table-data" width="100%" style="font-size: 9.5pt; {{ $margin  }}; border-collapse: collapse;">
 		<tbody>
 			<tr>
-				<td class="head" colspan="8" style="background-color: #0099CC; color: white; padding: 10px;"> {{ $akun->ak_id.' - '.$akun->ak_nama }} </td>
+				<td class="head" colspan="8" style="background-color: #0099CC; color: white; padding: 10px;"> {{ $akun->ak_nomor.' - '.$akun->ak_nama }} </td>
 			</tr>
 
 			<tr>
@@ -70,74 +101,75 @@
 			?>
 
 			<tr>
-				<td style="text-align: center; padding: 2px 5px;"> - </td>
-				<td style="text-align: center; padding: 2px 5px;"> - </td>
+				<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;"> - </td>
+				<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;"> - </td>
 				<td style="padding: 2px 5px;"> Saldo Awal {{ $tanggal_1 }} </td>
-				<td style="text-align: center; padding: 2px 5px;"> {{ $dk }} </td>
-				<td style="text-align: center; padding: 2px 5px;"> {{ $akun->ak_id }} </td>
-				<td style="text-align: right; padding: 2px 5px;"> {{ ($dk == "D") ? number_format($akun->ak_saldo_awal, 2) : number_format(0, 2) }} </td>
-				<td style="text-align: right; padding: 2px 5px;"> {{ ($dk == "K") ? number_format($akun->ak_saldo_awal, 2) : number_format(0, 2) }} </td>
-				<td style="text-align: right; padding: 2px 5px;"> 
-					{{ ($akun->ak_saldo_awal < 0) ? '('.number_format($akun->ak_saldo_awal, 2).')' : number_format($akun->ak_saldo_awal, 2) }}
+				<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;"> {{ $dk }} </td>
+				<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;"> {{ $akun->ak_nomor }} </td>
+				<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;"> {{ ($dk == "D") ? number_format($akun->ak_saldo_awal, 2) : number_format(0, 2) }} </td>
+				<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;"> {{ ($dk == "K") ? number_format($akun->ak_saldo_awal, 2) : number_format(0, 2) }} </td>
+				<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;"> 
+					{{ ($akun->ak_saldo_awal < 0) ? '('.number_format(str_replace('-', '', $akun->ak_saldo_awal), 2).')' : number_format($akun->ak_saldo_awal, 2) }}
 				</td>
 			</tr>
 
-			@if(isset($_GET['lawan']) == 'true')
-				<tr>
-					<td colspan="8" style="background-color: #eee;">&nbsp;</td>
-				</tr>
-			@endif
+			<tr>
+				<td class="divide" colspan="8" style="background-color: #eee;">&nbsp;</td>
+			</tr>
 
-			@if(count($akun->jurnal_detail))
+			@foreach($akun->jurnal_detail as $key2 => $transaksi)
 
 				<?php 
-					if($akun->jurnal_detail[0]->jrdt_dk != $akun->ak_posisi)
-						$saldo -= $akun->jurnal_detail[0]->jrdt_value;
+					if($transaksi->jrdt_dk != $akun->ak_posisi)
+						$saldo -= $transaksi->jrdt_value;
 					else
-						$saldo += $akun->jurnal_detail[0]->jrdt_value;
+						$saldo += $transaksi->jrdt_value;
 				?>
 
-				<tr>
-					<td style="text-align: center; padding: 2px 5px;"> {{ $akun->jurnal_detail[0]['jurnal']->jr_tanggal_trans }} </td>
-					<td style="text-align: center; padding: 2px 5px; font-size: 8pt;"> {{  $akun->jurnal_detail[0]['jurnal']->jr_ref }} </td>
-					<td style="padding: 2px 5px;"> {{  $akun->jurnal_detail[0]['jurnal']->jr_keterangan }} </td>
-					<td style="text-align: center; padding: 2px 5px;"> {{  $akun->jurnal_detail[0]->jrdt_dk }} </td>
-					<td style="text-align: center; padding: 2px 5px;"> {{ $akun->jurnal_detail[0]->jrdt_akun }} </td>
-					<td style="text-align: right; padding: 2px 5px;"> {{ ($akun->jurnal_detail[0]->jrdt_dk == "D") ? number_format($akun->jurnal_detail[0]->jrdt_value, 2) : number_format(0, 2) }} </td>
-					<td style="text-align: right; padding: 2px 5px;"> {{ ($akun->jurnal_detail[0]->jrdt_dk == "K") ? number_format($akun->jurnal_detail[0]->jrdt_value, 2) : number_format(0, 2) }} </td>
-					<td style="text-align: right; padding: 2px 5px;"> 
-						{{ ($saldo < 0) ? '('.number_format($saldo, 2).')' : number_format($saldo, 2) }}
+				<tr style="font-weight: 600">
+					<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ date('m/d/Y', strtotime($transaksi->jurnal->jr_tanggal_trans)) }}</td>
+					<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ $transaksi->jurnal->jr_ref }}</td>
+					<td style="text-align: left; padding: 2px 5px; border: 1px solid #eee;">{{ $transaksi->jurnal->jr_keterangan }}</td>
+					<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ $transaksi->jrdt_dk }}</td>
+					<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ $akun->ak_nomor }}</td>
+					<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;">
+						{{ ($transaksi->jrdt_dk == 'D') ? number_format($transaksi->jrdt_value, 2) : number_format(0, 2) }}
+					</td>
+					<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;">
+						{{ ($transaksi->jrdt_dk == 'K') ? number_format($transaksi->jrdt_value, 2) : number_format(0, 2) }}
+					</td>
+					<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;">
+						{{ ($saldo < 0) ? '('.number_format(str_replace('-', '', $saldo), 2).')' : number_format($saldo, 2) }}
 					</td>
 				</tr>
 
-				@if(isset($_GET['lawan']) == 'true')
-					@foreach($akun->jurnal_detail[0]->jurnal->detail as $idx => $detail)
-
-						@if($detail->jrdt_akun != $akun->jurnal_detail[0]->jrdt_akun)
-
-							<tr>
-								<td style="text-align: center; padding: 2px 5px;"> {{ $akun->jurnal_detail[0]['jurnal']->jr_tanggal_trans }} </td>
-								<td style="text-align: center; padding: 2px 5px; font-size: 8pt;"> {{  $akun->jurnal_detail[0]['jurnal']->jr_ref }} </td>
-								<td style="padding: 2px 5px;"> {{  $akun->jurnal_detail[0]['jurnal']->jr_keterangan }} </td>
-								<td style="text-align: center; padding: 2px 5px;"> {{  $detail->jrdt_dk }} </td>
-								<td style="text-align: center; padding: 2px 5px;"> {{ $detail->jrdt_akun }} </td>
-								<td style="text-align: right; padding: 2px 5px;"> {{ ($detail->jrdt_dk == "D") ? number_format($detail->jrdt_value, 2) : number_format(0, 2) }} </td>
-								<td style="text-align: right; padding: 2px 5px;"> {{ ($detail->jrdt_dk == "K") ? number_format($detail->jrdt_value, 2) : number_format(0, 2) }} </td>
-								<td style="text-align: right; padding: 2px 5px;"> 
+				@if($_GET['lawan'] == 'true')
+					@foreach($transaksi->jurnal->detail as $key3 => $lawan)
+						@if($lawan->ak_nomor != $akun->ak_nomor)
+							<tr style="font-weight: normal">
+								<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ date('m/d/Y', strtotime($transaksi->jurnal->jr_tanggal_trans)) }}</td>
+								<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ $transaksi->jurnal->jr_ref }}</td>
+								<td style="text-align: left; padding: 2px 5px; border: 1px solid #eee;">{{ $transaksi->jurnal->jr_keterangan }}</td>
+								<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ $lawan->jrdt_dk }}</td>
+								<td style="text-align: center; padding: 2px 5px; border: 1px solid #eee;">{{ $lawan->ak_nomor }}</td>
+								<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;">
+									{{ ($lawan->jrdt_dk == 'D') ? number_format($lawan->jrdt_value, 2) : number_format(0, 2) }}
+								</td>
+								<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;">
+									{{ ($lawan->jrdt_dk == 'K') ? number_format($lawan->jrdt_value, 2) : number_format(0, 2) }}
+								</td>
+								<td style="text-align: right; padding: 2px 5px; border: 1px solid #eee;">
 									
 								</td>
 							</tr>
 						@endif
-
 					@endforeach
 
 					<tr>
-						<td colspan="8" style="background-color: #eee;">&nbsp;</td>
+						<td class="divide" colspan="8" style="background-color: #eee;">&nbsp;</td>
 					</tr>
-
 				@endif
-
-			@endif
+			@endforeach
 
 		</tbody>
 	</table>

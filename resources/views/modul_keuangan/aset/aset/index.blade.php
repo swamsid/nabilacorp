@@ -55,6 +55,7 @@
                             <td class="text-center" style="cursor: alias;">
                                 {{ date('d/m/Y', strtotime($group->at_tanggal_habis)) }}
                             </td>
+
                             <?php
                                 $status = "Habis";
 

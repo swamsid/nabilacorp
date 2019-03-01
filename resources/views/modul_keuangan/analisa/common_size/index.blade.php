@@ -187,7 +187,7 @@
 			          	<i class="fa fa-print" title="Print Laporan" @click="print"></i>
 			        </li>
 
-			        <li class="nav-item dropdown" title="Download Laporan">
+			        {{-- <li class="nav-item dropdown" title="Download Laporan">
 			          	<i class="fa fa-download" id="dropdownMenuButton" data-toggle="dropdown"></i>
 
 			            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -195,13 +195,13 @@
 						    	<i class="fa fa-file-pdf-o" style="font-weight: bold;"></i> &nbsp; Download PDF
 						    </a>
 
-						    {{-- <div class="dropdown-divider"></div>
+						    <div class="dropdown-divider"></div>
 
 						    <a class="dropdown-item" href="#" style="font-size: 10pt;" @click='downloadExcel'>
 						    	<i class="fa fa-file-excel-o" style="font-weight: bold;"></i> &nbsp; Download Excel
-						    </a> --}}
+						    </a>
 					    </div>
-			        </li>
+			        </li> --}}
 
 			        <li class="nav-item">
 			          <i class="fa fa-sliders" title="Pengaturan Laporan" @click="showSetting"></i>
@@ -250,7 +250,7 @@
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }} &nbsp;- {{ $cabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -519,6 +519,7 @@
 	                <div class="content-popup">
 	                	<form id="form-setting" method="get" action="{{ route('analisa.keuangan.common_size') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+	                	<input type="hidden" readonly name="cab" value="{{ isset($_GET['cab']) ? $_GET['cab']: '' }}">
 	                    <div class="col-md-12">
 
 	                    	<div class="row mt-form">

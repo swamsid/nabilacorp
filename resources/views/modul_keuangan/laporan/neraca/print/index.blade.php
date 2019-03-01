@@ -1,5 +1,35 @@
 <style type="text/css" media="print">
-    @page { size: landscape; }
+      @page { size: landscape; }
+      nav{
+        display: none;
+      }
+
+      .ctn-nav{
+        display: none;
+      }
+
+      #contentnya{
+      	width: 100%;
+      	padding: 0px;
+      	margin-top: -80px;
+      }
+
+      #table-data td, #table-data th {
+    	padding: 5px 5px;
+    	border: none;
+    	border-bottom: 1px dotted #ccc;
+	  }
+
+	  #table-data td.level2{
+	  	color: #2BBBAD;
+	  }
+
+	  #table-data td.left{
+	  	border-bottom: 1px dotted #ccc;
+	  	border-right: 1px dotted #eee;
+	  }
+
+      .page-break { display: block; page-break-before: always; }
 </style>
 
 <?php 
@@ -25,7 +55,7 @@
 <br>
 	
 	@if($_GET['tampilan'] == 'tabular')
-		<table width="100%" style="font-size: 9pt;">
+		<table id="table-data" width="100%" style="font-size: 9pt; border-collapse: collapse;">
 			<tbody>
 				<tr>
 					<td width="50%" style="padding: 5px; text-align: center; border: 1px solid #ccc;">Aktiva</td>
@@ -71,7 +101,7 @@
 
 											?>
 											<tr>
-												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nama }}</td>
+												<td class="level2" style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_id }} - {{ $level2->hld_nama }}</td>
 												<td style=" text-align: right;">
 													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
 												</td>
@@ -130,14 +160,14 @@
 										<?php $totSubclass = 0; ?>
 										@if($subclass->hs_nama != "Tidak Memiliki")
 											<tr>
-												<td style="padding-left: 25px; font-style: italic; padding-left: 20px;">{{ $subclass->hs_nama }}</td>
+												<td style="padding-left: 50px; font-style: italic;">{{ $subclass->hs_nama }}</td>
 												<td></td>
 											</tr>
 										@endif
 
 										@foreach($subclass->level_2 as $a => $level2)
 											<?php 
-												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "50px" : "25px";
+												$margin = ($subclass->hs_nama != 'Tidak Memiliki') ? "75px" : "50px";
 												$dif = 0;
 
 												foreach($level2->akun as $alpha => $akun){
@@ -148,7 +178,7 @@
 
 											?>
 											<tr>
-												<td style="padding-left: {{ $margin }}; font-weight: normal; padding-left: 20px;">{{ $level2->hld_nama }}</td>
+												<td class="level2" style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_id }} - {{ $level2->hld_nama }}</td>
 												<td style=" text-align: right;">
 													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
 												</td>
@@ -160,7 +190,7 @@
 
 										@if($subclass->hs_nama != "Tidak Memiliki")
 											<tr>
-												<td style="padding-left: 25px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
+												<td style="padding-left: 50px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
 												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600; padding-left: 20px;">
 													{{ ($totSubclass < 0 )? '('.number_format(str_replace('-', '', $totSubclass), 2).')' : number_format($totSubclass, 2) }}
 												</td>

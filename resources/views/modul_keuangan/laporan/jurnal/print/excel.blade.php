@@ -32,11 +32,11 @@
 			<td></td>
 			@if($data['request']['nama'] == 'true')
 				<td colspan="7" style="background-color: none;">
-					<b>{{ jurnal()->companyName }}</b>
+					<b>{{ jurnal()->companyName }} &nbsp;- {{ $data['namaCabang'] }}</b>
 				</td>
 			@else
 				<td colspan="6" style="background-color: none;">
-					<b>{{ jurnal()->companyName }}</b>
+					<b>{{ jurnal()->companyName }} &nbsp;- {{ $data['namaCabang'] }}</b>
 				</td>
 			@endif
 		</tr>
@@ -87,7 +87,7 @@
 					<td>{{ date('d/m/Y', strtotime($resource->jr_tanggal_trans)) }}</td>
 					<td>{{ $resource->jr_ref }}</td>
 					<td>{{ $resource->jr_keterangan }}</td>
-					<td>{{ $detail->jrdt_akun }}</td>
+					<td>{{ $detail->ak_nomor }}</td>
 
 					@if($data['request']['nama'] == 'true')
 						<td>{{ $detail->ak_nama }}</td>

@@ -159,7 +159,7 @@
 
                             <div class="col-md-7" v-if="afterNote && lebih_bayar != '0.00' && this.singleData.akunTitipan == '???'">    
                                 <i class="fa fa-exclamation-triangle" style="color: #0099CC;"></i>
-                                <span style="font-size: 8pt; margin-left: 5px;">Transaksi Jenis Ini Tidak Memiliki Akun Titipan.</span>
+                                <span style="font-size: 8pt; margin-left: 5px;">Transaksi Ini Tidak Memiliki Akun Titipan.</span>
                             </div>
                         </div>
                     </div>
@@ -267,7 +267,7 @@
             <div class="layout" style="width: 70%">
                 <div class="top-popup" style="background: none;">
                     <span class="title">
-                        Data Nomor Piutang
+                        Data Piutang
                     </span>
 
                     <span class="close"><i class="fa fa-times" style="font-size: 12pt; color: #CC0000"></i></span>
@@ -723,11 +723,9 @@
                     this.data_table_columns = [
                         {name: 'Nomor Piutang', context: 'rc_nomor', width: '10%', childStyle: 'text-align: center; font-size:9pt;'},
 
-                        {name: 'Jenis Piutang', context: 'rc_chanel', width: '10%', childStyle: 'text-align: center; font-size:9pt;'},
+                        {name: 'Nomor Nota', context: 'rc_ref_nomor', width: '10%', childStyle: 'text-align: center; font-size:9pt;'},
 
-                        {name: 'Tanggal Transaksi', context: 'rc_tanggal', width: '10%', childStyle: 'text-align: center; font-size:9pt;', override(e){
-                            return e.split('-')[2]+'/'+e.split('-')[1]+'/'+e.split('-')[0];
-                        }},
+                        {name: 'Jenis Piutang', context: 'rc_chanel', width: '10%', childStyle: 'text-align: center; font-size:9pt;'},
 
                         {name: 'Jumlah Tagihan', context: 'rc_total_tagihan', width: '10%', childStyle: 'text-align: right; font-size:9pt;', override(e){
                             return that.humanizePrice(e);

@@ -202,7 +202,7 @@
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }} &nbsp;- {{ $namaCabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -441,7 +441,7 @@
     	<script src="{{ asset('modul_keuangan/js/vendors/vue_2_x/components/datepicker.component.js') }}"></script>
 
     	<script type="text/javascript">
-    		// window.print();
+    		window.print();
     	</script>
 	</body>
 </html>

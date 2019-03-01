@@ -1,5 +1,36 @@
 <style type="text/css" media="print">
-    @page { size: landscape; }
+  @page { size: landscape; }
+  nav{
+    display: none;
+  }
+
+  .ctn-nav{
+    display: none;
+  }
+
+  #contentnya{
+  	width: 100%;
+  	padding: 0px;
+  	margin-top: -80px;
+  }
+
+  #table-data td{
+  	border: 1px solid #eee;
+  }
+
+  #table-data td.head{
+     background-color: #0099CC !important;
+     color: white;
+     font-weight: bold;
+     -webkit-print-color-adjust: exact;
+  }
+
+  #table-data td.not-same{
+     color: red !important;
+     -webkit-print-color-adjust: exact;
+  }
+
+  .page-break { display: block; page-break-before: always; }
 </style>
 
 <?php 
@@ -9,11 +40,11 @@
 <table width="100%">
 	<thead>
 		<tr>
-			<td style="font-weight: 800">Laporan Neraca Saldo <small>(x1000)</small></td>
+			<td style="font-weight: 800">Laporan Neraca Saldo</td>
 		</tr>
 
 		<tr>
-			<td>{{ jurnal()->companyName }}</td>
+			<td>{{ jurnal()->companyName }} &nbsp;- {{ $data['cabang'] }} </td>
 		</tr>
 
 		<tr>
@@ -24,31 +55,31 @@
 
 <br>
 
-	<table width="100%" style="font-size: 9pt;">
+	<table id="table-data" width="100%" style="font-size: 9pt; border-collapse: collapse;">
 		<tbody>
 			<tr>
-				<td width="8%" rowspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kode Akun</td>
-				<td width="10%" rowspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Saldo Awal</td>
+				<td class="head" width="8%" rowspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kode Akun</td>
+				<td class="head" width="10%" rowspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Saldo Awal</td>
 
-				<td colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Mutasi Kas</td>
-				<td colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Mutasi Bank</td>
-				<td colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Mutasi Memorial</td>
-				<td colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Total Mutasi</td>
-				<td width="10" rowspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Saldo Akhir</td>
+				<td class="head" colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Mutasi Kas</td>
+				<td class="head" colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Mutasi Bank</td>
+				<td class="head" colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Mutasi Memorial</td>
+				<td class="head" colspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Total Mutasi</td>
+				<td class="head" width="10%" rowspan="2" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Saldo Akhir</td>
 			</tr>
 
 			<tr>
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
 
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
 
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
 
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
-				<td width="8" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Debet</td>
+				<td class="head" width="8%" style="background-color: #0099cc; color: #ffffff; text-align: center; padding: 5px;">Kredit</td>
 			</tr>
 
 				<?php
@@ -57,7 +88,7 @@
 
 			@foreach($data['data'] as $key => $akun)
 				<tr>
-					<td style="text-align: center; padding: 5px;">{{ $akun->ak_id }}</td>
+					<td style="text-align: center; padding: 5px;">{{ $akun->ak_nomor }}</td>
 					<td style="text-align: right; padding: 5px;">
 						{{ ($akun->saldo_awal < 0 ) ? '('.number_format(str_replace('-', '', $akun->saldo_awal), 2).')' : number_format($akun->saldo_awal, 2) }}
 					</td>
@@ -101,29 +132,29 @@
 			@endforeach
 
 			<tr>
-				<td style="text-align: center;"></td>
-				<td style="text-align: right;">
+				<td class="head" style="text-align: center;"></td>
+				<td class="head" style="text-align: right;">
 					
 				</td>
 
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($kd, 2) }}</td>
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($kk, 2) }}</td>
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($kd, 2) }}</td>
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($kk, 2) }}</td>
 
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($bd, 2) }}</td>
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($bk, 2) }}</td>
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($bd, 2) }}</td>
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($bk, 2) }}</td>
 
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($md, 2) }}</td>
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($mk, 2) }}</td>
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($md, 2) }}</td>
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;"> {{ number_format($mk, 2) }}</td>
 
 
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;">
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;">
 					{{ number_format($td, 2) }}
 				</td>
-				<td style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;">
+				<td class="head" style="text-align: right; background-color: #0099cc; color: #ffffff; padding: 5px;">
 					{{ number_format($tk, 2) }}
 				</td>
 
-				<td style="text-align: right;">
+				<td class="head" style="text-align: right;">
 					
 				</td>
 			</tr>
@@ -132,5 +163,5 @@
 	</table>
 
 <script type="text/javascript">
-	window.print()
+	// window.print()
 </script>

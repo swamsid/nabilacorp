@@ -13,6 +13,7 @@ class akun_controller extends Controller
     public function index(){
     	$data = DB::table('dk_akun as a')
     				->join('dk_hierarki_lvl_dua as b', 'a.ak_kelompok', '=', 'b.hld_id')
+                    ->where('ak_comp', modulSetting()['onLogin'])
     				->select('a.*', 'b.hld_nama as kelompok')
     				->get();
 
@@ -26,13 +27,20 @@ class akun_controller extends Controller
     }
 
     public function datatable(Request $request){
-    	$data = DB::table('dk_akun')->get();
+    	$data = DB::table('dk_akun')
+                    ->where('ak_comp', modulSetting()['onLogin'])
+                    ->get();
 
     	return json_encode($data);
     }
 
     public function form_resource(){
-    	$akun = DB::table('dk_akun')->where('ak_isactive', '1')->select('ak_id as id', 'ak_nama as text')->get();
+    	$akun = DB::table('dk_akun')
+                    ->where('ak_comp', modulSetting()['onLogin'])
+                    // ->where('ak_isactive', '1')
+                    ->select('ak_id as id', 'ak_nama as text', 'ak_nomor as nomor')
+                    ->orderBy('ak_nomor', 'asc')
+                    ->get();
 
         $kelompok = DB::table('dk_hierarki_lvl_dua')
                         ->select('hld_id as id', DB::raw('concat(hld_id, " - ", hld_nama) as text'))
@@ -49,50 +57,116 @@ class akun_controller extends Controller
 
     	DB::beginTransaction();
 
-    	$ids = $request->ak_kelompok.'.'.$request->ak_nomor;
-    	$cek = DB::table('dk_akun')->where('ak_id', $ids)->first();
+        if(!isset($request->ak_type) || $request->ak_type == "detail"){
 
-    	if($cek){
-    		$response = [
-    			"status"	=> 'error',
-    			"message"	=> 'Nomor Akun Sudah Digunakan Oleh Akun Lain, Data Tidak Bisa Disimpan'
-    		];
+            $ids = $request->ak_kelompok.'.'.$request->ak_nomor;
+            $cek = DB::table('dk_akun')
+                        ->where('ak_nomor', $ids)
+                        ->where('ak_comp', modulSetting()['onLogin'])->first();
 
-    		return json_encode($response);
-    	}
+            if($cek){
+                $response = [
+                    "status"    => 'error',
+                    "message"   => 'Nomor Akun Sudah Digunakan Oleh Akun Lain, Data Tidak Bisa Disimpan'
+                ];
 
-    	try {
-    	
-    		DB::table('dk_akun')->insert([
-    			'ak_id'				=> $ids,
-    			'ak_tahun'			=> date('Y'),
-    			'ak_comp'			=> 1,
-    			'ak_nama'			=> $request->ak_nama,
-    			'ak_kelompok'		=> $request->ak_kelompok,
-    			'ak_posisi'			=> $request->ak_posisi,
-    			'ak_opening_date'	=> date('Y-m-d'),
-                'ak_sub_id'         => $request->ak_nomor,
-    			'ak_opening'		=> ($request->ak_opening) ? str_replace(',', '', $request->ak_opening) : 0,
-    		]);
+                return json_encode($response);
+            }
 
-            keuangan::akunSaldo()->addAkun($ids);
+            try {
+               
+                $id = DB::table('dk_akun')->max('ak_id') + 1;
 
-    		$response = [
-    			'status'		=> 'berhasil',
-    			'message'		=> 'Data Akun Berhasil Disimpan'
-    		];
+                DB::table('dk_akun')->insert([
+                    'ak_id'             => $id,
+                    'ak_nomor'          => $ids,
+                    'ak_tahun'          => date('Y'),
+                    'ak_comp'           => modulSetting()['onLogin'],
+                    'ak_nama'           => $request->ak_nama,
+                    'ak_kelompok'       => $request->ak_kelompok,
+                    'ak_posisi'         => $request->ak_posisi,
+                    'ak_opening_date'   => date('Y-m-d'),
+                    'ak_sub_id'         => $request->ak_nomor,
+                    'ak_resiprokal'     => isset($request->resiprokal) ? '1' : '0',
+                    'ak_opening'        => ($request->ak_opening) ? str_replace(',', '', $request->ak_opening) : 0,
+                ]);
 
-	    	DB::commit();
-	    	return json_encode($response);
+                keuangan::akunSaldo()->addAkun($id);
 
-    	} catch (\Exception $e) {
-    		$response = [
-    			"status"	=> 'error',
-    			"message"	=> 'System Mengalami Masalah. Err: '.$e,
-    		];
+                $akun = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
+                        // ->where('ak_isactive', '1')
+                        ->select('ak_id as id', 'ak_nama as text', 'ak_nomor as nomor')
+                        ->orderBy('ak_nomor', 'asc')
+                        ->get();
 
-    		return json_encode($response);
-    	}
+                $response = [
+                    'status'        => 'berhasil',
+                    'message'       => 'Data Akun Berhasil Disimpan',
+                    'akun_parrent'  => $akun
+                ];
+
+                DB::commit();
+                return json_encode($response);
+
+            } catch (\Exception $e) {
+                $response = [
+                    "status"    => 'error',
+                    "message"   => 'System Mengalami Masalah. Err: '.$e,
+                ];
+
+                return json_encode($response);
+            }
+
+        }else{
+
+            $ids = $request->ak_kelompok.'.'.$request->ak_nomor;
+            $cek = DB::table('dk_akun_cabang')
+                        ->where('ac_nomor', $ids)->first();
+
+            if($cek){
+                $response = [
+                    "status"    => 'error',
+                    "message"   => 'Nomor Akun Sudah Ada, Data Tidak Bisa Disimpan'
+                ];
+
+                return json_encode($response);
+            }
+
+            try {
+               
+                $id = DB::table('dk_akun_cabang')->max('ac_id') + 1;
+
+                DB::table('dk_akun_cabang')->insert([
+                    'ac_id'             => $id,
+                    'ac_nomor'          => $ids,
+                    'ac_nama'           => $request->ak_nama,
+                    'ac_kelompok'       => $request->ak_kelompok,
+                    'ac_posisi'         => $request->ak_posisi,
+                    'ac_opening_date'   => date('Y-m-d'),
+                    'ac_sub_id'         => $request->ak_nomor,
+                    'ac_opening'        => ($request->ak_opening) ? str_replace(',', '', $request->ak_opening) : 0,
+                ]);
+
+                $response = [
+                    'status'        => 'berhasil',
+                    'message'       => 'Data Akun Berhasil Disimpan'
+                ];
+
+                DB::commit();
+                return json_encode($response);
+
+            } catch (\Exception $e) {
+                $response = [
+                    "status"    => 'error',
+                    "message"   => 'System Mengalami Masalah. Err: '.$e,
+                ];
+
+                return json_encode($response);
+            }
+
+        }
+
     }
 
     public function update(Request $request){
@@ -120,16 +194,25 @@ class akun_controller extends Controller
 			$cek->update([
     			'ak_nama'			=> $request->ak_nama,
     			'ak_posisi'			=> $request->ak_posisi,
+                'ak_resiprokal'     => isset($request->resiprokal) ? '1' : '0',
     			'ak_opening'		=> ($request->ak_opening) ? str_replace(',', '', $request->ak_opening) : 0,
 			]);
 
-             if($opening != $openingDB || $posisi != $request->ak_posisi){
+            if($opening != $openingDB || $posisi != $request->ak_posisi){
                 keuangan::akunSaldo()->updateAkun($request->ak_id);
-             }
+            }
+
+            $akun = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
+                        // ->where('ak_isactive', '1')
+                        ->select('ak_id as id', 'ak_nama as text', 'ak_nomor as nomor')
+                        ->orderBy('ak_nomor', 'asc')
+                        ->get();
 
 			$response = [
     			'status'		=> 'berhasil',
-    			'message'		=> 'Data Akun Berhasil Diperbarui'
+    			'message'		=> 'Data Akun Berhasil Diperbarui',
+                'akun_parrent'  => $akun
     		];
 
     		DB::commit();

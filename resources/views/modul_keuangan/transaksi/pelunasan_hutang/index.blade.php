@@ -1,6 +1,6 @@
 @extends('main')
 
-@section('title', 'Pelunasan Piutang')
+@section('title', 'Pelunasan Hutang')
 
 @section(modulSetting()['extraStyles'])
 
@@ -159,7 +159,7 @@
 
                             <div class="col-md-7" v-if="afterNote && lebih_bayar != '0.00' && this.singleData.akunTitipan == '???'">    
                                 <i class="fa fa-exclamation-triangle" style="color: #0099CC;"></i>
-                                <span style="font-size: 8pt; margin-left: 5px;">Transaksi Jenis Ini Tidak Memiliki Akun Titipan.</span>
+                                <span style="font-size: 8pt; margin-left: 5px;">Transaksi Ini Tidak Memiliki Akun Titipan.</span>
                             </div>
                         </div>
                     </div>

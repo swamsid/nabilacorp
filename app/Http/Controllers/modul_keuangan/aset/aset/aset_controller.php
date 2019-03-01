@@ -12,6 +12,7 @@ class aset_controller extends Controller
 {
     public function index(){
     	$data = DB::table('dk_aktiva')
+                    ->where('at_comp', modulSetting()['onLogin'])
                     ->join('dk_aktiva_golongan', 'dk_aktiva_golongan.ga_id', 'dk_aktiva.at_golongan')
                     ->select('at_nomor', 'at_nama', 'at_harga_beli', 'at_nilai_sisa', 'at_tanggal_habis', 'dk_aktiva_golongan.ga_nama', 'at_status')
     				->get();
@@ -30,6 +31,7 @@ class aset_controller extends Controller
     				->leftJoin('dk_akun as harta', 'harta.ak_id', '=', 'dk_aktiva_golongan.ga_akun_harta')
     				->leftJoin('dk_akun as akumulasi', 'akumulasi.ak_id', '=', 'dk_aktiva_golongan.ga_akun_akumulasi')
     				->leftJoin('dk_akun as beban', 'beban.ak_id', '=', 'dk_aktiva_golongan.ga_akun_beban')
+                    ->where('ga_comp', modulSetting()['onLogin'])
     				->select(
     							'ga_id as id', 
     							 DB::raw('concat(ga_nomor, " - ", ga_nama) as text'),
@@ -41,28 +43,23 @@ class aset_controller extends Controller
     							'ga_akun_beban',
     							'harta.ak_nama as nama_akun_harta',
     							'akumulasi.ak_nama as nama_akun_akumulasi',
-    							'beban.ak_nama as nama_akun_beban'
+    							'beban.ak_nama as nama_akun_beban',
+                                'harta.ak_nomor as nomor_akun_harta',
+                                'akumulasi.ak_nomor as nomor_akun_akumulasi',
+                                'beban.ak_nomor as nomor_akun_beban'
     						)
     				->get();
 
-        $akunKas = DB::table('dk_akun')
-                        ->where('ak_kelompok', jurnal()->kelompok_kas)
-                        ->where('ak_isactive', '1')
-                        ->orWhere('ak_kelompok', jurnal()->kelompok_bank)
-                        ->where('ak_isactive', '1')
-                        ->orWhere('ak_id', jurnal()->akun_hutang_usaha)
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
-                        ->get();
-
     	return json_encode([
-    		"golongan"	        => $gol,
-            "akunKas"           => $akunKas,
+    		"golongan"	        => $gol
     	]);
     }
 
     public function datatable(){
-        $data = DB::table('dk_aktiva')->where('at_status', 'ST')->get();
+        $data = DB::table('dk_aktiva')
+                    ->where('at_comp', modulSetting()['onLogin'])
+                    ->where('at_status', 'ST')
+                    ->get();
 
         return json_encode($data);
     }
@@ -157,7 +154,7 @@ class aset_controller extends Controller
                                     'jrdt_dk'            => 'K'
                                 ];
 
-                                keuangan::jurnal()->addJurnal($jurnalDetail, $tanggal_awal, $nomor.'-(P)', "Penyusutan Aset ".$request->at_nama." (".$nomor.")", "MM", jurnal()->comp);
+                                keuangan::jurnal()->addJurnal($jurnalDetail, $tanggal_awal, $nomor.'-(P)', "Penyusutan Aset ".$request->at_nama." (".$nomor.")", "MM", modulSetting()['onLogin']);
 
                                 $untilEnd = (date('Y-m', strtotime($tanggal_awal)) == date('Y-m', strtotime($tanggalEnd))) ? true : false;
                                 $at_nilai_sisa -= $penyusutan;
@@ -186,7 +183,7 @@ class aset_controller extends Controller
             DB::table('dk_aktiva')->insert([
                 "at_id"             => $id,
                 "at_golongan"       => $request->at_golongan,
-                "at_comp"           => '1',
+                "at_comp"           => modulSetting()['onLogin'],
                 "at_nomor"          => $nomor,
                 "at_nama"           => $request->at_nama,
                 "at_metode"         => $request->at_metode,

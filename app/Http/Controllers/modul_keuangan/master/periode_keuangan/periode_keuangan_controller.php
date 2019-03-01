@@ -22,7 +22,9 @@ class periode_keuangan_controller extends Controller
     		$periode = strtotime($request->tahun.'-'.$request->bulan.'-01');
     		$dateNow = strtotime(date('Y-m').'-01');
 
-    		$cek = DB::table('dk_periode_keuangan')->where('pk_periode', $periode)->first();
+    		$cek = DB::table('dk_periode_keuangan')
+                    ->where('pk_comp', modulSetting()['onLogin'])
+                    ->where('pk_periode', $periode)->first();
 
 	    	if($cek){
 	    		Session::flash('message', 'Periode Keuangan Sudah Dibuat Sebelumnya.');
@@ -31,11 +33,11 @@ class periode_keuangan_controller extends Controller
 
 	    	$id = (DB::table('dk_periode_keuangan')->max('pk_id')) ? (DB::table('dk_periode_keuangan')->max('pk_id') + 1) : 1;
 
-            if(DB::table('dk_periode_keuangan')->first()){
+            if(DB::table('dk_periode_keuangan')->where('pk_comp', modulSetting()['onLogin'])->first()){
                 $dateNow = $periode;
-                $periode = strtotime('+1 months', strtotime(DB::table('dk_periode_keuangan')->max('pk_periode')));
+                $periode = strtotime('+1 months', strtotime(DB::table('dk_periode_keuangan')->where('pk_comp', modulSetting()['onLogin'])->max('pk_periode')));
 
-                DB::table('dk_periode_keuangan')->update([
+                DB::table('dk_periode_keuangan')->where('pk_comp', modulSetting()['onLogin'])->update([
                     'pk_status' => '0'
                 ]);
             }
@@ -44,6 +46,7 @@ class periode_keuangan_controller extends Controller
 
     			array_push($bucket, [
     				"pk_id"			=> $id,
+                    "pk_comp"       => modulSetting()['onLogin'],
 		    		"pk_periode"	=> date('Y-m-d', $periode),
 		    		"pk_status"		=> ($periode == $dateNow) ? '1' : '0'
     			]);
@@ -51,6 +54,7 @@ class periode_keuangan_controller extends Controller
                 keuangan::akunSaldo()->addNewPeriode(date('Y-m-d', $periode));
 
                 $aktiva = DB::table('dk_aktiva')
+                                ->where('at_comp', modulSetting()['onLogin'])
                                 ->join('dk_aktiva_golongan', 'dk_aktiva_golongan.ga_id', 'dk_aktiva.at_id')
                                 ->join('dk_aktiva_detail', 'dk_aktiva_detail.atdt_aktiva', 'dk_aktiva.at_id')
                                 ->where('atdt_tahun', date('Y', $periode))

@@ -21,16 +21,18 @@ class transaksi_kas_controller extends Controller
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
     	$akunKas = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
     					->where('ak_kelompok', $kelompok_kas->hp_hierarki)
     					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+    					->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"))
     					->get();
 
     	$akunLawan = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
     					->where('ak_kelompok', '!=', $kelompok_kas->hp_hierarki)
     					->where('ak_kelompok', '!=', $kelompok_bank->hp_hierarki)
     					->where('ak_isactive', '1')
-    					->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+    					->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"))
     					->get();
 
     	return json_encode([
@@ -45,7 +47,9 @@ class transaksi_kas_controller extends Controller
         $tanggalNext = date('Y-m-d', strtotime('+1 months', strtotime($tanggal)));
         $type = substr($request->type, 0, 1);
 
-        $data = transaksi::with('detail')->where(DB::raw('substring(tr_type, 1, 1)'), $type)->get();
+        $data = transaksi::with('detail')
+                    ->where('tr_comp', modulSetting()['onLogin'])
+                    ->where(DB::raw('substring(tr_type, 1, 1)'), $type)->get();
 
         return json_encode($data);
     }
@@ -159,7 +163,7 @@ class transaksi_kas_controller extends Controller
 
             DB::table('dk_transaksi')->insert([
                 "tr_id"         => $id,
-                "tr_comp"       => '1',
+                "tr_comp"       => modulSetting()['onLogin'],
                 "tr_nomor"      => $tr_number,
                 "tr_tanggal"    => $date,
                 "tr_keterangan" => $request->tr_nama,
@@ -169,7 +173,7 @@ class transaksi_kas_controller extends Controller
 
             DB::table('dk_transaksi_detail')->insert($detail);
 
-            keuangan::jurnal()->addJurnal($jurnalDetail, $date, $tr_number, $request->tr_nama, $request->tr_type, jurnal()->comp, true);
+            keuangan::jurnal()->addJurnal($jurnalDetail, $date, $tr_number, $request->tr_nama, $request->tr_type, modulSetting()['onLogin'], true);
 
             DB::commit();
 
@@ -318,7 +322,7 @@ class transaksi_kas_controller extends Controller
             }
 
             DB::table('dk_transaksi_detail')->insert($detail);
-            keuangan::jurnal()->addJurnal($jurnalDetail, $date, $tr_number, $request->tr_nama, $trans->first()->tr_type, jurnal()->comp, 2);
+            keuangan::jurnal()->addJurnal($jurnalDetail, $date, $tr_number, $request->tr_nama, $trans->first()->tr_type, modulSetting()['onLogin'], 2);
 
             DB::commit();
 

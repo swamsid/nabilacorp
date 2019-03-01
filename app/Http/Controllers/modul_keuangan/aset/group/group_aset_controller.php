@@ -15,11 +15,15 @@ class group_aset_controller extends Controller
     				->leftJoin('dk_akun as harta', 'harta.ak_id', '=', 'dk_aktiva_golongan.ga_akun_harta')
     				->leftJoin('dk_akun as akumulasi', 'akumulasi.ak_id', '=', 'dk_aktiva_golongan.ga_akun_akumulasi')
     				->leftJoin('dk_akun as beban', 'beban.ak_id', '=', 'dk_aktiva_golongan.ga_akun_beban')
+                    ->where('ga_comp', modulSetting()['onLogin'])
     				->select(
     							'dk_aktiva_golongan.*',
     							'harta.ak_nama as nama_akun_harta',
     							'akumulasi.ak_nama as nama_akun_akumulasi',
-    							'beban.ak_nama as nama_akun_beban'
+    							'beban.ak_nama as nama_akun_beban',
+                                'harta.ak_nomor as nomor_akun_harta',
+                                'akumulasi.ak_nomor as nomor_akun_akumulasi',
+                                'beban.ak_nomor as nomor_akun_beban'
     						)
     				->orderBy('ga_nama', 'desc')
     				->get();
@@ -39,11 +43,26 @@ class group_aset_controller extends Controller
         $kelompokAkumulasi = DB::table('dk_hierarki_penting')->where('hp_id', '2')->first();
         $kelompokBeban = DB::table('dk_hierarki_penting')->where('hp_id', '3')->first();
 
-    	$accHarta = DB::table('dk_akun')->where('ak_kelompok', $kelompokHarta->hp_hierarki)->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+    	$accHarta = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
+                        ->where('ak_kelompok', $kelompokHarta->hp_hierarki)
+                        ->select('ak_id as id', DB::raw('concat(ak_nomor, " - ", ak_nama) as text'))
+                        ->where('ak_isactive', '1')
+                        ->get();
 
-    	$accAkumulasi = DB::table('dk_akun')->where('ak_kelompok', $kelompokAkumulasi->hp_hierarki)->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+    	$accAkumulasi = DB::table('dk_akun')
+                            ->where('ak_comp', modulSetting()['onLogin'])
+                            ->where('ak_kelompok', $kelompokAkumulasi->hp_hierarki)
+                            ->select('ak_id as id', DB::raw('concat(ak_nomor, " - ", ak_nama) as text'))
+                            ->where('ak_isactive', '1')
+                            ->get();
 
-    	$accBeban = DB::table('dk_akun')->where('ak_kelompok', $kelompokBeban->hp_hierarki)->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))->where('ak_isactive', '1')->get();
+    	$accBeban = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
+                        ->where('ak_kelompok', $kelompokBeban->hp_hierarki)
+                        ->select('ak_id as id', DB::raw('concat(ak_nomor, " - ", ak_nama) as text'))
+                        ->where('ak_isactive', '1')
+                        ->get();
 
     	return json_encode([
     		'acc_harta'			=> $accHarta,
@@ -53,7 +72,10 @@ class group_aset_controller extends Controller
     }
 
     public function datatable(Request $request){
-    	$data = DB::table('dk_aktiva_golongan')->where('ga_golongan', $request->golongan)->get();
+    	$data = DB::table('dk_aktiva_golongan')
+                    ->where('ga_golongan', $request->golongan)
+                    ->where('ga_comp', modulSetting()['onLogin'])
+                    ->get();
 
     	return json_encode($data);
     }
@@ -84,6 +106,7 @@ class group_aset_controller extends Controller
     		DB::table('dk_aktiva_golongan')->insert([
     			"ga_id"				=> $id,
     			"ga_nomor"			=> $nomor,
+                "ga_comp"           => modulSetting()['onLogin'],
     			"ga_nama"			=> $request->ga_nama,
     			"ga_keterangan"		=> $request->ga_keterangan,
     			"ga_golongan"		=> $request->ga_golongan,

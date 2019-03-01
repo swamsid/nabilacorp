@@ -14,8 +14,17 @@ use PDF;
 
 class laporan_arus_kas_controller extends Controller
 {
-    public function index(){
-    	return view('modul_keuangan.laporan.arus_kas.index');
+    public function index(Request $request){
+        $cabang = '';
+
+        if(modulSetting()['support_cabang']){
+            $cabang = DB::table(tabel()->cabang->nama)
+                                ->where(tabel()->cabang->kolom->id, $request->cab)
+                                ->select(tabel()->cabang->kolom->nama.' as nama')
+                                ->first()->nama;
+        }
+
+    	return view('modul_keuangan.laporan.arus_kas.index', compact('cabang'));
     }
 
     public function dataResource(Request $request){
@@ -25,7 +34,43 @@ class laporan_arus_kas_controller extends Controller
         $kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
-        $saldoAwal = DB::table('dk_akun')
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $saldoAwal = DB::table('dk_akun')
+                        ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                        ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->orwhere('ak_kelompok', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
+                        ->first();
+
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1, $request){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->where('ak_comp', $request->cab)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }else{
+               $saldoAwal = DB::table('dk_akun')
                         ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
                         ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
                         ->where('ak_isactive', '1')
@@ -36,24 +81,28 @@ class laporan_arus_kas_controller extends Controller
                         ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
                         ->first();
 
-        $data = level_2::whereNotNull("hld_cashflow")
-        				->with([
-        						'akun' => function($query) use ($d1){
-        							$query->select('ak_id', 'ak_kelompok', 'ak_nama')
-                                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
-                                            ->where('as_periode', $d1)
-                                            ->select(
-                                                'ak_id',
-                                                'ak_kelompok',
-                                                'ak_nama',
-                                                'ak_posisi',
-                                                DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
 
-                                            );
-        						}
-        				])
-        				->select('hld_id', 'hld_nama', 'hld_cashflow')
-        				->get();
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }
+
+        // selesai
+
 
         // return json_encode($data);
 
@@ -69,7 +118,56 @@ class laporan_arus_kas_controller extends Controller
         $kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
-        $saldoAwal = DB::table('dk_akun')
+        // Mengambil Cabang
+
+            $namaCabang = '';
+
+            if(modulSetting()['support_cabang']){
+                $namaCabang = DB::table(tabel()->cabang->nama)
+                                    ->where(tabel()->cabang->kolom->id, $request->cab)
+                                    ->select(tabel()->cabang->kolom->nama.' as nama')
+                                    ->first()->nama;
+            }
+
+        // Selesai Mengambil Cabang
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $saldoAwal = DB::table('dk_akun')
+                        ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                        ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->orwhere('ak_kelompok', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
+                        ->first();
+
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1, $request){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->where('ak_comp', $request->cab)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }else{
+               $saldoAwal = DB::table('dk_akun')
                         ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
                         ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
                         ->where('ak_isactive', '1')
@@ -80,30 +178,34 @@ class laporan_arus_kas_controller extends Controller
                         ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
                         ->first();
 
-        $data = level_2::whereNotNull("hld_cashflow")
-                        ->with([
-                                'akun' => function($query) use ($d1){
-                                    $query->select('ak_id', 'ak_kelompok', 'ak_nama')
-                                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
-                                            ->where('as_periode', $d1)
-                                            ->select(
-                                                'ak_id',
-                                                'ak_kelompok',
-                                                'ak_nama',
-                                                'ak_posisi',
-                                                DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
 
-                                            );
-                                }
-                        ])
-                        ->select('hld_id', 'hld_nama', 'hld_cashflow')
-                        ->get();
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }
+
+        // selesai
 
         // return json_encode($res);
 
         $data = [
             "data"    => $data,
-            "saldo_awal" => ($saldoAwal->saldo_akhir) ? $saldoAwal->saldo_akhir : 0
+            "saldo_awal" => ($saldoAwal->saldo_akhir) ? $saldoAwal->saldo_akhir : 0,
+            "cabang"     => $namaCabang
         ];
 
         return view('modul_keuangan.laporan.arus_kas.print.index', compact('data'));
@@ -115,7 +217,56 @@ class laporan_arus_kas_controller extends Controller
         $kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
-        $saldoAwal = DB::table('dk_akun')
+        // Mengambil Cabang
+
+            $namaCabang = '';
+
+            if(modulSetting()['support_cabang']){
+                $namaCabang = DB::table(tabel()->cabang->nama)
+                                    ->where(tabel()->cabang->kolom->id, $request->cab)
+                                    ->select(tabel()->cabang->kolom->nama.' as nama')
+                                    ->first()->nama;
+            }
+
+        // Selesai Mengambil Cabang
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $saldoAwal = DB::table('dk_akun')
+                        ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                        ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->orwhere('ak_kelompok', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
+                        ->first();
+
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1, $request){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->where('ak_comp', $request->cab)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }else{
+               $saldoAwal = DB::table('dk_akun')
                         ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
                         ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
                         ->where('ak_isactive', '1')
@@ -126,30 +277,34 @@ class laporan_arus_kas_controller extends Controller
                         ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
                         ->first();
 
-        $data = level_2::whereNotNull("hld_cashflow")
-                        ->with([
-                                'akun' => function($query) use ($d1){
-                                    $query->select('ak_id', 'ak_kelompok', 'ak_nama')
-                                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
-                                            ->where('as_periode', $d1)
-                                            ->select(
-                                                'ak_id',
-                                                'ak_kelompok',
-                                                'ak_nama',
-                                                'ak_posisi',
-                                                DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
 
-                                            );
-                                }
-                        ])
-                        ->select('hld_id', 'hld_nama', 'hld_cashflow')
-                        ->get();
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }
+
+        // selesai
 
         // return json_encode($res[0]->group[0]->akun[0]->fromKelompok);
 
         $data = [
             "data"    => $data,
-            "saldo_awal" => ($saldoAwal->saldo_akhir) ? $saldoAwal->saldo_akhir : 0
+            "saldo_awal" => ($saldoAwal->saldo_akhir) ? $saldoAwal->saldo_akhir : 0,
+            "cabang"     => $namaCabang
         ];
 
         // return view('modul_keuangan.laporan.jurnal.print.pdf', compact('data'));
@@ -169,7 +324,56 @@ class laporan_arus_kas_controller extends Controller
         $kelompok_kas = DB::table('dk_hierarki_penting')->where('hp_id', '4')->first();
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
-        $saldoAwal = DB::table('dk_akun')
+        // Mengambil Cabang
+
+            $namaCabang = '';
+
+            if(modulSetting()['support_cabang']){
+                $namaCabang = DB::table(tabel()->cabang->nama)
+                                    ->where(tabel()->cabang->kolom->id, $request->cab)
+                                    ->select(tabel()->cabang->kolom->nama.' as nama')
+                                    ->first()->nama;
+            }
+
+        // Selesai Mengambil Cabang
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $saldoAwal = DB::table('dk_akun')
+                        ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                        ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->orwhere('ak_kelompok', $kelompok_bank->hp_hierarki)
+                        ->where('ak_isactive', '1')
+                        ->where('as_periode', $d1)
+                        ->where('ak_comp', $request->cab)
+                        ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
+                        ->first();
+
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1, $request){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->where('ak_comp', $request->cab)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }else{
+               $saldoAwal = DB::table('dk_akun')
                         ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
                         ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
                         ->where('ak_isactive', '1')
@@ -180,30 +384,34 @@ class laporan_arus_kas_controller extends Controller
                         ->select(DB::raw('sum(as_saldo_awal) as saldo_akhir'))
                         ->first();
 
-        $data = level_2::whereNotNull("hld_cashflow")
-                        ->with([
-                                'akun' => function($query) use ($d1){
-                                    $query->select('ak_id', 'ak_kelompok', 'ak_nama')
-                                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
-                                            ->where('as_periode', $d1)
-                                            ->select(
-                                                'ak_id',
-                                                'ak_kelompok',
-                                                'ak_nama',
-                                                'ak_posisi',
-                                                DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
+                $data = level_2::whereNotNull("hld_cashflow")
+                                ->with([
+                                        'akun' => function($query) use ($d1){
+                                            $query->select('ak_id', 'ak_kelompok', 'ak_nama')
+                                                    ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                                                    ->where('as_periode', $d1)
+                                                    ->select(
+                                                        'ak_id',
+                                                        'ak_kelompok',
+                                                        'ak_nama',
+                                                        'ak_posisi',
+                                                        DB::raw('coalesce(IF(ak_posisi = "D", (((as_mut_kas_debet + as_mut_bank_debet) - (as_mut_kas_kredit + as_mut_bank_kredit)) * -1), ((as_mut_kas_kredit + as_mut_bank_kredit) - (as_mut_kas_debet + as_mut_bank_debet))), 2) as saldo_akhir')
 
-                                            );
-                                }
-                        ])
-                        ->select('hld_id', 'hld_nama', 'hld_cashflow')
-                        ->get();
+                                                    );
+                                        }
+                                ])
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->get();
+            }
+
+        // selesai
 
         // return json_encode($res[0]->group[0]->akun[0]->fromKelompok);
 
         $data = [
             "data"    => $data,
-            "saldo_awal" => ($saldoAwal->saldo_akhir) ? $saldoAwal->saldo_akhir : 0
+            "saldo_awal" => ($saldoAwal->saldo_akhir) ? $saldoAwal->saldo_akhir : 0,
+            "cabang"     => $namaCabang
         ];
 
         // return json_encode($data);

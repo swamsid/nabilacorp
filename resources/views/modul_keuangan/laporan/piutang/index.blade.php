@@ -138,6 +138,7 @@
 	          min-height: 700px;
 	          border-radius: 2px;
 	          margin: 0 auto;
+	          padding-bottom: 20px;
 	        }
 
 		</style>
@@ -259,7 +260,7 @@
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }} &nbsp;- {{ $cabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -457,6 +458,7 @@
 	                <div class="content-popup">
 	                	<form id="form-setting" method="get" action="{{ route('laporan.keuangan.piutang') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+	                	<input type="hidden" readonly name="cab" value="{{ isset($_GET['cab']) ? $_GET['cab']: '' }}">
 	                    <div class="col-md-12">
 
 	                        <div class="row mt-form">

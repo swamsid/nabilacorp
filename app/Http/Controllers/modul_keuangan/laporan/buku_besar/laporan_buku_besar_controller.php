@@ -13,8 +13,18 @@ use PDF;
 
 class laporan_buku_besar_controller extends Controller
 {
-    public function index(){
-    	return view('modul_keuangan.laporan.buku_besar.index');
+    public function index(Request $request){
+
+        $cabang = '';
+
+        if(modulSetting()['support_cabang']){
+            $cabang = DB::table(tabel()->cabang->nama)
+                                ->where(tabel()->cabang->kolom->id, $request->cab)
+                                ->select(tabel()->cabang->kolom->nama.' as nama')
+                                ->first()->nama;
+        }
+
+    	return view('modul_keuangan.laporan.buku_besar.index', compact('cabang'));
     }
 
     public function dataResource(Request $request){
@@ -25,7 +35,8 @@ class laporan_buku_besar_controller extends Controller
         $d2 = date('Y-m-d', strtotime('+1 months', strtotime($tanggal2)));
 
         $akun = akun::where('ak_isactive', '1')
-                        ->select('ak_id as id', DB::raw('concat(ak_id, " - ", ak_nama) as text'))
+                        ->where('ak_comp', modulSetting()['onLogin'])
+                        ->select('ak_id as id', DB::raw('concat(ak_nomor, " - ", ak_nama) as text'), 'ak_nomor as nomor')
                         ->orderBy('ak_id')->get();
 
         if(!isset($request->semua)){
@@ -42,14 +53,23 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }else{
             $data = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
                         ->where('dk_akun_saldo.as_periode', $d1)
@@ -63,15 +83,38 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $data = $data->where('ak_comp', $request->cab)
+                                ->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }else{
+                $data = $data->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }
+
+        // selesai
+
 
     	// return json_encode($data);
 
@@ -91,6 +134,19 @@ class laporan_buku_besar_controller extends Controller
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
         $d2 = date('Y-m-d', strtotime('+1 months', strtotime($tanggal2)));
 
+        // Mengambil Cabang
+
+            $namaCabang = '';
+
+            if(modulSetting()['support_cabang']){
+                $namaCabang = DB::table(tabel()->cabang->nama)
+                                    ->where(tabel()->cabang->kolom->id, $request->cab)
+                                    ->select(tabel()->cabang->kolom->nama.' as nama')
+                                    ->first()->nama;
+            }
+
+        // Selesai Mengambil Cabang
+
         if(!isset($request->semua)){
             $res = akun::whereBetween('ak_id', [$request->akun1, $request->akun2])
                         ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
@@ -105,14 +161,23 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }else{
             $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
                         ->where('dk_akun_saldo.as_periode', $d1)
@@ -126,15 +191,38 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $res = $res->where('ak_comp', $request->cab)
+                                ->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }else{
+                $res = $res->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }
+
+        // selesai
+
 
         // return json_encode($res[0]->jurnal_detail);
 
@@ -143,7 +231,9 @@ class laporan_buku_besar_controller extends Controller
             "request"   => $request->all(),
         ];
 
-        return view('modul_keuangan.laporan.buku_besar.print.index', compact('data'));
+        // return json_encode($data);
+
+        return view('modul_keuangan.laporan.buku_besar.print.index', compact('data', 'namaCabang'));
     }
 
     public function pdf(Request $request){
@@ -151,6 +241,19 @@ class laporan_buku_besar_controller extends Controller
         
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
         $d2 = date('Y-m-d', strtotime('+1 months', strtotime($tanggal2)));
+
+        // Mengambil Cabang
+
+            $namaCabang = '';
+
+            if(modulSetting()['support_cabang']){
+                $namaCabang = DB::table(tabel()->cabang->nama)
+                                    ->where(tabel()->cabang->kolom->id, $request->cab)
+                                    ->select(tabel()->cabang->kolom->nama.' as nama')
+                                    ->first()->nama;
+            }
+
+        // Selesai Mengambil Cabang
 
         if(!isset($request->semua)){
             $res = akun::whereBetween('ak_id', [$request->akun1, $request->akun2])
@@ -166,14 +269,23 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }else{
             $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
                         ->where('dk_akun_saldo.as_periode', $d1)
@@ -187,21 +299,45 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $res = $res->where('ak_comp', $request->cab)
+                                ->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }else{
+                $res = $res->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }
+
+        // selesai
+
 
         // return json_encode($data);
 
         $data = [
             "data"      => $res,
             "request"   => $request->all(),
+            "cabang"    => $namaCabang
         ];
 
         // return view('modul_keuangan.laporan.jurnal.print.pdf', compact('data'));
@@ -221,6 +357,19 @@ class laporan_buku_besar_controller extends Controller
         $d1 = explode('/', $request->d1)[1].'-'.explode('/', $request->d1)[0].'-01';
         $d2 = date('Y-m-d', strtotime('+1 months', strtotime($tanggal2)));
 
+        // Mengambil Cabang
+
+            $namaCabang = '';
+
+            if(modulSetting()['support_cabang']){
+                $namaCabang = DB::table(tabel()->cabang->nama)
+                                    ->where(tabel()->cabang->kolom->id, $request->cab)
+                                    ->select(tabel()->cabang->kolom->nama.' as nama')
+                                    ->first()->nama;
+            }
+
+        // Selesai Mengambil Cabang
+
         if(!isset($request->semua)){
             $res = akun::whereBetween('ak_id', [$request->akun1, $request->akun2])
                         ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
@@ -235,14 +384,23 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }else{
             $res = akun::leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', '=', 'dk_akun.ak_id')
                         ->where('dk_akun_saldo.as_periode', $d1)
@@ -256,19 +414,43 @@ class laporan_buku_besar_controller extends Controller
                                             ->with([
                                                     'jurnal' => function($query){
                                                         $query->select('jr_id', 'jr_tanggal_trans', 'jr_keterangan', 'jr_ref')
-                                                                ->with('detail:jrdt_jurnal,jrdt_akun,jrdt_dk,jrdt_value');
+                                                                ->with([
+                                                                    'detail' => function($query) {
+                                                                        $query->join('dk_akun', 'dk_akun.ak_id', '=', 'dk_jurnal_detail.jrdt_akun')
+                                                                            ->select(
+                                                                                'dk_akun.ak_nomor',
+                                                                                'jrdt_jurnal',
+                                                                                'jrdt_akun',
+                                                                                'jrdt_dk',
+                                                                                'jrdt_value'
+                                                                            );   
+                                                                    }
+                                                                ]);
                                                     }
                                             ]);
                                 }
                         ])
-                        ->where('ak_isactive', '1')
-                        ->select('ak_id', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
-                        ->get();
+                        ->where('ak_isactive', '1');
         }
+
+        // ketika support cabang
+
+            if(modulSetting()['support_cabang']){
+                $res = $res->where('ak_comp', $request->cab)
+                                ->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }else{
+                $res = $res->select('ak_id', 'ak_nomor', 'ak_posisi', 'ak_nama', DB::raw('coalesce(dk_akun_saldo.as_saldo_awal, 0) as ak_saldo_awal'), 'dk_akun_saldo.as_periode as ak_periode')
+                                ->get();
+            }
+
+        // selesai
+
 
         $data = [
             "data"      => $res,
             "request"   => $request->all(),
+            "cabang"    => $namaCabang
         ];
 
         // return json_encode($data);

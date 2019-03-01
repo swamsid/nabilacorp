@@ -68,443 +68,401 @@
 
 
 @section('content')
-    <!--BEGIN PAGE WRAPPER-->
-    <div id="page-wrapper">
-        <!--BEGIN TITLE & BREADCRUMB PAGE-->
-        <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-            <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                <div class="page-title">Klasifikasi Akun</div>
-            </div>
-            <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
-
-                <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-
-                <li><i></i>&nbsp;Setting&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-
-                <li class="active">Setting Klasifikasi Akun</li>
-            </ol>
-            <div class="clearfix">
-            </div>
+<!--BEGIN PAGE WRAPPER-->
+<div id="page-wrapper">
+    <!--BEGIN TITLE & BREADCRUMB PAGE-->
+    <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+        <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
+            <div class="page-title">Klasifikasi Akun</div>
         </div>
-
-        <div class="page-content fadeInRight">
-            <div id="tab-general">
-                <div class="row mbl">
-                    <div class="col-lg-12">
-                      <div class="col-md-12">
-                          <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
-                          </div>
-                      </div>
-
-                      <ul id="generalTab" class="nav nav-tabs">
-                        <li class="active"><a href="#alert-tab" data-toggle="tab">Setting Klasifikasi Akun</a></li>
-                      </ul>
-
-                      <div id="generalTabContent" class="tab-content responsive" style="padding-left: 50px;">
-                          <div class="row" v-cloak>
-                                <div class="col-md-1" id="button-wrap">
-                                    <div class="col-md-12" style="padding: 0px;">
-                                        <div class="col-md-6 offset-6 text-center button-ctn active" id="inv-0">
-                                            <i class="fa fa-info"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12" style="padding: 0px;">
-                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-1">
-                                            <strong><small>1</small></strong>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12" style="padding: 0px;">
-                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-2">
-                                            <strong><small>2</small></strong>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12" style="padding: 0px;">
-                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-3">
-                                            <strong><small>3</small></strong>
+        <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><i></i>&nbsp;Setting&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Klasifikasi Akun</li>
+        </ol>
+        <div class="clearfix">
+        </div>
+    </div>
+    <div class="page-content fadeInRight">
+        <div id="tab-general">
+            <div class="row mbl">
+                <div class="col-lg-12">
+                    
+                    <ul id="generalTab" class="nav nav-tabs">
+                        <li class="active"><a href="#alert-tab" data-toggle="tab">Klasifikasi Akun</a></li>
+                    </ul>
+                    <div id="generalTabContent" class="tab-content responsive">
+                        <div id="alert-tab" class="tab-pane fade in active">
+                            <div class="row" style="margin-top:-20px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 10px;">
+                                    <a href="{{ url('master/datasuplier/tambah_suplier') }}">
+                                        <button type="button" class="btn btn-box-tool" title="Tambahkan Data Item">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> &nbsp;Tambah Data
+                                        </button>
+                                    </a>
+                                    
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="table-responsive">
+                                        <div class="col-md-12 table-content" style="background: none; box-shadow: none; margin-top: 8px;" v-cloak>
+                                            <div class="row">
+                                                <div class="col-md-1 offset-1" id="button-wrap">
+                                                    <div class="col-md-12" style="padding: 0px;">
+                                                        <div class="col-md-6 offset-6 text-center button-ctn active" id="inv-0">
+                                                            <i class="fa fa-info"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding: 0px;">
+                                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-1">
+                                                            <strong><small>1</small></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding: 0px;">
+                                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-2">
+                                                            <strong><small>2</small></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding: 0px;">
+                                                        <div class="col-md-6 offset-6 text-center button-ctn" id="inv-3">
+                                                            <strong><small>3</small></strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8" id="main-content" v-if="stateNumber == 0">
+                                                    <div class="row">
+                                                        <div class="col-md-12 title">
+                                                            <span>Hai . Tahukah Anda Apa Klasifikasi Akun Itu ?</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-intro">
+                                                            Klasifikasi Akun Adalah Fitur Yang Memudahkan Anda Dalam Menyusun Hierarki Akun Keuangan Yang Nantinya Akan Ditampilkan Dalam Laporan Keuangan. Ilustrasinya Bisa Anda Lihat Pada Gambar Dibawah Ini.
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-detail" style="background-color: none; margin-top: 15px; padding-left: 25px; max-height: 254px; min-height: 254px;">
+                                                            <div class="row">
+                                                                <div class="col-md-7" style="box-shadow: 5px 0px 10px #ccc;">
+                                                                    <img src="{{ asset('modul_keuangan/klasifikasi.jpg') }}">
+                                                                </div><br>
+                                                                <div class="col-md-12 text-intro">
+                                                                    Hierarki Level 1 dan Level 2 Adalah Hierarki Yang Wajib Dibuat Sedangkan Untuk Sub Hierarki Bersifat Optional (Tidak Wajib).
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
+                                                            <div class="row">
+                                                                <div class="col-md-5"></div>
+                                                                <div class="col-md-7 text-right">
+                                                                    <button class="btn btn-info btn-sm" @click="nextState">
+                                                                    <i class="fa fa-map-marker"></i> &nbsp;Mulai Atur Klasifikasi Akun
+                                                                    </button>
+                                                                    &nbsp;
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <form id="data-form-lvl1" class="col-md-8" v-if="stateNumber == 1" style="padding: 0px;">
+                                                    <div class="col-md-12" id="main-content">
+                                                        <div class="row">
+                                                            <div class="col-md-12 title">
+                                                                <span>1. Setting Klasifikasi Hierarki Akun <small>(Level 1)</small></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 text-intro">
+                                                                Hierarki Akun Level 1 Telah Di Set Secara Default, Sehingga Data Tidak Bisa Ditambah Atau Dihapus. Namun, Anda Tetap Bisa Mengganti Nama Dari Hierarki Ini.
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-8 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; max-height: 254px; min-height: 254px; overflow-y: scroll;">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <form id="form-data-level-1">
+                                                                            <table class="table table-stripped table-bordered table-mini">
+                                                                                <tbody>
+                                                                                    <tr v-for="lvl1 in level_1">
+                                                                                        <td class="text-center" width="8%">@{{ lvl1.id }}</td>
+                                                                                        <td>
+                                                                                            <input type="text" name="lvl1[]" style="border: 0px; width: 70%" :value="lvl1.nama" :id="'input-'+lvl1.id" :data-value="lvl1.nama" @blur="checkValue">
+                                                                                            <input type="hidden" name="nama_lama[]" :value="lvl1.nama" readonly>
+                                                                                            <input type="hidden" name="id_lama[]" :value="lvl1.id" readonly>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 text-intro">
+                                                                <i class="fa fa-circle-o" style="font-size: 7pt;"></i> &nbsp;Simpan Terlebih Dahulu Data Anda Saat Akan Berpindah Ke Jendela Selanjutnya Atau Sebelumnya. <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
+                                                                <div class="row">
+                                                                    <div class="col-md-5 form-status" style="padding-top: 10px;">
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-md-7 text-right">
+                                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevel1" :disabled="btnDisabled">
+                                                                        Simpan Perubahan
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
+                                                                        <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        <button class="btn btn-default btn-sm" type="button" @click="nextState" :disabled="btnDisabled">
+                                                                        Selanjutnya &nbsp;<i class="fa fa-arrow-right"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <form id="data-form-lvlsubclass" class="col-md-8" v-if="stateNumber == 2" style="padding: 0px;">
+                                                    <div class="col-md-12" id="main-content">
+                                                        <div class="row">
+                                                            <div class="col-md-12 title">
+                                                                <span>2. Setting Klasifikasi Hierarki <small>(Subclass)</small></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 text-intro">
+                                                                Untuk Menentukan Pos di Hierarki Subclass. Pilih Terlebih Dahulu Hierarki Level 1 nya.
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top: 15px; font-style: italic; padding-left: 0px; margin-bottom: 15px;">
+                                                                <div class="row">
+                                                                    <div class="col-md-2 text-right">
+                                                                        <label class="modul-keuangan">Pilih Level 1</label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control modul-keuangan" name="level1" @change="level1SubclassChange" v-model="level1Subclass">
+                                                                            <option v-for="lvl1 in level_1" :value="lvl1.id">
+                                                                                @{{ lvl1.id +' - '+ lvl1.nama }}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-1" style="padding-top: 5px; cursor: help;" title="Simpan terlebih Dahulu Data Anda Saat Akan Berpindah Ke Data Level 1 Yang Lain">
+                                                                        <i class="fa fa-exclamation"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-8 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; padding-right: 15px; max-height: 210px; min-height: 210px; overflow-y: scroll;" id="content-lvl-2">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <form id="form-data-level-1">
+                                                                            <table class="table table-stripped table-bordered table-mini">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td width="5%" class="text-center">*</td>
+                                                                                        <td class="text-center" style="position: sticky; top: 0px; background: white;"> Nama </td>
+                                                                                    </tr>
+                                                                                    <tr v-for="data in dataSubclassPrint" v-if="data.nama != 'Tidak Memiliki'">
+                                                                                        <td class="text-center">
+                                                                                            <i class="fa fa-lock" v-if="data.status == 'locked'" title="Subclass Dikunci Tidak Bisa Dihapus"></i>
+                                                                                            <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Subclass Ini." @click="hapusHierarkiSubclass(data.id)"></i>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="text" name="data[]" style="border: 0px; width: 70%" :value="data.nama" :id="'input-'+data.id" :data-value="data.nama" @blur="checkValue">
+                                                                                            <input type="hidden" name="nama_lama[]" :value="data.nama" readonly>
+                                                                                            <input type="hidden" name="id_lama[]" :value="data.id" readonly>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr v-for="lvl2New in lvl2New">
+                                                                                        <td class="text-center">-</td>
+                                                                                        <td>
+                                                                                            <input type="text" :id="'lvlSubclassNewNama'+lvl2New" name="lvl2NewNama[]" style="border: 0px; width: 70%" @blur="checkValue">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 text-intro">
+                                                                <i class="fa fa-circle-o" style="font-size: 7pt;"></i> &nbsp;Simpan Terlebih Dahulu Data Anda Saat Akan Berpindah Ke Jendela Selanjutnya Atau Sebelumnya. <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
+                                                                <div class="row">
+                                                                    <div class="col-md-4 form-status" style="padding-top: 10px;">
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-md-8 text-right">
+                                                                        <button class="btn btn-primary btn-sm" type="button" @click="tambahLevel2" :disabled="btnDisabled">
+                                                                        <i class="fa fa-plus"></i> &nbsp;Tambah
+                                                                        </button>
+                                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevelSubclass" :disabled="btnDisabled">
+                                                                        Simpan Perubahan
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
+                                                                        <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        <button class="btn btn-default btn-sm" type="button" @click="nextState">
+                                                                        Selanjutnya &nbsp;<i class="fa fa-arrow-right"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <form id="data-form-lvl2" class="col-md-8" v-if="stateNumber == 3" style="padding: 0px;">
+                                                    <div class="col-md-12" id="main-content">
+                                                        <div class="row">
+                                                            <div class="col-md-12 title">
+                                                                <span>3. Setting Klasifikasi Hierarki Akun <small>(Level 2)</small></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 text-intro">
+                                                                Untuk Menentukan Pos di Hierarki Level 2. Pilih Terlebih Dahulu Hierarki Level 1 nya. <small>(Simpan Terlebih Dahulu Data Anda Saat Berpindah Ke Data Level 1 Yang Lain)</small>
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top: 15px; font-style: italic; padding-left: 0px; margin-bottom: 15px;">
+                                                                <div class="row">
+                                                                    <div class="col-md-2 text-right">
+                                                                        <label class="modul-keuangan">Pilih Level 1</label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control modul-keuangan" name="level1" @change="level1Change" v-model='level1'>
+                                                                            <option v-for="lvl1 in level_1" :value="lvl1.id">
+                                                                                @{{ lvl1.id +' - '+ lvl1.nama }}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-1" style="padding-top: 5px; cursor: help;" title="Simpan terlebih Dahulu Data Anda Saat Akan Berpindah Ke Data Level 1 Yang Lain">
+                                                                        <i class="fa fa-exclamation"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-11 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; padding-right: 15px; max-height: 210px; min-height: 210px; overflow-y: scroll;" id="content-lvl-2">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <form id="form-data-level-1">
+                                                                            <table class="table table-stripped table-bordered table-mini">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td width="5%" class="text-center">*</td>
+                                                                                        <td width="10%" class="text-center" style="position: sticky; top: 0px; background: white;">ID</td>
+                                                                                        <td width="45%" class="text-center" style="position: sticky; top: 0px; background: white;"> Nama </td>
+                                                                                        <td width="25%" class="text-center" style="position: sticky; top: 0px; background: white;"> Subclass </td>
+                                                                                        <td class="text-center" style="position: sticky; top: 0px; background: white;"> Cashflow </td>
+                                                                                    </tr>
+                                                                                    <tr v-for="data in data2Print">
+                                                                                        <td class="text-center">
+                                                                                            <i class="fa fa-lock" v-if="data.status == 'locked'" title="Hierarki Dikunci Tidak Bisa Dihapus"></i>
+                                                                                            <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Hierarki Ini." @click="hapusHierarki2(data.id)"></i>
+                                                                                        </td>
+                                                                                        <td class="text-center" width="8%">
+                                                                                            @{{ level1 }}.
+                                                                                            <input type="text" name="dataId[]" style="border: 0px; width: 70%" :value="data.id.split('.')[1]" :id="'inputID-'+data.id.replace(/\./g, '-')" :data-value="data.id.split('.')[1]" @blur="checkIdlvl2" @keypress="onlyNumber" data-max="3" class="idLevel2">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="text" name="data[]" style="border: 0px; width: 70%" :value="data.nama" :id="'input-'+data.id.replace(/\./g, '-')" :data-value="data.nama" @blur="checkValue">
+                                                                                            <input type="hidden" name="nama_lama[]" :value="data.nama" readonly>
+                                                                                            <input type="hidden" name="id_lama[]" :value="data.id" readonly>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            <select name="hld_subclass[]">
+                                                                                                <option v-for="det in dataSubclassPrintLvl2" :value="det.id" :selected="det.id == data.subclass">@{{ det.nama }}</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            <select name="cashflow[]">
+                                                                                                <option value="">Tidak Ada Cashflow</option>
+                                                                                                <option value="OCF" :selected="data.cashflow == 'OCF'">Operating Cashflow</option>
+                                                                                                <option value="ICF" :selected="data.cashflow == 'ICF'">Investing Cashflow</option>
+                                                                                                <option value="FCF" :selected="data.cashflow == 'FCF'">Financial Cashflow</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr v-for="lvl2New in lvl2New">
+                                                                                        <td class="text-center">-</td>
+                                                                                        <td class="text-center" width="8%">
+                                                                                            @{{ level1 }}.
+                                                                                            <input type="text" name="lvl2NewId[]" style="border: 0px; width: 70%" :id="'lvl2NewId'+lvl2New" @blur="checkIdlvl2" @keypress="onlyNumber" data-max="3">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="text" :id="'lvl2NewNama'+lvl2New" name="lvl2NewNama[]" style="border: 0px; width: 70%" @blur="checkValue">
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            <select name="hld_subclassNew[]">
+                                                                                                <option v-for="det in dataSubclassPrintLvl2" :value="det.id">@{{ det.nama }}</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            <select name="lvl2NewCashflow[]">
+                                                                                                <option value="">Tidak Ada Cashflow</option>
+                                                                                                <option value="OCF">Operating Cashflow</option>
+                                                                                                <option value="ICF">Investing Cashflow</option>
+                                                                                                <option value="FCF">Financial Cashflow</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 text-intro">
+                                                                <i class="fa fa-circle-o" style="font-size: 7pt;"></i> &nbsp;Simpan Terlebih Dahulu Data Anda Saat Akan Berpindah Ke Jendela Selanjutnya Atau Sebelumnya. <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
+                                                                <div class="row">
+                                                                    <div class="col-md-4 form-status" style="padding-top: 10px;">
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-md-8 text-right">
+                                                                        <button class="btn btn-primary btn-sm" type="button" @click="tambahLevel2" :disabled="btnDisabled">
+                                                                        <i class="fa fa-plus"></i> &nbsp;Tambah
+                                                                        </button>
+                                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevel2" :disabled="btnDisabled">
+                                                                        Simpan Perubahan
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
+                                                                        <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
+                                                                        </button>
+                                                                        &nbsp;
+                                                                        {{-- <button class="btn btn-default btn-sm" type="button" @click="nextState">
+                                                                        Selanjutnya &nbsp;<i class="fa fa-arrow-right"></i>
+                                                                        </button> --}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-10" id="main-content" v-if="stateNumber == 0">
-                                    <div class="row">
-                                        <div class="col-md-12 title">
-                                            <span>Hai . Tahukah Anda Apa Klasifikasi Akun Itu ?</span> 
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 text-intro">
-                                            Klasifikasi Akun Adalah Fitur Yang Memudahkan Anda Dalam Menyusun Hierarki Akun Keuangan Yang Nantinya Akan Ditampilkan Dalam Laporan Keuangan. Ilustrasinya Bisa Anda Lihat Pada Gambar Dibawah Ini. 
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 text-detail" style="background-color: none; margin-top: 15px; padding-left: 25px; max-height: 254px; min-height: 254px;">
-                                            <div class="row">
-                                                <div class="col-md-7" style="box-shadow: 5px 0px 10px #ccc;">
-                                                    <img src="{{ asset('modul_keuangan/klasifikasi.jpg') }}">
-                                                </div><br>
-                                                <div class="col-md-12 text-intro">
-                                                    Hierarki Level 1 dan Level 2 Adalah Hierarki Yang Wajib Dibuat Sedangkan Untuk Sub Hierarki Bersifat Optional (Tidak Wajib).
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
-                                            <div class="row">
-                                                <div class="col-md-5"></div>
-                                                <div class="col-md-7 text-right">
-                                                    <button class="btn btn-info btn-sm" @click="nextState">
-                                                        <i class="fa fa-map-marker"></i> &nbsp;Mulai Atur Klasifikasi Akun
-                                                    </button>
-                                                    &nbsp;
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <form id="data-form-lvl1" class="col-md-10" v-if="stateNumber == 1" style="padding: 0px;">
-                                    <div class="col-md-12" id="main-content">
-                                        <div class="row">
-                                            <div class="col-md-12 title">
-                                                <span>1. Setting Klasifikasi Hierarki Akun <small>(Level 1)</small></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12 text-intro">
-                                               Hierarki Akun Level 1 Telah Di Set Secara Default, Sehingga Data Tidak Bisa Ditambah Atau Dihapus. Namun, Anda Tetap Bisa Mengganti Nama Dari Hierarki Ini. 
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-8 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; max-height: 254px; min-height: 254px; overflow-y: scroll;">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <form id="form-data-level-1">
-                                                            <table class="table table-stripped table-bordered table-mini">
-                                                                <tbody>
-                                                                    <tr v-for="lvl1 in level_1">
-                                                                        <td class="text-center" width="8%" style="vertical-align: middle;">@{{ lvl1.id }}</td>
-                                                                        <td>
-                                                                            <input type="text" name="lvl1[]" style="border: 0px; width: 70%" :value="lvl1.nama" :id="'input-'+lvl1.id" :data-value="lvl1.nama" @blur="checkValue">
-
-                                                                            <input type="hidden" name="nama_lama[]" :value="lvl1.nama" readonly>
-
-                                                                            <input type="hidden" name="id_lama[]" :value="lvl1.id" readonly>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 text-intro">
-                                                <i class="fa fa-circle-o" style="font-size: 7pt;"></i> &nbsp;Simpan Terlebih Dahulu Data Anda Saat Akan Berpindah Ke Jendela Selanjutnya Atau Sebelumnya. <br>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
-                                                <div class="row">
-                                                    <div class="col-md-5 form-status" style="padding-top: 10px;">
-                                                        
-                                                    </div>
-
-                                                    <div class="col-md-7 text-right">
-                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevel1" :disabled="btnDisabled">
-                                                            Simpan Perubahan
-                                                        </button>
-                                                        &nbsp;
-                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
-                                                            <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
-                                                        </button>
-                                                        &nbsp;
-                                                        <button class="btn btn-default btn-sm" type="button" @click="nextState" :disabled="btnDisabled">
-                                                            Selanjutnya &nbsp;<i class="fa fa-arrow-right"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <form id="data-form-lvlsubclass" class="col-md-10" v-if="stateNumber == 2" style="padding: 0px;">
-                                    <div class="col-md-12" id="main-content">
-                                        <div class="row">
-                                            <div class="col-md-12 title">
-                                                <span>2. Setting Klasifikasi Hierarki <small>(Subclass)</small></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12 text-intro">
-                                               Untuk Menentukan Pos di Hierarki Subclass. Pilih Terlebih Dahulu Hierarki Level 1 nya.
-                                            </div>
-
-                                            <div class="col-md-12" style="margin-top: 15px; font-style: italic; padding-left: 0px; margin-bottom: 15px;">
-                                                <div class="row">
-                                                    <div class="col-md-2 text-right">
-                                                        <label class="modul-keuangan">Pilih Level 1</label>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <select class="form-control modul-keuangan" name="level1" @change="level1SubclassChange" v-model="level1Subclass">
-                                                            <option v-for="lvl1 in level_1" :value="lvl1.id">
-                                                                @{{ lvl1.id +' - '+ lvl1.nama }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-1" style="padding-top: 5px; cursor: help;" title="Simpan terlebih Dahulu Data Anda Saat Akan Berpindah Ke Data Level 1 Yang Lain">
-                                                        <i class="fa fa-exclamation"></i>
-                                                    </div>
-                                                </div>    
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-8 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; padding-right: 15px; max-height: 210px; min-height: 210px; overflow-y: scroll;" id="content-lvl-2">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <form id="form-data-level-1">
-                                                            <table class="table table-stripped table-bordered table-mini">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="8%" class="text-center">*</td>
-                                                                        <td class="text-center" style="position: sticky; top: 0px; background: white;"> Nama </td>
-                                                                    </tr>
-
-                                                                    <tr v-for="data in dataSubclassPrint" v-if="data.nama != 'Tidak Memiliki'">
-                                                                        <td class="text-center" style="vertical-align: middle;">
-                                                                            <i class="fa fa-lock" v-if="data.status == 'locked'" title="Subclass Dikunci Tidak Bisa Dihapus"></i>
-
-                                                                            <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Subclass Ini." @click="hapusHierarkiSubclass(data.id)"></i>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input type="text" name="data[]" style="border: 0px; width: 70%" :value="data.nama" :id="'input-'+data.id" :data-value="data.nama" @blur="checkValue">
-
-                                                                            <input type="hidden" name="nama_lama[]" :value="data.nama" readonly>
-
-                                                                            <input type="hidden" name="id_lama[]" :value="data.id" readonly>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    <tr v-for="lvl2New in lvl2New">
-                                                                        <td class="text-center">-</td>
-
-                                                                        <td>
-                                                                            <input type="text" :id="'lvlSubclassNewNama'+lvl2New" name="lvl2NewNama[]" style="border: 0px; width: 70%" @blur="checkValue">
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 text-intro">
-                                                <i class="fa fa-circle-o" style="font-size: 7pt;"></i> &nbsp;Simpan Terlebih Dahulu Data Anda Saat Akan Berpindah Ke Jendela Selanjutnya Atau Sebelumnya. <br>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
-                                                <div class="row">
-                                                    <div class="col-md-4 form-status" style="padding-top: 10px;">
-                                                        
-                                                    </div>
-
-                                                    <div class="col-md-8 text-right">
-                                                        <button class="btn btn-primary btn-sm" type="button" @click="tambahLevel2" :disabled="btnDisabled">
-                                                            <i class="fa fa-plus"></i> &nbsp;Tambah
-                                                        </button>
-                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevelSubclass" :disabled="btnDisabled">
-                                                            Simpan Perubahan
-                                                        </button>
-                                                        &nbsp;
-                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
-                                                            <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
-                                                        </button>
-                                                        &nbsp;
-                                                        <button class="btn btn-default btn-sm" type="button" @click="nextState">
-                                                            Selanjutnya &nbsp;<i class="fa fa-arrow-right"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <form id="data-form-lvl2" class="col-md-10" v-if="stateNumber == 3" style="padding: 0px;">
-                                    <div class="col-md-12" id="main-content">
-                                        <div class="row">
-                                            <div class="col-md-12 title">
-                                                <span>3. Setting Klasifikasi Hierarki Akun <small>(Level 2)</small></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12 text-intro">
-                                               Untuk Menentukan Pos di Hierarki Level 2. Pilih Terlebih Dahulu Hierarki Level 1 nya. <small>(Simpan Terlebih Dahulu Data Anda Saat Berpindah Ke Data Level 1 Yang Lain)</small>
-                                            </div>
-
-                                            <div class="col-md-12" style="margin-top: 15px; font-style: italic; padding-left: 0px; margin-bottom: 15px;">
-                                                <div class="row">
-                                                    <div class="col-md-2 text-right">
-                                                        <label class="modul-keuangan">Pilih Level 1</label>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <select class="form-control modul-keuangan" name="level1" @change="level1Change" v-model='level1'>
-                                                            <option v-for="lvl1 in level_1" :value="lvl1.id">
-                                                                @{{ lvl1.id +' - '+ lvl1.nama }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-1" style="padding-top: 5px; cursor: help;" title="Simpan terlebih Dahulu Data Anda Saat Akan Berpindah Ke Data Level 1 Yang Lain">
-                                                        <i class="fa fa-exclamation"></i>
-                                                    </div>
-                                                </div>    
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-11 text-detail" style="background-color: none; margin-top: 15px; padding-left: 15px; padding-right: 15px; max-height: 210px; min-height: 210px; overflow-y: scroll;" id="content-lvl-2">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <form id="form-data-level-1">
-                                                            <table class="table table-stripped table-bordered table-mini">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="5%" class="text-center">*</td>
-                                                                        <td width="10%" class="text-center" style="position: sticky; top: 0px; background: white;">ID</td>
-                                                                        <td width="45%" class="text-center" style="position: sticky; top: 0px; background: white;"> Nama </td>
-                                                                        <td width="25%" class="text-center" style="position: sticky; top: 0px; background: white;"> Subclass </td>
-                                                                        <td class="text-center" style="position: sticky; top: 0px; background: white;"> Cashflow </td>
-                                                                    </tr>
-
-                                                                    <tr v-for="data in data2Print">
-                                                                        <td class="text-center" style="vertical-align: middle;">
-                                                                            <i class="fa fa-lock" v-if="data.status == 'locked'" title="Hierarki Dikunci Tidak Bisa Dihapus"></i>
-
-                                                                            <i class="fa fa-eraser" v-if="data.status != 'locked'" style="cursor: pointer; color: #ff4444;" title="Hapus Hierarki Ini." @click="hapusHierarki2(data.id)"></i>
-                                                                        </td>
-                                                                        <td class="text-center" width="8%">
-                                                                            @{{ level1 }}.
-                                                                            <input type="text" name="dataId[]" style="border: 0px; width: 70%" :value="data.id.split('.')[1]" :id="'inputID-'+data.id.replace(/\./g, '-')" :data-value="data.id.split('.')[1]" @blur="checkIdlvl2" @keypress="onlyNumber" data-max="3">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input type="text" name="data[]" style="border: 0px; width: 70%" :value="data.nama" :id="'input-'+data.id.replace(/\./g, '-')" :data-value="data.nama" @blur="checkValue">
-
-                                                                            <input type="hidden" name="nama_lama[]" :value="data.nama" readonly>
-
-                                                                            <input type="hidden" name="id_lama[]" :value="data.id" readonly>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="hld_subclass[]">
-                                                                                <option v-for="det in dataSubclassPrintLvl2" :value="det.id" :selected="det.id == data.subclass">@{{ det.nama }}</option>
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="cashflow[]">
-                                                                                <option value="">Tidak Ada Cashflow</option>
-                                                                                <option value="OCF" :selected="data.cashflow == 'OCF'">Operating Cashflow</option>
-                                                                                <option value="ICF" :selected="data.cashflow == 'ICF'">Investing Cashflow</option>
-                                                                                <option value="FCF" :selected="data.cashflow == 'FCF'">Financial Cashflow</option>
-                                                                            </select>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    <tr v-for="lvl2New in lvl2New">
-                                                                        <td class="text-center">-</td>
-                                                                        <td class="text-center" width="8%">
-                                                                            @{{ level1 }}.
-                                                                            <input type="text" name="lvl2NewId[]" style="border: 0px; width: 70%" :id="'lvl2NewId'+lvl2New" @blur="checkIdlvl2" @keypress="onlyNumber" data-max="3">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input type="text" :id="'lvl2NewNama'+lvl2New" name="lvl2NewNama[]" style="border: 0px; width: 70%" @blur="checkValue">
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="hld_subclassNew[]">
-                                                                                <option v-for="det in dataSubclassPrintLvl2" :value="det.id">@{{ det.nama }}</option>
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="lvl2NewCashflow[]">
-                                                                                <option value="">Tidak Ada Cashflow</option>
-                                                                                <option value="OCF">Operating Cashflow</option>
-                                                                                <option value="ICF">Investing Cashflow</option>
-                                                                                <option value="FCF">Financial Cashflow</option>
-                                                                            </select>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 text-intro">
-                                                <i class="fa fa-circle-o" style="font-size: 7pt;"></i> &nbsp;Simpan Terlebih Dahulu Data Anda Saat Akan Berpindah Ke Jendela Selanjutnya Atau Sebelumnya. <br>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12" style="border-top: 1px solid #eee; padding: 21px 10px 8px 10px; margin-top: 25px;">
-                                                <div class="row">
-                                                    <div class="col-md-4 form-status" style="padding-top: 10px;">
-                                                        
-                                                    </div>
-
-                                                    <div class="col-md-8 text-right">
-                                                        <button class="btn btn-primary btn-sm" type="button" @click="tambahLevel2" :disabled="btnDisabled">
-                                                            <i class="fa fa-plus"></i> &nbsp;Tambah
-                                                        </button>
-                                                        <button class="btn btn-info btn-sm" type="button" @click="simpanLevel2" :disabled="btnDisabled">
-                                                            Simpan Perubahan
-                                                        </button>
-                                                        &nbsp;
-                                                        <button class="btn btn-default btn-sm" type="button" @click="previousState" :disabled="btnDisabled">
-                                                            <i class="fa fa-arrow-left"></i> &nbsp;Sebelumnya
-                                                        </button>
-                                                        &nbsp;
-                                                        {{-- <button class="btn btn-default btn-sm" type="button" @click="nextState">
-                                                            Selanjutnya &nbsp;<i class="fa fa-arrow-right"></i>
-                                                        </button> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
-                      </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
         </div>
+    </div>
+</div>
 @endsection
 
 
@@ -741,7 +699,7 @@
 
                     axios.post('{{ route('setting.klasifikasi_akun.simpan.level_2') }}', $('#data-form-lvl2').serialize())
                                 .then((response) => {
-                                    console.log(response.data);
+                                    // console.log(response.data);
                                     
                                     if(response.data.status == 'berhasil'){
                                         toast.update({
@@ -799,7 +757,7 @@
 
                     axios.post('{{ route('setting.klasifikasi_akun.simpan.subclass') }}', $('#data-form-lvlsubclass').serialize())
                                 .then((response) => {
-                                    console.log(response.data);
+                                    // console.log(response.data);
                                     
                                     if(response.data.status == 'berhasil'){
                                         toast.update({
@@ -922,7 +880,7 @@
 
                         axios.post('{{ route('setting.klasifikasi_akun.hapus.subclass') }}', {id: e, _token: '{{ csrf_token() }}' })
                                 .then((response) => {
-                                    console.log(response.data);
+                                    // console.log(response.data);
                                     
                                     if(response.data.status == 'berhasil'){
                                         toast.update({
@@ -976,9 +934,14 @@
                 checkIdlvl2: function(e){
                     var conteks = $('#'+e.srcElement.id);
                     var recentVal = conteks.data('value');
-                    var id = this.level1+'.'+conteks.val();
+                    var id = conteks.attr('id');
+                    var val = conteks.val();
                     
-                    var greping = $.grep(this.level_2, function(n){ return n.id == id && n.id.split('.')[1] != recentVal });
+                    // console.log(val);
+
+                    var greping = $('.idLevel2').filter(function(e){ 
+                        return $(this).val() == val && $(this).attr('id') != id
+                     });
 
                     if(greping.length > 0){
                         $.toast({

@@ -11,134 +11,93 @@
 
 
 @section('content')
-    
-    <!--BEGIN PAGE WRAPPER-->
-    <div id="page-wrapper">
-        <!--BEGIN TITLE & BREADCRUMB PAGE-->
-        <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-            <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                <div class="page-title">Master Data Group Akun</div>
-            </div>
-            <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
+    <div class="col-md-12" style="background: none;">
+    	<div class="col-md-12">
+    		<div class="row">
+    			<div class="col-md-6 content-title">
+    				Master Data Group Akun
+    			</div>
 
-                <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+    			<div class="col-md-6 text-right">
+                    <a href="{{ route('grup-akun.create') }}">
+    				    <button class="btn btn-info btn-sm">Tambah / Edit Data Group Akun</button>
+                    </a>
+    			</div>
+    		</div>	
+    	</div>
 
-                <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+    	<div class="col-md-12 table-content">
+    		<table class="table table-bordered table-stripped" id="data-sample">
+    			<thead>
+    				<tr>
+    					<th width="5%">No</th>
+    					<th width="30%">Nama Group</th>
+    					<th width="30%">Tipe Group</th>
+                        <th width="20%">Kelompok Group</th>
+    					<th>Aksi</th>
+    				</tr>
+    			</thead>
 
-                <li class="active">Master Data Group Akun</li>
-            </ol>
-            <div class="clearfix">
-            </div>
-        </div>
+    			<tbody>
 
-        <div class="page-content fadeInRight">
-            <div id="tab-general">
-                <div class="row mbl">
-                    <div class="col-lg-12">
-                      <div class="col-md-12">
-                          <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
-                          </div>
-                      </div>
+                    @foreach($data as $key => $group)
+                        
+                        <?php 
+                            $bg     = '#eee';
+                            $color  = '#aaa';
 
-                      <ul id="generalTab" class="nav nav-tabs">
-                        <li class="active"><a href="#alert-tab" data-toggle="tab">Master Data Group Akun</a></li>
-                      </ul>
+                            if($group->ag_isactive == '1'){
+                                $bg     = 'none';
+                                $color  = 'none';
+                            }
+                        ?>
 
-                      <div id="generalTabContent" class="tab-content responsive">
-                          <div id="alert-tab" class="tab-pane fade in active">
-                            <div class="row" style="margin-top:-20px;">
+                        <tr style="background: {{ $bg  }}; color: {{  $color }};">
+                            <td class="text-center">{{ ($key+1) }}</td>
+                            <td>{{ $group->ag_nama }}</td>
+                            <?php
 
-                              <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 20px; padding-top: 20px;">
-                                    <a href="{{ route('grup-akun.create') }}">
-                                        <button class="btn btn-info btn-sm">Tambah / Edit Data Group Akun</button>
-                                    </a>
-                              </div>
+                                $type = "Neraca / Balance Sheet";
 
-                              <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <div class="table-responsive">
+                                switch($group->ag_type){
+                                    case "LR":
+                                        $type = "Laba Rugi / Revenue";
+                                        break;
 
-                                    <table class="table table-bordered table-stripped" id="data-sample">
-                                        <thead>
-                                            <tr>
-                                                <th width="5%">No</th>
-                                                <th width="30%">Nama Group</th>
-                                                <th width="30%">Tipe Group</th>
-                                                <th width="20%">Kelompok Group</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
+                                    case "A":
+                                        $type = "Arus Kas / Cashflow";
+                                        break;
+                                }
 
-                                        <tbody>
+                            ?>
+                            <td>{{ $type }}</td>
+                            <td>{{ $group->ag_kelompok }}</td>
+                            <td class="text-center">
+                                {{-- <button class="btn btn-secondary btn-sm" title="Edit Data Group">
+                                    <i class="fa fa-edit"></i>
+                                </button> --}}
 
-                                            @foreach($data as $key => $group)
-                                                
-                                                <?php 
-                                                    $bg     = '#eee';
-                                                    $color  = '#aaa';
-
-                                                    if($group->ag_isactive == '1'){
-                                                        $bg     = 'none';
-                                                        $color  = 'none';
-                                                    }
-                                                ?>
-
-                                                <tr style="background: {{ $bg  }}; color: {{  $color }};">
-                                                    <td class="text-center">{{ ($key+1) }}</td>
-                                                    <td>{{ $group->ag_nama }}</td>
-                                                    <?php
-
-                                                        $type = "Neraca / Balance Sheet";
-
-                                                        switch($group->ag_type){
-                                                            case "LR":
-                                                                $type = "Laba Rugi / Revenue";
-                                                                break;
-
-                                                            case "A":
-                                                                $type = "Arus Kas / Cashflow";
-                                                                break;
-                                                        }
-
-                                                    ?>
-                                                    <td>{{ $type }}</td>
-                                                    <td>{{ $group->ag_kelompok }}</td>
-                                                    <td class="text-center">
-                                                        {{-- <button class="btn btn-secondary btn-sm" title="Edit Data Group">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button> --}}
-
-                                                        @if($group->ag_status == 'locked')
-                                                            <button class="btn btn-default btn-sm" title="Group Sedang Dikunci" style="cursor: no-drop;">
-                                                                <i class="fa fa-lock"></i>
-                                                            </button>
-                                                        @elseif($group->ag_isactive == '1')
-                                                            <button class="btn btn-success btn-sm aktifkanGroup" title="Nonaktifkan" data-id="{{ $group->ag_id }}">
-                                                                <i class="fa fa-check-square-o"></i>
-                                                            </button>
-                                                        @else
-                                                            <button class="btn btn-danger btn-sm aktifkanGroup" title="Aktifkan" data-id="{{ $group->ag_id }}">
-                                                                <i class="fa fa-square-o"></i>
-                                                            </button>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            
-                                        </tbody>
-                                    </table>
-                                    
-                                  </div>
-                              </div>
-                    
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                @if($group->ag_status == 'locked')
+                                    <button class="btn btn-default btn-sm" title="Group Sedang Dikunci" style="cursor: no-drop;">
+                                        <i class="fa fa-lock"></i>
+                                    </button>
+                                @elseif($group->ag_isactive == '1')
+                                    <button class="btn btn-success btn-sm aktifkanGroup" title="Nonaktifkan" data-id="{{ $group->ag_id }}">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </button>
+                                @else
+                                    <button class="btn btn-danger btn-sm aktifkanGroup" title="Aktifkan" data-id="{{ $group->ag_id }}">
+                                        <i class="fa fa-square-o"></i>
+                                    </button>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+    				
+    			</tbody>
+    		</table>
+    	</div>
     </div>
-
 @endsection
 
 

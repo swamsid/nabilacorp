@@ -23,15 +23,17 @@ class pelunasan_hutang_controller extends Controller
         $kelompok_bank = DB::table('dk_hierarki_penting')->where('hp_id', '5')->first();
 
         $akunKas = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
                         ->where('ak_kelompok', $kelompok_kas->hp_hierarki)
                         ->where('ak_isactive', '1')
-                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+                        ->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"))
                         ->get();
 
         $akunBank = DB::table('dk_akun')
+                        ->where('ak_comp', modulSetting()['onLogin'])
                         ->where('ak_kelompok', $kelompok_bank->hp_hierarki)
                         ->where('ak_isactive', '1')
-                        ->select('ak_id as id', DB::raw("concat(ak_id, ' - ', ak_nama) as text"))
+                        ->select('ak_id as id', DB::raw("concat(ak_nomor, ' - ', ak_nama) as text"))
                         ->get();
 
     	$response = [
@@ -56,8 +58,8 @@ class pelunasan_hutang_controller extends Controller
                                                     'py_nomor',
                                                     'py_total_tagihan',
                                                     'py_sudah_dibayar',
-                                                     DB::raw('concat(ak_1.ak_id, " - ", ak_1.ak_nama) as py_akun_hutang'),
-                                                     DB::raw('concat(ak_2.ak_id, " - ", ak_2.ak_nama) as py_akun_titipan')
+                                                     DB::raw('concat(ak_1.ak_nomor, " - ", ak_1.ak_nama) as py_akun_hutang'),
+                                                     DB::raw('concat(ak_2.ak_nomor, " - ", ak_2.ak_nama) as py_akun_titipan')
                                                 )
                                                 ->leftJoin('dk_akun as ak_1', 'ak_1.ak_id', 'dk_payable.py_akun_hutang')
                                                 ->leftJoin('dk_akun as ak_2', 'ak_2.ak_id', 'dk_payable.py_akun_titipan')
@@ -71,6 +73,7 @@ class pelunasan_hutang_controller extends Controller
                         ->whereIn('pydt_payable', function($query) use ($request){
                             $query->select('py_id')
                                         ->from('dk_payable')
+                                        ->where('py_comp', modulSetting()['onLogin'])
                                         ->where('py_chanel', $request->jenis)->get();
                         })
                         ->where('pydt_tanggal', '>=', $tanggal)
@@ -85,11 +88,12 @@ class pelunasan_hutang_controller extends Controller
                     ->leftJoin('dk_akun as ak_1', 'ak_1.ak_id', '=', 'dk_payable.py_akun_hutang')
                     ->leftJoin('dk_akun as ak_2', 'ak_2.ak_id', '=', 'dk_payable.py_akun_titipan')
     				->where('dk_payable.py_chanel', $request->chanel)
+                    ->where('py_comp', modulSetting()['onLogin'])
     				->where(DB::raw('(py_total_tagihan - py_sudah_dibayar)'), '>', '0')
                     ->select(
                             'dk_payable.*',
-                            DB::raw('concat(ak_1.ak_id, " - ", ak_1.ak_nama) as py_akun_hutang'),
-                            DB::raw('concat(ak_2.ak_id, " - ", ak_2.ak_nama) as py_akun_titipan'),
+                            DB::raw('concat(ak_1.ak_nomor, " - ", ak_1.ak_nama) as py_akun_hutang'),
+                            DB::raw('concat(ak_2.ak_nomor, " - ", ak_2.ak_nama) as py_akun_titipan'),
                             DB::raw('(dk_payable.py_total_tagihan - dk_payable.py_sudah_dibayar) as py_sisa_tagihan'))
     				->get();
 

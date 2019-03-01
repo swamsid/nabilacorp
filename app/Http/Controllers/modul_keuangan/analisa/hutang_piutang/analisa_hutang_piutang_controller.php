@@ -12,8 +12,17 @@ use PDF;
 
 class analisa_hutang_piutang_controller extends Controller
 {
-    public function index(){
-    	return view('modul_keuangan.analisa.hutang_piutang.index');
+    public function index(Request $request){
+        $cabang = '';
+
+        if(modulSetting()['support_cabang']){
+            $cabang = DB::table(tabel()->cabang->nama)
+                                ->where(tabel()->cabang->kolom->id, $request->cab)
+                                ->select(tabel()->cabang->kolom->nama.' as nama')
+                                ->first()->nama;
+        }
+
+    	return view('modul_keuangan.analisa.hutang_piutang.index', compact('cabang'));
     }
 
     public function dataResource(Request $request){
@@ -27,17 +36,33 @@ class analisa_hutang_piutang_controller extends Controller
 
     		$tgl = date('Y-m-d', strtotime('+'.($i).' months', strtotime($d1)));
 
-    		$hutang = DB::table('dk_payable')
-    					->where('py_tanggal', '>=', $tgl)
-    					->where('py_tanggal', '<', date('Y-m-d', strtotime('+1 month', strtotime($tgl))))
-    					->select(DB::raw('coalesce(sum(py_total_tagihan), 0) as total_tagihan'), DB::raw('coalesce(sum(py_sudah_dibayar), 0) as sudah_dibayar'))
-    					->first();
+            if(modulSetting()['support_cabang']){
+                $hutang = DB::table('dk_payable')
+                            ->where('py_comp', $request->cab)
+                            ->where('py_tanggal', '>=', $tgl)
+                            ->where('py_tanggal', '<', date('Y-m-d', strtotime('+1 month', strtotime($tgl))))
+                            ->select(DB::raw('coalesce(sum(py_total_tagihan), 0) as total_tagihan'), DB::raw('coalesce(sum(py_sudah_dibayar), 0) as sudah_dibayar'))
+                            ->first();
 
-    		$piutang = DB::table('dk_receivable')
-    					->where('rc_tanggal', '>=', $tgl)
-    					->where('rc_tanggal', '<', date('Y-m-d', strtotime('+1 month', strtotime($tgl))))
-    					->select(DB::raw('coalesce(sum(rc_total_tagihan), 0) as total_tagihan'), DB::raw('coalesce(sum(rc_sudah_dibayar), 0) as sudah_dibayar'))
-    					->first();
+                $piutang = DB::table('dk_receivable')
+                            ->where('rc_comp', $request->cab)
+                            ->where('rc_tanggal', '>=', $tgl)
+                            ->where('rc_tanggal', '<', date('Y-m-d', strtotime('+1 month', strtotime($tgl))))
+                            ->select(DB::raw('coalesce(sum(rc_total_tagihan), 0) as total_tagihan'), DB::raw('coalesce(sum(rc_sudah_dibayar), 0) as sudah_dibayar'))
+                            ->first();
+            }else{
+                $hutang = DB::table('dk_payable')
+                            ->where('py_tanggal', '>=', $tgl)
+                            ->where('py_tanggal', '<', date('Y-m-d', strtotime('+1 month', strtotime($tgl))))
+                            ->select(DB::raw('coalesce(sum(py_total_tagihan), 0) as total_tagihan'), DB::raw('coalesce(sum(py_sudah_dibayar), 0) as sudah_dibayar'))
+                            ->first();
+
+                $piutang = DB::table('dk_receivable')
+                            ->where('rc_tanggal', '>=', $tgl)
+                            ->where('rc_tanggal', '<', date('Y-m-d', strtotime('+1 month', strtotime($tgl))))
+                            ->select(DB::raw('coalesce(sum(rc_total_tagihan), 0) as total_tagihan'), DB::raw('coalesce(sum(rc_sudah_dibayar), 0) as sudah_dibayar'))
+                            ->first();
+                }
 
     		array_push($data, 
     			[

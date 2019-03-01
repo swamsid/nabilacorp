@@ -117,6 +117,7 @@
 	          min-height: 700px;
 	          border-radius: 2px;
 	          margin: 0 auto;
+	          padding-bottom: 20px;
 	        }
 
 		</style>
@@ -246,7 +247,7 @@
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}  &nbsp;- {{ $cabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -284,7 +285,7 @@
 										<td class="text-center" style="border: 1px solid #eee;">@{{ humanizeDate(data.jr_tanggal_trans) }}</td>
 										<td class="text-center" style="border: 1px solid #eee;">@{{ data.jr_ref }}</td>
 										<td style="border: 1px solid #eee;">@{{ data.jr_keterangan }}</td>
-										<td class="text-center" style="border: 1px solid #eee;">@{{ detail.jrdt_akun }}</td>
+										<td class="text-center" style="border: 1px solid #eee;">@{{ detail.ak_nomor }}</td>
 										<td style="border: 1px solid #eee;" v-if="requestNama == 'true'">@{{ detail.ak_nama }}</td>
 										<td class="text-right" style="border: 1px solid #eee;">
 											<span v-html="(detail.jrdt_dk == 'D') ? humanizePrice(detail.jrdt_value) : '0.00'"></span>
@@ -346,6 +347,7 @@
 	                <div class="content-popup">
 	                	<form id="form-setting" method="get" action="{{ route('laporan.keuangan.jurnal_umum') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+	                	<input type="hidden" readonly name="cab" value="{{ isset($_GET['cab']) ? $_GET['cab']: '' }}">
 	                    <div class="col-md-12">
 	                    	<div class="row mt-form">
 	                            <div class="col-md-4">
@@ -356,6 +358,18 @@
 	                                <vue-select :name="'type'" :id="'type'" :options="typeLaporan" :styles="'width:100%'"></vue-select>
 	                            </div>
 	                        </div>
+
+	                        @if(modulSetting()['support_cabang'])
+		                        <div class="row mt-form">
+		                            <div class="col-md-4">
+		                                <label class="modul-keuangan">Laporan Milik</label>
+		                            </div>
+
+		                            <div class="col-md-8">
+		                                <vue-select :name="'cab'" :id="'cabang'" :options="cabang" :styles="'width:100%'"></vue-select>
+		                            </div>
+		                        </div>
+		                    @endif
 
 	                        <div class="row mt-form">
 	                            <div class="col-md-4">
@@ -479,6 +493,8 @@
 			    							text: 'Jangan Tampilkan Nama Akun'
 			    						}
 			    					],
+
+			    					cabang: []
 			    			},
 
 			    			created: function(){
@@ -501,6 +517,14 @@
 			                            .then((response) => {
 
 			                            	this.requestNama = response.data.requestNama;
+
+			                            	if(response.data.cabang.length){
+		                                		this.cabang = response.data.cabang;
+		                                		var idCabang = '{{ (isset($_GET['cab'])) ? $_GET['cab'] : '' }}';
+		                                		setTimeout(function() {
+				            						$('#cabang').val(idCabang).trigger('change.select2');
+		                                		}, 0);
+		                                	}
 
 			                                if(response.data.data.length){
 			                                	this.dataSource = response.data.data;
@@ -651,9 +675,9 @@
 			                            stack: false
 			                        });
 
-				            		window.print();
+				            		// window.print();
 
-				            		// $('#pdfIframe').attr('src', '{{route('laporan.keuangan.jurnal_umum.print')}}?'+that.url.searchParams)
+				            		$('#pdfIframe').attr('src', '{{route('laporan.keuangan.jurnal_umum.print')}}?'+that.url.searchParams)
 				            	},
 
 				            	humanizePrice: function(alpha){

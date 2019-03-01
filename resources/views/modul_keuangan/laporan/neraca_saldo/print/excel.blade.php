@@ -9,12 +9,12 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td style="font-weight: 800">Laporan Neraca Saldo <small>(x1000)</small></td>
+			<td style="font-weight: 800">Laporan Neraca Saldo</td>
 		</tr>
 
 		<tr>
 			<td></td>
-			<td>{{ jurnal()->companyName }}</td>
+			<td>{{ jurnal()->companyName }} &nbsp; - {{ $data['cabang'] }}</td>
 		</tr>
 
 		<tr>
@@ -62,7 +62,7 @@
 			@foreach($data['data'] as $key => $akun)
 				<tr>
 					<td></td>
-					<td>{{ $akun->ak_id }}</td>
+					<td>{{ $akun->ak_nomor }}</td>
 					<td>
 						{{ $akun->saldo_awal }}
 					</td>

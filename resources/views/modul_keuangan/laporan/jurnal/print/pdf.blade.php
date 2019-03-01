@@ -18,7 +18,7 @@
 		</tr>
 
 		<tr>
-			<td>{{ jurnal()->companyName }}</td>
+			<td>{{ jurnal()->companyName }} &nbsp;- {{ $data['namaCabang'] }}</td>
 		</tr>
 
 		<tr>
@@ -58,7 +58,7 @@
 					<td style="text-align: center;">{{ date('d/m/Y', strtotime($resource->jr_tanggal_trans)) }}</td>
 					<td style="font-size: 8pt;">{{ $resource->jr_ref }}</td>
 					<td>{{ $resource->jr_keterangan }}</td>
-					<td style="text-align: center;">{{ $detail->jrdt_akun }}</td>
+					<td style="text-align: center;">{{ $detail->ak_nomor }}</td>
 
 					@if($data['request']['nama'] == 'true')
 						<td>{{ $detail->ak_nama }}</td>

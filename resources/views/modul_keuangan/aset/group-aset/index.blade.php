@@ -80,9 +80,9 @@
                             <td class="text-center" style="cursor: alias; color: #0099CC;" title="Masa Manfaat : {{ $group->ga_masa_manfaat }} Tahun | Persentase Saldo Menurun : {{ $group->ga_saldo_menurun }} % | Persentase Garis Lurus : {{ $group->ga_garis_lurus }} %">
                                 {{ $golongan }}
                             </td>
-                            <td class="text-center" style="cursor: alias; color: #0099CC;" title="{{ $group->nama_akun_harta }}">{{ $group->ga_akun_harta }}</td>
-                            <td class="text-center" style="cursor: alias; color: #0099CC;" title="{{ $group->nama_akun_akumulasi }}">{{ $group->ga_akun_akumulasi }}</td>
-                            <td class="text-center" style="cursor: alias; color: #0099CC;" title="{{ $group->nama_akun_beban }}">{{ $group->ga_akun_beban }}</td>
+                            <td class="text-center" style="cursor: alias; color: #0099CC;" title="{{ $group->nama_akun_harta }}">{{ $group->nomor_akun_harta }}</td>
+                            <td class="text-center" style="cursor: alias; color: #0099CC;" title="{{ $group->nama_akun_akumulasi }}">{{ $group->nomor_akun_akumulasi }}</td>
+                            <td class="text-center" style="cursor: alias; color: #0099CC;" title="{{ $group->nama_akun_beban }}">{{ $group->nomor_akun_beban }}</td>
                             <td class="text-center">
                                 <button class="btn btn-success btn-sm deleteGroup" title="hapus group" data-id="{{ $group->ga_id }}">
                                     <i class="fa fa-eraser"></i>

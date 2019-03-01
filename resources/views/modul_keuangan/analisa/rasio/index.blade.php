@@ -268,11 +268,11 @@
 						<table width="100%" border="0" style="border-bottom: 1px solid #333;">
 				          <thead>
 				            <tr>
-				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Analisa Rasio Keuangan <small>(Rekap)</small></th>
+				              <th style="text-align: left; font-size: 14pt; font-weight: 600; padding-top: 10px;" colspan="2">Analisa Rasio Keuangan {{-- <small>(Rekap)</small> --}}</th>
 				            </tr>
 
 				            <tr>
-				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }}</th>
+				              <th style="text-align: left; font-size: 12pt; font-weight: 500" colspan="2">{{ jurnal()->companyName }} &nbsp;- {{ $cabang }}</th>
 				            </tr>
 
 				            <tr>
@@ -436,6 +436,7 @@
 	                <div class="content-popup">
 	                	<form id="form-setting" method="get" action="{{ route('analisa.keuangan.cashflow') }}">
 	                	<input type="hidden" readonly name="_token" value="{{ csrf_token() }}">
+	                	<input type="hidden" readonly name="cab" value="{{ isset($_GET['cab']) ? $_GET['cab']: '' }}">
 	                    <div class="col-md-12">
 
 	                    	<div class="row mt-form">

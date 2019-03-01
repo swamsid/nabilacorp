@@ -11,130 +11,112 @@
 
 
 @section('content')
-    <!--BEGIN PAGE WRAPPER-->
-    <div id="page-wrapper">
-        <!--BEGIN TITLE & BREADCRUMB PAGE-->
-        <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-            <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                <div class="page-title">Master Data Akun Keuangan</div>
-            </div>
-            <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
-
-                <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-
-                <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-
-                <li class="active">Master Data Akun Keuanagan</li>
-            </ol>
-            <div class="clearfix">
-            </div>
+<!--BEGIN PAGE WRAPPER-->
+<div id="page-wrapper">
+    <!--BEGIN TITLE & BREADCRUMB PAGE-->
+    <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+        <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
+            <div class="page-title">Master Data Akun Keuangan</div>
         </div>
-
-        <div class="page-content fadeInRight">
-            <div id="tab-general">
-                <div class="row mbl">
-                    <div class="col-lg-12">
-                      <div class="col-md-12">
-                          <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
-                          </div>
-                      </div>
-
-                      <ul id="generalTab" class="nav nav-tabs">
+        <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Master Data Akun Keuangan</li>
+        </ol>
+        <div class="clearfix">
+        </div>
+    </div>
+    <div class="page-content fadeInRight">
+        <div id="tab-general">
+            <div class="row mbl">
+                <div class="col-lg-12">
+                    
+                    <ul id="generalTab" class="nav nav-tabs">
                         <li class="active"><a href="#alert-tab" data-toggle="tab">Master Data Akun Keuangan</a></li>
-                      </ul>
-
-                      <div id="generalTabContent" class="tab-content responsive">
-                          <div id="alert-tab" class="tab-pane fade in active">
+                    </ul>
+                    <div id="generalTabContent" class="tab-content responsive">
+                        <div id="alert-tab" class="tab-pane fade in active">
                             <div class="row" style="margin-top:-20px;">
-
-                              <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 20px; padding-top: 20px;">
-                                   <a href="{{ route('akun.create') }}">
-                                        <button class="btn btn-info btn-sm">Tambah / Edit Data Akun</button>
+                                <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 10px;">
+                                    <a href="{{ route('akun.create') }}">
+                                        <button type="button" class="btn btn-box-tool" title="Tambahkan Data Item">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> &nbsp;Tambah / Edit Data Akun
+                                        </button>
                                     </a>
-                              </div>
-
-                              <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <div class="table-responsive">
-
-                                    <table class="table table-bordered table-stripped" id="data-sample">
-                                        <thead>
-                                            <tr>
-                                                <th width="5%">No</th>
-                                                <th width="12%">Kode Akun</th>
-                                                <th width="25%">Nama Akun</th>
-                                                <th width="15%">Kelompok</th>
-                                                <th width="8%">D/K</th>
-                                                <th width="15%">Saldo Opening</th>
-                                                <th width="15%">Tanggal Buat</th>
-                                                <th width="10">Aksi</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-
-                                            @foreach($data as $key => $akun)
-                                                <?php 
-                                                    $bg     = '#eee';
-                                                    $color  = '#aaa';
-
-                                                    if($akun->ak_isactive == '1'){
-                                                        $bg     = 'none';
-                                                        $color  = 'none';
-                                                    }
+                                </div>
+                                
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-stripped" id="data-sample">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%">No</th>
+                                                    <th width="12%">Kode Akun</th>
+                                                    <th width="25%">Nama Akun</th>
+                                                    <th width="15%">Kelompok</th>
+                                                    <th width="8%">D/K</th>
+                                                    <th width="15%">Saldo Opening</th>
+                                                    <th width="15%">Tanggal Buat</th>
+                                                    <th width="10">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($data as $key => $akun)
+                                                <?php
+                                                $bg     = '#eee';
+                                                $color  = '#aaa';
+                                                if($akun->ak_isactive == '1'){
+                                                $bg     = 'none';
+                                                $color  = 'none';
+                                                }
                                                 ?>
-
                                                 <tr style="background: {{ $bg  }}; color: {{  $color }};">
                                                     <td class="text-center">{{ ($key+1) }}</td>
-                                                    <td>{{ $akun->ak_id }}</td>
+                                                    <td class="text-center">{{ $akun->ak_nomor }}</td>
                                                     <td>{{ $akun->ak_nama }}</td>
                                                     <td>{{ $akun->kelompok }}</td>
-
-                                                    <?php 
-                                                        if($akun->ak_posisi == 'D')
-                                                            $posisi = 'DEBET';
-                                                        else
-                                                            $posisi = 'KREDIT';
+                                                    <?php
+                                                    if($akun->ak_posisi == 'D')
+                                                    $posisi = 'DEBET';
+                                                    else
+                                                    $posisi = 'KREDIT';
                                                     ?>
-
                                                     <td class="text-center">{{ $posisi }}</td>
                                                     <td class="text-right">{{ number_format($akun->ak_opening, 2) }}</td>
                                                     <td class="text-center">{{ date('d/m/Y', strtotime($akun->created_at)) }}</td>
                                                     <td class="text-center">
                                                         {{-- <button class="btn btn-secondary btn-sm" title="Edit Data Group">
-                                                            <i class="fa fa-edit"></i>
+                                                        <i class="fa fa-edit"></i>
                                                         </button> --}}
-
                                                         @if($akun->ak_status == 'locked')
-                                                            <button class="btn btn-default btn-sm" title="Akun Sedang Dikunci" style="cursor: no-drop;">
-                                                                <i class="fa fa-lock"></i>
-                                                            </button>
+                                                        <button class="btn btn-default btn-sm" title="Akun Sedang Dikunci" style="cursor: no-drop;">
+                                                        <i class="fa fa-lock"></i>
+                                                        </button>
                                                         @elseif($akun->ak_isactive == '1')
-                                                            <button class="btn btn-success btn-sm aktifkanData" title="Nonaktifkan" data-id="{{ $akun->ak_id }}">
-                                                                <i class="fa fa-check-square-o"></i>
-                                                            </button>
+                                                        <button class="btn btn-success btn-sm aktifkanData" title="Nonaktifkan" data-id="{{ $akun->ak_id }}">
+                                                        <i class="fa fa-check-square-o"></i>
+                                                        </button>
                                                         @else
-                                                            <button class="btn btn-danger btn-sm aktifkanData" title="Aktifkan" data-id="{{ $akun->ak_id }}">
-                                                                <i class="fa fa-square-o"></i>
-                                                            </button>
+                                                        <button class="btn btn-danger btn-sm aktifkanData" title="Aktifkan" data-id="{{ $akun->ak_id }}">
+                                                        <i class="fa fa-square-o"></i>
+                                                        </button>
                                                         @endif
                                                     </td>
                                                 </tr>
-                                            @endforeach
-                                            
-                                        </tbody>
-                                    </table>
-
-                                  </div>
-                              </div>
-                    
+                                                @endforeach
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                      </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 

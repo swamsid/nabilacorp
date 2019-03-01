@@ -1,3 +1,39 @@
+
+<style type="text/css" media="print">
+      @page { size: landscape; }
+      nav{
+        display: none;
+      }
+
+      .ctn-nav{
+        display: none;
+      }
+
+      #contentnya{
+      	width: 100%;
+      	padding: 0px;
+      	margin-top: -50px;
+      }
+
+      #table-data th{
+         background-color: #0099CC !important;
+         color: white;
+         -webkit-print-color-adjust: exact;
+      }
+
+      #table-data td.divide{
+         background: #eee !important;
+         -webkit-print-color-adjust: exact;
+      }
+
+      #table-data td.counter{
+         background: #0099CC !important;
+         -webkit-print-color-adjust: exact;
+      }
+
+      .page-break { display: block; page-break-before: always; }
+</style>
+
 <?php 
 	$tanggal_1 = explode('/', $data['request']['d1'])[0].' '.switchBulan(explode('/', $data['request']['d1'])[1]).' '.explode('/', $data['request']['d1'])[2];
 
@@ -29,7 +65,7 @@
 
 <br>
 
-<table width="100%" style="font-size: 9.5pt;">
+<table id="table-data" width="100%" style="font-size: 9.5pt;">
 	<thead>
 		<tr>
 			<th width="8%" style="background-color: #0099CC; color: #ffffff; text-align: center;">Tanggal</th>
@@ -58,7 +94,7 @@
 					<td style="text-align: center;">{{ date('d/m/Y', strtotime($resource->jr_tanggal_trans)) }}</td>
 					<td style="font-size: 8pt;">{{ $resource->jr_ref }}</td>
 					<td>{{ $resource->jr_keterangan }}</td>
-					<td style="text-align: center;">{{ $detail->jrdt_akun }}</td>
+					<td style="text-align: center;">{{ $detail->ak_nomor }}</td>
 
 					@if($data['request']['nama'] == 'true')
 						<td>{{ $detail->ak_nama }}</td>
@@ -82,13 +118,13 @@
 
 			<tr>
 				@if($data['request']['nama'] == 'true')
-					<td colspan="5" style="background-color: #eee; padding: 5px; font-weight: bold"></td>
+					<td class="divide" colspan="5" style="background-color: #eee; padding: 5px; font-weight: bold"></td>
 				@else
-					<td colspan="4" style="background-color: #eee; padding: 5px; font-weight: bold"></td>
+					<td class="divide" colspan="4" style="background-color: #eee; padding: 5px; font-weight: bold"></td>
 				@endif
 
-				<td style="background-color: #eee; text-align: right; padding: 5px; font-weight: bold">{{ number_format($DS, 2) }}</td>
-				<td style="background-color: #eee; text-align: right; padding: 5px; font-weight: bold">{{ number_format($KS, 2) }}</td>
+				<td class="divide" style="background-color: #eee; text-align: right; padding: 5px; font-weight: bold">{{ number_format($DS, 2) }}</td>
+				<td class="divide" style="background-color: #eee; text-align: right; padding: 5px; font-weight: bold">{{ number_format($KS, 2) }}</td>
 			</tr>
 		@endforeach
 
@@ -99,8 +135,8 @@
 				<td colspan="4" style="background-color: none"></td>
 			@endif
 
-			<td style="background-color: #0d47a1; color: #ffffff; text-align: right; padding: 0px 5px;">{{ number_format($D, 2) }}</td>
-			<td style="background-color: #007E33; color: #ffffff; text-align: right; padding: 0px 5px;">{{ number_format($K, 2) }}</td>
+			<td class="counter" style="background-color: #0d47a1; color: #ffffff; text-align: right; padding: 5px; font-weight: bold;">{{ number_format($D, 2) }}</td>
+			<td class="counter" style="background-color: #007E33; color: #ffffff; text-align: right; padding: 5px; font-weight: bold;">{{ number_format($K, 2) }}</td>
 		</tr>
 	</tbody>
 </table>

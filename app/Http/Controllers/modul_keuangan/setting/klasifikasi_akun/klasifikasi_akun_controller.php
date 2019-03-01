@@ -85,7 +85,7 @@ class klasifikasi_akun_controller extends Controller
                     ]);
 
                     DB::table('dk_akun')->where('ak_kelompok', $addition.'.'.$request->dataId[$key])->update([
-                        'ak_id' => DB::raw('concat(ak_kelompok, ".", ak_sub_id)'),
+                        'ak_nomor' => DB::raw('concat(ak_kelompok, ".", ak_sub_id)'),
                     ]);
                 }
             }
@@ -208,7 +208,7 @@ class klasifikasi_akun_controller extends Controller
 
             DB::commit();
 
-            $subclass = DB::table('dk_hierarki_subclass')->select('hs_id as id', 'hs_nama as nama', 'hs_level_1 as level1')->get();
+            $subclass = DB::table('dk_hierarki_subclass')->select('hs_id as id', 'hs_nama as nama', 'hs_level_1 as level1', 'hs_status as status')->get();
 
             $response = [
                 "status"    => 'berhasil',

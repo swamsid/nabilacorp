@@ -12,8 +12,17 @@ use PDF;
 
 class analisa_aset_ekuitas_controller extends Controller
 {
-    public function index(){
-    	return view('modul_keuangan.analisa.aset_ekuitas.index');
+    public function index(Request $request){
+        $cabang = '';
+
+        if(modulSetting()['support_cabang']){
+            $cabang = DB::table(tabel()->cabang->nama)
+                                ->where(tabel()->cabang->kolom->id, $request->cab)
+                                ->select(tabel()->cabang->kolom->nama.' as nama')
+                                ->first()->nama;
+        }
+
+    	return view('modul_keuangan.analisa.aset_ekuitas.index', compact('cabang'));
     }
 
     public function dataResource(Request $request){
@@ -26,27 +35,53 @@ class analisa_aset_ekuitas_controller extends Controller
 
     		$tgl = date('Y-m-d', strtotime('+'.($i).' months', strtotime($d1)));
 
-    		$aset = DB::table('dk_akun')
-    					->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
-                        ->where('as_periode', $tgl)
-    					->where('ak_kelompok', $kelompokHarta->hp_hierarki)
-    					->where('ak_isactive', '1')
-    					->select(
-                            DB::raw('coalesce(sum(as_saldo_awal), 0) as saldo_awal'),
-                            DB::raw('coalesce(sum(as_mut_kas_debet + as_mut_bank_debet + as_mut_memorial_debet), 0) as penambahan'),
-                            DB::raw('coalesce(sum(as_mut_kas_kredit + as_mut_bank_kredit + as_mut_memorial_kredit), 0) as pengurangan')
-                        )->first();
+            if(modulSetting()['support_cabang']){
+                $aset = DB::table('dk_akun')
+                            ->where('ak_comp', $request->cab)
+                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                            ->where('as_periode', $tgl)
+                            ->where('ak_kelompok', $kelompokHarta->hp_hierarki)
+                            ->where('ak_isactive', '1')
+                            ->select(
+                                DB::raw('coalesce(sum(as_saldo_awal), 0) as saldo_awal'),
+                                DB::raw('coalesce(sum(as_mut_kas_debet + as_mut_bank_debet + as_mut_memorial_debet), 0) as penambahan'),
+                                DB::raw('coalesce(sum(as_mut_kas_kredit + as_mut_bank_kredit + as_mut_memorial_kredit), 0) as pengurangan')
+                            )->first();
 
-            $ekuitas = DB::table('dk_akun')
-    					->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
-                        ->where('as_periode', $tgl)
-    					->where(DB::raw('substring(ak_id, 1, 1)'), '3')
-    					->where('ak_isactive', '1')
-    					->select(
-                            DB::raw('coalesce(sum(as_saldo_awal), 0) as saldo_awal'),
-                            DB::raw('coalesce(sum(as_mut_kas_kredit + as_mut_bank_kredit + as_mut_memorial_kredit), 0) as penambahan'),
-                            DB::raw('coalesce(sum(as_mut_kas_debet + as_mut_bank_debet + as_mut_memorial_debet), 0) as pengurangan')
-                        )->first();
+                $ekuitas = DB::table('dk_akun')
+                            ->where('ak_comp', $request->cab)
+                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                            ->where('as_periode', $tgl)
+                            ->where(DB::raw('substring(ak_nomor, 1, 1)'), '3')
+                            ->where('ak_isactive', '1')
+                            ->select(
+                                DB::raw('coalesce(sum(as_saldo_awal), 0) as saldo_awal'),
+                                DB::raw('coalesce(sum(as_mut_kas_kredit + as_mut_bank_kredit + as_mut_memorial_kredit), 0) as penambahan'),
+                                DB::raw('coalesce(sum(as_mut_kas_debet + as_mut_bank_debet + as_mut_memorial_debet), 0) as pengurangan')
+                            )->first();
+            }else{
+                $aset = DB::table('dk_akun')
+                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                            ->where('as_periode', $tgl)
+                            ->where('ak_kelompok', $kelompokHarta->hp_hierarki)
+                            ->where('ak_isactive', '1')
+                            ->select(
+                                DB::raw('coalesce(sum(as_saldo_awal), 0) as saldo_awal'),
+                                DB::raw('coalesce(sum(as_mut_kas_debet + as_mut_bank_debet + as_mut_memorial_debet), 0) as penambahan'),
+                                DB::raw('coalesce(sum(as_mut_kas_kredit + as_mut_bank_kredit + as_mut_memorial_kredit), 0) as pengurangan')
+                            )->first();
+
+                $ekuitas = DB::table('dk_akun')
+                            ->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
+                            ->where('as_periode', $tgl)
+                            ->where(DB::raw('substring(ak_nomor, 1, 1)'), '3')
+                            ->where('ak_isactive', '1')
+                            ->select(
+                                DB::raw('coalesce(sum(as_saldo_awal), 0) as saldo_awal'),
+                                DB::raw('coalesce(sum(as_mut_kas_kredit + as_mut_bank_kredit + as_mut_memorial_kredit), 0) as penambahan'),
+                                DB::raw('coalesce(sum(as_mut_kas_debet + as_mut_bank_debet + as_mut_memorial_debet), 0) as pengurangan')
+                            )->first();
+            }
 
     		array_push($data, 
     			[

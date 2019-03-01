@@ -257,7 +257,7 @@
                 <div class="layout" style="width: 70%">
                     <div class="top-popup" style="background: none;">
                         <span class="title">
-                            Data Grup Aset Yang Sudah Masuk
+                            Data Aset Yang Sudah Masuk
                         </span>
 
                         <span class="close"><i class="fa fa-times" style="font-size: 12pt; color: #CC0000"></i></span>
@@ -640,20 +640,15 @@
                             if(response.data.golongan.length > 0){
                                 this.kelompokAset = response.data.golongan;
     
-                                this.singleData.at_akun_harta = response.data.golongan[0].ga_akun_harta+' - '+response.data.golongan[0].nama_akun_harta;
-                                this.singleData.at_akun_akumulasi = response.data.golongan[0].ga_akun_akumulasi+' - '+response.data.golongan[0].nama_akun_akumulasi;
-                                this.singleData.at_akun_beban = response.data.golongan[0].ga_akun_beban+' - '+response.data.golongan[0].nama_akun_beban;
+                                this.singleData.at_akun_harta = response.data.golongan[0].nomor_akun_harta+' - '+response.data.golongan[0].nama_akun_harta;
+                                this.singleData.at_akun_akumulasi = response.data.golongan[0].nomor_akun_akumulasi+' - '+response.data.golongan[0].nama_akun_akumulasi;
+                                this.singleData.at_akun_beban = response.data.golongan[0].nomor_akun_beban+' - '+response.data.golongan[0].nama_akun_beban;
 
                                 this.singleData.at_masa_manfaat = response.data.golongan[0].ga_masa_manfaat;
                                 if($('#at_metode').val() == 'GL')
                                     this.singleData.at_persentase = response.data.golongan[0].ga_garis_lurus;
                                 else
                                     this.singleData.at_persentase = response.data.golongan[0].ga_saldo_menurun;
-                            }
-
-                            if(response.data.akunKas.length > 0){
-                                this.akunKas = response.data.akunKas;
-                                this.singleData.at_akun_masukkan = this.akunKas[0].text;
                             }
 
                             this.akunPendapatan = response.data.akunPendapatan;
@@ -937,9 +932,9 @@
 
                     this.singleData.at_masa_manfaat = this.kelompokAset[idx].ga_masa_manfaat;
 
-                    this.singleData.at_akun_harta = this.kelompokAset[idx].ga_akun_harta+' - '+this.kelompokAset[idx].nama_akun_harta;
-                    this.singleData.at_akun_akumulasi = this.kelompokAset[idx].ga_akun_akumulasi+' - '+this.kelompokAset[idx].nama_akun_akumulasi;
-                    this.singleData.at_akun_beban = this.kelompokAset[idx].ga_akun_beban+' - '+this.kelompokAset[idx].nama_akun_beban;
+                    this.singleData.at_akun_harta = this.kelompokAset[idx].nomor_akun_harta+' - '+this.kelompokAset[idx].nama_akun_harta;
+                    this.singleData.at_akun_akumulasi = this.kelompokAset[idx].nomor_akun_harta+' - '+this.kelompokAset[idx].nama_akun_akumulasi;
+                    this.singleData.at_akun_beban = this.kelompokAset[idx].nomor_akun_harta+' - '+this.kelompokAset[idx].nama_akun_beban;
 
                     this.metodeChange($('#at_metode').val());
                 },

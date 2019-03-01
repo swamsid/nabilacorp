@@ -103,7 +103,7 @@
 				'extraStyles'  		   => 'extra_styles',
 
 			// modul
-				'support_cabang'	   => true,
+				'support_cabang'	   => false,
 				'id_pusat'			   => 1,
 				'onLogin'              => 1
 		];

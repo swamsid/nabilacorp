@@ -13,8 +13,17 @@ use PDF;
 
 class analisa_common_size_controller extends Controller
 {
-    public function index(){
-    	return view('modul_keuangan.analisa.common_size.index');
+    public function index(Request $request){
+    	$cabang = '';
+
+        if(modulSetting()['support_cabang']){
+            $cabang = DB::table(tabel()->cabang->nama)
+                                ->where(tabel()->cabang->kolom->id, $request->cab)
+                                ->select(tabel()->cabang->kolom->nama.' as nama')
+                                ->first()->nama;
+        }
+
+    	return view('modul_keuangan.analisa.common_size.index', compact('cabang'));
     }
 
     public function dataResource(Request $request){
@@ -25,14 +34,30 @@ class analisa_common_size_controller extends Controller
 
     		$level_1 = DB::table('dk_hierarki_lvl_satu')->whereIn('hls_id', ['1', '2', '3'])->select('hls_id', 'hls_nama')->get();
 
-    		$data = DB::table('dk_akun')
-    				->whereIn(DB::raw('substring(ak_id, 1, 1)'), ['1', '2', '3'])
+    		if(modulSetting()['support_cabang']){
+    			$data = DB::table('dk_akun')
+    				->whereIn(DB::raw('substring(ak_nomor, 1, 1)'), ['1', '2', '3'])
+    				->where('ak_comp', $request->cab)
     				->select(
     						'dk_akun.ak_id',
+    						'dk_akun.ak_nomor',
     						'dk_akun.ak_posisi',
     						'dk_akun.ak_nama'
     				)
     				->get();
+    		}else{
+    			$data = DB::table('dk_akun')
+    				->whereIn(DB::raw('substring(ak_nomor, 1, 1)'), ['1', '2', '3'])
+    				->select(
+    						'dk_akun.ak_id',
+    						'dk_akun.ak_nomor',
+    						'dk_akun.ak_posisi',
+    						'dk_akun.ak_nama'
+    				)
+    				->get();
+    		}
+
+    		// return json_encode($data);
 
 	    	for ($i=0; $i < 12; $i++) {
 	    		$tgl = date('Y-m-d', strtotime('+'.($i).' months', strtotime($d1)));
@@ -67,7 +92,7 @@ class analisa_common_size_controller extends Controller
 					}
 
 
-	    			$stropper[$akun->ak_id][$i] = [
+	    			$stropper[$akun->ak_nomor][$i] = [
 	    				"nama" 			=> $akun->ak_nama,
 	    				"periode"		=> $tgl,
 	    				"saldo_akhir"	=> $saldo_akhir,
@@ -84,14 +109,28 @@ class analisa_common_size_controller extends Controller
 
     		$level_1 = DB::table('dk_hierarki_lvl_satu')->whereIn('hls_id', ['4', '5', '6', '7', '8', '9'])->select('hls_id', 'hls_nama')->get();
 
-    		$data = DB::table('dk_akun')
-    				->whereIn(DB::raw('substring(ak_id, 1, 1)'), ['4', '5', '6', '7', '8', '9'])
+    		if(modulSetting()['support_cabang']){
+    			$data = DB::table('dk_akun')
+    				->whereIn(DB::raw('substring(ak_nomor, 1, 1)'), ['4', '5', '6', '7', '8', '9'])
+    				->where('ak_comp', $request->cab)
     				->select(
     						'dk_akun.ak_id',
+    						'dk_akun.ak_nomor',
     						'dk_akun.ak_posisi',
     						'dk_akun.ak_nama'
     				)
     				->get();
+    		}else{
+    			$data = DB::table('dk_akun')
+    				->whereIn(DB::raw('substring(ak_nomor, 1, 1)'), ['4', '5', '6', '7', '8', '9'])
+    				->select(
+    						'dk_akun.ak_id',
+    						'dk_akun.ak_nomor',
+    						'dk_akun.ak_posisi',
+    						'dk_akun.ak_nama'
+    				)
+    				->get();
+    		}
 
 	    	for ($i=0; $i < 12; $i++) {
 	    		$tgl = date('Y-m-d', strtotime('+'.($i).' months', strtotime($d1)));
@@ -126,7 +165,7 @@ class analisa_common_size_controller extends Controller
 					}
 
 
-	    			$stropper[$akun->ak_id][$i] = [
+	    			$stropper[$akun->ak_nomor][$i] = [
 	    				"nama" 			=> $akun->ak_nama,
 	    				"periode"		=> $tgl,
 	    				"saldo_akhir"	=> $saldo_akhir,

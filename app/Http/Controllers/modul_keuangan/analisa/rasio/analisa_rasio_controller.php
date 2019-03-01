@@ -10,8 +10,17 @@ use PDO;
 
 class analisa_rasio_controller extends Controller
 {
-    public function index(){
-    	return view('modul_keuangan.analisa.rasio.index');
+    public function index(Request $request){
+        $cabang = '';
+
+        if(modulSetting()['support_cabang']){
+            $cabang = DB::table(tabel()->cabang->nama)
+                                ->where(tabel()->cabang->kolom->id, $request->cab)
+                                ->select(tabel()->cabang->kolom->nama.' as nama')
+                                ->first()->nama;
+        }
+
+    	return view('modul_keuangan.analisa.rasio.index', compact('cabang'));
     }
 
     public function dataResource(Request $request){
@@ -34,8 +43,8 @@ class analisa_rasio_controller extends Controller
             array_push($response['likuiditas'], [
                 "periode"       => $tgl,
                 "onPeriode"     => $onPeriode,
-                "quickRasio"    => $this->dataRasioLikuiditas($tgl)['quickRasio'],
-                "currentRasio"  => $this->dataRasioLikuiditas($tgl)['currentRasio']
+                "quickRasio"    => $this->dataRasioLikuiditas($tgl, $request)['quickRasio'],
+                "currentRasio"  => $this->dataRasioLikuiditas($tgl, $request)['currentRasio']
             ]);
     	}
 
@@ -47,7 +56,7 @@ class analisa_rasio_controller extends Controller
 
     }
 
-    public function dataRasioLikuiditas($periode){
+    public function dataRasioLikuiditas($periode, $request){
         
         $hutangLancar = $aktiva = $persediaan = 0;
 
@@ -59,8 +68,10 @@ class analisa_rasio_controller extends Controller
         // else
         //     return 'ada';
 
-        $data = DB::table('dk_akun')
-                    ->whereIn(DB::raw('substring(ak_id, 1, 1)'), ['1', '2'])
+        if(modulSetting()['support_cabang']){
+            $data = DB::table('dk_akun')
+                    ->whereIn(DB::raw('substring(ak_nomor, 1, 1)'), ['1', '2'])
+                    ->where('ak_comp', $request->cab)
                     ->select(
                             'dk_akun.ak_id',
                             'dk_akun.ak_posisi',
@@ -68,6 +79,18 @@ class analisa_rasio_controller extends Controller
                             'dk_akun.ak_kelompok'
                     )
                     ->get();
+        }else{
+            $data = DB::table('dk_akun')
+                    ->whereIn(DB::raw('substring(ak_nomor, 1, 1)'), ['1', '2'])
+                    ->select(
+                            'dk_akun.ak_id',
+                            'dk_akun.ak_posisi',
+                            'dk_akun.ak_nama',
+                            'dk_akun.ak_kelompok'
+                    )
+                    ->get();
+        }
+
 
         // return $data;
 
