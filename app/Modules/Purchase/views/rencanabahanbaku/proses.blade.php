@@ -134,7 +134,7 @@
 </div>
 <!--END PAGE WRAPPER-->
 <!-- modal-detail -->
-{!!$modalDetail!!}
+{{-- {!!$modalDetail!!} --}}
 @endsection
 @section("extra_scripts")
 <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>

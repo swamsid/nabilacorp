@@ -278,8 +278,8 @@ class RencanaBahanController extends Controller
           }
         }
 
-        $modalDetail=view('Purchase::rencanabahanbaku/modal-detail');
-        return view('Purchase::rencanabahanbaku/proses',compact('modalDetail'),[ 'd_sup' => $d_sup, 'data' => $dataHeader ]);
+        // $modalDetail=view('Purchase::rencanabahanbaku/modal-detail');
+        return view('Purchase::rencanabahanbaku/proses',[ 'd_sup' => $d_sup, 'data' => $dataHeader ]);
       }
       else
       {
