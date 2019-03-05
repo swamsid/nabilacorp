@@ -27,18 +27,24 @@ class hargaKhususController extends Controller
     public function tableGroup($id){
     	$item = m_item_price::select('ip_item',
     								'i_name',
-    								'ip_price')
+    								'ip_price',
+                                    'i_code')
     		->join('m_item','m_item.i_id','=','ip_item')
     		->where('ip_group',$id)
     		->get();
     	
     	return DataTables::of($item)
 
-    	->editColumn('ip_price', function ($data)
+    	->editColumn('i_name', function ($data)
+        {
+            return $data->i_code.' - '.$data->i_name;
+        })
+
+        ->editColumn('ip_price', function ($data)
         {
             return '<div>
                       <span class="pull-right">
-                        '.number_format( $data->ip_price ,2,',','.').'
+                        '.number_format( $data->ip_price ,2,'.',',').'
                       </span>
                     </div>';
         })
@@ -54,7 +60,7 @@ class hargaKhususController extends Controller
 		          </div>';
 
 		})
-    	->rawColumns(['ip_price','action'])
+    	->rawColumns(['ip_price','action','i_name'])
         ->make(true);
 
     }
@@ -270,7 +276,7 @@ $results=[];
         		m_item_price::where('ip_group',$request->group)
         		->where('ip_item',$request->i_id)
         		->update([
-        			'ip_price' => $request->price,
+        			'ip_price' => str_replace(',', '', $request->price),
                     'ip_edit'=> $ip_edit
         		]);
         	}
@@ -279,7 +285,7 @@ $results=[];
         		m_item_price::create([
 	        		'ip_group' => $request->group,
 	        		'ip_item' => $request->i_id,
-	        		'ip_price' => $request->price,
+	        		'ip_price' => str_replace(',', '', $request->price),
                     'ip_edit'=> $ip_edit
 	        	]);	
         	}

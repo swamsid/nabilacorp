@@ -105,9 +105,9 @@ class PenerimaanBrgSupController extends Controller
                            'm_item.i_sat1', 
                            'm_item.i_id', 
                            'm_satuan.m_sname', 
-                           'm_satuan.m_sid')
+                           'm_satuan.s_id')
                   ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
-                  ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.m_sid')
+                  ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.s_id')
                   ->where(function ($query) use ($id, $item_type) {
                           $query->where('d_purchasing_dt.d_pcs_id', '=', $id);
                           $query->whereIn('m_item.i_type', $item_type);
@@ -162,7 +162,7 @@ class PenerimaanBrgSupController extends Controller
         $counter = 0;
         //ambil value stok by item type
          $comp = Session::get('user_comp');
-         $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);;
+         $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
 
         return response()->json([
             'status' => 'sukses',
@@ -676,33 +676,59 @@ class PenerimaanBrgSupController extends Controller
         ->make(true);
     }
 
-    public function getdatadetail($id)
-    {
+   public function getDataDetail($id)
+   {
+        $dataHeader = d_terima_pembelian::join('d_purchasing','d_terima_pembelian.d_tb_pid','=','d_purchasing.d_pcs_id')
+            ->join('m_supplier','d_terima_pembelian.d_tb_sup','=','m_supplier.s_id')
+            ->join('d_mem','d_terima_pembelian.d_tb_staff','=','d_mem.m_id')
+            ->select('d_terima_pembelian.*', 'm_supplier.s_id', 'm_supplier.s_company', 'd_purchasing.*', 'd_mem.m_name')
+            ->where('d_terima_pembelian.d_tb_id', '=', $id)
+            ->orderBy('d_tb_created', 'DESC')
+            ->get();
 
-       $data_header = DB::table('d_terima_pembelian')
-                  ->join('d_mem','d_terima_pembelian.d_tb_staff','=','d_mem.m_id')
-                  ->join('m_supplier','d_terima_pembelian.d_tb_sup','=','m_supplier.s_id')
-                  ->where('d_tb_code',$id)
-                  ->get();
-       
-       $data_isi = DB::table('d_terima_pembelian')
-                ->select('s_qty','d_tbdt_qty','d_tbdt_qty','d_tbdt_totalqty','i_code','i_name','ms.s_name')
-                ->join('d_terima_pembelian_dt','d_tb_id','d_tbdt_idtb')
-                ->join('m_item','i_id','d_tbdt_item')
-                ->join('d_mem','d_terima_pembelian.d_tb_staff','=','d_mem.m_id')
-                ->join('m_supplier','d_terima_pembelian.d_tb_sup','=','m_supplier.s_id')
-                ->leftjoin('d_stock','d_stock.s_item','=','m_item.i_id')
-                ->join('m_satuan as ms','ms.s_id','=','d_terima_pembelian_dt.d_tbdt_sat')
-                ->leftjoin('d_purchase_order','d_purchase_order.po_code','=','d_terima_pembelian.d_tb_noreff')
-                ->where('d_tb_code',$id)
+        foreach ($dataHeader as $val) 
+        {   $total_disc = (int)$val->d_pcs_discount + (int)$val->d_pcs_disc_value;
+            $data = array(
+                /*'hargaTotBeliGross' => 'Rp. '.number_format($val->d_pcs_total_gross,2,",","."),
+                'hargaTotBeliDisc' => 'Rp. '.number_format($total_disc,2,",","."),
+                'hargaTotBeliTax' => 'Rp. '.number_format($val->d_pcs_tax_value,2,",","."),
+                'hargaTotBeliNett' => 'Rp. '.number_format($val->d_pcs_total_net,2,",","."),
+                'hargaTotalTerimaNett' => 'Rp. '.number_format($val->d_tb_totalnett,2,",","."),*/
+                'tanggalTerima' => date('d-m-Y',strtotime($val->d_tb_date))
+            );
+        }
+
+        $dataIsi = d_terima_pembelian_dt::join('d_terima_pembelian', 'd_terima_pembelian_dt.d_tbdt_idtb', '=', 'd_terima_pembelian.d_tb_id')
+                ->join('m_item', 'd_terima_pembelian_dt.d_tbdt_item', '=', 'm_item.i_id')
+                ->join('m_satuan', 'd_terima_pembelian_dt.d_tbdt_sat', '=', 'm_satuan.s_id')
+                ->join('d_purchasing_dt', 'd_terima_pembelian_dt.d_tbdt_idpcsdt', '=', 'd_purchasing_dt.d_pcsdt_id')
+                ->select('d_terima_pembelian_dt.*', 'm_item.*', 'd_terima_pembelian.d_tb_code', 'm_satuan.s_id', 'm_satuan.s_name', 'd_purchasing_dt.d_pcsdt_qtyconfirm')
+                ->where('d_terima_pembelian_dt.d_tbdt_idtb', '=', $id)
+                ->orderBy('d_terima_pembelian_dt.d_tbdt_created', 'DESC')
                 ->get();
-     
-     return response()
-            ->json([
-                'data_isi'=>$data_isi,
-                'data_header'=>$data_header,
-            ]);
         
+        //cek item type untuk hitung stok
+        foreach ($dataIsi as $val) 
+        {
+          $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+          //get satuan utama
+          $sat1[] = $val->i_sat1;
+        }
+
+        //variabel untuk count array
+        $counter = 0;
+        //ambil value stok by item type
+        $comp = Session::get('user_comp');
+         $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+
+        return response()->json([
+            'status' => 'sukses',
+            'header' => $dataHeader,
+            'header2' => $data,
+            'data_isi' => $dataIsi,
+            'data_stok' => $dataStok['val_stok'],
+            'data_satuan' => $dataStok['txt_satuan'],
+        ]);
     }
 
     public function getStokByType($arrItemType, $arrSatuan, $counter, $comp)
@@ -949,7 +975,7 @@ class PenerimaanBrgSupController extends Controller
     }
 
    public function cek_status_purchasing($id_purchasing)
-    {
+   {
       //tanggal sekarang
       $tgl = Carbon::today()->toDateString();
       //cek pada table purchasingdt, jika isreceived semua tbl header ubah status ke RC
@@ -961,6 +987,49 @@ class PenerimaanBrgSupController extends Controller
       {
         DB::table('d_purchasing')->where('d_pcs_id', $id_purchasing)->update(['d_pcs_status' => 'RC', 'd_pcs_date_received' => $tgl]);
       }
-    }
+   }
+
+   public function print($id)
+   {
+      $dataHeader = d_terima_pembelian::join('d_purchasing','d_terima_pembelian.d_tb_pid','=','d_purchasing.d_pcs_id')
+         ->join('m_supplier','d_terima_pembelian.d_tb_sup','=','m_supplier.s_id')
+         ->join('d_mem','d_terima_pembelian.d_tb_staff','=','d_mem.m_id')
+         ->select('d_terima_pembelian.*', 'm_supplier.s_id', 'm_supplier.s_name', 'm_supplier.s_company', 'd_purchasing.*', 'd_mem.m_name')
+         ->where('d_terima_pembelian.d_tb_id', '=', $id)
+         ->orderBy('d_tb_created', 'DESC')
+         ->get()->toArray();
+
+      $dataIsi = d_terima_pembelian_dt::join('d_terima_pembelian', 'd_terima_pembelian_dt.d_tbdt_idtb', '=', 'd_terima_pembelian.d_tb_id')
+             ->join('m_item', 'd_terima_pembelian_dt.d_tbdt_item', '=', 'm_item.i_id')
+             ->join('m_satuan', 'd_terima_pembelian_dt.d_tbdt_sat', '=', 'm_satuan.s_id')
+             ->join('d_purchasing_dt', 'd_terima_pembelian_dt.d_tbdt_idpcsdt', '=', 'd_purchasing_dt.d_pcsdt_id')
+             ->select('d_terima_pembelian_dt.*', 'm_item.*', 'd_terima_pembelian.d_tb_code', 'm_satuan.s_id', 'm_satuan.s_name', 'd_purchasing_dt.d_pcsdt_qtyconfirm')
+             ->where('d_terima_pembelian_dt.d_tbdt_idtb', '=', $id)
+             ->orderBy('d_terima_pembelian_dt.d_tbdt_created', 'DESC')
+             ->get()->toArray();
+
+      foreach ($dataIsi as $val) 
+      {
+       $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val['i_id'])->first();
+       //get satuan utama
+       $sat1[] = $val['i_sat1'];
+      }
+
+      //variabel untuk count array
+      $counter = 0;
+      //ambil value stok by item type
+      $comp = Session::get('user_comp');
+      $dataStok = $this->getStokByType($itemType, $sat1, $counter, $comp);
+
+      $val_stock = [];
+      $txt_satuan = [];
+
+      $val_stock = array_chunk($dataStok['val_stok'], 14);
+      $txt_satuan = array_chunk($dataStok['txt_satuan'], 14);
+
+      $dataIsi = array_chunk($dataIsi, 14);
+        
+      return view('Inventory::p_suplier.print', compact('dataHeader', 'dataIsi', 'val_stock', 'txt_satuan'));
+   }
 
 }

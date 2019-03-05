@@ -36,6 +36,7 @@ class m_itemm extends Model
 
     public static function seachItem($item) {      
         //cari barang jual
+
         $results = array();
         $search = $item->term;
 
@@ -126,8 +127,7 @@ class m_itemm extends Model
             ];
           }
         } 
-
-
+        
           }
         } else {
           foreach ($sql as $data)
@@ -149,9 +149,6 @@ class m_itemm extends Model
 
     }
 
-
-
-    
       public static function itemRencana(Request $request)
     {
         $term = $request->term;
