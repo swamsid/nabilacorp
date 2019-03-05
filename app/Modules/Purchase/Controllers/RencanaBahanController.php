@@ -307,10 +307,7 @@ class RencanaBahanController extends Controller
           // return json_encode($list_item);
           $aa = DB::table('m_item')->select('i_id','i_name','i_code')->where('i_id', $list_item[$i]->is_item)->first();
 
-          // dd($aa);
-
           $bb = DB::table('spk_formula')->select('fr_formula')->where('fr_formula', $list_item[$i]->is_item)->first();
-          // dd($aa);
           if ($request->item != $aa->i_id) {
             if (!empty($bb->fr_formula)) {
               $d_item[] = array('item_id' => $aa->i_id, 'item_txt'=> $aa->i_name, 'item_code'=> $aa->i_code);
@@ -492,8 +489,8 @@ class RencanaBahanController extends Controller
 
           if ($prevCost == null) 
           {
-            $default_cost = DB::table('m_price')->select('m_pbuy1')->where('m_pitem', '=', $request->itemid[$i])->first();
-            $hargaLalu = $default_cost->m_pbuy1;
+            // $default_cost = 0
+            $hargaLalu = 0;
           }
           else
           {
