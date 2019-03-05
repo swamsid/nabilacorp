@@ -120,7 +120,10 @@ class PenjualanController extends Controller
       $printPl=view('Produksi::sam');
       $flag='Toko';
       $paymentmethod=m_paymentmethod::pm();       
-      $daftarHarga=DB::table('m_price_group')->where('pg_active','=','TRUE')->get();             
+      $daftarHarga=DB::table('m_price_group')
+        ->where('pg_active','=','TRUE')
+        ->where('pg_type','B')
+        ->get();             
       $pm =view('POS::paymentmethod/paymentmethod',compact('paymentmethod'));    
       $machine=m_machine::showMachineActive();      
       $data['toko']=view('POS::POSpenjualanToko/toko',compact('machine','paymentmethod','daftarHarga'));      

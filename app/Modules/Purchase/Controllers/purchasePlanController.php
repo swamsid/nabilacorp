@@ -63,8 +63,8 @@ class purchasePlanController extends Controller
 
             if ($prevCost == null) 
             {
-              $default_cost = DB::table('m_price')->select('m_pbuy1')->where('m_pitem', '=', $idItem)->first();
-              $hargaLalu = $default_cost->m_pbuy1;
+              $default_cost = 0;
+              $hargaLalu = $default_cost;
             }
             else
             {
@@ -123,8 +123,8 @@ class purchasePlanController extends Controller
 
             if ($prevCost == null) 
             {
-               $default_cost = DB::table('m_price')->select('m_pbuy1')->where('m_pitem', '=', $idItem)->first();
-               $hargaLalu = $default_cost->m_pbuy1;
+               $default_cost = 0;
+               $hargaLalu = $default_cost;
             }
             else
             {
