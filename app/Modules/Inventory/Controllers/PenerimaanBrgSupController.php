@@ -177,6 +177,7 @@ class PenerimaanBrgSupController extends Controller
     public function simpan_penerimaan(Request $request)
     {
       // return json_encode("okeee");
+        dd($request->all());
         DB::beginTransaction();
         try 
         {
@@ -238,7 +239,7 @@ class PenerimaanBrgSupController extends Controller
                   ->where('s_item', $request->fieldItemId[$i])
                   ->where('s_comp', $grup)
                   ->where('s_position', $grup)
-                  ->update(['s_qty' => $stokAkhir]);
+                  ->update(['s_qty' => DB::raw('s_qty + '.(int)$hasilConvert)]);
                 //get id d_stock
                 $dstock_id = DB::table('d_stock')
                   ->select('s_id')
