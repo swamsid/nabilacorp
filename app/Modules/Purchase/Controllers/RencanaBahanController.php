@@ -291,6 +291,7 @@ class RencanaBahanController extends Controller
     public function suggestItem(Request $request)
     {
       // dd($request->all());
+      $dataHeader = [];
       $menit = Carbon::now('Asia/Jakarta')->format('H:i:s');
       $tanggalMenit1 = date('Y-m-d '.$menit ,strtotime($request->tgl1));
       $tanggalMenit2 = date('Y-m-d '.$menit ,strtotime($request->tgl2));
@@ -302,8 +303,14 @@ class RencanaBahanController extends Controller
         $d_item = [];
         for ($i=0; $i <count($list_item); $i++) 
         { 
+          // echo $list_item[$i]->is_item;
+          // return json_encode($list_item);
           $aa = DB::table('m_item')->select('i_id','i_name','i_code')->where('i_id', $list_item[$i]->is_item)->first();
+
+          // dd($aa);
+
           $bb = DB::table('spk_formula')->select('fr_formula')->where('fr_formula', $list_item[$i]->is_item)->first();
+          // dd($aa);
           if ($request->item != $aa->i_id) {
             if (!empty($bb->fr_formula)) {
               $d_item[] = array('item_id' => $aa->i_id, 'item_txt'=> $aa->i_name, 'item_code'=> $aa->i_code);
@@ -314,7 +321,7 @@ class RencanaBahanController extends Controller
         $hasil = [];
         for ($j=0; $j <count($d_item); $j++) 
         { 
-          $dataHeader[] = spk_formula::join('d_spk', 'spk_formula.fr_spk', '=', 'd_spk.spk_id')
+          $dataHeader = spk_formula::join('d_spk', 'spk_formula.fr_spk', '=', 'd_spk.spk_id')
                                 ->join('m_item', 'spk_formula.fr_formula', '=', 'm_item.i_id')
                                 ->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')
                                 ->select(
@@ -341,13 +348,15 @@ class RencanaBahanController extends Controller
                                 ->where('spk_formula.fr_formula', '=', $d_item[$j])
                                 // ->whereBetween('d_spk.spk_date', [$request->tgl1, $request->tgl2])
                                 ->groupBy('spk_formula.fr_formula')
-                                ->first();
+                                ->get();
         }
+        //dd($dataHeader);
              
         if (count($dataHeader) > 0) 
         {
           foreach ($dataHeader as $val) 
           {
+            // echo $dataHeader;
             //cek item type
             $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->item_id)->first();
             //get satuan utama
