@@ -77,17 +77,10 @@ class RencanaPembelianController extends Controller
        $rows = d_shop_purchase_plan::leftJoin('m_supplier', 'sp_supplier', '=', 's_id');
 
        // Filter berdasarkan tanggal dan keyword
-       $start = $req->start;
-       $start = $start != null ? $start : 0;
-       $length = $req->length;
-       $length = $length != null ? $length : 10;
-       
        $sp_status = $req->sp_status;
        $sp_status = $sp_status != null ? $sp_status : '';
        $keyword = $req->keyword;
        $keyword = $keyword != null ? $keyword : '';
-       $search = $req->search;
-       $search = $search['value'];
        $tgl_awal = $req->tgl_awal;
        $tgl_awal = $tgl_awal != null ? $tgl_awal : '';
        $tgl_akhir = $req->tgl_akhir;
@@ -102,28 +95,14 @@ class RencanaPembelianController extends Controller
         $rows = $rows->where('sp_code', 'LIKE', DB::raw("'%$keyword%'"));
 
        }
-       if($search != '') {
-        $rows = $rows->where('sp_code', 'LIKE', DB::raw("'%$search%'"));
-
-       }
        if($sp_status != '') {
         $rows = $rows->where('sp_status', $sp_status);
        }
 
-       $rows = $rows->skip($start)->take($length);
        $rows = $rows->select('s_id', 'sp_id', DB::raw('DATE_FORMAT(sp_date, "%d/%m/%Y") AS sp_date_label'), 'sp_code', 's_company', 'sp_status', DB::raw("CASE sp_status WHEN 'WT' THEN 'Waiting ' WHEN 'PE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NAP' THEN 'Tidak Disetujui' END AS sp_status_label"))->get();
        
 
-       $draw = $req->draw;
-       $draw = $draw != null ? $draw : 1;
-       $recordsTotal = d_shop_purchase_plan::count('sp_id');
-       $recordsFiltered = count($rows);
-       $res = [
-        'data' => $rows,
-        'recordsFiltered' => $recordsFiltered,
-        'recordsTotal' => $recordsTotal,
-        'draw' => $draw
-       ];
+       $res = array('data' => $rows);
        return response()->json($res);
     }
 

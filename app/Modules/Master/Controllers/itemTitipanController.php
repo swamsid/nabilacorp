@@ -52,8 +52,8 @@ class itemTitipanController extends Controller
     public function index(){
       return view('Master::databarangtitipan/barang');
     }
-    public function dataBarang(Request $req){
-      return m_item_titipan::dataBarang($req);
+    public function dataBarang(){
+      return m_item_titipan::dataBarang();
     }
 
 
@@ -329,7 +329,8 @@ public function simpan(Request $request){
         DB::table('m_item')
           ->where('i_id', $request->id)
           ->update([
-            'i_active' => 'N'
+            'i_active' => 'N',
+            'i_status' => 'N'
           ]);
 
         DB::commit();

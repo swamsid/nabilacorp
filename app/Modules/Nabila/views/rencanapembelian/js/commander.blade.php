@@ -13,20 +13,11 @@
     });
 
     tabel_d_shop_purchase_plan = $("#tabel_d_shop_purchase_plan").DataTable({
-      serverSide : true,
-      processing : true,
       ajax: {
         "url": "{{ route('find_d_shop_purchase_plan') }}",
         
-        data: function(res){
-          var tgl_awal = $('#tgl_awal').val();
-          var tgl_akhir = $('#tgl_akhir').val();
-          
-            res['_token'] = "{{ csrf_token() }}";
-            res['tgl_awal'] = tgl_awal;
-            res['tgl_akhir'] = tgl_akhir;
-
-          return res;
+        data: {
+          "_token": "{{ csrf_token() }}",
         },
       },
       columns: [
@@ -34,21 +25,7 @@
         { data : 'sp_date_label' },
     		{ data : 'sp_code' },
     		{ data : 's_company' },
-    		{ 
-          data : null,
-          render : function(res) {
-            var classname = 'label-info';
-            if(res.sp_status == 'AP') {
-              classname = 'label-success'; 
-            }
-            else if(res.sp_status == 'NAP') {
-              classname = 'label-danger';
-            }
-            var outp = "<span class='label " + classname + "'>" + res.sp_status_label + "</span>"
-
-            return outp;
-          }
-        },
+    		{ data : 'sp_status_label' },
         {
           data : null,
           render : function(res) {
@@ -77,16 +54,10 @@
           } 
         }
       ],
-      columnDefs : [
-        {
-          targets : [3, 5],
-          className : 'text-center'
-        },
-        {
-          targets : [3, 4, 5],
-          orderable : false
-        }
-      ]
+      columnDefs : [{
+        targets : 5,
+        className : 'text-center'
+      }]
     });
   });
 </script>
