@@ -13,17 +13,11 @@
     });
 
     tabel_d_shop_purchase_order = $("#tabel_d_shop_purchase_order").DataTable({
-      processing : true,
-      serverSide : true,
       ajax: {
         "url": "{{ route('find_d_shop_purchase_order') }}",
         
-        data: function(req) {
-          req['tgl_awal'] = $('#tgl_awal').val();
-          req['tgl_akhir'] = $('#tgl_akhir').val();
-          req["_token"] = "{{ csrf_token() }}";
-
-          return req;
+        data: {
+          "_token": "{{ csrf_token() }}",
         },
       },
       columns: [

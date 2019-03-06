@@ -177,23 +177,16 @@
               url: baseUrl + '/master/item/simpan',
               success : function(result){
                 if (result.status == 'berhasil') {
-                    iziToast.success({
-                        position:'topRight',
-                        timeout: 2000,
-                        title: 'Informasi',
-                        message: "Data berhasil disimpan.",
+                    swal({
+                        title: "Berhasil",
+                        text: "Data Berhasil Disimpan",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 900
                     });
                     setTimeout(function(){
                           window.location.reload();
                   }, 850);
-                }
-                else {
-                    iziToast.error({
-                        position:'topRight',
-                        timeout: 2000,
-                        title: 'Informasi',
-                        message: "Terjadi kesalahan.",
-                    });
                 }
               }
             });

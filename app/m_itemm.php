@@ -8,7 +8,6 @@ use DB;
 use Response;
 use Datatables;
 use Session;
-use Illuminate\Http\Request;
 
 class m_itemm extends Model
 {
@@ -17,27 +16,20 @@ class m_itemm extends Model
     const CREATED_AT = 'i_insert';
     const UPDATED_AT = 'i_update';
 
-    public static function dataBarang($req){
+    public static function dataBarang(){
         $data = DB::table('m_item')
               ->leftJoin('m_group', 'g_id', '=', 'i_group')
               ->leftJoin('m_satuan', 's_id', '=', 'i_sat1')
               ->leftJoin('d_item_supplier', 'i_id', '=', 'is_item')
-              ->where('i_type', '!=', 'BTPN')->groupBy('i_id');
-
-        $i_active = $req->i_active;
-        $i_active = $i_active != null ? $i_active : '';
-
-        if($i_active != '') {
-          $data = $data->where('i_active', $i_active);
-        }
-
-        $data = $data->get();     
-        return Datatables::of($data)->editColumn('action', function ($data) {                            
-                return '<div class="btn-group">
-                        <a href="#" class="btn btn-warning btn-sm" title="Edit" onclick="edit('.$data->i_id.')"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" title="Hapus" onclick="hapus('.$data->i_id.')"><i class="fa fa-trash-o"></i></a>
-                      </div>';
-        })->make(true);        
+              ->where('i_active', 'Y')
+              ->where('i_type', '!=', 'BTPN')->groupBy('i_id')
+              ->get();
+         return Datatables::of($data)->editColumn('action', function ($data) {                            
+                                return '<div class="btn-group">
+                                        <a href="#" class="btn btn-warning btn-xs" title="Edit" onclick="edit('.$data->i_id.')"><i class="glyphicon glyphicon-pencil"></i></a>
+                                        <a href="#" class="btn btn-danger btn-xs" title="Hapus" onclick="hapus('.$data->i_id.')"><i class="glyphicon glyphicon-trash"></i></a>
+                                      </div>';
+                        })->make(true);        
     }
 
     
