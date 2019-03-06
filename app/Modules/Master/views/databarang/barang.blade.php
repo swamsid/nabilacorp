@@ -58,9 +58,10 @@
                                   <th class="wd-15p" width="5%">Kode</th>
                                   <th class="wd-15p" width="24%">Nama Barang</th>
                                   <th class="wd-15p" width="5%">Satuan</th>
-                                  <th class="wd-15p" width="15%">Harga HPP</th>
-                                  <th class="wd-15p" width="15%">Harga Jual</th>
+                                  <th width="10%">Harga HPP</th>
+                                  <th width="10%">Harga Jual</th>
                                   <th class="wd-15p" width="10%">Kelompok </th>
+                                  <th class="wd-15p" width="10%">Status </th>
                                   <th class="wd-15p" width="10%">Aksi</th>
                                 </tr>
                               </thead>
@@ -120,14 +121,18 @@ setTimeout(function () {
 function table(){
     $('#dataBarang').dataTable().fnDestroy();
     tablex = $("#dataBarang").DataTable({        
-         
-        "language": dataTableLanguage,
-    processing: true,
+            "language": dataTableLanguage,
+            processing: true,
             serverSide: true,
+            dom : '<l<"#i_status_control.dataTables_length">f<rt>ip>',
             ajax: {
               "url": "{{ url("master/item/data-barang") }}",
-              "type": "get",              
-              },
+              "type": "get",
+              "data" : function(request) {
+                request['i_active'] = $('#i_active').val();
+                return request;
+              }             
+            },
             columns: [
               {data: 'i_code', name: 'i_code'}, 
               {data: 'i_code', name: 'i_code'}, 
@@ -148,6 +153,23 @@ function table(){
                 }
               },      
               {data: 'g_name', name: 'g_name'},            
+              {
+                data: null, 
+                render: function(res) {
+                  var answer, classname;
+                  if(res.i_active == 'Y') {
+                    answer = 'Aktif';
+                    classname = 'label-success';
+                  }
+                  else {
+                    answer = "Tidak aktif";
+                    classname = "label-danger";
+                  }
+
+                  var outp = "<label class='label " + classname + "'>" + answer + "</label>"
+                  return outp;
+                }
+              },            
               {data: 'action', name: 'action'},            
             ],             
 
@@ -159,7 +181,7 @@ function table(){
                   }
                },
                {
-                  'targets': 7,
+                  'targets': [7, 8],
                   'className' : 'text-center'
                },
             ],
@@ -168,6 +190,19 @@ function table(){
             "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
              
            
+    });
+
+    var i_status_control = "<select id='i_active' name='i_active' class='form-control input-sm' style='width:5cm'><option value=''>Tampilkan : Semua</option><option value='Y'>Tampilkan : Data Aktif</option><option value='N'>Tampilkan : Data Non-Aktif</option></select>"
+    $('#i_status_control').html(i_status_control);
+    $('#i_status_control').css({
+      marginLeft : '3mm',
+      paddingLeft : '3mm',
+      borderLeft : '1px solid #8d8d8d',
+      width : '5cm'
+    })
+
+    $('#i_active').change(function() {
+          tablex.ajax.reload();
     });
   }     
                                   
@@ -210,7 +245,7 @@ function table(){
                                   timer: 900
                               });
                               setTimeout(function(){
-                                    window.location.reload();
+                                    tablex.ajax.reload();
                             }, 850);
                           }
                       }, error: function (x, e) {

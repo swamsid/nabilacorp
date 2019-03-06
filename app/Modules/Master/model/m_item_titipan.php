@@ -3,7 +3,7 @@
 namespace App\Modules\Master\model;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Http\Request;
 use DB;
 use Response;
 use Datatables;
@@ -16,15 +16,22 @@ class m_item_titipan extends Model
     const CREATED_AT = 'i_insert';
     const UPDATED_AT = 'i_update';
 
-    public static function dataBarang(){
+    public static function dataBarang($req){
         $data = DB::table('m_item')
               ->leftJoin('m_group', 'g_id', '=', 'i_group')
               ->leftJoin('m_satuan', 's_id', '=', 'i_sat1')
               ->leftJoin('d_item_titipan_supplier', 'i_id', '=', 'its_id')
-              ->where('i_active', 'Y')
               ->where('i_type', 'BTPN')
-              ->select('i_id', 'i_code', 'i_name', 's_name', 'i_hpp', 'its_price1', 'g_name')
-              ->get();
+              ->select('i_id', 'i_code', 'i_name', 's_name', 'i_hpp', 'its_price1', 'g_name', 'i_active');
+        
+        $i_active = $req->i_active;
+        $i_active = $i_active != null ? $i_active : '';
+
+        if($i_active != '') {
+          $data = $data->where('i_active', $i_active);
+        }
+
+        $data = $data->get();
          return Datatables::of($data)->editColumn('action', function ($data) {                            
                                 return '<div class="btn-group">
                                         <a href="#" class="btn btn-warning btn-sm" title="Edit" onclick="edit('.$data->i_id.')"><i class="fa fa-pencil"></i></a>
