@@ -18,8 +18,8 @@ use App\Modules\POS\model\m_machine;
 
 use App\Modules\Purchase\model\d_purchase_return;
 use App\Modules\Purchase\model\d_purchasereturn_dt;
-use App\Modules\Purchase\model\d_purchase_order;
-use App\Modules\Purchase\model\d_purchaseorder_dt;
+use App\Modules\Purchase\model\d_purchasing;
+use App\Modules\Purchase\model\d_purchasing_dt;
 
 use Datatables;
 
@@ -73,7 +73,7 @@ class PurchaseReturnController extends Controller
     
     public function find_d_purchase_return(Request $req) {
       $d_purchase_return = d_purchase_return::leftJoin('d_mem', 'pr_staff', '=', 'm_id')
-        ->leftJoin('d_purchase_order', 'pr_purchase', '=', 'po_id')->leftJoin('m_supplier', 'po_supplier', '=', 's_id');
+        ->leftJoin('d_purchasing', 'pr_purchase', '=', 'd_pcs_id')->leftJoin('m_supplier', 'd_pcs_supplier', '=', 's_id');
       // Filter berdasarkan tanggal
        $tgl_awal = $req->tgl_awal;
        $tgl_awal = $tgl_awal != null ? $tgl_awal : '';
@@ -252,12 +252,12 @@ class PurchaseReturnController extends Controller
 
       // Membuat form update belanja harian
       $d_purchase_return = d_purchase_return::leftJoin('d_mem', 'pr_staff', '=', 'm_id');
-      $d_purchase_return = $d_purchase_return->leftJoin('d_purchase_order', 'pr_purchase', '=', 'po_id');
-      $d_purchase_return = $d_purchase_return->leftJoin('m_supplier', 's_id', '=', 'po_supplier');
-      $d_purchase_return = $d_purchase_return->where('pr_id', $pr_id)->select('pr_id', 'pr_purchase', 'pr_code', 'm_name', 's_company', 'pr_pricetotal', DB::raw('DATE_FORMAT(pr_datecreated, "%d/%m/%Y") AS pr_datecreated'), 'po_method', 'po_code', 'po_total_gross', 'po_disc_percent', 'po_disc_value', 'po_tax_value', 'po_disc_value', 'po_total_net',DB::raw("CASE pr_method WHEN 'TK' THEN 'TUKAR BARANG ' WHEN 'PN' THEN 'POTONG NOTA' END AS pr_method"))->first();
+      $d_purchase_return = $d_purchase_return->leftJoin('d_purchasing', 'pr_purchase', '=', 'd_pcs_id');
+      $d_purchase_return = $d_purchase_return->leftJoin('m_supplier', 's_id', '=', 'd_pcs_supplier');
+      $d_purchase_return = $d_purchase_return->where('pr_id', $pr_id)->select('pr_id', 'pr_purchase', 'pr_code', 'm_name', 's_company', 'pr_pricetotal', DB::raw('DATE_FORMAT(pr_datecreated, "%d/%m/%Y") AS pr_datecreated'), 'd_pcs_method', 'd_pcs_code', 'd_pcs_total_gross', 'd_pcs_disc_percent', 'd_pcs_disc_value', 'd_pcs_tax_value', 'd_pcs_disc_value', 'd_pcs_total_net',DB::raw("CASE pr_method WHEN 'TK' THEN 'TUKAR BARANG ' WHEN 'PN' THEN 'POTONG NOTA' END AS pr_method"))->first();
 
       
-      $d_purchasereturn_dt = d_purchasereturn_dt::leftJoin('m_item', 'i_id', '=', 'prdt_item')->leftJoin('d_purchase_return', 'prdt_purchasereturn', '=', 'pr_id')->leftJoin('d_purchase_order', 'pr_purchase', '=', 'po_id')->leftJoin('d_purchase_plan', 'po_purchaseplan', '=', 'pr_id')->leftJoin('m_satuan', 'i_sat1', '=', 's_id'); 
+      $d_purchasereturn_dt = d_purchasereturn_dt::leftJoin('m_item', 'i_id', '=', 'prdt_item')->leftJoin('d_purchase_return', 'prdt_purchasereturn', '=', 'pr_id')->leftJoin('d_purchasing', 'pr_purchase', '=', 'd_pcs_id')->leftJoin('d_purchase_plan', 'd_pcs_purchaseplan', '=', 'pr_id')->leftJoin('m_satuan', 'i_sat1', '=', 's_id'); 
       $d_purchasereturn_dt = $d_purchasereturn_dt->where('prdt_purchasereturn', $pr_id)->select('prdt_item', 'prdt_qty','prdt_qtyreturn','prdt_price', 's_name', 's_detname', 's_id', 'i_id', 'i_name', 'i_code', DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_item = d_purchasereturn_dt.prdt_item AND s_position = p_gudang), 0) AS stock'))->get();
 
 
@@ -277,12 +277,12 @@ class PurchaseReturnController extends Controller
 
       // Membuat form update belanja harian
       $d_purchase_return = d_purchase_return::leftJoin('d_mem', 'pr_staff', '=', 'm_id');
-      $d_purchase_return = $d_purchase_return->leftJoin('d_purchase_order', 'pr_purchase', '=', 'po_id');
-      $d_purchase_return = $d_purchase_return->leftJoin('m_supplier', 's_id', '=', 'po_supplier');
-      $d_purchase_return = $d_purchase_return->where('pr_id', $pr_id)->select('pr_id', 'pr_purchase', 'pr_code', 'm_name', 's_company', 'pr_pricetotal', DB::raw('DATE_FORMAT(pr_datecreated, "%d/%m/%Y") AS pr_datecreated'), 'po_method', 'po_code', 'po_total_gross', 'po_disc_percent', 'po_disc_value', 'po_tax_value', 'po_disc_value', 'po_total_net',DB::raw("CASE pr_method WHEN 'TK' THEN 'TUKAR BARANG ' WHEN 'PN' THEN 'POTONG NOTA' END AS pr_method"))->first();
+      $d_purchase_return = $d_purchase_return->leftJoin('d_purchasing', 'pr_purchase', '=', 'd_pcs_id');
+      $d_purchase_return = $d_purchase_return->leftJoin('m_supplier', 's_id', '=', 'd_pcs_supplier');
+      $d_purchase_return = $d_purchase_return->where('pr_id', $pr_id)->select('pr_id', 'pr_purchase', 'pr_code', 'm_name', 's_company', 'pr_pricetotal', DB::raw('DATE_FORMAT(pr_datecreated, "%d/%m/%Y") AS pr_datecreated'), 'd_pcs_method', 'd_pcs_code', 'd_pcs_total_gross', 'd_pcs_disc_percent', 'd_pcs_disc_value', 'd_pcs_tax_value', 'd_pcs_disc_value', 'd_pcs_total_net',DB::raw("CASE pr_method WHEN 'TK' THEN 'TUKAR BARANG ' WHEN 'PN' THEN 'POTONG NOTA' END AS pr_method"))->first();
       
       
-      $d_purchasereturn_dt = d_purchasereturn_dt::leftJoin('m_item', 'i_id', '=', 'prdt_item')->leftJoin('d_purchase_return', 'prdt_purchasereturn', '=', 'pr_id')->leftJoin('d_purchase_order', 'pr_purchase', '=', 'po_id')->leftJoin('d_purchase_plan', 'po_purchaseplan', '=', 'pr_id')->leftJoin('m_satuan', 'i_sat1', '=', 's_id'); 
+      $d_purchasereturn_dt = d_purchasereturn_dt::leftJoin('m_item', 'i_id', '=', 'prdt_item')->leftJoin('d_purchase_return', 'prdt_purchasereturn', '=', 'pr_id')->leftJoin('d_purchasing', 'pr_purchase', '=', 'd_pcs_id')->leftJoin('d_purchase_plan', 'd_pcs_purchaseplan', '=', 'pr_id')->leftJoin('m_satuan', 'i_sat1', '=', 's_id'); 
       $d_purchasereturn_dt = $d_purchasereturn_dt->where('prdt_purchasereturn', $pr_id)->select('prdt_item', 'prdt_qty','prdt_qtyreturn','prdt_price', 's_name', 's_detname', 's_id', 'i_id', 'i_name', 'i_code', DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_item = d_purchasereturn_dt.prdt_item AND s_position = p_gudang), 0) AS stock'))->get();
 
 
@@ -324,8 +324,8 @@ class PurchaseReturnController extends Controller
       return response()->json($res);
     }
 
-    public function find_d_purchase_order(Request $req) {
-      $d_purchase_order = d_purchase_order::leftJoin(DB::raw('m_supplier S'), DB::raw('S.s_id'), '=', DB::raw('d_purchase_order.po_supplier'));
+    public function find_d_purchasing(Request $req) {
+      $d_purchasing = d_purchasing::leftJoin(DB::raw('m_supplier S'), DB::raw('S.s_id'), '=', DB::raw('d_purchasing.d_pcs_supplier'));
       // Filter berdasarkan tanggal
        $tgl_awal = $req->tgl_awal;
        $tgl_awal = $tgl_awal != null ? $tgl_awal : '';
@@ -334,12 +334,12 @@ class PurchaseReturnController extends Controller
        if($tgl_awal != '' && $tgl_akhir != '') {
           $tgl_awal = preg_replace('/([0-9]+)([\/-])([0-9]+)([\/-])([0-9]+)/', '$5-$3-$1', $tgl_awal);
           $tgl_akhir = preg_replace('/([0-9]+)([\/-])([0-9]+)([\/-])([0-9]+)/', '$5-$3-$1', $tgl_akhir);
-          $d_purchase_order = $d_purchase_order->whereBetween('po_date', array($tgl_awal, $tgl_akhir));
+          $d_purchasing = $d_purchasing->whereBetween('d_pcs_date', array($tgl_awal, $tgl_akhir));
        }  
 
-      $d_purchase_order = $d_purchase_order->get();
+      $d_purchasing = $d_purchasing->get();
       $res = array(
-        'data' => $d_purchase_order
+        'data' => $d_purchasing
       );
 
       return response()->json($res);
@@ -358,7 +358,7 @@ class PurchaseReturnController extends Controller
         $d_purchase_return->pr_status = $pr_status;
         $d_purchase_return->save();
 
-        $p_gudang = d_purchase_return::leftJoin('d_purchase_order', 'pr_purchase', '=', 'po_id')->leftJoin('d_purchase_plan', 'po_purchaseplan', '=', 'p_id')->where('pr_id', $pr_id);
+        $p_gudang = d_purchase_return::leftJoin('d_purchasing', 'pr_purchase', '=', 'd_pcs_id')->leftJoin('d_purchase_plan', 'd_pcs_purchaseplan', '=', 'p_id')->where('pr_id', $pr_id);
         $p_gudang = $p_gudang->first()->p_gudang;
         $comp = $p_gudang;
         $position = $p_gudang; 
@@ -421,19 +421,19 @@ class PurchaseReturnController extends Controller
       return response()->json($res);
    }
     
-    public function find_d_purchaseorder_dt(Request $req) {
-      $d_purchaseorder_dt = d_purchaseorder_dt::leftJoin('m_item', 'i_id', '=', 'podt_item')->leftJoin('m_satuan', 's_id', '=', 'i_sat1');
-      $d_purchaseorder_dt = $d_purchaseorder_dt->leftJoin('d_purchase_order', 'podt_purchaseorder', '=', 'po_id')->leftJoin('d_purchase_plan', 'po_purchaseplan', '=', 'p_id');
+    public function find_d_purchasing_dt(Request $req) {
+      $d_purchasing_dt = d_purchasing_dt::leftJoin('m_item', DB::raw('d_purchasing_dt.i_id'), '=', DB::raw('m_item.i_id'))->leftJoin('m_satuan', 's_id', '=', 'i_sat1');
+      $d_purchasing_dt = $d_purchasing_dt->leftJoin('d_purchasing', 'd_pcs_id', '=', 'd_pcs_id')->leftJoin('d_purchase_plan', 'd_pcs_purchaseplan', '=', 'p_id');
 
-      $po_id = $req->po_id;
-      $po_id = $po_id != null ? $po_id : '';
-      if($po_id != '') {
-        $d_purchaseorder_dt = $d_purchaseorder_dt->where('podt_purchaseorder', $po_id);  
+      $d_pcs_id = $req->d_pcs_id;
+      $d_pcs_id = $d_pcs_id != null ? $d_pcs_id : '';
+      if($d_pcs_id != '') {
+        $d_purchasing_dt = $d_purchasing_dt->where('d_pcs_id', $d_pcs_id);  
       }
 
-      $d_purchaseorder_dt = $d_purchaseorder_dt->select('podt_item', 'podt_satuan', 'podt_qty', 'podt_qtysend', 'podt_qtyreceive', 'podt_qtyconfirm', 'podt_price', 'podt_prevcost', 'podt_gross', 'podt_total', 'podt_disc', 'podt_isconfirm', 's_name', 's_id', 'i_id', 'i_name', 'i_code', DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_item = d_purchaseorder_dt.podt_item AND s_position = p_gudang), 0) AS stock'))->get();
+      $d_purchasing_dt = $d_purchasing_dt->select(DB::raw('m_item.i_id AS i_id'), 'd_pcsdt_satuan', 'd_pcsdt_qty', 'd_pcsdt_qtysend', 'd_pcsdt_qtyreceive', 'd_pcsdt_qtyconfirm', 'd_pcsdt_price', 'd_pcsdt_prevcost', 'd_pcsdt_gross', 'd_pcsdt_total', 'd_pcsdt_disc', 'd_pcsdt_isconfirm', 's_name', 's_id', 'i_id', 'i_name', 'i_code', DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_item = d_purchasing_dt.i_id AND s_position = p_gudang), 0) AS stock'))->get();
       $res = array(
-        'data' => $d_purchaseorder_dt
+        'data' => $d_purchasing_dt
       );
 
       return response()->json($res);
