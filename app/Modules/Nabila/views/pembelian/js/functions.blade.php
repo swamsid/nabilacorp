@@ -86,18 +86,14 @@
 
 	// Mencari data
 	function cari(){
-	  var tgl_awal = $('[name="tgl_awal"]').val();
-	  var tgl_akhir = $('[name="tgl_akhir"]').val();
-	  var url_target = '{{ route('find_d_shop_purchase_order') }}?tgl_awal=' + tgl_awal + '&tgl_akhir=' + tgl_akhir; 
-	  tabel_d_shop_purchase_order.ajax.url(url_target).load();
+	   
+	  tabel_d_shop_purchase_order.ajax.reload();
 	}
 
 
 	// mereset data
 	function resetData(){  
-	  $('#tgl_awal').val( moment().subtract(7, 'days').format('DD/MM/YYYY') );
-	  $('#tgl_akhir').val( moment().format('DD/MM/YYYY') );
-	  var url_target = '{{ route('find_d_shop_purchase_order') }}?tgl_awal=' + tgl_awal + '&tgl_akhir=' + tgl_akhir; 
+	  cari(); 
 	  tabel_d_shop_purchase_order.ajax.url(url_target).load();
 	}
 

@@ -17,7 +17,7 @@
       }
 
       $('#total_bayar').val(
-        accounting.formatMoney( grand_total, '', '.', ',' )
+        'Rp ' + accounting.formatMoney( grand_total, '', '.', ',' )
       );
   }  
 

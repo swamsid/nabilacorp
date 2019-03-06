@@ -76,6 +76,15 @@ class PembelianController extends Controller
        $data = array();
        $rows = d_shop_purchase_order::leftJoin('m_supplier', 'spo_supplier', '=', 's_id')->leftJoin('d_mem', 'spo_mem', '=', 'm_id');
 
+
+       // Filter datatable
+       $start = $req->start;
+       $start = $start != null ? $start : 0;
+       $length = $req->length;
+       $length = $length != null ? $length : 10;
+       $search = $req->search;
+       $search = $search['value'];
+
        // Filter berdasarkan tanggal, status & keyword
        $keyword = $req->keyword;
        $keyword = $keyword != null ? $keyword : '';
@@ -96,6 +105,8 @@ class PembelianController extends Controller
        if($spo_status != '') {
         $rows = $rows->where('spo_status', $spo_status);
        }
+
+       $rows = $rows->skip($start)->take($length);
 
        $rows = $rows->select('spo_disc_percent', 'spo_disc_value', 'spo_tax_percent', 'spo_tax_value', 'spo_total_gross', 'spo_total_net', 'spo_date_confirm', DB::raw('DATE_FORMAT(spo_date_confirm, "%d/%m/%Y") AS spo_date_confirm_label'), 'spo_method', 'spo_total_net', DB::raw('CONCAT("Rp ", FORMAT(spo_total_net, 0)) AS spo_total_net_label'), 'm_name', 'spo_id', DB::raw('DATE_FORMAT(spo_date, "%d/%m/%Y") AS spo_date_label'), 'spo_code', 's_company', 'spo_status', DB::raw("CASE spo_status WHEN 'WT' THEN 'Waiting ' WHEN 'PE' THEN 'Dapat Diedit' WHEN 'AP' THEN 'Disetujui' WHEN 'NAP' THEN 'Tidak Disetujui' END AS spo_status_label"))->get();
        
