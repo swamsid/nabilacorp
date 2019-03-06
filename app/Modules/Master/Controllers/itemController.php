@@ -58,7 +58,7 @@ class itemController extends Controller
       $i_type = $req->i_type;
       $i_type = $i_type != null ? $i_type : '';
 
-      $m_item = m_itemm::leftJoin('m_satuan', 'i_sat1', '=', 's_id');
+      $m_item = m_itemm::leftJoin('m_satuan', 'i_satuan', '=', 's_id');
       if($keyword != '') {
          $m_item = $m_item->where([['i_name', 'LIKE', DB::raw("'%$keyword%'")]]);
       }
@@ -94,8 +94,8 @@ class itemController extends Controller
     public function index(){
       return view('Master::databarang/barang');
     }
-    public function dataBarang(Request $req){
-      return m_itemm::dataBarang($req);
+    public function dataBarang(){
+      return m_itemm::dataBarang();
     }
 
 
@@ -209,7 +209,6 @@ class itemController extends Controller
             ->insert([
               'is_item' => $tmp,
               'is_supplier' => $is_supplier[$x],
-              'is_price' => $is_price1,
               'is_price1' => $is_price1,
               'is_price2' => $is_price2,
               'is_price3' => $is_price3,
@@ -251,6 +250,8 @@ class itemController extends Controller
         'kelompok' => $m_group, 
         'satuan' => $m_satuan
       );
+      
+      // die(json_encode($res));
       return view('Master::databarang/edit_barang', $res);
     }
 
@@ -373,7 +374,8 @@ class itemController extends Controller
         DB::table('m_item')
           ->where('i_id', $request->id)
           ->update([
-            'i_active' => 'N'
+            'i_active' => 'N',
+            'i_status' => 'N'
           ]);
 
         DB::commit();

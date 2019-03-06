@@ -96,7 +96,10 @@
 
 	// Mencari data
 	function cari(){
-	  tabel_d_shop_purchase_plan.ajax.reload();
+	  var tgl_awal = $('[name="tgl_awal"]').val();
+	  var tgl_akhir = $('[name="tgl_akhir"]').val();
+	  var url_target = '{{ route('find_d_shop_purchase_plan') }}?tgl_awal=' + tgl_awal + '&tgl_akhir=' + tgl_akhir; 
+	  tabel_d_shop_purchase_plan.ajax.url(url_target).load();
 	}
 
 
@@ -104,7 +107,8 @@
 	function resetData(){  
 	  $('[name="tgl_awal"]').val( moment().subtract(7, 'days').format('DD/MM/YYYY') );
 	  $('[name="tgl_akhir"]').val( moment().format('DD/MM/YYYY') );
-	  cari();
+	  var url_target = '{{ route('find_d_shop_purchase_plan') }}?tgl_awal=' + tgl_awal + '&tgl_akhir=' + tgl_akhir; 
+	  tabel_d_shop_purchase_plan.ajax.url(url_target).load();
 	}
 
 	function open_form_update(id) {
