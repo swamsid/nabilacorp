@@ -177,6 +177,7 @@ class PenerimaanBrgSupController extends Controller
     public function simpan_penerimaan(Request $request)
     {
       // return json_encode("okeee");
+        dd($request->all());
         DB::beginTransaction();
         try 
         {
