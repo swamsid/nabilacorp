@@ -82,10 +82,10 @@
 						if(res.pr_status != 'DE') {
 							is_disabled ='';
 						}
-		        		var detail_btn = '<button id="detail_btn" onclick="form_preview(this)" class="btn btn-warning btn-sm" title="detail" data-toggle="modal" data-target="#form_detail" ><i class="fa fa-eye"></i></button>';
-		        		var edit_btn = '<button ' + is_disabled + ' id="edit_btn" onclick="form_perbarui(this)" class="btn btn-primary btn-sm" title="payment"><i class="fa fa-pencil"></i></button>';
+		        		var detail_btn = '<button id="detail_btn" onclick="form_preview(this)" class="btn btn-warning btn-sm" title="Detail" data-toggle="modal" data-target="#form_detail" ><i class="fa fa-eye"></i></button>';
+		        		var edit_btn = '<button ' + is_disabled + ' id="edit_btn" onclick="form_perbarui(this)" class="btn btn-primary btn-sm" title="Approve"><i class="fa fa-pencil"></i></button>';
 
-		        		var remove_btn = '<button ' + is_disabled + ' id="remove_btn" onclick="remove_data(this)" class="btn btn-danger btn-sm" title="payment"><i class="fa fa-trash-o"></i></button>';
+		        		var remove_btn = '<button ' + is_disabled + ' id="remove_btn" onclick="remove_data(this)" class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>';
 
 		        		var result = '<div class="btn-group">' + detail_btn + edit_btn + remove_btn + '</div>';
 

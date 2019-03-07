@@ -89,8 +89,8 @@ Route::get('/purchasing/belanjaharian/hapus/{id}', 'BelanjaHarianController@hapu
 	Route::get('/purchasing/returnpembelian/delete_d_purchase_return/{id}', 'PurchaseReturnController@delete_d_purchase_return')->middleware('auth');
 	Route::get('/purchasing/returnpembelian/form_perbarui/{id}', 'PurchaseReturnController@form_perbarui')->middleware('auth');
 	Route::get('/purchasing/returnpembelian/form_preview/{id}', 'PurchaseReturnController@form_preview')->middleware('auth');
-	Route::get('/purchasing/returnpembelian/find_d_purchase_order', 'PurchaseReturnController@find_d_purchase_order')->middleware('auth');
-	Route::get('/purchasing/returnpembelian/find_d_purchaseorder_dt', 'PurchaseReturnController@find_d_purchaseorder_dt')->middleware('auth');
+	Route::get('/purchasing/returnpembelian/find_d_purchasing', 'PurchaseReturnController@find_d_purchasing')->middleware('auth');
+	Route::get('/purchasing/returnpembelian/find_d_purchasing_dt', 'PurchaseReturnController@find_d_purchasing_dt')->middleware('auth');
 //// master
 /* ricky */
 	Route::get('/purchasing/belanjapasar/pasar', 'PurchasingController@pasar')->middleware('auth');

@@ -74,7 +74,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly class="form-control input-sm" name="pr_purchase" value="{{ $d_purchase_return->po_code }}">
+                                    <input readonly class="form-control input-sm" name="pr_purchase" value="{{ $d_purchase_return->d_pcs_code }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -117,7 +117,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="methodBayar" class="form-control input-sm" id="method_bayar" value="{{ $d_purchase_return->po_method  }}">
+                                    <input readonly type="text" name="methodBayar" class="form-control input-sm" id="method_bayar" value="{{ $d_purchase_return->d_pcs_method  }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -125,7 +125,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalGross" class="form-control input-sm text-right" id="nilai_total_gross" value="{{ $d_purchase_return->po_total_gross }}">
+                                    <input readonly type="text" name="nilaiTotalGross" class="form-control input-sm text-right" id="nilai_total_gross" value="{{ $d_purchase_return->d_pcs_total_gross }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -133,7 +133,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalDisc" readonly="" class="form-control input-sm text-right" id="nilai_total_disc" value="{{ $d_purchase_return->po_disc_value  }}">
+                                    <input readonly type="text" name="nilaiTotalDisc" readonly="" class="form-control input-sm text-right" id="nilai_total_disc" value="{{ $d_purchase_return->d_pcs_disc_value  }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -141,7 +141,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalTax" readonly="" class="form-control input-sm text-right" id="nilai_total_tax" value="{{ $d_purchase_return->po_disc_value  }}">
+                                    <input readonly type="text" name="nilaiTotalTax" readonly="" class="form-control input-sm text-right" id="nilai_total_tax" value="{{ $d_purchase_return->d_pcs_disc_value  }}">
                                  </div>
                               </div>
                               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -149,7 +149,7 @@
                               </div>
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                  <div class="form-group">
-                                    <input readonly type="text" name="nilaiTotalNett" readonly="" class="form-control input-sm text-right" id="nilai_total_nett" value="{{ $d_purchase_return->po_total_net  }}">
+                                    <input readonly type="text" name="nilaiTotalNett" readonly="" class="form-control input-sm text-right" id="nilai_total_nett" value="{{ $d_purchase_return->d_pcs_total_net  }}">
                                     <input readonly type="hidden" name="nilaiTotalReturnRaw" readonly="" class="form-control input-sm" id="nilai_total_return_raw" >
                                  </div>
                               </div>
@@ -168,7 +168,8 @@
                                        <thead>
                                           <tr>
                                              <th width="30%">Kode | Barang</th>
-                                             <th width="10%">Qty</th>
+                                             <th width="10%">Qty Beli</th>
+                                             <th width="10%">Qty Return</th>
                                              <th width="10%">Satuan</th>
                                              <th width="15%">Harga</th>
                                              <th width="15%">Total</th>
@@ -208,7 +209,7 @@
     tabel_d_purchasereturn_dt = $('#tabel_d_purchasereturn_dt').DataTable({
         'columnDefs': [
                {
-                  'targets': [3, 4, 5],
+                  'targets': [1, 2, 4, 5, 6],
                   'createdCell':  function (td) {
                      $(td).attr('align', 'right'); 
                   }
@@ -229,8 +230,8 @@
               var qtyreturn = $(this).prev().val();
               var pricetotal = qtyreturn * price;
         var td = tr.find('td');
-        $( td[4] ).text(
-          get_currency( pricetotal )
+        $( td[5] ).text(
+          'Rp ' + get_currency( pricetotal )
         ); 
  
               count_prdt_pricetotal();
@@ -244,7 +245,7 @@
               tabel_d_purchasereturn_dt.row( tr ).remove().draw();
             });
      }
-      });
+      }); 
 
       tabel_d_purchasereturn_dt.on('draw.dt', count_prdt_pricetotal);
      var purchasereturn_dt = {!! $d_purchasereturn_dt !!};
@@ -255,18 +256,20 @@
    
          var prdt_item = "<input readonly type='hidden' name='prdt_item[]' value='" + data.i_id + "'>" + data.i_code + ' - ' + data.i_name;
          var prdt_qtyreturn = data.prdt_qtyreturn;
-         var s_detname = data.s_detname;
+         var prdt_qty = data.prdt_qty;
+         var s_detname =  "<input readonly type='hidden' name='prdt_satuan[]' value='" + data.prdt_satuan + "'>" + data.s_detname;
          var prdt_price = data.prdt_price ;
-         var prdt_pricetotal = data.prdt_pricetotal;
+         var prdt_pricetotal = data.prdt_price * prdt_qtyreturn;
          var aksi = "<button type='button' class='btn btn-danger remove_btn'><i class='fa fa-trash-o'></i></button";
    
-         prdt_qty = "<input type='number' class='form-control text-right' name='prdt_qtyreturn[]' value='" + prdt_qtyreturn + "'>";
+         prdt_qty = "<input type='hidden' class='form-control text-right' name='prdt_qty[]' value='" + prdt_qty + "'>" + prdt_qty;
+         prdt_qtyreturn = "<input type='number' class='form-control text-right' name='prdt_qtyreturn[]' value='" + prdt_qtyreturn + "'>";
          prdt_price = "<input readonly type='hidden' name='prdt_price[]' value='" + prdt_price + "'>Rp " + accounting.formatMoney(prdt_price,"",0,'.',',');
          prdt_pricetotal = 'Rp ' + accounting.formatMoney(prdt_pricetotal,"",0,'.',',');
          var stock = data.stock;
 
          tabel_d_purchasereturn_dt.row.add(
-           [prdt_item, prdt_qty, s_detname, prdt_price, prdt_pricetotal, stock, aksi]
+           [prdt_item, prdt_qty, prdt_qtyreturn, s_detname, prdt_price, prdt_pricetotal, stock, aksi]
          );
    
        }
