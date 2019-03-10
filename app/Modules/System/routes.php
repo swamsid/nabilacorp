@@ -7,7 +7,7 @@ Route::group(['namespace' => 'App\Modules\System\Controllers', 'middleware'=>['w
 	Route::get('/system/hakuser/edit-user-akses/{id}/edit', 'hakuserController@editUserAkses');
 	Route::get('/system/hakuser/tableuser', 'hakuserController@tableUser');
 	Route::get('/system/hakuser/autocomplete-pegawai', 'hakuserController@autocompletePegawai');
-	Route::post('/system/hakuser/perbarui-user/{id}', 'hakuserController@perbaruiUser');
+	Route::get('/system/hakuser/perbarui-user/{id}', 'hakuserController@perbaruiUser');
 	Route::post('/system/hakuser/hapus-user', 'hakuserController@hapusUser');
 	
 	Route::get('/system/hakaksespengguna/akses', 'aksesUserController@index');
