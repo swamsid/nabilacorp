@@ -154,7 +154,7 @@
                                             <div align="right" style="padding-top:10px;">
                                                 <div id="div_button_save" class="form-group">
                                                     <button type="button" id="button_save" class="btn btn-primary"
-                                                        onclick="perbaruiDataUser()">Simpan Data
+                                                        onclick="perbaruiDataUser()">Update User
                                                     </button>
                                                 </div>
                                             </div>
@@ -192,54 +192,54 @@
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_read=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_read[]"
+                                                                    id="iRead-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanRead('{{$data->a_id}}')"
+                                                                    id="cRead-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_read[]"
+                                                                    id="iRead-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanRead('{{$data->a_id}}')"
+                                                                    id="cRead-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_insert=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_insert[]"
+                                                                    id="iInsert-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanInsert('{{$data->a_id}}')"
+                                                                    id="cInsert-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_insert[]"
+                                                                    id="iInsert-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanInsert('{{$data->a_id}}')"
+                                                                    id="cInsert-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_update=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_update[]"
+                                                                    id="iUpdate-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanUpdate('{{$data->a_id}}')"
+                                                                    id="cUpdate-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_update[]"
+                                                                    id="iUpdate-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanUpdate('{{$data->a_id}}')"
+                                                                    id="cUpdate-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_delete=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_delete[]"
+                                                                    id="iDelete-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanDelete('{{$data->a_id}}')"
+                                                                    id="cDelete-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_delete[]"
+                                                                    id="iDelete-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanDelete('{{$data->a_id}}')"
+                                                                    id="cDelete-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             @php
@@ -254,54 +254,54 @@
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_read=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_read[]"
+                                                                    id="iRead-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanRead('{{$data->a_id}}')"
+                                                                    id="cRead-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_read[]"
+                                                                    id="iRead-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanRead('{{$data->a_id}}')"
+                                                                    id="cRead-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_insert=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_insert[]"
+                                                                    id="iInsert-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanInsert('{{$data->a_id}}')"
+                                                                    id="cInsert-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_insert[]"
+                                                                    id="iInsert-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanInsert('{{$data->a_id}}')"
+                                                                    id="cInsert-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_update=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_update[]"
+                                                                    id="iUpdate-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanUpdate('{{$data->a_id}}')"
+                                                                    id="cUpdate-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_update[]"
+                                                                    id="iUpdate-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanUpdate('{{$data->a_id}}')"
+                                                                    id="cUpdate-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                             <td>
                                                                 @if($data->ma_delete=='Y')
-                                                                <input type="hidden" value="Y" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}" checked>
+                                                                <input type="hidden" value="Y" class="checkbox" name="ma_delete[]"
+                                                                    id="iDelete-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanDelete('{{$data->a_id}}')"
+                                                                    id="cDelete-{{$data->a_id}}" checked>
                                                                 @else
-                                                                <input type="hidden" value="N" class="checkbox" name="view[]"
-                                                                    id="view-{{$data->a_id}}">
-                                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"
-                                                                    id="view1-{{$data->a_id}}">
+                                                                <input type="hidden" value="N" class="checkbox" name="ma_delete[]"
+                                                                    id="iDelete-{{$data->a_id}}">
+                                                                <input type="checkbox" class="checkbox" onchange="simpanDelete('{{$data->a_id}}')"
+                                                                    id="cDelete-{{$data->a_id}}">
                                                                 @endif
                                                             </td>
                                                         </tr>
@@ -336,7 +336,7 @@
         $('#button_save').attr('disabled', true);
         $.ajax({
             url: baseUrl + '/system/hakuser/perbarui-user/' + m_id,
-            type: 'post',
+            type: 'GET',
             timeout: 10000,
             data: $('#data-user').serialize(),
             dataType: 'json',
@@ -373,40 +373,35 @@
         });
     }
 
-    function simpanView(id) {
-        $('#status-' + id).val(1);
-
-        if ($('#view1-' + id).prop('checked')) {
-            $('#view-' + id).val('Y')
+    function simpanRead(id) {
+        if ($('#cRead-' + id).prop('checked')) {
+            $('#iRead-' + id).val('Y')
         } else {
-            $('#view-' + id).val('N')
+            $('#iRead-' + id).val('N')
         }
     }
 
     function simpanInsert(id) {
-        $('#status-' + id).val(1);
-        if ($('#insert1-' + id).prop('checked')) {
-            $('#insert-' + id).val('Y')
+        if ($('#cInsert-' + id).prop('checked')) {
+            $('#iInsert-' + id).val('Y')
         } else {
-            $('#insert-' + id).val('N')
+            $('#iInsert-' + id).val('N')
         }
     }
 
     function simpanUpdate(id) {
-        $('#status-' + id).val(1);
-        if ($('#update1-' + id).prop('checked')) {
-            $('#update-' + id).val('Y')
+        if ($('#cUpdate-' + id).prop('checked')) {
+            $('#iUpdate-' + id).val('Y')
         } else {
-            $('#update-' + id).val('N')
+            $('#iUpdate-' + id).val('N')
         }
     }
 
     function simpanDelete(id) {
-        $('#status-' + id).val(1);
-        if ($('#delete1-' + id).prop('checked')) {
-            $('#delete-' + id).val('Y')
+        if ($('#cDelete-' + id).prop('checked')) {
+            $('#iDelete-' + id).val('Y')
         } else {
-            $('#delete-' + id).val('N')
+            $('#iDelete-' + id).val('N')
         }
     }
 

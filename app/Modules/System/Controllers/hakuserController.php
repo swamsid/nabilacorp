@@ -225,7 +225,7 @@ class hakuserController extends Controller
 
    public function perbaruiUser(Request $request, $m_id)
    {
-    //   dd($request->all());
+      // dd($request->all());
       DB::beginTransaction();
       try 
       {
@@ -259,10 +259,10 @@ class hakuserController extends Controller
                      'ma_access' => $hakAkses[$i]->a_id,
                      'ma_group' => $hakAkses[$i]->g_id ,
                      'ma_type' => 'G',
-                     'ma_read' => $hakAkses[$i]->ga_read,
-                     'ma_insert' => $hakAkses[$i]->ga_insert,
-                     'ma_update' => $hakAkses[$i]->ga_update,
-                     'ma_delete' => $hakAkses[$i]->ga_delete
+                     'ma_read' => $hakAkses[$i]->ma_read,
+                     'ma_insert' => $hakAkses[$i]->ma_insert,
+                     'ma_update' => $hakAkses[$i]->ma_update,
+                     'ma_delete' => $hakAkses[$i]->ma_delete
                   ]);
               }
 
@@ -282,7 +282,10 @@ class hakuserController extends Controller
                      'ma_mem' =>$m_id,
                      'ma_access'=>$request->id_access[$i],
                      'ma_type' =>'M',
-                     'ma_read'=> $request->view[$i]
+                     'ma_read'=> $request->ma_read[$i],
+                     'ma_insert'=> $request->ma_insert[$i],
+                     'ma_update'=> $request->ma_update[$i],
+                     'ma_delete'=> $request->ma_delete[$i]
                   ]);
               }
 
