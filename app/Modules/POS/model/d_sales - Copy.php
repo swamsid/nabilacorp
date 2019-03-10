@@ -35,7 +35,7 @@ class d_sales extends Model
     
       protected $fillable = ['s_id','s_comp','s_jenis_bayar','s_channel','s_machine','s_date','s_finishdate','s_duedate','s_note','s_create_by','s_customer','s_gross','s_disc_percent','s_disc_value','s_tax','s_ongkir','s_bulat','s_net','s_status','s_bayar','s_kembalian','s_jurnal','s_nama_cus','s_alamat_cus'];
 
-      static function simpan($request){        
+      static function simpan($request){    
         return DB::transaction(function () use ($request) {      
           
 
@@ -62,7 +62,7 @@ class d_sales extends Model
                     's_date'=>$s_date,
                     's_note'=>$note,
                     's_machine'=>Session::get('kasir'),
-                    's_create_by'=>Auth::user()->m_id,
+                    's_create_by'=>Auth::user()->m_pegawai_id,
                     /*'s_customer'=>$request->s_customer,*/
                     's_nama_cus'=>$request->s_nama_cus,
                     's_alamat_cus'=>$request->s_alamat_cus,
@@ -430,15 +430,16 @@ class d_sales extends Model
         return json_encode($data);
     });
     }
-    static function listPenjualanData($request){      
+    static function listPenjualanData($request){    
       $from=date('Y-m-d',strtotime($request->tanggal1));
       $to=date('Y-m-d',strtotime($request->tanggal2));
 
              
       $d_sales = DB::table('d_sales')
-                ->join('m_machine','m_id','=','s_machine')
+                ->join('d_mem','d_mem.m_id','=','s_create_by')
                 ->where('s_channel',$request->type)
-                 ->whereBetween('s_date', [$from, $to])->where('s_comp',Session::get('user_comp'))->get();
+                 ->whereBetween('s_date', [$from, $to])->where('s_comp',Session::get('user_comp'))
+                 ->get();
       
         
           return Datatables::of($d_sales)
