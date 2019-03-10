@@ -35,7 +35,7 @@ class d_sales extends Model
     
       protected $fillable = ['s_id','s_comp','s_jenis_bayar','s_channel','s_machine','s_date','s_finishdate','s_duedate','s_note','s_create_by','s_customer','s_gross','s_disc_percent','s_disc_value','s_tax','s_ongkir','s_bulat','s_net','s_status','s_bayar','s_kembalian','s_jurnal','s_nama_cus','s_alamat_cus','s_type_price'];
 
-    static function simpan($request){        
+    static function simpan($request){     
         return DB::transaction(function () use ($request) {      
           
 
