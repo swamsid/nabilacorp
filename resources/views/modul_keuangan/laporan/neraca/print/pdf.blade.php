@@ -70,7 +70,7 @@
 
 											?>
 											<tr>
-												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_id }} - {{ $level2->hld_nama }}</td>
+												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}</td>
 												<td style=" text-align: right;">
 													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
 												</td>
@@ -150,7 +150,7 @@
 
 											?>
 											<tr>
-												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_id }} - {{ $level2->hld_nama }}</td>
+												<td style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}</td>
 												<td style=" text-align: right;">
 													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
 												</td>

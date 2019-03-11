@@ -264,7 +264,7 @@
 									<template v-for="(data, idx) in dataPrint">
 										<tr>
 											<td colspan="2" style="font-weight: 600; font-size: 10pt;">
-												@{{ data.hld_id }} - @{{ data.hld_nama }}
+												@{{ data.hld_nomor }} - @{{ data.hld_nama }}
 											</td>
 										</tr>
 
@@ -428,7 +428,7 @@
 				            		var clock = {};
 
 				            		$.each(this.dataPrint, function(idx1, parrent){
-				            			var totParrent = 0; var graduate = parrent.hld_id.split('.')[0];
+				            			var totParrent = 0; var graduate = parrent.hld_nomor.split('.')[0];
 
 				            			$.each(parrent.akun, function(idx1, detail){
 				            				if(graduate == 1){

@@ -301,7 +301,7 @@
 
 														<template v-for="(level2, alpha) in subclass.level_2">
 															<tr>
-																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal; color: #00695c;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal; color: #00695c;'">@{{ level2.hld_id+' - '+level2.hld_nama }}</td>
+																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal; color: #00695c;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal; color: #00695c;'">@{{ level2.hld_nomor+' - '+level2.hld_nama }}</td>
 																<td style="border: 0px; text-align: right; font-size: 10pt; color: #00695c;">
 																	@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
 																</td>
@@ -351,7 +351,7 @@
 
 														<template v-for="(level2, alpha) in subclass.level_2">
 															<tr>
-																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal; color: #00695c;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal; color: #00695c;'">@{{ level2.hld_id+' - '+level2.hld_nama }}</td>
+																<td :style="(subclass.hs_nama != 'Tidak Memiliki') ? 'border: 0px; font-weight: 600; padding-left: 50px; font-style: normal; color: #00695c;' : 'border: 0px; font-weight: 600; padding-left: 25px; font-style: normal; color: #00695c;'">@{{ level2.hld_nomor+' - '+level2.hld_nama }}</td>
 																<td style="border: 0px; text-align: right; font-size: 10pt; color: #00695c;">
 																	@{{ (detail.level2['_'+level2.hld_id] < 0) ? '('+humanizePrice(detail.level2['_'+level2.hld_id])+')' : humanizePrice(detail.level2['_'+level2.hld_id]) }}
 																</td>

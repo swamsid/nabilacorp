@@ -42,7 +42,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1, $request){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1, $request){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -71,7 +71,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -130,7 +130,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1, $request){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1, $request){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -159,7 +159,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -214,7 +214,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1, $request){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1, $request){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -243,7 +243,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -311,7 +311,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1, $request){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1, $request){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')
@@ -340,7 +340,7 @@ class laporan_neraca_controller extends Controller
                                             ->orderBy('hs_flag')
                                             ->with([
                                                 'level_2' => function($query) use ($d1){
-                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass')
+                                                    $query->select('hld_id', 'hld_nama', 'hld_subclass', 'hld_nomor')
                                                         ->with([
                                                             'akun' => function($query) use ($d1){
                                                                 $query->leftJoin('dk_akun_saldo', 'dk_akun_saldo.as_akun', 'dk_akun.ak_id')

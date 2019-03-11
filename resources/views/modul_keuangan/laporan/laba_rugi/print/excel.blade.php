@@ -68,7 +68,7 @@
 											?>
 											<tr>
 												<td style="padding-left: {{ $margin }}; font-weight: {{ $bold }};">
-													{{ $level2->hld_nama }}
+													{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}
 												</td>
 												<td style="text-align: right; padding-right: 10px;">
 													{{ $dif }}
@@ -146,7 +146,7 @@
 											?>
 											<tr>
 												<td style="padding-left: {{ $margin }}; font-weight: {{ $bold }};">
-													{{ $level2->hld_nama }}
+													{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}
 												</td>
 												<td style="text-align: right; padding-right: 10px;">
 													{{ $dif }}
@@ -233,7 +233,7 @@
 											?>
 											<tr>
 												<td style="padding-left: {{ $margin }}; font-weight: {{ $bold }};">
-													{{ $level2->hld_nama }}
+													{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}
 												</td>
 												<td style="text-align: right; padding-right: 10px;">
 													{{ $dif }}

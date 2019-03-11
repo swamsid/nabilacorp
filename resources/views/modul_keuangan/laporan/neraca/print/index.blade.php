@@ -1,5 +1,5 @@
 <style type="text/css" media="print">
-      @page { size: landscape; }
+      @page { size: portrait; }
       nav{
         display: none;
       }
@@ -101,7 +101,7 @@
 
 											?>
 											<tr>
-												<td class="level2" style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_id }} - {{ $level2->hld_nama }}</td>
+												<td class="level2" style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}</td>
 												<td style=" text-align: right;">
 													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
 												</td>
@@ -178,7 +178,7 @@
 
 											?>
 											<tr>
-												<td class="level2" style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_id }} - {{ $level2->hld_nama }}</td>
+												<td class="level2" style="padding-left: {{ $margin }}; font-weight: normal;">{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}</td>
 												<td style=" text-align: right;">
 													{{ ($dif < 0 )? '('.number_format(str_replace('-', '', $dif), 2).')' : number_format($dif, 2) }}
 												</td>

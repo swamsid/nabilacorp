@@ -50,7 +50,7 @@ class laporan_neraca_lampiran_controller extends Controller
                                             );
                                 }
                             ])
-                            ->select('hld_id', 'hld_nama')
+                            ->select('hld_id', 'hld_nama', 'hld_nomor')
                             ->get();
             }else{
                 $data = level_2::where('hld_level_1', '<=', '3')
@@ -68,7 +68,7 @@ class laporan_neraca_lampiran_controller extends Controller
                                             );
                                 }
                             ])
-                            ->select('hld_id', 'hld_nama')
+                            ->select('hld_id', 'hld_nama', 'hld_nomor')
                             ->get();
             }
 
@@ -119,7 +119,7 @@ class laporan_neraca_lampiran_controller extends Controller
                                             );
                                 }
                             ])
-                            ->select('hld_id', 'hld_nama')
+                            ->select('hld_id', 'hld_nama', 'hld_nomor')
                             ->get();
             }else{
                 $data = level_2::where('hld_level_1', '<=', '3')
@@ -137,7 +137,7 @@ class laporan_neraca_lampiran_controller extends Controller
                                             );
                                 }
                             ])
-                            ->select('hld_id', 'hld_nama')
+                            ->select('hld_id', 'hld_nama', 'hld_nomor')
                             ->get();
             }
 
@@ -186,7 +186,7 @@ class laporan_neraca_lampiran_controller extends Controller
                                             );
                                 }
                             ])
-                            ->select('hld_id', 'hld_nama')
+                            ->select('hld_id', 'hld_nama', 'hld_nomor')
                             ->get();
             }else{
                 $data = level_2::where('hld_level_1', '<=', '3')
@@ -204,7 +204,7 @@ class laporan_neraca_lampiran_controller extends Controller
                                             );
                                 }
                             ])
-                            ->select('hld_id', 'hld_nama')
+                            ->select('hld_id', 'hld_nama', 'hld_nomor')
                             ->get();
             }
 

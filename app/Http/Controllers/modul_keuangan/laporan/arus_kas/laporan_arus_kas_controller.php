@@ -67,7 +67,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }else{
                $saldoAwal = DB::table('dk_akun')
@@ -97,7 +97,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }
 
@@ -164,7 +164,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }else{
                $saldoAwal = DB::table('dk_akun')
@@ -194,7 +194,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }
 
@@ -263,7 +263,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }else{
                $saldoAwal = DB::table('dk_akun')
@@ -293,7 +293,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }
 
@@ -370,7 +370,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }else{
                $saldoAwal = DB::table('dk_akun')
@@ -400,7 +400,7 @@ class laporan_arus_kas_controller extends Controller
                                                     );
                                         }
                                 ])
-                                ->select('hld_id', 'hld_nama', 'hld_cashflow')
+                                ->select('hld_id', 'hld_nama', 'hld_cashflow', 'hld_nomor')
                                 ->get();
             }
 

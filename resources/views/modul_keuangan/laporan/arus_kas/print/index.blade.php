@@ -44,7 +44,7 @@
 						?>
 						<tr>
 							<td style="vertical-align: top; padding-left: 40px;">
-								{{ $level2->hld_id }} - {{ $level2->hld_nama }}
+								{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}
 							</td>
 
 							<td style="text-align: right; padding-right: 20px;">
@@ -78,7 +78,7 @@
 						?>
 						<tr>
 							<td style="vertical-align: top; padding-left: 40px;">
-								{{ $level2->hld_id }} - {{ $level2->hld_nama }}
+								{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}
 							</td>
 
 							<td style="text-align: right; padding-right: 20px;">
@@ -112,7 +112,7 @@
 						?>
 						<tr>
 							<td style="vertical-align: top; padding-left: 40px;">
-								{{ $level2->hld_id }} - {{ $level2->hld_nama }}
+								{{ $level2->hld_nomor }} - {{ $level2->hld_nama }}
 							</td>
 
 							<td style="text-align: right; padding-right: 20px;">

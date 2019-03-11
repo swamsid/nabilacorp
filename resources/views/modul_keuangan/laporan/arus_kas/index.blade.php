@@ -277,7 +277,7 @@
 								<template v-for="(level2, index) in dataPrint" v-if="level2.hld_cashflow == 'OCF'">
 									<tr>
 										<td style="padding-left: 40px;">
-											@{{ level2.hld_id+' - '+level2.hld_nama }}
+											@{{ level2.hld_nomor+' - '+level2.hld_nama }}
 										</td>
 
 										<td style="text-align: right; font-weight: 600; padding-right: 20px;">
@@ -305,7 +305,7 @@
 								<template v-for="(level2, index) in dataPrint" v-if="level2.hld_cashflow == 'FCF'">
 									<tr>
 										<td style="padding-left: 40px;">
-											@{{ level2.hld_id+' - '+level2.hld_nama }}
+											@{{ level2.hld_nomor+' - '+level2.hld_nama }}
 										</td>
 
 										<td style="text-align: right; font-weight: 600; padding-right: 20px;">
@@ -333,7 +333,7 @@
 								<template v-for="(level2, index) in dataPrint" v-if="level2.hld_cashflow == 'ICF'">
 									<tr>
 										<td style="padding-left: 40px;">
-											@{{ level2.hld_id+' - '+level2.hld_nama }}
+											@{{ level2.hld_nomor+' - '+level2.hld_nama }}
 										</td>
 
 										<td style="text-align: right; font-weight: 600; padding-right: 20px;">

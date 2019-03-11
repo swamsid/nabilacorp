@@ -15,7 +15,7 @@ class klasifikasi_akun_controller extends Controller
 
     public function form_resource(){
     	$level1 = DB::table('dk_hierarki_lvl_satu')->select('hls_id as id', 'hls_nama as nama')->get();
-    	$level2 = DB::table('dk_hierarki_lvl_dua')->select('hld_id as id', 'hld_nama as nama', 'hld_level_1 as lvl1', 'hld_cashflow as cashflow', 'hld_status as status', 'hld_subclass as subclass')->get();
+    	$level2 = DB::table('dk_hierarki_lvl_dua')->select('hld_id as id_real', 'hld_nomor as id', 'hld_nama as nama', 'hld_level_1 as lvl1', 'hld_cashflow as cashflow', 'hld_status as status', 'hld_subclass as subclass')->orderBy('hld_nomor')->get();
         $subclass = DB::table('dk_hierarki_subclass')->select('hs_id as id', 'hs_nama as nama', 'hs_level_1 as level1', 'hs_status as status')->get();
 
     	return json_encode([
@@ -78,14 +78,18 @@ class klasifikasi_akun_controller extends Controller
             if(isset($request->id_lama)){
                 foreach($request->id_lama as $key => $value) {
                     DB::table('dk_hierarki_lvl_dua')->where('hld_id', $value)->update([
-                        'hld_id'        => $addition.'.'.$request->dataId[$key],
+                        'hld_nomor'     => $addition.'.'.$request->dataId[$key],
                         'hld_nama'      => $request->data[$key],
                         'hld_cashflow'  => $request->cashflow[$key],
                         'hld_subclass'  => $request->hld_subclass[$key]
                     ]);
 
-                    DB::table('dk_akun')->where('ak_kelompok', $addition.'.'.$request->dataId[$key])->update([
-                        'ak_nomor' => DB::raw('concat(ak_kelompok, ".", ak_sub_id)'),
+                    DB::table('dk_akun')->where('ak_kelompok', $value)->update([
+                        'ak_nomor' => DB::raw('concat('.$addition.'.'.$request->dataId[$key].', ".", ak_sub_id)'),
+                    ]);
+
+                    DB::table('dk_akun_cabang')->where('ac_kelompok', $value)->update([
+                        'ac_nomor' => DB::raw('concat('.$addition.'.'.$request->dataId[$key].', ".", ac_sub_id)'),
                     ]);
                 }
             }
@@ -93,8 +97,12 @@ class klasifikasi_akun_controller extends Controller
             if(isset($request->lvl2NewId)){
                 foreach ($request->lvl2NewId as $key => $baru) {
                     if(!is_null($baru) && $baru != '' && !is_null($request->lvl2NewNama[$key]) && $request->lvl2NewNama[$key] != ''){
+
+                        $id = (DB::table('dk_hierarki_lvl_dua')->max('hld_id') + 1);
+
                         DB::table('dk_hierarki_lvl_dua')->insert([
-                            'hld_id'        => $addition.'.'.$baru,
+                            'hld_id'        => $id,
+                            'hld_nomor'     => $addition.'.'.$baru,
                             'hld_nama'      => $request->lvl2NewNama[$key],
                             'hld_level_1'   => $addition,
                             'hld_cashflow'  => $request->lvl2NewCashflow[$key],
@@ -106,7 +114,7 @@ class klasifikasi_akun_controller extends Controller
 
             DB::commit();
 
-            $level2 = DB::table('dk_hierarki_lvl_dua')->select('hld_id as id', 'hld_nama as nama', 'hld_level_1 as lvl1', 'hld_cashflow as cashflow', 'hld_status as status', 'hld_subclass as subclass')->get();
+            $level2 = DB::table('dk_hierarki_lvl_dua')->select('hld_id as id_real', 'hld_nomor as id', 'hld_nama as nama', 'hld_level_1 as lvl1', 'hld_cashflow as cashflow', 'hld_status as status', 'hld_subclass as subclass')->orderBy('hld_nomor')->get();
 
             $response = [
                 "status"    => 'berhasil',
@@ -159,7 +167,7 @@ class klasifikasi_akun_controller extends Controller
 
             DB::commit();
 
-            $level2 = DB::table('dk_hierarki_lvl_dua')->select('hld_id as id', 'hld_nama as nama', 'hld_level_1 as lvl1', 'hld_cashflow as cashflow', 'hld_status as status')->get();
+            $level2 = DB::table('dk_hierarki_lvl_dua')->select('hld_id as id_real', 'hld_nomor as id', 'hld_nama as nama', 'hld_level_1 as lvl1', 'hld_cashflow as cashflow', 'hld_status as status')->orderBy('hld_nomor')->get();
 
             $response = [
                 "status"    => 'berhasil',

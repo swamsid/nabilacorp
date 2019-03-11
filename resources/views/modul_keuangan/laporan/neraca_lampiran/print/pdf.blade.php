@@ -30,7 +30,7 @@
 			<?php $totParrent = 0 ?>
 			<tr>
 				<td colspan="2" style="padding: 5px; font-weight: 600; font-size: 10pt; text-align: left; border: 0px solid #ccc;">
-					{{ $parrent->hld_id }} - {{ $parrent->hld_nama }}
+					{{ $parrent->hld_nomor }} - {{ $parrent->hld_nama }}
 				</td>
 			</tr>
 
@@ -45,7 +45,7 @@
 					</td>
 
 					<?php 
-						if(explode('.', $parrent->hld_id)[0] == 1){
+						if(explode('.', $parrent->hld_nomor)[0] == 1){
 							$totParrent += ($detail->ak_posisi == 'D') ? $detail->saldo_akhir : ($detail->saldo_akhir * -1);
 						}else{
 							$totParrent += ($detail->ak_posisi == 'K') ? $detail->saldo_akhir : ($detail->saldo_akhir * -1);
