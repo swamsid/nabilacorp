@@ -44,7 +44,7 @@ class SystemController extends Controller
     }
 
     public function updateProfil(Request $request)
-    {   dd($request->all());
+    {   
         DB::beginTransaction();
         try {
             $nama = $request->companyname;
@@ -91,15 +91,10 @@ class SystemController extends Controller
                     'cp_image' => $imagePath
                 ]);
         DB::commit();
-        return response()->json([
-            'status' => 'sukses'
-        ]);
-        } catch (\Exception $e) {
-        DB::rollback();
-        return response()->json([
-            'status' => 'gagal',
-            'data' => $e
-        ]);
+            return redirect(url('system/profil-perusahaan/index'));
+        } catch (\Exception $e){
+            DB::rollback();
+            return redirect(url('system/profil-perusahaan/index'));
         }
     }
 
@@ -114,5 +109,24 @@ class SystemController extends Controller
     public function tambah_akses()
     {
         return view('/system/hakakses/tambah_akses');
+    }
+
+    public function deleteDir($dirPath)
+    {
+        if (!is_dir($dirPath)) {
+            return false;
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                self::deleteDir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dirPath);
     }
 }

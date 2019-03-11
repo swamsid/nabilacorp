@@ -3,8 +3,7 @@
 				<tr>
 					<th >Nama Barang</th>
 					<th width="20px">No Bukti</th>
-					<th width="15px">Tanggal</th>					
-					<th width="15px">Customer</th>
+					<th width="15px">Tanggal</th>	
 					<th width="15px">Sat</th>
 					<th width="10px">Qty</th>
 					<th width="10px">Harga</th>
@@ -21,8 +20,7 @@
 				<tr>
 					<td>{{ $item->i_name }}</td>
 					<td>{{ $item->s_note }}</td>
-					<td>{{ $item->sd_date }}</td>					
-					<td>{{ $item->s_nama_cus }}</td>
+					<td>{{ $item->sd_date }}</td>	
 					<td>{{ $item->s_detname }}</td>							
 					<td align="right" >{{number_format($item->sd_qty ,2,',','.')}}</td>
 					<td align="right" >{{number_format($item->sd_price ,2,',','.')}}</td>

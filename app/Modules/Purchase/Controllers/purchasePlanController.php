@@ -63,8 +63,8 @@ class purchasePlanController extends Controller
 
             if ($prevCost == null) 
             {
-              $default_cost = DB::table('m_price')->select('m_pbuy1')->where('m_pitem', '=', $idItem)->first();
-              $hargaLalu = $default_cost->m_pbuy1;
+              $default_cost = 0;
+              $hargaLalu = $default_cost;
             }
             else
             {
@@ -123,8 +123,8 @@ class purchasePlanController extends Controller
 
             if ($prevCost == null) 
             {
-               $default_cost = DB::table('m_price')->select('m_pbuy1')->where('m_pitem', '=', $idItem)->first();
-               $hargaLalu = $default_cost->m_pbuy1;
+               $default_cost = 0;
+               $hargaLalu = $default_cost;
             }
             else
             {
@@ -566,7 +566,7 @@ class purchasePlanController extends Controller
                   ->where('gc_gudang','GUDANG PENJUALAN')
                   ->where('gc_comp',$comp)
                   ->first();
-            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id->gc_id' AND s_position = '$gc_id->gc_id' limit 1) ,'0') as qtyStok"));
             $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
             $stok[] = $query[0];
@@ -579,7 +579,7 @@ class purchasePlanController extends Controller
                   ->where('gc_gudang','GUDANG BAHAN BAKU')
                   ->where('gc_comp',$comp)
                   ->first();
-            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id->gc_id' AND s_position = '$gc_id->gc_id' limit 1) ,'0') as qtyStok"));
             $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
             $stok[] = $query[0];
@@ -592,7 +592,7 @@ class purchasePlanController extends Controller
                   ->where('gc_gudang','GUDANG BAHAN BAKU')
                   ->where('gc_comp',$comp)
                   ->first();
-            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id' AND s_position = '$gc_id' limit 1) ,'0') as qtyStok"));
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id->gc_id' AND s_position = '$gc_id->gc_id' limit 1) ,'0') as qtyStok"));
             $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.s_id')->select('m_satuan.s_name')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
             $stok[] = $query[0];

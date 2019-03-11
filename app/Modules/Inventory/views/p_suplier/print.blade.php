@@ -110,7 +110,7 @@
 		@for($i=0;$i<count($dataIsi);$i++)
 		
 			<div class="div-page-break">
-					<h1 class="s16">TAMMA ROBAH INDONESIA</h1>
+					<h1 class="s16">Nabila Cake Bakery & Pastry</h1>
 					<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
 						<tr>
 							<td class="s16 underline bold text-center" colspan="3">FORM PENERIMAAN PEMBELIAN</td>
@@ -144,7 +144,7 @@
 								<td>{{$dataIsi[$i][$j]['i_code']}} {{$dataIsi[$i][$j]['i_name']}}</td>
 								<td width="10%" class="text-center">{{number_format($dataIsi[$i][$j]['d_pcsdt_qtyconfirm'],0,',','.')}}</td>
 								<td width="10%" class="text-center">{{number_format($dataIsi[$i][$j]['d_tbdt_qty'],0,',','.')}}</td>
-								<td width="10%">{{$dataIsi[$i][$j]['m_sname']}}</td>
+								<td width="10%">{{$dataIsi[$i][$j]['s_name']}}</td>
 								<td width="15%" class="text-right">{{ number_format($val_stock[$i][$j]->qtyStok,0,',','.') }} {{ $txt_satuan[$i][$j] }}</td>
 								
 							</tr>
@@ -222,7 +222,7 @@
 		@for($i=0;$i<count($dataIsi);$i++)
 		
 			<div class="div-page-break">
-					<h1 class="s16">TAMMA ROBAH INDONESIA</h1>
+					<h1 class="s16">Nabila Cake Bakery & Pastry</h1>
 					<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
 						<tr>
 							<td class="s16 underline bold text-center" colspan="3">FORM PENERIMAAN PEMBELIAN</td>
@@ -256,7 +256,7 @@
 								<td>{{$dataIsi[$i][$j]['i_code']}} {{$dataIsi[$i][$j]['i_name']}}</td>
 								<td width="10%" class="text-center">{{number_format($dataIsi[$i][$j]['d_pcsdt_qtyconfirm'],0,',','.')}}</td>
 								<td width="10%" class="text-center">{{number_format($dataIsi[$i][$j]['d_tbdt_qty'],0,',','.')}}</td>
-								<td width="10%">{{$dataIsi[$i][$j]['m_sname']}}</td>
+								<td width="10%">{{$dataIsi[$i][$j]['s_name']}}</td>
 								<td width="15%" class="text-right">{{ number_format($val_stock[$i][$j]->qtyStok,0,',','.') }} {{ $txt_satuan[$i][$j] }}</td>
 								
 							</tr>

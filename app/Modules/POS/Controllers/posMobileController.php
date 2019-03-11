@@ -7,21 +7,17 @@ use Illuminate\Http\Request;
 use App\m_customer;
 use Carbon\carbon;
 use DB;
-
 use App\m_itemm;
 use App\m_price;
 use App\d_stock;
-
 use App\Http\Controllers\Controller;
-
+use Session;
 use App\mMember;
 use App\Modules\POS\model\m_paymentmethod;
 use App\Modules\POS\model\m_machine;
 use App\Modules\POS\model\d_sales;
 use App\Modules\POS\model\d_sales_dt;
-
 use Datatables;
-
 use Auth;
 
 
@@ -31,31 +27,7 @@ use Auth;
 
 class posMobileController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
-   /* public function cut(){
-      $connector = new FilePrintConnector("\\\TAZIZ-PC\POS-80");
-      $printer = new Printer($connector);
-      $printer -> cut();
-      $printer -> close();
-
-    }*/
-    
-   
+ 
     public function item(Request $item)
     { 
       return m_itemm::seachItem($item);
@@ -91,18 +63,25 @@ class posMobileController extends Controller
 
     }
     
-    public function posMobile()
-    { 
+   public function posMobile()
+   {
+      $cabang = Session::get('user_comp');
+      $cek = DB::table('m_comp')->select('c_owner')
+         ->where('c_id',$cabang)->first();
+
       $printPl=view('Produksi::sam');
       $flag='Toko';
       $paymentmethod=m_paymentmethod::pm();       
-      $daftarHarga=DB::table('m_price_group')->where('pg_active','=','TRUE')->where('pg_type','B')->get();             
+      $daftarHarga=DB::table('m_price_group')
+        ->where('pg_active','=','TRUE')
+        ->where('pg_type','B')
+        ->get();             
       $pm =view('POS::paymentmethod/paymentmethod',compact('paymentmethod'));    
       $machine=m_machine::showMachineActive();      
       $data['mobile']=view('POS::POSpenjualanMobile/toko',compact('machine','paymentmethod','daftarHarga'));      
       $data['listtoko']=view('POS::POSpenjualanMobile/listtoko');   
-      return view('POS::POSpenjualanMobile/POSpenjualanToko',compact('data','pm','printPl','paymentmethod'));
-    }
+      return view('POS::POSpenjualanMobile/POSpenjualanToko',compact('data','pm','printPl','paymentmethod','cek'));
+   }
 
     function create(Request $request){
       return d_sales::simpanMobile($request);

@@ -1,4 +1,4 @@
-  @extends('main')
+@extends('main')
 @section('content')
 <!--BEGIN PAGE WRAPPER-->
 <div id="page-wrapper">
@@ -44,11 +44,11 @@
                 </div>
                    
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <form id="form_suplier" method="POST">
+                  <form id="form_suplier" method="GET">
                     {{ csrf_field() }}
                     <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-top:30px;padding-bottom:20px;">
                       <div class="col-md-2 col-sm-3 col-xs-12">
-                        <label class="tebal">Nama Supplier</label>
+                        <label class="tebal">Nama Supplier<font color="red">*</font></label>
                       </div>
 
                       <div class="col-md-4 col-sm-9 col-xs-12">
@@ -60,8 +60,8 @@
                         </div>
                       </div>
 
-                      {{-- <div class="col-md-2 col-sm-3 col-xs-12">
-                        <label class="tebal">Nama Pemilik</label>
+                      <div class="col-md-2 col-sm-3 col-xs-12">
+                        <label class="tebal">Nama Pemilik<font color="red">*</font></label>
                       </div>
 
                       <div class="col-md-4 col-sm-9 col-xs-12">
@@ -71,10 +71,10 @@
                             <input type="text" id="owner" name="owner" class="form-control input-sm">
                           </div>
                         </div>
-                      </div> --}}
+                      </div>
                              
                       <div class="col-md-2 col-sm-3 col-xs-12">
-                        <label class="tebal">No. Telp 1</label>
+                        <label class="tebal">No. Telp 1<font color="red">*</font></label>
                       </div>
 
                       <div class="col-md-4 col-sm-9 col-xs-12">
@@ -128,7 +128,7 @@
                       </div>
 
                       <div class="col-md-2 col-sm-3 col-xs-12"> 
-                        <label class="tebal">Bank</label>
+                        <label class="tebal">Bank<font color="red">*</font></label>
                       </div>
 
                       <div class="col-md-4 col-sm-9 col-xs-12">
@@ -147,7 +147,7 @@
                       </div>
 
                       <div class="col-md-2 col-sm-3 col-xs-12"> 
-                        <label class="tebal">Rekening</label>
+                        <label class="tebal">Rekening<font color="red">*</font></label>
                       </div>
 
                       <div class="col-md-4 col-sm-9 col-xs-12">
@@ -156,18 +156,17 @@
                         </div>
                       </div>
 
-                      <div class="col-md-2 col-sm-3 col-xs-12"> 
-                        <label class="tebal">Tanggal TOP</label>
+                      {{-- <div class="col-md-2 col-sm-3 col-xs-12"> 
+                        <label class="tebal">Batas TOP</label>
                       </div>
 
                       <div class="col-md-4 col-sm-9 col-xs-12">
                         <div class="form-group">
                           <div class="input-icon right">
-                            <i class="fa fa-calendar"></i>
-                            <input type="text" id="tgl_top" name="tglTop" class="form-control input-sm datepicker1">
+                            <input type="number" id="tgl_top" name="tglTop" class="form-control input-sm">
                           </div>
                         </div>
-                      </div>
+                      </div> --}}
 
                       <div class="col-md-2 col-sm-3 col-xs-12"> 
                         <label class="tebal">Limit Hutang</label>
@@ -183,10 +182,10 @@
                       </div>
 
                       <div class="col-md-2 col-sm-3 col-xs-12">
-                        <label class="tebal">Alamat</label>
+                        <label class="tebal">Alamat<font color="red">*</font></label>
                       </div>
 
-                      <div class="col-md-10 col-sm-9 col-xs-12">
+                      <div class="col-md-4 col-sm-9 col-xs-12">
                         <div class="form-group">
                           <div class="input-icon right">
                             <i class="fa fa-home"></i>
@@ -229,9 +228,8 @@
                             
 @endsection
 @section("extra_scripts")
-
 <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
-<script src="{{ asset('assets/script/inputmask.jquery.js') }}"></script>
+<script src="{{ asset("js/inputmask/inputmask.jquery.js") }}"></script>
 <script type="text/javascript">     
 
   $(document).ready(function(){
@@ -329,17 +327,24 @@
     }else {
       rekening.removeClass('state-error');
     }
-    
-    var form = $('#form_suplier').serialize();
+
     $.ajax({
-       type: "POST",
+       type: "GET",
        url: baseUrl + '/master/datasuplier/suplier_proses',
-       data: form,
+       data: $('#form_suplier').serialize(),
        success: function(response){
         if(response.status=='sukses')
         {
           toastr["success"]("Suplier Berhasil ditambahkan", "Sukses");
           window.location = ('{{route("suplier")}}');
+        }
+        else
+        {
+          iziToast.error({
+              position: "topRight",
+              title: '',
+              message: 'Mohon melengkapi data.'
+          });
         }
        },
        error: function(){

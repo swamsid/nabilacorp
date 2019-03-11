@@ -40,14 +40,11 @@
                     <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="t90">
                       <thead>
                         <tr>
-                          <th>ID</th>
                           <th>Nama Suplier</th>
+                          <th>Company</th>
                           <th>Alamat</th>
                           <th>No Telp</th>
                           <th>Fax</th>
-                          <th>TOP</th>
-                          <th>Hutang</th>
-                          <th>Limit</th>
                           <th>Aksi</th>
                         </tr>
                       </thead>
@@ -90,15 +87,12 @@
         type: 'GET'
       },
       "columns" : [
-        {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+        {"data" : "s_name", "width" : "15%"},
         {"data" : "s_company", "width" : "15%"},
-        {"data" : "s_address", "width" : "15%"},
-        {"data" : "telp", "width" : "10%"},
-        {"data" : "s_fax", "width" : "5%"},
-        {"data" : "tglTop", "width" : "10%"},
-        {"data" : "hutang", "width" : "10%"},
-        {"data" : "limit", "width" : "10%"},
-        {"data" : "aksi", orderable: false, searchable: false, "width" : "5%"}
+        {"data" : "s_address", "width" : "30%"},
+        {"data" : "telp", "width" : "15%"},
+        {"data" : "s_fax", "width" : "15%"},
+        {"data" : "aksi", orderable: false, searchable: false, "width" : "10%"}
       ],
       "language": {
         "searchPlaceholder": "Cari Data",
@@ -115,14 +109,14 @@
     });
   });
 
-  function hapus(id)
+  function ubahStatus(id)
   {
     iziToast.question({
       close: false,
       overlay: true,
       displayMode: 'once',
       //zindex: 999,
-      title: 'Hapus Data Supplier',
+      title: 'Ubah Status',
       message: 'Apakah anda yakin ?',
       position: 'center',
       buttons: [
@@ -136,27 +130,22 @@
             {
               if(response.status == "sukses")
               {
+                $('#t90').DataTable().ajax.reload();
+                iziToast.success({timeout: 5000,
+                                    position: "topRight",
+                                    icon: 'fa fa-chrome',
+                                    title: '',
+                                    message: 'Status brhasil di ganti.'});
                 instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-                iziToast.success({
-                  position: 'center', //center, bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
-                  title: 'Pemberitahuan',
-                  message: response.pesan,
-                  onClosing: function(instance, toast, closedBy){
-                    $('#t90').DataTable().ajax.reload();
-                  }
-                });
               }
               else
               {
                 instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-                iziToast.error({
-                  position: 'center', //center, bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
-                  title: 'Pemberitahuan',
-                  message: response.pesan,
-                  onClosing: function(instance, toast, closedBy){
-                    $('#t90').DataTable().ajax.reload();
-                  }
-                }); 
+                $('#t90').DataTable().ajax.reload();
+                iziToast.error({position: "topRight",
+                                  title: '',
+                                  message: 'Status gagal di ubah.'});
+                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
               }
             },
             error: function(){

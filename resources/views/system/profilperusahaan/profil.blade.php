@@ -90,8 +90,7 @@
                   </ul>
                   <div id="generalTabContent" class="tab-content">
                     <div id="tab-edit" class="tab-pane fade in active">
-                      <form class="form-horizontal" accept-charset="UTF-8"
-                        enctype="multipart/form-data" id="dataProfile">
+                      <form action="profil-perusahaanu/update" method="POST" class="form-horizontal"  accept-charset="UTF-8" enctype="multipart/form-data">
                         <h3>Edit Profil Perusahaan</h3>
                         {{ csrf_field() }}
                         <div class="form-group">
@@ -175,9 +174,9 @@
                           </div>
                         </div>
                         <hr>
-                        
+                        <button type="submit" class="btn btn-green btn-block" >Update</button>
                       </form>
-                      <button class="btn btn-green btn-block" onclick="simpan()">Update</button>
+                      
                     </div>
                   </div>
                 </div>
@@ -198,31 +197,5 @@
     autoclose: true
   })
 
-  function simpan() {
-      alert('a');
-      $.ajaxSetup({
-         headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-      });
-      $('.simpanCus').attr('disabled', 'disabled');
-      $.ajax({
-         url: baseUrl + "/profil-perusahaan/update",
-         type: 'POST',
-         data: new FormData($("#dataProfile")[0]),
-         success: function (response) {
-               if (response.status == 'sukses') {
-                  
-               } else {
-                  iziToast.error({
-                     position: "topRight",
-                     title: '',
-                     message: 'Mohon melengkapi data.'
-                  });
-                  $('.simpanCus').removeAttr('disabled', 'disabled');
-               }
-         }
-      })
-    }
 </script>
 @endsection

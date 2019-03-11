@@ -28,6 +28,7 @@ class m_item extends Model
     }
      public static function seachItem($item) {      
 
+        // return json_encode('okee');
 
         $search = $item->term;
 

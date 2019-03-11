@@ -82,13 +82,7 @@ tr.details td.details-control {
                       <div class="col-md-12">
                         <div class="col-md-12 tamma-bg"  style="margin-top: 5px;margin-bottom: 5px;
                         margin-bottom: 40px; padding-bottom:20px;padding-top:20px;">
-                          <div class="col-md-2 col-sm-3 col-xs-12">
-                              <label class="control-label tebal">Edit Harga</label>
-                              <div class="input-group input-group-sm" style="width: 100%;">
-                                <input type="checkbox" name="editprice" class="form-control" id="edit" name="edit">
-                              </div>
-                          </div>
-                          <div class="col-md-4">
+                          <div class="col-md-6">
                               <label class="control-label tebal" for="">Masukan Kode / Nama</label>
                               <div class="input-group input-group-sm" style="width: 100%;">
                                   <input type="text" id="bahan_baku" name="bahan_baku" class="form-control">
@@ -97,10 +91,10 @@ tr.details td.details-control {
                                   <input type="hidden" id="i_code" name="i_code" class="form-control"> 
                               </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                               <label class="control-label tebal" name="qty">Harga Khusus</label>
                               <div class="input-group input-group-sm" style="width: 100%;">
-                                  <input type="number" id="qty" name="price" class="form-control text-right">
+                                  <input type="text" id="qty" name="price" class="form-control text-right currency">
                               </div>
                           </div>
                           <div class="col-md-2 col-sm-3 col-xs-12">
@@ -179,17 +173,31 @@ tr.details td.details-control {
 
 @section("extra_scripts")
   <script type="text/javascript">
-    var extensions = {
-           "sFilterInput": "form-control input-sm",
-          "sLengthSelect": "form-control input-sm"
-      }
-      // Used when bJQueryUI is false
-      $.extend($.fn.dataTableExt.oStdClasses, extensions);
-      // Used when bJQueryUI is true
-      $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+    $(document).ready(function(){
+      var extensions = {
+             "sFilterInput": "form-control input-sm",
+            "sLengthSelect": "form-control input-sm"
+        }
+        // Used when bJQueryUI is false
+        $.extend($.fn.dataTableExt.oStdClasses, extensions);
+        // Used when bJQueryUI is true
+        $.extend($.fn.dataTableExt.oJUIClasses, extensions);
 
-      $('.select2').select2();
-      pilihGroup();
+        $('.select2').select2();
+        pilihGroup();
+
+        //mask money
+        $('.currency').inputmask("currency", {
+          radixPoint: ".",
+          groupSeparator: ".",
+          digits: 2,
+          autoGroup: true,
+          prefix: '', //Space after $, this will not truncate the first character.
+          rightAlign: false,
+          oncleared: function () { self.Value(''); }
+        });
+
+    });
 
       function pilihGroup(){        
         var type=$('#idGroup').find(':selected').data('type');        

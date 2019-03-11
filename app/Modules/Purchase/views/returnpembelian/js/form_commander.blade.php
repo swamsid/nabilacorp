@@ -135,7 +135,8 @@
                                           +'<thead>'
                                             +'<tr>'
                                               +'<th width="30%">Kode | Barang</th>'
-                                              +'<th width="10%">Qty</th>'
+                                              +'<th width="10%">Qty Beli</th>'
+                                              +'<th width="10%">Qty Return</th>'
                                               +'<th width="10%">Satuan</th>'
                                               +'<th width="15%">Harga</th>'
                                               +'<th width="15%">Total</th>'
@@ -157,7 +158,7 @@
       tabel_d_purchasereturn_dt = $('#tabel_d_purchasereturn_dt').DataTable({
       	'columnDefs': [
                {
-                  'targets': [3, 4, 5],
+                  'targets': [1, 2, 4, 5, 6],
                   'createdCell':  function (td) {
                      $(td).attr('align', 'right'); 
                   }
@@ -175,7 +176,7 @@
           		var qtyreturn = $(this).prev().val();
           		var pricetotal = qtyreturn * price;
 				var td = tr.find('td');
-				$( td[4] ).text(
+				$( td[5] ).text(
 					get_currency( pricetotal )
 				); 
  
@@ -199,7 +200,7 @@
         $(this).select2({
           placeholder: "Pilih Nota Pembelian...",
           ajax: {
-            url: baseUrl + '/purchasing/returnpembelian/find_d_purchase_order',
+            url: baseUrl + '/purchasing/returnpembelian/find_d_purchasing',
             dataType: 'json',
             data: function (params) {
               return {
@@ -208,8 +209,8 @@
             },
             processResults: function (res) {
                 for(x = 0;x < res.data.length;x++) {
-                  res.data[x]['id'] = res.data[x].po_id;
-                  res.data[x]['text'] = res.data[x].po_code;
+                  res.data[x]['id'] = res.data[x].d_pcs_id;
+                  res.data[x]['text'] = res.data[x].d_pcs_code;
                 }
 
                 return {
@@ -229,19 +230,19 @@
         pr_purchase = pr_purchase[0];
 
             //total diskon didapat dari value diskon + percentase diskon
-            var discTotalVal = parseInt(pr_purchase.po_discount)+parseInt(pr_purchase.po_disc_value);
-            var totalGross = pr_purchase.po_total_gross;
-            var taxPercent = pr_purchase.po_tax_percent;
-            var totalTax = pr_purchase.po_tax_value;
+            var discTotalVal = parseInt(pr_purchase.d_pcs_discount)+parseInt(pr_purchase.d_pcs_disc_value);
+            var totalGross = pr_purchase.d_pcs_total_gross;
+            var taxPercent = pr_purchase.d_pcs_tax_percent;
+            var totalTax = pr_purchase.d_pcs_tax_value;
             //persentase diskon berdasarkan total harga bruto
             var percentDiscTotalGross = parseFloat(discTotalVal*100/totalGross);
             //console.log(percentDiscTotalGross);
             //harga total setelah diskon dan 
-            var totalNett = pr_purchase.po_total_net;
+            var totalNett = pr_purchase.d_pcs_total_net;
             //data header
             $('#nama_sup').val(pr_purchase.s_company);
             $('#id_sup').val(pr_purchase.s_id);
-            $('#method_bayar').val(pr_purchase.po_method);
+            $('#method_bayar').val(pr_purchase.d_pcs_method);
             $('[name="metodeReturn"]').val($('#pilih_metode_return').val());
             $('#nilai_total_gross').val(convertDecimalToRupiah(totalGross));
             $('#nilai_total_disc').val(convertDecimalToRupiah(discTotalVal));
@@ -251,7 +252,7 @@
             var key = 1;
             i = randString(5);
             //loop data
-            find_d_purchaseorder_dt();
+            find_d_purchasing_dt();
             //set readonly to enabled
 
             //force integer input in textfield

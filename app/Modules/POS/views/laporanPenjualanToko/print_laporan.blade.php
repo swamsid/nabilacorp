@@ -127,7 +127,7 @@
 						</div> -->
 						<div class="bold" style="margin-top: 15px;">
 							Laporan : Penjualan Per Barang - Detail <br>							
-							Tanggal : {{$tgl1}}
+							Tanggal : {{ date('d M Y',strtotime($tgl1)) }} - {{ date('d M Y',strtotime($tgl2)) }}
 						</div>
 		
 

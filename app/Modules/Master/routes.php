@@ -27,14 +27,13 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
 
 //data supplier
     Route::get('/master/datasuplier/find_m_suplier', 'SuplierController@find_m_suplier')->name('find_m_supplier');    
-    Route::get('/master/datasuplier/suplier', 'SuplierController@suplier')->name('suplier');    
-    Route::get('/master/datasuplier/suplier', 'SuplierController@suplier')->name('suplier');    
-    Route::post('master/datasuplier/suplier_proses', 'SuplierController@suplier_proses');
+    Route::get('/master/datasuplier/suplier', 'SuplierController@suplier')->name('suplier');     
+    Route::get('/master/datasuplier/suplier_proses', 'SuplierController@suplier_proses');
     Route::get('/master/datasuplier/tambah_suplier', 'SuplierController@tambah_suplier');
     Route::get('master/datasuplier/datatable_suplier', 'SuplierController@datatable_suplier')->name('datatable_suplier');
     Route::get('master/datasuplier/suplier_edit/{s_id}', 'SuplierController@suplier_edit');
     Route::post('master/datasuplier/suplier_edit_proses/{s_id}', 'SuplierController@suplier_edit_proses');
-    Route::get('master/datasuplier/suplier_hapus', 'SuplierController@suplier_hapus');
+    Route::get('master/datasuplier/suplier_hapus', 'SuplierController@ubahStatus');
     
 //data supplier selesai
 //customer

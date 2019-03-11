@@ -9,17 +9,17 @@ class d_mem extends Model
     protected $table = 'd_mem';
     protected $primaryKey = 'm_id';
     protected $fillable = ['m_id',
-                           'm_pegawai_id',
-    					   'm_username',
-    					   'm_passwd',
-    					   'm_name',
-    					   'm_birth_tgl',
-    					   'm_addr',
-                           'm_reff',
-                           'm_lastlogin',
-                           'm_lastlogout',
-    					   'm_insert',
-    					   'm_update'];
+                          'm_pegawai_id',
+                          'm_username',
+                          'm_passwd',
+                          'm_name',
+                          'm_birth_tgl',
+                          'm_addr',
+                          'm_reff',
+                          'm_lastlogin',
+                          'm_lastlogout',
+                          'm_insert',
+                          'm_update'];
 
     public $incrementing = false;
     public $remember_token = false;
