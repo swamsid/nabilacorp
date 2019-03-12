@@ -38,7 +38,7 @@
 									</tr>
 
 									@foreach($level1->subclass as $key => $subclass)
-										@if($subclass->hs_nama != 'Tidak Memiliki')
+										@if($subclass->hs_nama != 'Tidak Memiliki' && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;">
 													{{ $subclass->hs_nama }}
@@ -116,7 +116,7 @@
 									</tr>
 
 									@foreach($level1->subclass as $key => $subclass)
-										@if($subclass->hs_nama != 'Tidak Memiliki')
+										@if($subclass->hs_nama != 'Tidak Memiliki' && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;">
 													{{ $subclass->hs_nama }}
@@ -203,7 +203,7 @@
 									</tr>
 
 									@foreach($level1->subclass as $key => $subclass)
-										@if($subclass->hs_nama != 'Tidak Memiliki')
+										@if($subclass->hs_nama != 'Tidak Memiliki' && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 30px; font-weight: lighter; font-style: italic;">
 													{{ $subclass->hs_nama }}

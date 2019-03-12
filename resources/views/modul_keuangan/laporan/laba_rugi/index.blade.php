@@ -276,7 +276,7 @@
 											<table class="table" id="table-data" v-cloak>
 												<tbody>
 													<template v-for="(data, dtx) in dataPrint" v-if="data.hls_id == 4 || data.hls_id == 5">
-													<tr>
+													<tr v-if="">
 														<td style="border: 0px; font-weight: bold;">@{{ data.hls_nama }}</td>
 														<td style="border: 0px; text-align: right; font-size: 10pt;">
 															
@@ -284,7 +284,7 @@
 													</tr>
 
 													<template v-for="(subclass, idx) in data.subclass">
-														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
 															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
 															<td style="border: 0px; text-align: right; font-size: 10pt;">
 																
@@ -340,7 +340,7 @@
 													</tr>
 
 													<template v-for="(subclass, idx) in data.subclass">
-														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
 															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
 															<td style="border: 0px; text-align: right; font-size: 10pt;">
 																
@@ -404,7 +404,7 @@
 													</tr>
 
 													<template v-for="(subclass, idx) in data.subclass">
-														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
 															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
 															<td style="border: 0px; text-align: right; font-size: 10pt;">
 																

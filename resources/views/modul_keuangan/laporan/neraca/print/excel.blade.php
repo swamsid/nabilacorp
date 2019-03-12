@@ -47,7 +47,7 @@
 									@foreach($header->subclass as $key => $group)
 										<?php $totSubclass = 0 ?>
 
-										@if($group->hs_nama != "Tidak Memiliki")
+										@if($group->hs_nama != "Tidak Memiliki" && count($group->level_2) > 0)
 											<tr>
 												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">{{ $group->hs_nama }}</td>
 
@@ -82,7 +82,7 @@
 
 										<?php $totLevel1 += $totSubclass; ?>
 
-										@if($group->hs_nama != "Tidak Memiliki")
+										@if($group->hs_nama != "Tidak Memiliki" && count($group->level_2) > 0)
 											<tr>
 												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">Total {{ $group->hs_nama }}</td>
 
@@ -124,7 +124,7 @@
 									@foreach($header->subclass as $key => $group)
 										<?php $totSubclass = 0 ?>
 
-										@if($group->hs_nama != "Tidak Memiliki")
+										@if($group->hs_nama != "Tidak Memiliki" && count($group->level_2) > 0)
 											<tr>
 												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">{{ $group->hs_nama }}</td>
 
@@ -159,7 +159,7 @@
 
 										<?php $totLevel1 += $totSubclass; ?>
 
-										@if($group->hs_nama != "Tidak Memiliki")
+										@if($group->hs_nama != "Tidak Memiliki" && count($group->level_2) > 0)
 											<tr>
 												<td style="border: 1px solid #ccc; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #555555; color: #ffffff">Total {{ $group->hs_nama }}</td>
 

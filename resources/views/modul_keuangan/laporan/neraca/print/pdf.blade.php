@@ -47,7 +47,7 @@
 
 									@foreach($level_1->subclass as $a => $subclass)
 										<?php $totSubclass = 0; ?>
-										@if($subclass->hs_nama != "Tidak Memiliki")
+										@if($subclass->hs_nama != "Tidak Memiliki" && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 25px; font-style: italic;">{{ $subclass->hs_nama }}</td>
 												<td></td>
@@ -80,7 +80,7 @@
 
 										<?php $totLevel1 += $totSubclass; ?>
 
-										@if($subclass->hs_nama != "Tidak Memiliki")
+										@if($subclass->hs_nama != "Tidak Memiliki" && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 25px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
 												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600;">
@@ -127,7 +127,7 @@
 
 									@foreach($level_1->subclass as $a => $subclass)
 										<?php $totSubclass = 0; ?>
-										@if($subclass->hs_nama != "Tidak Memiliki")
+										@if($subclass->hs_nama != "Tidak Memiliki" && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 50px; font-style: italic;">{{ $subclass->hs_nama }}</td>
 												<td></td>
@@ -160,7 +160,7 @@
 
 										<?php $totLevel1 += $totSubclass; ?>
 
-										@if($subclass->hs_nama != "Tidak Memiliki")
+										@if($subclass->hs_nama != "Tidak Memiliki" && count($subclass->level_2) > 0)
 											<tr>
 												<td style="padding-left: 50px; font-weight: 600;">Total {{ $subclass->hs_nama }}</td>
 												<td style="border-top: 1px solid #eee; text-align: right; font-weight: 600; padding-left: 20px;">

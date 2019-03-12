@@ -872,11 +872,12 @@
                                             this.level_2 = response.data.level_2;
                                         }
 
-                                        this.level1Change(this.level1);
+                                        // console.log(this.level1)
+                                        this.level1Change(parseInt(this.level1));
                                         this.status = 'standby';
                                         this.lvl2New = 0;
 
-                                        console.log(this.level_2);
+                                        // console.log(this.level_2);
                                     }else{
                                         toast.update({
                                             text: response.data.message,

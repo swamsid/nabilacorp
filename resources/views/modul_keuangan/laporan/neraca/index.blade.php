@@ -292,7 +292,7 @@
 													</tr>
 
 													<template v-for="(subclass, idx) in data.subclass">
-														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
 															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
 															<td style="border: 0px; text-align: right; font-size: 10pt;">
 																
@@ -308,7 +308,7 @@
 															</tr>
 														</template>
 
-															<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+															<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
 																<td style="border: 0px; font-weight: normal; padding-left: 25px; font-style: italic;">Total @{{ subclass.hs_nama }}</td>
 																<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
 																	@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
@@ -342,8 +342,8 @@
 													</tr>
 
 													<template v-for="(subclass, idx) in data.subclass">
-														<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
-															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.hs_nama }}</td>
+														<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
+															<td style="border: 0px; font-weight: 500; padding-left: 25px; font-style: italic;">@{{ subclass.level_2.length }}</td>
 															<td style="border: 0px; text-align: right; font-size: 10pt;">
 																
 															</td>
@@ -358,7 +358,7 @@
 															</tr>
 														</template>
 
-															<tr v-if="subclass.hs_nama != 'Tidak Memiliki'">
+															<tr v-if="subclass.hs_nama != 'Tidak Memiliki' && subclass.level_2.length">
 																<td style="border: 0px; font-weight: normal; padding-left: 25px; font-style: italic;">Total @{{ subclass.hs_nama }}</td>
 																<td style="border: 0px; text-align: right; font-size: 10pt; border-top: 1px solid #eee; font-weight: 600; ">
 																	@{{ (detail.subclass['_'+subclass.hs_id] < 0) ? '('+humanizePrice(detail.subclass['_'+subclass.hs_id])+')' : humanizePrice(detail.subclass['_'+subclass.hs_id])}}
