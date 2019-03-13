@@ -46,6 +46,7 @@ class purchasePlaController extends Controller
     
    
    public function seachItemPurchase(Request $request){
+         // return json_encode('aaa');
          return   m_item::seachItemPurchase($request);
    }
    public function storePlan(Request $request){
@@ -76,10 +77,6 @@ class purchasePlaController extends Controller
    public function updatePlan(Request $request){         
       return d_purchase_plan::perbaruiPlan($request);
    }
-   
-
-
-   
    public function formPlan()
     {        
          return view('Purchase::rencanapembelian/create');

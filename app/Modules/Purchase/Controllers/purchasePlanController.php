@@ -25,6 +25,8 @@ class purchasePlanController extends Controller
    public function seachItemPurchase(Request $request, $gudang)
    {
 
+      // return json_encode($request->all());
+
       $namaGudang = DB::table('d_gudangcabang')
                     ->where('gc_id',$gudang)
                     ->select('gc_gudang')->first();
@@ -130,11 +132,12 @@ class purchasePlanController extends Controller
             {
                $hargaLalu = $prevCost->sm_hpp;
             }
-
+            
              //get data txt satuan
             $txtSat1 = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val->i_sat1)->first();
             $txtSat2 = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val->i_sat2)->first();
             $txtSat3 = DB::table('m_satuan')->select('s_name', 's_id')->where('s_id','=', $val->i_sat3)->first();
+
             $results[] = [ 'id' => $val->i_id,
                            'label' => $val->i_code .' - '.$val->i_name,
                            'stok' => (int)$stok,

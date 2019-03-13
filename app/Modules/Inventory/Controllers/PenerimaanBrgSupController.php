@@ -21,6 +21,8 @@ use Auth;
 use App\d_terima_pembelian;
 use App\d_terima_pembelian_dt;
 
+use keuangan; // tambahan dirga
+
 class PenerimaanBrgSupController extends Controller
 {
     public function index(){
@@ -176,7 +178,7 @@ class PenerimaanBrgSupController extends Controller
 
     public function simpan_penerimaan(Request $request)
     {
-      // return json_encode("okeee");
+        // return json_encode('simpan');
         DB::beginTransaction();
         try 
         {
@@ -207,6 +209,7 @@ class PenerimaanBrgSupController extends Controller
 
             //variabel untuk hitung array field
             $hitung_field = count($request->fieldItemId);
+            $dataJurnal = []; // Tambahan Dirga
 
             //update d_stock, insert d_stock_mutation & insert d_terimapembelian_dt
             for ($i=0; $i < $hitung_field; $i++) 
@@ -340,12 +343,6 @@ class PenerimaanBrgSupController extends Controller
                    $dataIsi->save();
 
                }
-                
-               // if ($hasil_id ) {
-               //    # code...
-               // }
-                //insert d_terimapembelian_dt
-                
 
                 //update isrecieved d_purchasingdt jika qty == terima
                 $qtyRcv = DB::select(DB::raw("SELECT IFNULL(sum(d_tbdt_qty), 0) as aa FROM d_terima_pembelian_dt where d_tbdt_idpcsdt = '".$request->fieldIdPurchaseDet[$i]."'"));
@@ -357,7 +354,79 @@ class PenerimaanBrgSupController extends Controller
                       ->where('d_pcsdt_id', $request->fieldIdPurchaseDet[$i])
                       ->update(['d_pcsdt_isreceived' => 'TRUE']);
                 }
+
+
+                // Tambahan Dirga
+                $dataGroup = DB::table('m_group')
+                                ->select('g_akun_persediaan')
+                                ->where('g_id', function($query) use ($request, $i){
+                                  $query->select('i_group')->from('m_item')
+                                            ->where('i_id', $request->fieldItemId[$i])
+                                            ->first();
+                                })->first();
+
+                if(!$dataGroup || !$dataGroup->g_akun_persediaan){
+                    return response()->json([
+                        'status' => 'gagal',
+                        'pesan'  => 'Beberapa Akun Persediaan Pada Group Item Yang Terkain Belum Ditentukan. Jurnal dan Data Penerimaan Tidak Bisa Disimpan.'
+                    ]);
+                }
+
+                if(!array_key_exists($dataGroup->g_akun_persediaan, $dataJurnal)){
+                  $dataJurnal[$dataGroup->g_akun_persediaan] = [
+                    'jrdt_akun'   => $dataGroup->g_akun_persediaan,
+                    'jrdt_value'  => $request->fieldHargaTotalRaw[$i],
+                    'jrdt_dk' => 'D'
+                  ];
+                }else{
+                  $dataJurnal[$dataGroup->g_akun_persediaan]['jrdt_value'] += $request->fieldHargaRaw[$i];
+                }
+
+                // selesai Dirga
+
             }
+
+            // Tambahan Dirga 
+            if(modulSetting()['onLogin'] == modulSetting()['id_pusat']){
+              $dataAkunHutang = DB::table('dk_akun_penting')
+                                    ->whereNull('ap_comp')
+                                    ->where('ap_nama', 'Hutang Usaha')
+                                    ->select('ap_akun')
+                                    ->first();
+            }
+            else{
+              $dataAkunHutang = DB::table('dk_akun_penting')
+                                    ->where('ap_comp', modulSetting()['onLogin'])
+                                    ->where('ap_nama', 'Hutang Usaha')
+                                    ->select('ap_akun')
+                                    ->first();
+            }
+
+            if(!$dataAkunHutang || !$dataAkunHutang->ap_akun){
+                return response()->json([
+                      'status' => 'gagal',
+                      'pesan'  => 'Akun Hutang Usaha Belum Ditentukan. Anda Bisa Memilihnya Di Menu Setting/Akun Penting'
+                ]);
+            }
+            
+            $dataJurnal[$dataAkunHutang->ap_akun] = [
+              'jrdt_akun'   => $dataAkunHutang->ap_akun,
+              'jrdt_value'  => array_sum($request->fieldHargaTotalRaw),
+              'jrdt_dk' => 'K'
+            ];
+
+            // update data hutang
+            DB::table('dk_payable')->where('py_ref_nomor', $request->headNotaTxt)->update([
+              'py_total_tagihan' => DB::raw('py_total_tagihan + '.array_sum($request->fieldHargaTotalRaw))
+            ]);
+
+            $dataPo = DB::table('d_purchasing')->where('d_pcs_id', $request->headNotaPurchase)->first();
+
+            keuangan::jurnal()->addJurnal($dataJurnal, $dataPo->d_pcs_date_created, $request->headNotaTxt, 'Penerimaan Barang Supplier Atas Nota '.$request->headNotaTxt, 'MM', modulSetting()['onLogin'], true);
+
+            // return json_encode($dataJurnal);
+
+            // Selesai Dirga
 
             //cek pada table purchasingdt, jika isreceived semua tbl header ubah status ke RC
             $this->cek_status_purchasing($request->headNotaPurchase);
@@ -485,7 +554,7 @@ class PenerimaanBrgSupController extends Controller
     }
 
     public function simpan_update_data(Request $request){
-      // dd($request->all());
+      // return json_encode('update');
       DB::beginTransaction();
       try {
         //ubah status
