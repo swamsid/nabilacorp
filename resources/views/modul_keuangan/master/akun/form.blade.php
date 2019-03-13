@@ -45,99 +45,124 @@
                                                     <div class="row">
                                                         <div class="col-md-12 mt-form">
                                                             <div class="row">
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <label class="modul-keuangan">Type Akun</label>
                                                                 </div>
+
                                                                 <div class="col-md-3">
                                                                     <vue-select :name="'ak_type'" :id="'ak_type'" :options="type" :disabled="onUpdate"></vue-select>
                                                                 </div>
+
                                                                 <div class="col-md-1 form-info-icon link" @click="search" v-if="!onUpdate">
                                                                     <i class="fa fa-search" title="Cari Akun Berdasarkan Type Akun"></i>
                                                                 </div>
+
                                                                 <div class="col-md-1 form-info-icon link" @click="formReset" v-if="onUpdate">
                                                                     <i class="fa fa-times" title="Bersihkan Pencarian" style="color: #CC0000;"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-12 mt-form">
                                                             <div class="row">
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <label class="modul-keuangan">Kelompok Akun</label>
                                                                 </div>
-                                                                <div class="col-md-5">
-                                                                    <vue-select :name="'ak_kelompok'" :id="'ak_kelompok'" :options="kelompok" :disabled="onUpdate" @input="kelompokChange" :search="true"></vue-select>
+
+                                                                <div class="col-md-7">
+                                                                    <vue-select :name="'ak_kelompok'" :id="'ak_kelompok'" :options="kelompok" @input="kelompokChange" :search="true"></vue-select>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-12 mt-form">
                                                             <div class="row">
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <label class="modul-keuangan">Nomor Akun *</label>
                                                                 </div>
+
                                                                 <div class="col-md-7">
+                                                                    
                                                                     <div class="input-group">
-                                                                      <span class="input-group-addon" id="basic-addon1">@{{ singleData.parrentId }}.</span>
-                                                                      <input type="text" name="ak_nomor" class="form-control modul-keuangan" placeholder="contoh: 001" v-model="singleData.ak_nomor" title="Tidak Boleh Kosong, Hanya Angka" @keypress="onlyNumber" :readonly="onUpdate">
+                                                                      <span class="input-group-addon" id="basic-addon1">
+                                                                        @{{ singleData.parrentId }}.
+                                                                      </span>
+                                                                      
+                                                                      <input type="text" name="ak_nomor" class="form-control modul-keuangan" placeholder="contoh: 001" v-model="singleData.ak_nomor" title="Tidak Boleh Kosong, Hanya Angka" @keypress="onlyNumber">
                                                                     </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-12 mt-form">
                                                             <div class="row">
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <label class="modul-keuangan">Nama Akun *</label>
                                                                 </div>
+
                                                                 <div class="col-md-7">
                                                                     <input type="text" name="ak_nama" class="form-control modul-keuangan" :placeholder="singleData.placeholderNama" v-model="singleData.ak_nama" title="Tidak Boleh Kosong">
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-12 mt-form" v-if="conteks == 'detail'">
                                                             <div class="row">
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <label class="modul-keuangan">Posisi Debet/Kredit</label>
                                                                 </div>
+
                                                                 <div class="col-md-7">
                                                                     <vue-select :name="'ak_posisi'" :id="'ak_posisi'" :options="posisi"></vue-select>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-12 mt-form" v-if="conteks == 'detail'">
                                                             <div class="row">
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <label class="modul-keuangan">Saldo Pembukaan</label>
                                                                 </div>
+
                                                                 <div class="col-md-7">
                                                                     <vue-inputmask :name="'ak_opening'" :id="'ak_opening'"></vue-inputmask>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         @if(modulSetting()['support_cabang'])
-                                                        <div class="col-md-12 mt-form">
-                                                            <div class="row">
-                                                                <div class="col-md-4">
-                                                                    <label class="modul-keuangan"></label>
-                                                                </div>
-                                                                <div class="col-md-7">
-                                                                    <input type="checkbox" name="resiprokal" title="Centang Untuk Menjadikan Akun Ini Sebagai Akun Resiprokal" v-model="resiprokal">
-                                                                    <span style="font-size: 8pt; margin-left: 5px;">
-                                                                        Akun Ini Termasuk Akun Resiprokal. &nbsp;
-                                                                        <a href="https://www.google.com/search?q=akun+resiprokal&oq=akun+res&aqs=chrome.0.69i59j69i57j69i60l3j0.3851j0j7&sourceid=chrome&ie=UTF-8" target="_blank" title="Akun Resiprokal Adalah Akun-Akun Yang Nantinya Akan Dieliminasi Saat Penyusunan Laporan Keuangan Gabungan.">
-                                                                            <i class="fa fa-info-circle"></i>
-                                                                        </a>
-                                                                    </span>
+                                                            <div class="col-md-12 mt-form">
+                                                                <div class="row">
+                                                                    <div class="col-md-3">
+                                                                        <label class="modul-keuangan"></label>
+                                                                    </div>
+
+                                                                    <div class="col-md-7">
+                                                                        <input type="checkbox" name="resiprokal" title="Centang Untuk Menjadikan Akun Ini Sebagai Akun Resiprokal" v-model="resiprokal">
+
+                                                                        <span style="font-size: 8pt; margin-left: 5px;">
+                                                                            Akun Ini Termasuk Akun Resiprokal. &nbsp;
+                                                                            <a href="https://www.google.com/search?q=akun+resiprokal&oq=akun+res&aqs=chrome.0.69i59j69i57j69i60l3j0.3851j0j7&sourceid=chrome&ie=UTF-8" target="_blank" title="Akun Resiprokal Adalah Akun-Akun Yang Nantinya Akan Dieliminasi Saat Penyusunan Laporan Keuangan Gabungan.">
+                                                                               <i class="fa fa-info-circle"></i>
+                                                                            </a>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                         @endif
+
                                                         <div class="col-md-9" v-if="locked">
                                                             <div class="modul-keuangan-alert primary" role="alert" style="margin-top: 30px;">
-                                                                <i class="fa fa-info-circle"></i> &nbsp;&nbsp;Akun Dikunci. Tidak Bisa Dinonaktifkan
+                                                              <i class="fa fa-info-circle"></i> &nbsp;&nbsp;Akun Dikunci. Tidak Bisa Dinonaktifkan
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
+
                                                     <table class="table table-stripped table-bordered table-mini">
                                                         <thead>
                                                             <tr>
@@ -147,6 +172,7 @@
                                                             </tr>
                                                         </thead>
                                                     </table>
+
                                                     <div style="height: 300px; background: #fafafa; overflow-y: scroll;">
                                                         <table class="table table-stripped table-bordered table-mini">
                                                             <thead>
@@ -155,33 +181,40 @@
                                                                     <th width="60%">Nama Akun</th>
                                                                 </tr>
                                                             </thead>
+
                                                             <tbody>
                                                                 <template v-for="data in listAkun">
-                                                                <tr>
-                                                                    <td style="text-align: center;">@{{ data.nomor }}</td>
-                                                                    <td style="text-align: left;">@{{ data.text }}</td>
-                                                                </tr>
+                                                                    <tr>
+                                                                        <td style="text-align: center;">@{{ data.nomor }}</td>
+                                                                        <td style="text-align: left;">@{{ data.text }}</td>
+                                                                    </tr>
                                                                 </template>
+
                                                                 <template v-if="listAkun.length == 0">
-                                                                <tr>
-                                                                    <td colspan="2" style="text-align: center;">Tidak Ada Data</td>
-                                                                </tr>
+                                                                    <tr>
+                                                                        <td colspan="2" style="text-align: center;">Tidak Ada Data</td>
+                                                                    </tr>
                                                                 </template>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="row content-button">
                                                 <div class="col-md-6">
                                                     <a href="{{ route('akun.index') }}">
                                                         <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left" :disabled="btnDisabled"></i> &nbsp;Kembali Ke Halaman Data Akun</button>
                                                     </a>
                                                 </div>
+
                                                 <div class="col-md-6 text-right">
                                                     <button type="button" class="btn btn-info btn-sm" @click="updateData" :disabled="btnDisabled" v-if="onUpdate"><i class="fa fa-floppy-o"></i> &nbsp;Simpan Perubahan</button>
+
                                                     <button type="button" class="btn btn-danger btn-sm" @click="deleteData" :disabled="btnDisabled" v-if="onUpdate && dataIsActive"><i class="fa fa-times"></i> &nbsp;Nonaktifkan</button>
+
                                                     <button type="button" class="btn btn-success btn-sm" @click="deleteData" :disabled="btnDisabled" v-if="onUpdate && !dataIsActive"><i class="fa fa-check-square-o"></i> &nbsp;Aktifkan</button>
+
                                                     <button type="button" class="btn btn-primary btn-sm" @click="saveData" :disabled="btnDisabled" v-if="!onUpdate"><i class="fa fa-floppy-o"></i> &nbsp;Simpan</button>
                                                 </div>
                                             </div>
@@ -267,7 +300,7 @@
             });
         }
 
-		var app = new Vue({
+        var app = new Vue({
             el: '#page-wrapper',
             data: {
                 stat: 'standby',
@@ -533,9 +566,9 @@
                 },
 
                 kelompokChange: function(e){
-                    this.singleData.parrentId = e;
-
-                    this.listAkun = $.grep(this.kelompokDetail, function(x) { return x.nomor.substring(0, e.length) == e })
+                    console.log(this.kelompok);
+                    this.singleData.parrentId = this.kelompok[this.kelompok.findIndex(a => a.id == e)].nomor;
+                    this.listAkun = $.grep(this.kelompokDetail, function(x) { return x.kelompok == e })
                 },
 
                 search: function(e){
@@ -567,7 +600,7 @@
 
                     $('#ak_kelompok').val(conteks['ak_kelompok']).trigger('change.select2');
 
-                    this.singleData.ak_nomor = conteks['ak_nomor'].substring(cek);
+                    this.singleData.ak_nomor = conteks['ak_sub_id'].substring(cek);
                     this.singleData.ak_nama = conteks['ak_nama'];
                     this.singleData.ak_id = conteks['ak_id'];
                     this.resiprokal = (conteks['ak_resiprokal'] == '1') ? true : false;
