@@ -174,4 +174,23 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::get('/master/datagroup/update_group', 'groupController@update_group')->name('update_group');
     Route::get('/master/datagroup/datatable_group', 'groupController@datatable_group')->name('datatable_group');
     Route::get('/master/datagroup/ubahstatus', 'groupController@ubahStatus');
+//Master Konsigner
+    Route::get('/master/consigner/index', 'MasterConsignerController@index');
+    Route::get('/master/consigner/tambah', 'MasterConsignerController@tambahData');
+    Route::get('/master/consigner/simpan', 'MasterConsignerController@simpanData');
+    Route::get('/master/consigner/table', 'MasterConsignerController@tableConsigner');
+    Route::get('/master/consigner/edit', 'MasterConsignerController@editConsigner');
+    Route::post('/master/consigner/update/{id}', 'MasterConsignerController@updateConsigner');
+    Route::get('/master/consigner/status', 'MasterConsignerController@statusConsigner');
+
+//Master Konsigne
+    Route::get('/master/consigne/index', 'MasterConsigneController@index');
+    Route::get('/master/consigne/tambah', 'MasterConsigneController@tambahData');
+    Route::get('/master/consigne/simpan', 'MasterConsigneController@simpanData');
+    Route::get('/master/consigne/table', 'MasterConsigneController@tableConsigne');
+    Route::get('/master/consigne/edit', 'MasterConsigneController@editConsigne');
+    Route::post('/master/consigne/update/{id}', 'MasterConsigneController@updateConsigne');
+    Route::get('/master/consigne/status', 'MasterConsigneController@statusConsigne');
+    
+    
 });

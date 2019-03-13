@@ -667,9 +667,9 @@ class PenerimaanBrgSupController extends Controller
                         <button class="btn btn-sm btn-success" title="Detail"
                             onclick=detailPenerimaan("'.$data->d_tb_id.'")><i class="fa fa-eye"></i> 
                         </button>
-                        <button class="btn btn-sm btn-danger" title="Delete"
+                        <!-- <button class="btn btn-sm btn-danger" title="Delete"
                             onclick=deletePenerimaan("'.$data->d_tb_id.'")><i class="glyphicon glyphicon-trash"></i>
-                        </button>
+                        </button> -->
                     </div>';
         })
         ->rawColumns(['status', 'action'])

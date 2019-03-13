@@ -1,111 +1,392 @@
 @extends('main')
 @section('content')
-            <!--BEGIN PAGE WRAPPER-->
-            <div id="page-wrapper">
-                <!--BEGIN TITLE & BREADCRUMB PAGE-->
-                <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-                    <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                        <div class="page-title">Barang Titipan</div>
-                    </div>
-                    <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
-                        <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li><i></i>&nbsp;Penjualan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Barang Titipan</li>
-                    </ol>
-                    <div class="clearfix">
-                    </div>
-                </div>
-                <div class="page-content fadeInRight">
-                    <div id="tab-general">
-                        <div class="row mbl">
-                            <div class="col-lg-12">
-                                
-                              <div class="col-md-12">
-                                  <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
-                                  </div>
-                              </div>
+<!--BEGIN PAGE WRAPPER-->
+<div id="page-wrapper">
+   <!--BEGIN TITLE & BREADCRUMB PAGE-->
+   <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+      <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
+         <div class="page-title">Barang Titipan</div>
+      </div>
+      <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
+         <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+         <li><i></i>&nbsp;Penjualan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+         <li class="active">Barang Titipan</li>
+      </ol>
+      <div class="clearfix">
+      </div>
+   </div>
+   <div class="page-content fadeInRight">
+      <div id="tab-general">
+         <div class="row mbl">
+            <div class="col-lg-12">
+               
+               <div class="col-md-12">
+                  <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
+                  </div>
+               </div>
+               
+               
+               <ul id="generalTab" class="nav nav-tabs">
+                  <li class="active"><a id="penjualan" href="#toko" data-toggle="tab">Form Barang Titipan</a></li>
+                  <li><a id="list" href="#listtoko" data-toggle="tab">List Barang Titipan</a></li>
+                  <li><a href="#item-consigner" onclick="pilihSupplier()" data-toggle="tab">Item Consigner</a></li>
+                  {{--  <li><a href="#listmobil" data-toggle="tab">List Mobil</a></li>  --}}
+                  <!-- <li><a href="#konsinyasi" data-toggle="tab">Penjualan Konsinyasi</a></li> -->
+               </ul>
+               <div id="generalTabContent" class="tab-content responsive">
+                  <!-- Modal -->
+                  {!!$data['form']!!}
+                  <!-- End Modal -->
                   
-                                
-                              <ul id="generalTab" class="nav nav-tabs">
-                                <li class="active"><a id="penjualan" href="#toko" data-toggle="tab">Form Barang Titipan</a></li>
-                                <li><a id="list" href="#listtoko" data-toggle="tab">List Barang Titipan</a></li><!-- 
-                                <li><a href="#mobil" data-toggle="tab">Penjualan Mobil</a></li>
-                                <li><a href="#listmobil" data-toggle="tab">List Mobil</a></li> -->
-                                <!-- <li><a href="#konsinyasi" data-toggle="tab">Penjualan Konsinyasi</a></li> -->
-                              </ul>
-                              <div id="generalTabContent" class="tab-content responsive">
-                                <!-- Modal -->
-                               {!!$data['form']!!}
-                                <!-- End Modal -->
-                                
-                                <!-- div #alert-tab -->
-                                
-                                <!-- /div #alert-tab -->
-
-                                <!-- Div #listtoko -->
-                                <!-- @include('penjualan.POSpenjualanToko.listtoko') -->                               
-                                {!!$data['list']!!}
-                                <!-- end div #listoko -->
-                                
-
-                            </div> <!-- End div general-content -->
-                    
+                  <!-- div #alert-tab -->
+                  
+                  <!-- /div #alert-tab -->
+                  <!-- Div #listtoko -->
+                  <!-- @include('penjualan.POSpenjualanToko.listtoko') -->
+                  {!!$data['list']!!}
+                  <!-- end div #listoko -->
+                  <div id="item-consigner" class="tab-pane fade">
+                        <div class="row">
+                           <div class="col-md-12 col-sm-12 col-xs-12">
+                              <div class="row" style="margin-top:-20px;">
+                                 <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <form id="ItemConsigner">
+                                       <div class="col-md-2 col-sm-4 col-xs-12">
+                                          <label class="tebal">Pilih Consigner :</label>
+                                       </div>
+                                       <div class="col-md-4 col-sm-8 col-xs-12">
+                                          <div class="form-group">
+                                             <select class="form-control input-sm select2" name="consigner" id="idSupp" onchange="pilihSupplier()" >
+                                                @foreach ($consigner as $data)
+                                                <option value="{{ $data->c_id }}">{{ $data->c_code}} - {{ $data->c_company }}</option>
+                                                @endforeach
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12">
+                                          <div class="col-md-12 tamma-bg"  style="margin-top: 5px;margin-bottom: 5px;
+                                             margin-bottom: 40px; padding-bottom:20px;padding-top:20px;">
+                                             <div class="col-md-12">
+                                                <label class="control-label tebal" for="">Masukan Kode / Nama</label>
+                                                <div class="input-group input-group-sm" style="width: 100%;">
+                                                   <input type="text" class="form-control input-sm" id="cariItem" name="">
+                                                   <input type="hidden" class="form-control input-sm i_id" id="" name="i_id">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="panel-body">
+                                          <div class="table-responsive">
+                                             <table class="table tabelan table-hover table-responsive table-bordered" width="100%" cellspacing="0" id="tbl_groupitem">
+                                                <thead>
+                                                   <tr>
+                                                      <th class="wd-15p">Kode - Nama Item</th>
+                                                      <th class="wd-15p">Aksi</th>
+                                                   </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                    </form>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                  </div>
+                  
+               </div>
+               <!-- End div general-content -->
+               
             </div>
-          </div>
-
-
-
-
-
-          <!-- Modal -->
-
-          <div class="modal fade" id="detail-titipan" role="dialog">
-  <div class="modal-dialog modal-lg">
-      
-    
-      <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #e77c38;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title" style="color: white;">Data</h4>
-          </div>
-
-          <div class="modal-body">
-
-            <div class="table-responsive">
-              <table class="table tabelan table-hover table-bordered" cellspacing="0">
-                 <table class="table tabelan table-bordered table-hover dt-responsive">
-               <thead align="right">
-                <tr>                 
-                 <th width="23%">Nama</th>                 
-                 <th width="4%">Jumlah</th>                 
-                 <th width="4%" style="display: none;">Sisa</th>                 
-                 <th width="4%">Terjual</th>                 
-                 <th width="6%">Return</th>                 
-                 <th width="5%">Satuan</th>
-                 <th width="6%">Harga</th>                                
-                 <th width="12%">Total</th>                                                
-                 <th width="12%">Aksi</th>             
-                </tr>
-               </thead> 
-               <tbody class="detail-titipan">
-               </tbody>
-              </table>
+         </div>
+         <!-- Modal -->
+         <div class="modal fade" id="detail-titipan" role="dialog">
+            <div class="modal-dialog modal-lg">
+               
+               
+               <!-- Modal content-->
+               <div class="modal-content">
+                  <div class="modal-header" style="background-color: #e77c38;">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title" style="color: white;">Data</h4>
+                  </div>
+                  <div class="modal-body">
+                     <div class="table-responsive">
+                        <table class="table tabelan table-hover table-bordered" cellspacing="0">
+                           <table class="table tabelan table-bordered table-hover dt-responsive">
+                              <thead align="right">
+                                 <tr>
+                                    <th width="23%">Nama</th>
+                                    <th width="4%">Jumlah</th>
+                                    <th width="4%" style="display: none;">Sisa</th>
+                                    <th width="4%">Terjual</th>
+                                    <th width="6%">Return</th>
+                                    <th width="5%">Satuan</th>
+                                    <th width="6%">Harga</th>
+                                    <th width="12%">Total</th>
+                                    <th width="12%">Aksi</th>
+                                 </tr>
+                              </thead>
+                              <tbody class="detail-titipan">
+                              </tbody>
+                           </table>
+                        </div>
+                        
+                        
+                     </div>
+                     
+                     
+                  </div>
+                  
+               </div>
             </div>
-            
-            
-          </div>
-      
-      
-        </div>
-         
-    </div>
-</div>
 
 
 @endsection
 @section("extra_scripts")
-    <script type="text/javascript">
+   <script type="text/javascript">
+   $(document).ready(function(){ 
+      
+      $("#searchitem").autocomplete({
+         source: function(request, response) {
+            $.getJSON(baseUrl+"/penjualan/barang-titip/search-item-titipan", 
+               {term:$('#searchitem').val(),
+               id_supplier: $('#id_supplier').val() 
+            }, 
+              response);
+        },
+        /*source: baseUrl+'/seach-item-purchase?id_supplier='+$('#id_supplier').val(),*/
+         minLength: 1,
+         dataType: 'json',        
+         select: function(event, ui) 
+         { 
+           $('#i_id').val(ui.item.i_id);        
+           $('#i_code').val(ui.item.i_code);     
+           $('#searchitem').val(ui.item.label);
+           $('#itemName').val(ui.item.item);
+           $('#i_price').val(ui.item.i_price);
+           
+           $('#s_satuan').val(ui.item.satuan);        
+           $('#stock').val(ui.item.stok);   
+           $('#fComp').val(ui.item.comp);
+           $('#fPosition').val(ui.item.position);
+         fQty.val(1);
+         cQty.val(1);
+         fQty.focus();
+        }
+      });
+
+      var arrow = {
+          left: 37,
+          up: 38,
+          right: 39,
+          down: 40
+      },
+
+      ctrl = 17;
+      $('.minu').keydown(function(e) {         
+         if (e.ctrlKey && e.which === arrow.right) {
+
+          var index = $('.minu').index(this) + 1;                         
+          $('.minu').eq(index).focus();
+          
+         }
+         if (e.ctrlKey && e.which === arrow.left) {
+         /*if (e.keyCode == ctrl && arrow.left) {*/
+            var index = $('.minu').index(this) - 1;
+            $('.minu').eq(index).focus();
+         }
+      });
+
+      $("#customer").autocomplete({
+         source: baseUrl+'/customer',
+         minLength: 1,
+         dataType: 'json',
+         select: function(event, ui) 
+         {   
+            $('#customer').val(ui.item.label);        
+            $('#s_customer').val(ui.item.c_id);   
+            /*$('#biaya_kirim').focus();*/
+         }
+      });
+
+      $('.select2').select2({width : '100%'});
+
+      $( "#cariItem" ).autocomplete({
+         source: baseUrl+'/consigner/item/autocomplete',
+         minLength: 1,
+         select: function(event, ui) {;
+            $('.i_id').val(ui.item.id);
+         }
+      });
+
+   });
+
+   $('#cariItem').keypress(function(e)
+   {
+      var charCode;
+      if ((e.which && e.which == 13)) 
+      {
+         charCode = e.which;
+      }
+      else if (window.event) 
+      {
+         e = window.event;
+         charCode = e.keyCode;
+      }
+      if ((e.which && e.which == 13))
+      {
+         var bahan_baku  = $('#cariItem').val();
+         var qty         = $('.i_id').val();
+         if(bahan_baku == '' || qty == '')
+         {
+            toastr.warning('Item Harus di Isi');
+            return false;
+         }
+         else
+         {
+            tambahItemSupp();
+            $('#cariItem').val('');
+            $('.i_id').val('');
+            return false;
+         }
+
+      }
+   });
+
+   function tambahItemSupp(){
+      $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        $('.submit-group').attr('disabled', 'disabled');
+        $.ajax({
+            url: baseUrl + "/consigner/item/tambah",
+            type: 'GET',
+            data: $('#ItemConsigner').serialize(),
+            success: function (response) {
+                if (response.status == 'sukses') {
+                     pilihSupplier();
+                     $('#cariItem').val('');
+                     $('#i_id').val('');
+                    iziToast.success({
+                        timeout: 5000,
+                        position: "topRight",
+                        icon: 'fa fa-chrome',
+                        title: '',
+                        message: 'Data Berhasil di Tambah.'
+                    });
+                } else {
+                    iziToast.error({
+                        position: "topRight",
+                        title: '',
+                        message: 'Data Gagal Menambah.'
+                    });
+                    $('.submit-group').removeAttr('disabled', 'disabled');
+                }
+            }
+        })
+   }
+
+   function pilihSupplier(){
+     var x = document.getElementById("idSupp").value;
+     $('#tbl_groupitem').dataTable().fnDestroy();
+     $('#tbl_groupitem').DataTable({
+         processing: true,
+         // responsive:true,
+         serverSide: true,
+         ajax: {
+             url: baseUrl + '/consigner/item/'+x,
+         },
+         "columns": [
+         { "data": "i_name", width: '90%' },
+         { "data": "action", width: '10%' },
+         ],
+         "responsive":true,
+
+               "pageLength": 10,
+             "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+             "language": {
+                 "searchPlaceholder": "Cari Data",
+                 "emptyTable": "Tidak ada data",
+                 "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+                 "sSearch": '<i class="fa fa-search"></i>',
+                 "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+                 "infoEmpty": "",
+                 "paginate": {
+                         "previous": "Sebelumnya",
+                         "next": "Selanjutnya",
+                      }
+               }
+     });
+   }
+
+   function hapusCon(a) 
+   {
+      iziToast.show({
+          color: 'red',
+          title: 'Peringatan',
+          message: 'Apakah anda yakin!',
+          position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+          progressBarColor: 'rgb(0, 255, 184)',
+          buttons: [
+            [
+              '<button>Ok</button>',
+              function (instance, toast) {
+                instance.hide({
+                  transitionOut: 'fadeOutUp'
+                }, toast);
+                var idGroup = $('#idGroup').val();
+                console.log(idGroup);
+                $.ajax({
+                     type: "get",
+                     url: baseUrl + '/consigner/hapus/'+a,
+                     data: {idGroup},
+                     success: function(response){
+                          if (response.status=='sukses') {
+                            toastr.info('Data berhasil di hapus.');
+                            pilihSupplier();
+                          }else{
+                            toastr.error('Data gagal di simpan.');
+                          }
+                        }
+                     })
+              }
+            ],
+            [
+              '<button>Close</button>',
+               function (instance, toast) {
+                instance.hide({
+                  transitionOut: 'fadeOutUp'
+                }, toast);
+              }
+            ]
+          ]
+        });
+
+      }
+
+      function batal(){                        
+         bSalesDetail.html('');
+         $('#nominal').val('');     
+          /*payment();                */      
+         $('.reset').val('');
+         $('#s_date').val('{{date("d-m-Y")}}');                        
+                        $('#s_created_by').val('{{Auth::user()->m_name}}');
+                        tamp=[];
+                        hapusSalesDt=[];
+            $('.perbarui').css('display','none');  
+                        /*$('.perbarui').attr('disabled');*/
+            $('.final').css('display','');
+            $('.draft').css('display','');
+            dataIndex=1;
+
+            $('#searchitem').focus();
+      }
+
   //define class dan id
   var searchitem        =$("#searchitem");      
   var i_id              = $("#i_id");      
@@ -126,18 +407,17 @@
   var hapusSalesDt =[];
 
    $("#supplier").autocomplete({
-        source: baseUrl+'/seach-supplier',
-        minLength: 1,
-        dataType: 'json',
-        select: function(event, ui) 
-        {   
-        $('#supplier').val(ui.item.label);        
-        $('#id_supplier').val(ui.item.s_id);   
-        $('#searchitem').focus();
-        /*validationHeader();*/
-        
-        }
-      });
+      source: baseUrl+'/seach-consigner',
+      minLength: 1,
+      dataType: 'json',
+      select: function(event, ui) 
+      {   
+         $('#supplier').val(ui.item.label);        
+         $('#id_supplier').val(ui.item.c_id);   
+         $('#searchitem').focus();
+         /*validationHeader();*/
+      }
+   });
 
     function clearSupplier(){
       if($('#supplier').val()==''){
@@ -146,75 +426,6 @@
       }
     }
 
-    
-
-$(document).ready(function(){ 
-       $("#searchitem").autocomplete({
-        source: function(request, response) {
-            $.getJSON(baseUrl+"/penjualan/barang-titip/search-item-titipan", {term:$('#searchitem').val(),id_supplier: $('#id_supplier').val() }, 
-              response);
-        },
-        /*source: baseUrl+'/seach-item-purchase?id_supplier='+$('#id_supplier').val(),*/
-        minLength: 1,
-        dataType: 'json',        
-        select: function(event, ui) 
-        { 
-            
-        $('#i_id').val(ui.item.i_id);        
-        $('#i_code').val(ui.item.i_code);     
-        $('#searchitem').val(ui.item.label);
-        $('#itemName').val(ui.item.item);
-        $('#i_price').val(ui.item.i_price);
-        
-        $('#s_satuan').val(ui.item.satuan);        
-        $('#stock').val(ui.item.stok);   
-        $('#fComp').val(ui.item.comp);
-        $('#fPosition').val(ui.item.position);
-        fQty.val(1);
-        cQty.val(1);
-        fQty.focus();
-
-        
-        }
-      });
-
-var arrow = {
-    left: 37,
-    up: 38,
-    right: 39,
-    down: 40
-},
-
-ctrl = 17;
- $('.minu').keydown(function(e) {         
-                      if (e.ctrlKey && e.which === arrow.right) {
-                        
-                         var index = $('.minu').index(this) + 1;                         
-                         $('.minu').eq(index).focus();
-                         
-                      }
-                       if (e.ctrlKey && e.which === arrow.left) {
-                      /*if (e.keyCode == ctrl && arrow.left) {*/
-                         var index = $('.minu').index(this) - 1;
-                         $('.minu').eq(index).focus();
-                      }
-    });
-
-        $("#customer").autocomplete({
-        source: baseUrl+'/customer',
-        minLength: 1,
-        dataType: 'json',
-        select: function(event, ui) 
-        {   
-        $('#customer').val(ui.item.label);        
-        $('#s_customer').val(ui.item.c_id);   
-        /*$('#biaya_kirim').focus();*/
-        
-        
-        }
-      });
-
-     });
 
       $('#it_date').datepicker({
           format:"dd-mm-yyyy",        
@@ -360,7 +571,7 @@ function table(){
             columns: [
             {data: 'it_date', name: 'it_date'},
             {data: 'it_code', name: 'it_code'},                                    
-            {data: 's_company', name: 's_company'},  
+            {data: 'c_company', name: 'c_company'},  
             {data: 'it_keterangan', name: 'it_keterangan'}, 
             {data: 'it_total', name: 'it_total'},
             {data: 'action', name: 'action'}

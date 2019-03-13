@@ -131,16 +131,11 @@ class PenjualanController extends Controller
                   'i_id' => $data->i_id,
                   'stok' => number_format($dataStok['val_stok'][$index]->qtyStok,0,',','.'),
                   'satuan' => $dataStok['txt_satuan'][$index],
-                  // 'satuan' =>$data->s_name,                  
-                  // 'stok' =>number_format($data->s_qty,0,',','.'),
                   'i_code' =>$data->i_code,
                   'i_price' =>number_format($cekHarga->ip_price,0,',','.'),
                   'item' => $data->i_name,
                   'position'=>$position->gc_id,
                   'comp'=>$position->gc_id,
-                  // 'ip_edit' => $data->ip_edit
-                  
-                  // 'result' => $results,
                ];
             }
          }
@@ -205,6 +200,11 @@ class PenjualanController extends Controller
    }
 
    function create(Request $request)
+   {
+      return d_sales::simpanMobile($request);
+   }
+
+   function createToko(Request $request)
    {
       return d_sales::simpan($request);
    }

@@ -51,7 +51,7 @@
                       <label class="tebal">Supplier</label>
                     </div>
 
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
                       <div class="form-group" id="divSelectSupplier">                        
                         <select class="form-control input-sm select2" id="index_sup" name="index_sup" style="width: 100% !important;">
                           <option value="">Pilih Supplier</option>

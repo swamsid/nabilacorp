@@ -31,7 +31,6 @@
                <div class="col-md-4 col-sm-6 col-xs-12">
                   <div class="form-group">
                      <input type="text" id="s_created_by" class="form-control input-sm reset" name="s_created_by" readonly="" value="{{Auth::user()->m_name}}">
-                     <input class="form-control" type="hidden" name="" value="{{$machine->m_name}}" disabled="">
                   </div>
                </div>
                {{-- <div class="col-md-2 col-sm-6 col-xs-12">

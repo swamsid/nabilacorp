@@ -151,6 +151,14 @@
                                 Data KPI
                             @endif
 
+                            @if(Auth::user()->punyaAkses('Master Konsigner','ma_read'))
+                                Master Konsigner
+                            @endif
+
+                            @if(Auth::user()->punyaAkses('Master Konsigne','ma_read'))
+                                Master Konsigne
+                            @endif
+
                         </span>
                     </a>
                         <ul class="nav nav-second-level">
@@ -232,6 +240,20 @@
                             @if(Auth::user()->punyaAkses('Data KPI','ma_read'))
                                 <li class="{{ Request::is('master/datakpi/index') ? 'active' : '' || Request::is('master/datakpi/*') ? 'active' : '' }}">
                                     <a href="{{ url('/master/datakpi/index') }}"><span class="submenu-title">Data KPI</span><span
+                                                class="hidden">Master</span></a>
+                                </li>
+                            @endif
+
+                            @if(Auth::user()->punyaAkses('Master Consigner','ma_read'))
+                                <li class="{{ Request::is('master/consigner/index') ? 'active' : '' || Request::is('master/consigner/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/master/consigner/index') }}"><span class="submenu-title">Master Consigner</span><span
+                                                class="hidden">Master</span></a>
+                                </li>
+                            @endif
+
+                            @if(Auth::user()->punyaAkses('Master Consigne','ma_read'))
+                                <li class="{{ Request::is('master/consigne/index') ? 'active' : '' || Request::is('master/consigne/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/master/consigne/index') }}"><span class="submenu-title">Master Consigne</span><span
                                                 class="hidden">Master</span></a>
                                 </li>
                             @endif
