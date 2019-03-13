@@ -33,7 +33,6 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 */
 //pencatatan barang titipan
 	Route::get('/penjualan/barang-titipan/index', 'itemTitipanController@index');
-	Route::get('/penjualan/barang-titipan/data', 'itemTitipanController@data');
 	Route::get('/penjualan/barang-titipan/listData', 'itemTitipanController@listData');
 	Route::get('/penjualan/barang-titipan/seach-supplier', 'itemTitipanController@seachSupplier');
 	Route::get('/penjualan/barang-titipan/store', 'itemTitipanController@store');
@@ -44,6 +43,11 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 	Route::get('/penjualan/barang-titipan/serah-terima/store', 'itemTitipanController@serahTerimaStore');
 	Route::get('/penjualan/barang-titipan/detail/{id}', 'itemTitipanController@titipanDt');
 	Route::get('/penjualan/barang-titipan/chek-qty-return/{item}/{comp}/{position}', 'itemTitipanController@chekQtyReturn');
+	Route::get('/consigner/item/autocomplete', 'itemTitipanController@itemConsigner');
+	Route::get('/consigner/item/tambah', 'itemTitipanController@tambahItem');
+	Route::get('/consigner/item/{id}', 'itemTitipanController@tableRelasiCon');
+	Route::get('/consigner/hapus/{id}', 'itemTitipanController@hapusRelasiCon');
+	Route::get('/seach-consigner', 'itemTitipanController@cariConsigner');
 // pencatatan barang titip
 	Route::get('/penjualan/barang-titip/index', 'itemTitipController@index');
 	Route::get('/penjualan/barang-titip/data', 'itemTitipController@data');
@@ -101,7 +105,6 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 	Route::get('/penjualan/barang-titipan/store', 'itemTitipanController@store');
 	Route::get('/penjualan/barang-titipan/{id}/edit-titipan-dt', 'itemTitipanController@editTitipanDt');
 	Route::get('/penjualan/barang-titipan/update', 'itemTitipanController@update');
-	Route::get('penjualan/barang-titip/search-item-titipan', 'itemTitipanController@itemTitipan');
 	Route::get('/penjualan/barang-titipan/serahTerima/{id}', 'itemTitipanController@serahTerima');
 	Route::get('/penjualan/barang-titipan/serah-terima/store', 'itemTitipanController@serahTerimaStore');
 	Route::get('/penjualan/barang-titipan/detail/{id}', 'itemTitipanController@titipanDt');
@@ -112,7 +115,6 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 	Route::get('/penjualan/barang-titip/store', 'itemTitipController@store');
 	Route::get('/penjualan/barang-titip/{id}/edit', 'itemTitipController@edit');
 	Route::get('/penjualan/barang-titip/update', 'itemTitipController@update');
-	Route::get('/penjualan/barang-titip/serahTerima/{id}', 'itemTitipController@serahTerima');
 	Route::get('/penjualan/barang-titip/search-item-titip', 'itemTitipController@searchItemTitip');
 	Route::get('/penjualan/barang-titip/detail/{id}', 'itemTitipController@titipDt');
 	// Routing untuk modul manajemen harga
@@ -180,14 +182,15 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 	
 	Route::get('/penjualan/pos-mobile/index', 'posMobileController@posMobile')->middleware('auth');
 	Route::get('/penjualan/pos-mobile/create', 'PenjualanController@create')->middleware('auth');
+
 	Route::get('/penjualan/pos-mobile/update', 'PenjualanController@update')->middleware('auth');
 	Route::get('/penjualan/pos-mobile/{id}/edit', 'PenjualanController@penjualanDtmobile')->middleware('auth');
 	Route::get('/penjualan/pos-mobile/detail-view/{id}', 'PenjualanController@penjualanViewDtmobile')->middleware('auth');
 	Route::post('/penjualan/pos-mobile/listPenjualan', 'PenjualanController@listPenjualan')->middleware('auth');
-	Route::post('/penjualan/pos-mobile/listPenjualan/data', 'PenjualanController@listPenjualanData')->middleware('auth');
 	Route::get('/penjualan/pos-mobile/listPenjualan/data', 'PenjualanController@listPenjualanData')->middleware('auth');
 	Route::get('/penjualan/pos-mobile/printNota/{id}', 'PenjualanController@printNota')->middleware('auth');
 	
 	// Section return penjualan
-	
+	Route::get('/penjualan/pos-toko/create', 'PenjualanController@createToko')->middleware('auth');
+
 });

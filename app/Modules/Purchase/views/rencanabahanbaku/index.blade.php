@@ -128,7 +128,7 @@
                         <label class="tebal">Pilih Supplier :</label>
                       </div>
 
-                      <div class="col-md-3 col-sm-8 col-xs-12">
+                      <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
                           <select class="form-control input-sm select2" name="supplier" id="idSupp" onchange="pilihSupplier()" >
                             @foreach ($supplier as $data)
@@ -208,7 +208,7 @@
       return (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46) ? false : true;
     });
 
-    $('.select2').select2();
+    $('.select2').select2({width : '100%'});
 
     function __debounce(calback, timer){
         window.clearTimeout(windowTimeOut);

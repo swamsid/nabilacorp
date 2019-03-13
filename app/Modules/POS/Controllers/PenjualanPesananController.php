@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 use App\m_customer;
 use Carbon\carbon;
 use DB;
-
-
-
 use App\Http\Controllers\Controller;
-
 use App\mMember;
 use App\Modules\POS\model\m_paymentmethod;
 use App\Modules\POS\model\d_salesb;
@@ -21,29 +17,8 @@ use Datatables;
 use App\Lib\format;
 use App\m_item;
 
-
-
-
-
 class PenjualanPesananController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
-
 
     public function POSpenjualan()
     {
@@ -67,27 +42,18 @@ class PenjualanPesananController extends Controller
 
     public function posPesanan()
     { 
-      /*$paymentmethod=m_paymentmethod::pm();      
-      $pm=view('POS::paymentmethod/paymentmethod',compact('paymentmethod'));    */
-
-      /*$data['toko']=view('POS::pos-pesanan/pesanan');      
-      $data['listtoko']=view('POS::pos-pesanan/listpesanan');   
-      return view('POS::pos-pesanan/pos-pesanan',compact('data'));
-*/
-
       $printPl=view('Produksi::sam');
       $flag='Pesanan';
-      $daftarHarga=DB::table('m_price_group')->where('pg_active','=','TRUE')->get();  
+      $daftarHarga=DB::table('m_price_group')
+        ->where('pg_active','=','TRUE')
+        ->where('pg_type','B')
+        ->get();  
       $paymentmethod=m_paymentmethod::pm();       
       $pm =view('POS::paymentmethod/paymentmethod',compact('paymentmethod'));    
       $machine=m_machine::showMachineActive();      
       $data['toko']=view('POS::pos-pesanan/pesanan',compact('machine','paymentmethod','daftarHarga'));      
       $data['listtoko']=view('POS::pos-pesanan/listpesanan');   
       return view('POS::pos-pesanan/pos-pesanan',compact('data','pm','printPl'));
-
-
-
-
     }
 
     function create(Request $request){      
