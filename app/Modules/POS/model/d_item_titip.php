@@ -116,7 +116,10 @@ class d_item_titip extends Model
       $it_code = "TTN-".date('ym')."-".$kd;
 
       $cabang=Session::get('user_comp');
-      $tujuan=DB::table('d_gudangcabang')->where('gc_gudang','GUDANG TITIP')->where('gc_comp',$cabang)->first();
+      $tujuan=DB::table('d_gudangcabang')
+         ->where('gc_gudang','GUDANG TITIP')
+         ->where('gc_comp',$cabang)
+         ->first();
       
 
       $it_total= format::format($request->it_total);        

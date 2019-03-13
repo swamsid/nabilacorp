@@ -529,6 +529,7 @@ class d_salesb extends Model
                                                 \''.number_format($d_sales->s_kembalian,0,',','.').'\',
                                                 \''.$d_sales->s_customer.'\',
                                                 \''.$d_sales->s_nama_cus.'\',
+                                                \''.$d_sales->s_hp.'\',
                                                 \''.$d_sales->s_status.'\',                                                
                                                 '.($d_sales->s_net-$d_sales->s_bayar).',
                                                 \''.$d_sales->s_jenis_bayar.'\',
@@ -669,6 +670,7 @@ $r_code = "DPR-".date('ym')."-".$kd;
                     's_type_price'=>$request->s_type_price,
                     /*'s_customer'=>$request->s_customer,*/
                     's_nama_cus'=>$request->s_nama_cus,
+                    's_hp' => $request->s_hp,
                     's_alamat_cus'=>$request->s_alamat_cus,
                     's_gross' =>$s_gross,
                     's_disc_percent'=>$s_disc_percent,

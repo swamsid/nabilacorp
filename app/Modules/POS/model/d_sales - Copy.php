@@ -33,9 +33,10 @@ class d_sales extends Model
     const CREATED_AT = 's_insert';
     const UPDATED_AT = 's_update';
     
-      protected $fillable = ['s_id','s_comp','s_jenis_bayar','s_channel','s_machine','s_date','s_finishdate','s_duedate','s_note','s_create_by','s_customer','s_gross','s_disc_percent','s_disc_value','s_tax','s_ongkir','s_bulat','s_net','s_status','s_bayar','s_kembalian','s_jurnal','s_nama_cus','s_alamat_cus'];
+      protected $fillable = ['s_id','s_comp','s_jenis_bayar','s_channel','s_machine','s_date','s_finishdate','s_duedate','s_note','s_create_by','s_customer','s_gross','s_disc_percent','s_disc_value','s_tax','s_ongkir','s_bulat','s_net','s_status','s_bayar','s_kembalian','s_jurnal','s_nama_cus','s_alamat_cus','s_hp'];
 
-      static function simpan($request){    
+      static function simpan($request){  
+      // dd($request->all());  
         return DB::transaction(function () use ($request) {      
           
 
@@ -62,7 +63,193 @@ class d_sales extends Model
                     's_date'=>$s_date,
                     's_note'=>$note,
                     's_machine'=>Session::get('kasir'),
-                    's_create_by'=>Auth::user()->m_pegawai_id,
+                    's_create_by'=>Auth::user()->m_id,
+                    /*'s_customer'=>$request->s_customer,*/
+                    's_nama_cus'=>$request->s_nama_cus,
+                    's_alamat_cus'=>$request->s_alamat_cus,
+                    's_gross' =>$s_gross,
+                    's_disc_percent'=>$s_disc_percent,
+                    's_disc_value'=>$s_disc_value,
+                    's_tax'=>0,
+                    's_ongkir'=>$s_ongkir,
+                    's_net'=>$s_net,
+                    's_bayar'=>$bayar,
+                    's_status'=>$request->status,
+                    /*'s_kembalian'=>$kembalian,*/
+                    's_bulat'=>$s_bulat,
+            ]);
+
+          $jumlahJurnalHpp=0;
+          for ($i=0; $i <count($request->sd_item); $i++) {  
+              if($request->status=='final'){
+                  $sd_qty = format::format($request->sd_qty[$i]); 
+                  $comp=$request->comp[$i];
+                  $position=$request->position[$i];                  
+                  $simpanMutasi=mutasi::mutasiStok($request->sd_item[$i],$sd_qty,$comp,$position,$flag='Penjualan Toko',$note,$ket='',$s_date);   
+
+                  
+                  if($simpanMutasi['true']){
+                  $sd_detailid=d_sales_dt::
+                              where('sd_sales','=',$s_id)->max('sd_detailid')+1;      
+
+                  $sd_price = format::format($request->sd_price[$i]);
+
+                  $sd_total = format::format($request->sd_total[$i]);
+
+                  $sd_disc_value = format::format($request->sd_disc_value[$i]);              
+
+                  $sd_disc_percentvalue = format::format($request->sd_disc_percentvalue[$i]);
+
+                  $comp = $request->comp[$i];
+
+                  $position = $request->position[$i];
+
+
+                  $item_titipan_qty=d_item_titipan::join('d_itemtitipan_dt','it_id','=','idt_itemtitipan')->where('it_comp',Session::get('user_comp'))->where('it_status','!=','lunas')->where('idt_item',$request->sd_item[$i])->select('idt_terjual','idt_sisa')->first();
+
+                  $item_titipan=d_item_titipan::join('d_itemtitipan_dt','it_id','=','idt_itemtitipan')->where('it_comp',Session::get('user_comp'))->where('it_status','!=','lunas')->where('idt_item',$request->sd_item[$i]);
+                  
+                if(!empty($item_titipan_qty)){
+                    $item_titipan->update([
+                                  'idt_terjual'=>$item_titipan_qty->idt_terjual+$sd_qty,
+                                  'idt_sisa'=>$item_titipan_qty->idt_sisa-$sd_qty
+                                  ]);
+                    }
+
+                  
+
+
+                  d_sales_dt::create([
+                            'sd_sales' =>$s_id ,
+                            'sd_detailid'=>$sd_detailid,
+                            'sd_date'    =>date('Y-m-d',strtotime($request->s_date)),                            
+                            'sd_comp'=>$comp,                    
+                            'sd_position'=>$position,                    
+                            'sd_item'=>$request->sd_item[$i],
+                            'sd_qty'=>$sd_qty,                    
+                            'sd_price' =>$sd_price,
+                            'sd_disc_percent'=>$request->sd_disc_percent[$i],
+                            'sd_disc_value'=>$sd_disc_value,
+                            'sd_disc_percentvalue'=>$sd_disc_percentvalue,
+                            'sd_total'=>$sd_total-$sd_disc_value-$sd_disc_percentvalue,
+                  ]);
+
+
+                  
+                              $jumlahJurnalHpp+=$simpanMutasi['totalHpp'];
+                              
+
+          }else{
+              DB::rollBack();
+               $data=['status'=>'gagal','data'=>'gagal'];
+              return json_encode($data);
+            }
+          }else if($request->status=='draft'){
+               $sd_detailid=d_sales_dt::
+                              where('sd_sales','=',$s_id)->max('sd_detailid')+1;      
+
+                  $sd_price = format::format($request->sd_price[$i]);
+
+                  $sd_total = format::format($request->sd_total[$i]);
+
+                  $sd_disc_value = format::format($request->sd_disc_value[$i]);              
+
+                  $sd_disc_percentvalue = format::format($request->sd_disc_percentvalue[$i]);
+
+                  $sd_qty = format::format($request->sd_qty[$i]);
+
+
+                  $comp = $request->comp[$i];
+
+                  $position = $request->position[$i];
+
+                  d_sales_dt::create([
+                            'sd_sales' =>$s_id ,
+                            'sd_detailid'=>$sd_detailid,   
+                            'sd_date'    =>date('Y-m-d',strtotime($request->s_date)), 
+                            'sd_comp'=>$comp,                    
+                            'sd_position'=>$position,                                                        
+                            'sd_item'=>$request->sd_item[$i],
+                            'sd_qty'=>$sd_qty,                    
+                            'sd_price' =>$sd_price,
+                            'sd_disc_percent'=>$request->sd_disc_percent[$i],
+                            'sd_disc_value'=>$sd_disc_value,
+                            'sd_disc_percentvalue'=>$sd_disc_percentvalue,
+                            'sd_total'=>$sd_total-$sd_disc_value-$sd_disc_percentvalue,
+                  ]);
+
+          }
+        }
+
+        $jurnalSales=d_sales::where('s_id',$s_id);               
+        $jurnalSales->update([
+             's_jurnal'=>$jumlahJurnalHpp
+        ]);
+/*kembalian*/
+          $totalBayar=0;
+          $bayar=count($request->sp_nominal);
+          for ($n=0; $n <$bayar; $n++) {  
+            $jmlBayar=$bayar-1;            
+            $sp_paymentid=d_sales_payment::
+                          where('sp_sales','=',$s_id)->max('sp_paymentid')+1;  
+            $sp_nominal = format::format($request->sp_nominal[$n]);    
+            $s_kembalian = format::format($request->kembalian);
+            if($jmlBayar==$n && $s_kembalian>0){              
+              $sp_nominal=$sp_nominal-$s_kembalian;
+            }            
+            if($request->sp_date[$n]==0){
+              $sp_date=date('Y-m-d');
+            }else{
+              $sp_date=$request->sp_date[$n];
+            }
+              d_sales_payment::create([
+                  'sp_sales'=>$s_id,
+                  'sp_paymentid'=>$sp_paymentid,
+                  'sp_comp'=>Session::get('user_comp'),                    
+                  'sp_method'=>$request->sp_method[$n],
+                  'sp_nominal'=>$sp_nominal,
+                  'sp_date'=>$sp_date,
+                ]);
+              $totalBayar+=$sp_nominal;
+
+          }          
+          $salesUpdate=d_sales::where('s_id',$s_id);
+          $salesUpdate->update([
+                  's_bayar'=>$totalBayar
+            ]);
+          $data=['status'=>'sukses','data'=>'sukses' ,'s_id'=>$s_id,'s_status'=>$request->status];
+          return json_encode($data);
+      });
+    }
+
+    static function simpanMobile($request){    
+        return DB::transaction(function () use ($request) {      
+          
+
+
+          $s_gross = format::format($request->s_gross);
+          $s_ongkir = format::format($request->s_ongkir);          
+          $s_disc_value = format::format($request->s_disc_value);
+          $s_disc_percent = format::format($request->s_disc_percent);
+          $s_net= format::format($request->s_net);
+          $kembalian= format::format($request->kembalian);
+          $bayar= format::format($request->s_bayar);
+          $s_bulat= format::format($request->s_bulat);
+
+          $s_id=d_sales::max('s_id')+1;             
+          $note='TOKO-'.$s_id.'/'.date('Y.m.d');
+          if($request->s_customer==''){
+            $request->s_customer=0;
+          }
+          $s_date=date('Y-m-d',strtotime($request->s_date));
+          d_sales::create([
+                    's_id' =>$s_id ,
+                    's_comp'=>Session::get('user_comp'),
+                    's_channel'=>'Toko',                    
+                    's_date'=>$s_date,
+                    's_note'=>$note,
+                    's_machine'=>Session::get('kasir'),
+                    's_create_by'=>Auth::user()->m_id,
                     /*'s_customer'=>$request->s_customer,*/
                     's_nama_cus'=>$request->s_nama_cus,
                     's_alamat_cus'=>$request->s_alamat_cus,
@@ -430,17 +617,16 @@ class d_sales extends Model
         return json_encode($data);
     });
     }
-    static function listPenjualanData($request){    
+    static function listPenjualanData($request){ 
       $from=date('Y-m-d',strtotime($request->tanggal1));
       $to=date('Y-m-d',strtotime($request->tanggal2));
-
-             
+                  
       $d_sales = DB::table('d_sales')
                 ->join('d_mem','d_mem.m_id','=','s_create_by')
-                ->where('s_channel',$request->type)
-                 ->whereBetween('s_date', [$from, $to])->where('s_comp',Session::get('user_comp'))
+                ->where('s_channel','Toko')
+                 ->whereBetween('s_date', [$from, $to])
+                 ->where('s_comp',Session::get('user_comp'))
                  ->get();
-      
         
           return Datatables::of($d_sales)
                          ->addColumn('item', function ($d_sales) {

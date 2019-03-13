@@ -18,21 +18,27 @@ use App\Modules\POS\model\d_sales_dt;
 use Datatables;
 use DB;
 use Excel;
+use Session;
 
 
 class laporanPenjualanTokoController  extends Controller
 {
 
    public function find_d_sales_dt(Request $req) 
-   {        
+   {     
       $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
-      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));               
+      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
+      $user = d_mem::select('m_id')
+        ->where('m_pegawai_id',$req->shift)
+        ->first();               
       $rows = d_sales_dt::leftJoin('d_sales', function($join) {
             $join->on('sd_sales', '=', 's_id');
          })
          ->where('s_channel', 'Toko')
+         ->where('s_status', 'final')
          ->whereBetween('sd_date', [$tgl_awal, $tgl_akhir]) 
-         ->where('s_create_by',$req->shift)    
+         ->where('s_create_by',$user->m_id)
+         ->where('s_comp',Session::get('user_comp'))  
          ->join('m_item','i_id','=','sd_item')
          ->join('m_satuan','m_satuan.s_id','=','i_sat1')
          ->select('m_item.i_name',
@@ -48,7 +54,7 @@ class laporanPenjualanTokoController  extends Controller
                   'sd_disc_percentvalue')
          ->orderBy('sd_date', 'ASC')
          ->get();
-      // dd($rows);
+
       return Datatables::of($rows)                         
                    ->editColumn('s_date', function ($rows) {                           
                              return date('d M Y',strtotime($rows->s_date));
@@ -66,6 +72,7 @@ class laporanPenjualanTokoController  extends Controller
     public function penjualanmobile() {
 
       $pegawai = m_pegawai_man::select('c_id','c_code','c_nama')
+        ->join('d_mem','d_mem.m_pegawai_id','=','c_id')
         ->get();
 
       return view('POS::laporanPenjualanToko/index', compact('pegawai'));
@@ -75,6 +82,10 @@ class laporanPenjualanTokoController  extends Controller
    {
       $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
       $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
+      $user = d_mem::select('m_id')
+        ->where('m_pegawai_id',$req->shift)
+        ->first();
+
       $rows = d_sales_dt::select(DB::raw("SUM(sd_disc_value) as sd_disc_value"),
                                  DB::raw("SUM(sd_disc_percentvalue) as sd_disc_percentvalue"),
                                  DB::raw("SUM(sd_total) as sd_total"))
@@ -82,8 +93,10 @@ class laporanPenjualanTokoController  extends Controller
                   $join->on('sd_sales', '=', 's_id');
          })
          ->where('s_channel', 'Toko')
-         ->where('s_create_by',$req->shift)
-         ->whereBetween('s_date', [$tgl_awal, $tgl_akhir])                             
+         ->where('s_status', 'final')
+         ->where('s_create_by',$user->m_id)
+         ->whereBetween('s_date', [$tgl_awal, $tgl_akhir])  
+         ->where('s_comp',Session::get('user_comp'))                            
          ->orderBy('sd_date', 'ASC')
          ->first();
 
@@ -98,10 +111,12 @@ class laporanPenjualanTokoController  extends Controller
 
    public function print_laporan_excel(Request $req) 
    {
-      $data = array();
-      $shift      = $req->shift;        
+      $data = array();      
       $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
-      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));                 
+      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));     
+      $user = d_mem::select('m_id')
+        ->where('m_pegawai_id',$req->shift)
+        ->first();            
       $rows = d_sales_dt::select('m_item.i_name',
                                  's_note',
                                  's_date',
@@ -116,8 +131,10 @@ class laporanPenjualanTokoController  extends Controller
             $join->on('sd_sales', '=', 's_id');
          })
          ->where('s_channel', 'Toko')
+         ->where('s_status', 'final')
          ->whereBetween('s_date', [$tgl_awal, $tgl_akhir]) 
-         ->where('s_create_by',$req->shift)    
+         ->where('s_create_by',$user->m_id)    
+         ->where('s_comp',Session::get('user_comp')) 
          ->join('m_item','i_id','=','sd_item')
          ->join('m_satuan','m_satuan.s_id','=','i_sat1')
          ->orderBy('sd_date', 'ASC')
@@ -153,10 +170,12 @@ class laporanPenjualanTokoController  extends Controller
    public function print_laporan(Request $req) 
    {
       $data = array();
-      $rows=null;
-      $shift      = $req->shift;        
+      $rows=null;      
       $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
-      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));                   
+      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir)); 
+      $user = d_mem::select('m_id')
+        ->where('m_pegawai_id',$req->shift)
+        ->first();                  
       $rows = d_sales_dt::select('m_item.i_name',
                                  's_note',
                                  's_date',
@@ -171,8 +190,10 @@ class laporanPenjualanTokoController  extends Controller
                $join->on('sd_sales', '=', 's_id');
            })
          ->where('s_channel', 'Toko')
+         ->where('s_status', 'final')
          ->whereBetween('s_date', [$tgl_awal, $tgl_akhir]) 
-         ->where('s_create_by',$req->shift)    
+         ->where('s_create_by',$user->m_id)   
+         ->where('s_comp',Session::get('user_comp'))  
          ->join('m_item','i_id','=','sd_item')
          ->join('m_satuan','m_satuan.s_id','=','i_sat1')
          ->orderBy('sd_date', 'ASC')

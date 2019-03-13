@@ -192,7 +192,9 @@ ctrl = 17;
         }
       });
 
-     });
+   $('#s_hp').inputmask("9999 9999 9999");
+
+   });
 
     $('#s_finishdate').datepicker({
           format:"dd-mm-yyyy",    
@@ -1003,7 +1005,7 @@ function caraxx(hutang_id){
 
 }
 
-function dataDetailView(s_id,s_note,s_machine,s_date,s_duedate,s_finishdate,s_gross,s_disc_percent,s_disc_value,s_grand,s_ongkir,s_bulat,s_net,s_bayar,s_kembalian,s_customer,c_name,s_status,chek,s_jenis_bayar,s_alamat_cus) {  
+function dataDetailView(s_id,s_note,s_machine,s_date,s_duedate,s_finishdate,s_gross,s_disc_percent,s_disc_value,s_grand,s_ongkir,s_bulat,s_net,s_bayar,s_kembalian,s_customer,c_name,s_hp,s_status,chek,s_jenis_bayar,s_alamat_cus) {  
 $('#serah_terima').css('display','');
  if(s_net==s_bayar && s_status=='draft' || s_net==s_bayar && s_status=='final'){              
               $('#serah_terima').removeAttr('disabled');
@@ -1030,6 +1032,7 @@ $('#sid').val(s_id);
   $('#lCode').val(s_note);
   $('#lTgl').val(s_date);
   $('#lCustomer').val(c_name);
+  $('#lhp').val(s_hp)
   var c_bayar
   if(s_jenis_bayar==1){
     c_bayar='Tunai';

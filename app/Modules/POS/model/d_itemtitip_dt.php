@@ -31,7 +31,7 @@ class d_itemtitip_dt extends Model
 	   	$titip_dt=d_itemtitip_dt::
 	   						 select('i_id','i_code','idt_itemtitip','idt_detailid','idt_date','idt_item','idt_qty','idt_price','idt_position','idt_comp','i_name','m_satuan.s_name','s_qty','idt_terjual','idt_return',DB::raw(" (select sd_qty from d_sales_dt where sd_item=idt_item and idt_date=sd_date) as terjual"))
 	   						->join('m_item','idt_item','=','i_id')
-	    				    ->join('m_satuan','s_id','=','i_satuan')	    				    
+	    				    ->join('m_satuan','s_id','=','i_sat1')	    				    
 	    				    ->leftjoin('d_stock',function($join){
 								$join->on('s_item','=','i_id');
 								$join->on('s_comp','=','idt_comp');

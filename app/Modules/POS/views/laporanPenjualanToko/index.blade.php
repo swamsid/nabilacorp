@@ -24,8 +24,8 @@
                   </div>
                </div>
                <ul id="generalTab" class="nav nav-tabs">
-                  <li class="active"><a href="#alert-tab" data-toggle="tab">Laporan Penjualan Toko</a></li>
-                  <li><a href="#note-tab" data-toggle="tab">Laporan Penjualan Mobil</a></li>
+                  <li class="active"><a href="#alert-tab" data-toggle="tab">Laporan Penjualan</a></li>
+                 {{--  <li><a href="#note-tab" data-toggle="tab">Laporan Penjualan Mobil</a></li> --}}
                   {{--              <li><a href="#label-badge-tab" data-toggle="tab">3</a></li> --}}
                </ul>
                <div id="generalTabContent" class="tab-content responsive">

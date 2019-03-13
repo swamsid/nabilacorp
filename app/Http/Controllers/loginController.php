@@ -43,56 +43,57 @@ class loginController extends Controller {
         }
     }
 
-    public function authenticate(Request $req) {
-      
-        $rules = array(
-            'username' => 'required|min:4', // make sure the email is an actual email
-            'password' => 'required|min:4' // password can only be alphanumeric and has to be greater than 3 characters
-        );
+   public function authenticate(Request $req) 
+   {
 
-        $validator = Validator::make($req->all(), $rules);
-        if ($validator->fails()) {            
-                $dataInfo=['status'=>'gagal','data'=>'Panjang Karakter Password atau Nama Harus Minimal 4 Karakter '];            
-                return json_encode($dataInfo);
-        } else {
+      $rules = array(
+         'username' => 'required|min:4', // make sure the email is an actual email
+         'password' => 'required|min:4' // password can only be alphanumeric and has to be greater than 3 characters
+      );
 
-          if($req->akses==0){
-              $dataInfo=['status'=>'gagal','data'=>"Ma'af anda belum memilih kasir"];            
-              return json_encode($dataInfo);
-            }
+      $validator = Validator::make($req->all(), $rules);
+      if ($validator->fails()) {            
+             $dataInfo=['status'=>'gagal','data'=>'Panjang Karakter Password atau Nama Harus Minimal 4 Karakter '];            
+             return json_encode($dataInfo);
+      } else {
+
+       if($req->akses==0){
+           $dataInfo=['status'=>'gagal','data'=>"Ma'af anda belum memilih kasir"];            
+           return json_encode($dataInfo);
+         }
 
 
-            $username = $req->username;
-            $password = $req->password;
-            //$user = mMember::where("m_username  = '$req->username'")->first();
-            $user = mMember::where("m_username",$req->username)->first();
+         $username = $req->username;
+         $password = $req->password;
+         //$user = mMember::where("m_username  = '$req->username'")->first();
+         $user = mMember::where("m_username",$req->username)->first();
+         
+
             
+         if ($user && $user->m_passwd == sha1(md5('passwordAllah').$req->password)) {
 
-               
-            if ($user && $user->m_passwd == sha1(md5('passwordAllah').$req->password)) {
+            // Auth::login($user); //set login
+             
+              $user1=mMember::find($user->m_id);
+              $user1=$user->update([
+                  'm_lastlogin'=>Carbon::now(),
+              ]);              
 
-               // Auth::login($user); //set login
-                
-                 $user1=mMember::find($user->m_id);
-                 $user1=$user->update([
-                     'm_lastlogin'=>Carbon::now(),
-                 ]);              
+                 Auth::login($user);
 
-                    Auth::login($user);
+                 Session::put('user_comp', mMember::perusahaan()[0]->c_id);
+                 Session::put('kasir', $req->akses);
+                 
+                 
 
-                    Session::put('user_comp', mMember::perusahaan()[0]->c_id);
-                    Session::put('kasir', $req->akses);
-                    
-                    
+                  $dataInfo=['status'=>'sukses','nama'=>$user->m_name];            
+                   return json_encode($dataInfo);
+         } else {      
 
-                     $dataInfo=['status'=>'sukses','nama'=>$user->m_name];            
-                      return json_encode($dataInfo);
-            } else {      
-
-                 $dataInfo=['status'=>'gagal','data'=>'Password atau Nama Tidak Di Temukan'];            
-                      return json_encode($dataInfo);
-            }
-        }
-    }
+              $dataInfo=['status'=>'gagal','data'=>'Password atau Nama Tidak Di Temukan'];            
+                   return json_encode($dataInfo);
+         }
+      }
+   }
 
 }

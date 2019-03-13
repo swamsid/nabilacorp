@@ -7,25 +7,15 @@ use Illuminate\Http\Request;
 use App\m_customer;
 use Carbon\carbon;
 use DB;
-
 use App\m_itemm;
-
 use App\m_supplier;
-
 use App\Http\Controllers\Controller;
-
 use App\mMember;
 use App\Modules\POS\model\m_paymentmethod;
 use App\Modules\POS\model\d_item_titip;
 use App\Modules\POS\model\d_itemtitip_dt;
 use Datatables;
-
 use Auth;
-
-
-
-
-
 
 class itemTitipController extends Controller
 {    

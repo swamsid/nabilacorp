@@ -39,8 +39,6 @@ class m_supplier extends Model
                   $query->where('s_company','like','%'.$supplier.'%');                  
                   $query->orWhere('s_name','like','%'.$supplier.'%');                  
                   $query->orWhere('s_address','like','%'.$supplier.'%');                  
-                  $query->orWhere('s_phone','like','%'.$supplier.'%');               
-                  // $query->orWhere('s_phone2','like','%'.$supplier.'%');               
                   $query->orWhere('s_fax','like','%'.$supplier.'%');               
                   })->get();        
         

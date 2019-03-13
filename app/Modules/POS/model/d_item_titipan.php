@@ -96,6 +96,7 @@ class d_item_titipan extends Model
 
     }
      static function store($request){
+      // dd($request->all());
          return DB::transaction(function () use ($request) {  
 
           
