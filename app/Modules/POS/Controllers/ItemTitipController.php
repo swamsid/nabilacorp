@@ -39,15 +39,15 @@ class itemTitipController extends Controller
     public function index()
     { 
       $paymentmethod=m_paymentmethod::pm();       
-      $pm =view('POS::paymentmethod/paymentmethod',compact('paymentmethod')); 
+      $pm =view('POS::paymentmethod/paymentmethod',compact('paymentmethod'));  
+      $data['form']=view('POS::barangTitip/form');      
+      $data['list']=view('POS::barangTitip/list');  
+      $data['modal']=view('POS::barangTitip/modal');  
       $consigne = m_consigne::select('c_id',
                                        'c_code',
                                        'c_company')
                      ->where('c_isactive','Y')
-                     ->get(); 
-      $data['form']=view('POS::barangTitip/form');      
-      $data['list']=view('POS::barangTitip/list');  
-      $data['modal']=view('POS::barangTitip/modal');     
+                     ->get();   
       return view('POS::barangTitip/index',compact('data','pm','consigne'));
     }
 
