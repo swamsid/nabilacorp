@@ -92,9 +92,17 @@ class hakuserController extends Controller
 
    public function tableUser()
    {
-      $tableUser = d_mem::all();
+      $tableUser = d_mem::select('d_mem.*',
+                                 'm_pegawai_man.c_nama',
+                                 'm_pegawai_man.c_code')
+            ->join('m_pegawai_man','m_pegawai_man.c_id','=','m_pegawai_id')
+            ->get();
 
       return DataTables::of($tableUser)
+      ->editColumn('c_nama', function ($data) {
+         return $data->c_code .' - '. $data->c_nama;
+     
+         })
       ->addColumn('action', function ($data) {
          return '<div class="text-center">
                        <button style="margin-left:5px;" 
@@ -159,7 +167,10 @@ class hakuserController extends Controller
 
    public function editUserAkses($id){
       return DB::transaction(function () use ($id) {
-          $group = d_group::get();   
+          $group = d_group::get();  
+
+          $comp = DB::table('m_comp')
+                     ->get(); 
 
           $mem_group = d_mem_access::join('d_group',function($join) use ($id){
               $join->on('ma_mem','=',DB::raw("'$id'"));
@@ -215,7 +226,8 @@ class hakuserController extends Controller
               'group' => $group,
               'mem_group' => $mem_group,
               'mem_access' => $mem_access,
-              'posisi' => $posisi
+              'posisi' => $posisi,
+              'comp' => $comp
           ];
 
          //  return response()->json($data);
@@ -225,7 +237,6 @@ class hakuserController extends Controller
 
    public function perbaruiUser(Request $request, $m_id)
    {
-      // dd($request->all());
       DB::beginTransaction();
       try 
       {
@@ -287,6 +298,22 @@ class hakuserController extends Controller
                      'ma_update'=> $request->ma_update[$i],
                      'ma_delete'=> $request->ma_delete[$i]
                   ]);
+              }
+              if ($request->perusahaan != null) 
+              {
+                  DB::table('d_mem_comp')
+                     ->where('mc_mem',$m_id)->delete();
+
+                  for ($i=0; $i < count($request->perusahaan); $i++) 
+                  { 
+                     DB::table('d_mem_comp')
+                        ->insert([
+                           'mc_mem' => $m_id,
+                           'mc_comp' => $request->perusahaan[$i],
+                           'mc_active' => 'Y',
+                           'mc_update' => Carbon::now()
+                        ]);
+                  }
               }
 
               DB::commit();

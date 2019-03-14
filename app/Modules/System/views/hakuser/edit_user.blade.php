@@ -81,6 +81,7 @@
                                                 </label>
                                             </div>
 
+
                                             <div class="col-md-3 col-sm-8 col-xs-12">
                                                 <div class="form-group">
                                                     @if ($mem->m_isadmin == 'N' && $mem->m_pegawai_id == null)
@@ -148,6 +149,19 @@
                                             <div class="col-md-9 col-sm-8 col-xs-12">
                                                 <div class="form-group">
                                                     <textarea name="alamat" class="form-control" readonly>{{$mem->m_addr}}</textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="dinamis" id="dinamis">
+                                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                                    <label class="tebal">Outlet:<font color="red">*</font></label>
+                                                </div>
+                                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                                    <select class="js-example-basic-multiple form-control input-sm" id="perusahaan" name="perusahaan[]" multiple="multiple">
+                                                        @foreach ($comp as $key => $value)
+                                                            <option value="{{$value->c_id}}">{{$value->c_name}}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -414,6 +428,8 @@
         $.extend($.fn.dataTableExt.oStdClasses, extensions);
         // Used when bJQueryUI is true
         $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+
+        $('.js-example-basic-multiple').select2();
 
         //autocomplete
         $('.autocomplete').focus(function () {

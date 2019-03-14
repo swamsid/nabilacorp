@@ -47,8 +47,8 @@
                               <table class="table tabelan table-hover table-bordered" id="data">
                                  <thead>
                                     <tr>
-                                       <th>No</th>
-                                       <th>Nama</th>
+                                       <th>Nama User</th>
+                                       <th>Nama Pegawai</th>
                                        <th>Tanggal Lahir</th>
                                        <th>Alamat</th>
                                        <th>Aksi</th>
@@ -106,10 +106,10 @@
                       url : baseUrl + "/system/hakuser/tableuser",
                   },
                   columns: [
-                  {data: 'DT_Row_Index', name: 'DT_Row_Index', width: '5%'},
-                  {data: 'm_username', name: 'm_username', width: '25%'},
+                  {data: 'm_username', name: 'm_username', width: '20%'},
+                  {data: 'c_nama', name: 'm_username', width: '25%'},
                   {data: 'm_birth_tgl', name: 'm_birth_tgl', width: '20%'},
-                  {data: 'm_addr', name: 'm_addr', width: '40%'},
+                  {data: 'm_addr', name: 'm_addr', width: '25%'},
                   {data: 'action', name: 'action', orderable: false, searchable: false, width: '10%'},
                   ],
                 });
