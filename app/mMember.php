@@ -77,7 +77,7 @@ join d_access on d_access.a_id=d_mem_access.ma_access where a_name='$menu' and "
         if(count($cek) != 0)
             return true;
         else
-            return true;
+            return false;
     }
   
 }
