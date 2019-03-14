@@ -63,8 +63,8 @@
                       <div class="col-md-4 col-sm-6 col-xs-12">
                         <div class="form-group">
                           <select class="form-control input-sm select2" name="consigne" id="id_supp">
-                            @foreach ($consigne as $data)
-                            <option value="{{ $data->c_id }}">{{ $data->c_code}} - {{ $data->c_company }}</option>
+                            @foreach ($consigne as $con)
+                            <option value="{{ $con->c_id }}">{{ $con->c_code}} - {{ $con->c_company }}</option>
                             @endforeach
                           </select>
                         </div>
