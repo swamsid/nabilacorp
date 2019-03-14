@@ -217,11 +217,6 @@ public static function hapusMutasi($item,$permintaan,$comp,$position,$flag,$sm_r
                                 'sm_qty_sisa'=>$qty_sisa
                             ]);
 
-
-
-
-
-
                         	$newMutasi[$k]['sm_stock']=$getBarang[$k]->sm_stock;
                             $newMutasi[$k]['sm_detailid'] = $sm_detailidInsert;
                             $newMutasi[$k]['sm_date'] = $date;
@@ -284,6 +279,7 @@ public static function hapusMutasi($item,$permintaan,$comp,$position,$flag,$sm_r
                     return $data;
                 });
 	}
+    
     public static function updateMutasi($item,$totalPermintaan,$comp,$position,$flag='',$sm_reff='',$sm_ket='',$date='',$mutcat=''){
         return DB::transaction(function () use ($item,$totalPermintaan,$comp,$position,$flag,$sm_reff,$sm_ket,$date,$mutcat) {   
 

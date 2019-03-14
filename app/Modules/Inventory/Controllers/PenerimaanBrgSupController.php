@@ -422,7 +422,7 @@ class PenerimaanBrgSupController extends Controller
 
             $dataPo = DB::table('d_purchasing')->where('d_pcs_id', $request->headNotaPurchase)->first();
 
-            keuangan::jurnal()->addJurnal($dataJurnal, $dataPo->d_pcs_date_created, $request->headNotaTxt, 'Penerimaan Barang Supplier Atas Nota '.$request->headNotaTxt, 'MM', modulSetting()['onLogin'], true);
+            keuangan::jurnal()->addJurnal($dataJurnal, $dataPo->d_pcs_date_created, $request->headNotaTxt, 'Penerimaan Barang Supplier Atas Nota '.$request->headNotaTxt, 'MM', modulSetting()['onLogin'], false);
 
             // return json_encode($dataJurnal);
 

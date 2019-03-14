@@ -468,6 +468,7 @@ class purchaseOrderController extends Controller
 
    public function getStokByType($arrItemType, $arrSatuan, $counter, $comp)
    {
+      // return "klk";
       foreach ($arrItemType as $val) 
       {
          if ($val->i_type == "BJ") //brg jual
@@ -485,6 +486,7 @@ class purchaseOrderController extends Controller
          }
          elseif ($val->i_type == "BB") //bahan baku
          {
+            // return 'okee';
             $gc_id = d_gudangcabang::select('gc_id')
                   ->where('gc_gudang','GUDANG BAHAN BAKU')
                   ->where('gc_comp',$comp)

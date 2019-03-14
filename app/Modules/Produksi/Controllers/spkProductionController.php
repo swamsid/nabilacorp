@@ -19,6 +19,8 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Lib\mutasi;
 
+use keuangan; // Tambahan Dirga
+
 class spkProductionController extends Controller
 {
     public function spk()
@@ -256,11 +258,14 @@ class spkProductionController extends Controller
             ->get();
         // dd($spkDt);
         if ($spk->spk_status == "AP") {
+            // return json_encode('AP');
             //update status to PB
+
+            $dataJurnal = []; $totHpp = 0;// Tambahan Jurnal;
+
             for ($i=0; $i <count($spkDt) ; $i++) 
             { 
-                
-                if(mutasi::mutasiStok(  $spkDt[$i]->fr_formula,
+                $mutation = mutasi::mutasiStok(  $spkDt[$i]->fr_formula,
                                         number_format($spkDt[$i]->fr_value,2,',','.'),
                                         $comp=$gudang,
                                         $position=$gudang,
@@ -268,13 +273,63 @@ class spkProductionController extends Controller
                                         $spk->spk_code,
                                         'MENGURANGI',
                                         Carbon::now(),
-                                        100)){}
+                                        100);
+
+                // Tambahan Dirga
+                $dataGroup = DB::table('m_group')
+                                ->select('g_akun_beban', 'g_akun_persediaan')
+                                ->where('g_id', function($query) use ($spkDt, $i){
+                                  $query->select('i_group')->from('m_item')
+                                            ->where('i_id', $spkDt[$i]->fr_formula)
+                                            ->first();
+                                })->first();
+
+                if(!$dataGroup || !$dataGroup->g_akun_beban){
+                    return response()->json([
+                        'status' => 'gagal',
+                        'data'   => 'Beberapa Akun Beban Pada Group Item Yang Terkait Belum Ditentukan. Jurnal dan Data SPK Tidak Bisa Disimpan.'
+                    ]);
+                }else if(!$dataGroup->g_akun_persediaan){
+                    return response()->json([
+                        'status' => 'gagal',
+                        'data'   => 'Beberapa Akun Persediaan Pada Group Item Yang Terkait Belum Ditentukan. Jurnal dan Data SPK Tidak Bisa Disimpan.'
+                    ]);
+                }
+
+                if(!array_key_exists($dataGroup->g_akun_beban, $dataJurnal)){
+                  $dataJurnal[$dataGroup->g_akun_beban] = [
+                    'jrdt_akun'   => $dataGroup->g_akun_beban,
+                    'jrdt_value'  => $mutation['totalHpp'],
+                    'jrdt_dk'     => 'D'
+                  ];
+                }else{
+                  $dataJurnal[$dataGroup->g_akun_beban]['jrdt_value'] += $mutation['totalHpp'];
+                }
+
+                if(!array_key_exists($dataGroup->g_akun_persediaan, $dataJurnal)){
+                  $dataJurnal[$dataGroup->g_akun_persediaan] = [
+                    'jrdt_akun'   => $dataGroup->g_akun_persediaan,
+                    'jrdt_value'  => $mutation['totalHpp'],
+                    'jrdt_dk'     => 'K'
+                  ];
+                }else{
+                  $dataJurnal[$dataGroup->g_akun_persediaan]['jrdt_value'] += $mutation['totalHpp'];
+                }
+
+                $totHpp += $mutation['totalHpp'];
+                // selesai Dirga
             }
+
+            // Tambahan Dirga
+            DB::table('d_spk')->where('spk_id', $spk->spk_id)->update(['spk_hpp' => $totHpp]);
+            keuangan::jurnal()->addJurnal($dataJurnal, date('Y-m-d'), $spk->spk_code, 'Proses SPK Produksi Nomor '.$spk->spk_code, 'MM', modulSetting()['onLogin'], false);
+            // Selesai Dirga
 
             $spk = d_spk::find($spk_id);
             $spk->spk_status = 'PB';
             $spk->save();
         } else {
+            return json_encode('PB');
             //update status to FN
             $spk = d_spk::find($spk_id);
             $spk->spk_status = 'FN';
@@ -288,7 +343,7 @@ class spkProductionController extends Controller
         return response()->json([
               'status' => 'sukses'
           ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         DB::rollback();
         return response()->json([
             'status' => 'gagal',
