@@ -227,7 +227,7 @@ class hakuserController extends Controller
               'mem_group' => $mem_group,
               'mem_access' => $mem_access,
               'posisi' => $posisi,
-              'comp' => $compGudang
+              'compGudang' => $compGudang
           ];
 
          //  return response()->json($data);
