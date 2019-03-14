@@ -37,7 +37,6 @@
             <!-- div #alert-tab -->
             <!-- /div #alert-tab -->
             <!-- Div #listtoko -->
-            <!-- @include('penjualan.POSpenjualanToko.listtoko') -->
             {!!$data['list']!!}
             <!-- end div #listoko -->
             
