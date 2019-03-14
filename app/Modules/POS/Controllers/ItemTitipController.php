@@ -45,10 +45,10 @@ class itemTitipController extends Controller
                                        'c_company')
                      ->where('c_isactive','Y')
                      ->get(); 
-      $data['form']=view('POS::barangTitip/form', compact('consigne'));      
+      $data['form']=view('POS::barangTitip/form');      
       $data['list']=view('POS::barangTitip/list');  
       $data['modal']=view('POS::barangTitip/modal');     
-      return view('POS::barangTitip/index',compact('data','pm'));
+      return view('POS::barangTitip/index',compact('data','pm','consigne'));
     }
 
     function data(Request $request){
