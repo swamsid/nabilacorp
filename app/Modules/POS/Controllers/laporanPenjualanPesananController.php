@@ -10,7 +10,7 @@ use Carbon\carbon;
 use App\m_item;
 
 use App\Http\Controllers\Controller;
-
+use Session;
 use App\mMember;
 use App\Modules\POS\model\d_receivable;
 use App\Modules\POS\model\d_receivable_dt;
@@ -54,17 +54,11 @@ class laporanPenjualanPesananController  extends Controller
        $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
        
           $data=d_receivable::
-                whereBetween('r_date', [$tgl_awal, $tgl_akhir])     
-                ->get();    
+               where('r_comp',Session::get('user_comp'))
+               ->whereBetween('r_date', [$tgl_awal, $tgl_akhir])     
+               ->get();    
 
-
-
-
-
-      
-
-      return Datatables::of($data)                       
-                      ->addIndexColumn()                                                 
+      return Datatables::of($data)                                                                       
                       ->editColumn('r_date', function ($data) {   
                                 return date('d-m-Y',strtotime($data->r_date));                            
                         })
@@ -133,6 +127,7 @@ class laporanPenjualanPesananController  extends Controller
                      DB::raw("SUM(r_pay) as r_pay"),
                      DB::raw("SUM(r_outstanding) as r_outstanding")
                      )
+                ->where('r_comp',Session::get('user_comp'))
                 ->first();    
 
 
