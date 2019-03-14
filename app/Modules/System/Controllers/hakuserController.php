@@ -92,9 +92,17 @@ class hakuserController extends Controller
 
    public function tableUser()
    {
-      $tableUser = d_mem::all();
+      $tableUser = d_mem::select('d_mem.*',
+                                 'm_pegawai_man.c_nama',
+                                 'm_pegawai_man.c_code')
+            ->join('m_pegawai_man','m_pegawai_man.c_id','=','m_pegawai_id')
+            ->get();
 
       return DataTables::of($tableUser)
+      ->editColumn('c_nama', function ($data) {
+         return $data->c_code .' - '. $data->c_nama;
+     
+         })
       ->addColumn('action', function ($data) {
          return '<div class="text-center">
                        <button style="margin-left:5px;" 
