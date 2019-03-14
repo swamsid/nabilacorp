@@ -506,8 +506,8 @@
                         </i><span class="menu-title">Penjualan</span><span class="fa arrow"></span>
                         <!-- for filter -->
                         <span class="hidden">
-                            @if(Auth::user()->punyaAkses('Pembayaran Piutang','ma_read'))
-                                Pembayaran Piutang
+                            @if(Auth::user()->punyaAkses('Penerimaan Piutang','ma_read'))
+                                Penerimaan Piutang
                             @endif
 
                             {{-- @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
@@ -550,7 +550,7 @@
                         <!-- ======= -->
                     </a>
                     <ul class="nav nav-second-level">
-                        @if(Auth::user()->punyaAkses('Pembayaran Piutang','ma_read'))
+                        @if(Auth::user()->punyaAkses('Penerimaan Piutang','ma_read'))
                             <li class="menu-sekunder {{ Request::is('penjualan/modul/keuangan/transaksi/penerimaan_piutang') ? 'active' : '' || Request::is('penjualan/modul/keuangan/transaksi/penerimaan_piutang/*') ? 'active' : '' }}"><a href="{{ url('penjualan/modul/keuangan/transaksi/penerimaan_piutang') }}">
                                 <span class="submenu-title">Penerimaan Piutang</span><span class="hidden">Penjualan</span></a>
                             </li>
