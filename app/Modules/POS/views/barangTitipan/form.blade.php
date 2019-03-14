@@ -17,7 +17,7 @@
               <input type="hidden" class="form-control input-sm reset"  name="it_status" id="it_status" readonly="">
             </div>
           </div>
-{{--           <div class="col-md-2 col-sm-6 col-xs-12">
+          {{--           <div class="col-md-2 col-sm-6 col-xs-12">
             <label>No Nota</label>
           </div>
           <div class="col-md-4 col-sm-6 col-xs-12">
@@ -38,11 +38,11 @@
           </div>
           <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-                <select class="form-control input-sm select2" name="id_supplier" id="id_supplier" onchange="batal()" >
-                  @foreach ($consigner as $data)
-                  <option value="{{ $data->c_id }}">{{ $data->c_code}} - {{ $data->c_company }}</option>
-                  @endforeach
-               </select>
+              <select class="form-control input-sm select2" name="id_supplier" id="id_supplier" onchange="batal()" >
+                @foreach ($consigner as $data)
+                <option value="{{ $data->c_id }}">{{ $data->c_code}} - {{ $data->c_company }}</option>
+                @endforeach
+              </select>
             </div>
           </div>
           <div class="col-md-2 col-sm-6 col-xs-12" >

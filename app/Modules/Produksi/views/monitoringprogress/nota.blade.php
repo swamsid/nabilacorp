@@ -1,4 +1,4 @@
-<div class="col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 10px;">
+{{-- <div class="col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 10px;">
 	<div class="col-md-3 col-sm-3 col-xs-12" align="left">
 		<h4 id="judul-item" style="padding-bottom: 5px; margin-left: 10px">Nota Rencana</h4>
 	</div>
@@ -22,7 +22,7 @@
 			@endforeach
 		</tbody>
 	</table>
-</div>
+</div> --}}
 
 <div class="col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 10px;">
 	<div class="col-md-3 col-sm-3 col-xs-12" align="left">

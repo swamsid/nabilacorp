@@ -58,7 +58,7 @@ class rencanaPenjualanController extends Controller
     function form_perbarui($sp_id) {
       $d_sales_plan = d_sales_plan::leftJoin('d_mem', 'm_id', '=', 'sp_mem')->where('sp_id', $sp_id)->first();
       $d_salesplan_dt = d_salesplan_dt::leftJoin('m_item', 'i_id', '=', 'spdt_item')->leftJoin('m_satuan', 'i_sat1', '=', 's_id');
-      $d_salesplan_dt = $d_salesplan_dt->where('spdt_salesplan', $sp_id)->select('i_name', 's_name', 'spdt_qty', 'i_id')->get();
+      $d_salesplan_dt = $d_salesplan_dt->where('spdt_salesplan', $sp_id)->select('i_code','i_name', 's_name', 'spdt_qty', 'i_id')->get();
       
       $data = [
         'd_sales_plan' => $d_sales_plan,
@@ -121,25 +121,37 @@ class rencanaPenjualanController extends Controller
        return response()->json($res);
     }
 
-    function find_m_item(Request $req) {
-       $data = array();
-       $s_comp = $req->get('s_comp');
-       $s_comp = $s_comp != null ? $s_comp : '';
-       $term = $req->term;
-       $term = $term != null ? $term : '';
+   function find_m_item(Request $req) 
+   {
+      $data = array();
+      $s_comp = 1;
+      $s_comp = $s_comp != null ? $s_comp : '';
+      $term = $req->term;
+      $term = $term != null ? $term : '';
 
-
-       $rows = m_item::leftJoin(DB::raw('d_stock ST'), 'i_id', '=', DB::raw('ST.s_id'))->leftJoin(DB::raw('m_satuan SA'), 'i_sat1' , '=', DB::raw('SA.s_id'));
-        // memfilter data yang ditampilkan
-        if($term != '') {
-              $rows = $rows->where('i_code', 'LIKE', "%$term%")->orWhere('i_name', 'LIKE', "%$term%");
-        }
+      $rows = m_item::leftJoin(DB::raw('d_stock ST'), 'i_id', '=', DB::raw('ST.s_id'))
+         ->leftJoin(DB::raw('m_satuan SA'), 'i_sat1' , '=', DB::raw('SA.s_id'));
+      // memfilter data yang ditampilkan
+      if($term != '') 
+      {
+         $rows = $rows->where('i_code', 'LIKE', "%$term%")
+            ->orWhere('i_name', 'LIKE', "%$term%");
+      }
       // memilih kolom yang akan ditampilkan
-        $rows = $rows->select('i_code', 'i_id', DB::raw('i_name AS label'), DB::raw('i_name AS item'), DB::raw('s_name AS satuan'), DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_comp = "$s_comp" AND s_comp = s_position), 0) AS stok'));
+      $rows = $rows->select('i_code', 
+                              'i_id', 
+                              // DB::raw('i_name AS label'), 
+                              DB::raw('i_name AS item'), 
+                              DB::raw('concat(i_code, " - ", i_name) as label'),
+                              DB::raw('s_name AS satuan'), 
+                              DB::raw('IFNULL((SELECT s_qty FROM d_stock WHERE s_comp = "$s_comp" AND s_position = "$s_comp"), 0) AS stok'),
+                              DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '$gc_id->gc_id' AND s_position = '$gc_id->gc_id' limit 1) ,'0') as qtyStok"));
 
-        $res = $rows->take(10)->get();
-       return response()->json($res);
-    }
+      $res = $rows->take(10)
+      ->get();
+      // dd($res);
+      return response()->json($res);
+   }
 
     
    

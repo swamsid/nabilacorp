@@ -94,7 +94,6 @@ function table(){
                     },
               },
             columns: [
-            	{ data : 'DT_Row_Index' },
              	{ data : 'r_date' },
 		        { data : 'r_reff' },
 		        { data : 'r_cus'},

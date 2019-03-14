@@ -37,9 +37,9 @@ class MonitoringProgressController extends Controller
       if($request->fil=='A')
       {
          $comp=Session::get('user_comp');   
-         $salesPlan=DB::table('d_sales_plan')
-                  ->select('spdt_item','sp_date','sp_id','spdt_qty','spdt_salesplan')
-                  ->join('d_salesplan_dt','sp_id','=','spdt_salesplan');
+         // $salesPlan=DB::table('d_sales_plan')
+         //          ->select('spdt_item','sp_date','sp_id','spdt_qty','spdt_salesplan')
+         //          ->join('d_salesplan_dt','sp_id','=','spdt_salesplan');
 
          $pp = DB::Table('d_productplan')
          ->where(function($query){
@@ -73,16 +73,17 @@ class MonitoringProgressController extends Controller
          }
          $stock->groupBy('s_item');
          $mon = DB::Table('m_item')
-            ->select('i_id','i_code','i_name','s_qty','pp_qty','sp_date',
-                DB::raw("sum(spdt_qty) as spdt_qty"),
+            ->select('i_id','i_code','i_name','s_qty','pp_qty',
+                //   'sp_date',
+                // DB::raw("sum(spdt_qty) as spdt_qty"),
                 DB::raw("sum(sd_qty) as jumlah"), 
                 DB::raw("count(sd_sales) as nota"), 
-                DB::raw("count(sp_id) as nota"), 
+                // DB::raw("count(sp_id) as nota"), 
                 DB::raw("max(s_date) as s_date"))
-            ->leftjoin(DB::raw( sprintf( '(%s) d_salesplan', $salesPlan->toSql() ) ), function ($join) use ($date){
-                $join->on('m_item.i_id','=','spdt_item')
-                     ->where('sp_date',$date);
-              })
+            // ->leftjoin(DB::raw( sprintf( '(%s) d_salesplan', $salesPlan->toSql() ) ), function ($join) use ($date){
+            //     $join->on('m_item.i_id','=','spdt_item')
+            //          ->where('sp_date',$date);
+            //   })
             ->leftjoin(DB::raw( sprintf( '(%s) d_stock', $stock->toSql() ) ), function ($join){
                 $join->on('m_item.i_id','=','d_stock.s_item');
               })
@@ -110,15 +111,15 @@ class MonitoringProgressController extends Controller
          {      
             $data[$i]['pp_item'] = $key['i_code'];
             $data[$i]['i_name'] = $key['i_name'];
-            if(($key['jumlah']+$key['spdt_qty'])==0)
+            if(($key['jumlah'])==0)
             {
                $data[$i]['jumlahKw'] = 0; 
                $data[$i]['jumlah'] = 0;          
             }
-            if(($key['jumlah']+$key['spdt_qty'])!=0)
+            if(($key['jumlah'])!=0)
             {
-               $data[$i]['jumlahKw'] = number_format( $key['jumlah']+$key['spdt_qty'] ,0,',','.'); 
-               $data[$i]['jumlah'] = $key['jumlah']+$key['spdt_qty'];       
+               $data[$i]['jumlahKw'] = number_format( $key['jumlah'] ,0,',','.'); 
+               $data[$i]['jumlah'] = $key['jumlah'];       
             }
             $data[$i]['pp_qty'] = $key['pp_qty'] == null ? 0 : $key['pp_qty'];
             $data[$i]['pp_qtyKw'] = $key['pp_qty'] == null ? 0 :  number_format( $key['pp_qty'] ,0,',','.');
@@ -230,20 +231,20 @@ class MonitoringProgressController extends Controller
          $data = array();
        foreach ($dat as $key) 
        {      
-         if(($key['jumlah']+$key['spdt_qty'])!=0)
+         if(($key['jumlah'])!=0)
          {
             $data[$i]['pp_item'] = $key['i_code'];
             $data[$i]['i_name'] = $key['i_name'];
 
-            if(($key['jumlah']+$key['spdt_qty'])==0)
+            if(($key['jumlah'])==0)
             {
                $data[$i]['jumlahKw'] = 0;
                $data[$i]['jumlah'] = 0;          
             }
-            if(($key['jumlah']+$key['spdt_qty'])!=0)
+            if(($key['jumlah'])!=0)
             {
-               $data[$i]['jumlahKw'] = number_format( $key['jumlah']+$key['spdt_qty'] ,0,',','.'); 
-               $data[$i]['jumlah'] = $key['jumlah']+$key['spdt_qty'];          
+               $data[$i]['jumlahKw'] = number_format( $key['jumlah'] ,0,',','.'); 
+               $data[$i]['jumlah'] = $key['jumlah'];          
             }
 
             $data[$i]['pp_qtyKw'] = number_format( $key['pp_qty'] == null ? 0 : $key['pp_qty'] ,0,',','.');
@@ -483,15 +484,15 @@ class MonitoringProgressController extends Controller
     $i=0;
     $data = array();
     foreach ($dat as $key) {      
-      if(($key['jumlah']+$key['spdt_qty'])!=0){
+      if(($key['jumlah'])!=0){
         $data[$i]['pp_item'] = $key['i_code'];
         $data[$i]['i_name'] = $key['i_code'] .' - '. $key['i_name'];
         
-        if(($key['jumlah']+$key['spdt_qty'])==0){
+        if(($key['jumlah'])==0){
           $data[$i]['jumlah'] =0;          
         }
-        if(($key['jumlah']+$key['spdt_qty'])!=0){
-          $data[$i]['jumlah'] =$key['jumlah']+$key['spdt_qty'];          
+        if(($key['jumlah'])!=0){
+          $data[$i]['jumlah'] =$key['jumlah'];          
         }
         
 

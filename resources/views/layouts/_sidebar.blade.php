@@ -510,9 +510,9 @@
                                 Pembayaran Piutang
                             @endif
 
-                            @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
+                            {{-- @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
                                 Rencana Penjualan
-                            @endif
+                            @endif --}}
 
                             @if(Auth::user()->punyaAkses('POS Penjualan Toko / Mobil','ma_read'))
                                 POS Penjualan Toko / Mobil
@@ -556,11 +556,11 @@
                             </li>
                         @endif
 
-                        @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
+                        {{-- @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
                             <li class="menu-sekunder {{ Request::is('penjualan/rencanapenjualan/rencana') ? 'active' : '' || Request::is('penjualan/rencanapenjualan/*') ? 'active' : '' }}">    <a href="{{ url('/penjualan/rencanapenjualan/rencana') }}">
                                 <span class="submenu-title">Rencana Penjualan</span><span class="hidden">Penjualan</span></a>
                             </li>
-                        @endif
+                        @endif --}}
 
                         @if(Auth::user()->punyaAkses('POS Penjualan Toko / Mobil','ma_read'))
                             <li class="menu-sekunder {{ Request::is('penjualan/POSpenjualan/POSpenjualan') ? 'active' : '' || Request::is('penjualan/pos-toko/*') ? 'active' : '' || Request::is('penjualan/POSpenjualanmobile/POSpenjualanmobile') ? 'active' : '' || Request::is('penjualan/POSpenjualanmobile/*') ? 'active' : '' || Request::is('penjualan/POSpenjualanToko/POSpenjualanToko') ? 'active' : '' || Request::is('penjualan/POSpenjualanToko/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/POSpenjualan/POSpenjualan') }}">

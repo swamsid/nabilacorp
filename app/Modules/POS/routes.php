@@ -49,9 +49,6 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 	Route::get('/consigner/hapus/{id}', 'itemTitipanController@hapusRelasiCon');
 	Route::get('/seach-consigner', 'itemTitipanController@cariConsigner');
 // pencatatan barang titip
-	Route::get('/penjualan/barang-titip/index', 'itemTitipController@index');
-	Route::get('/penjualan/barang-titip/data', 'itemTitipController@data');
-	Route::get('/penjualan/barang-titip/store', 'itemTitipController@store');
 	Route::get('/penjualan/barang-titip/{id}/edit', 'itemTitipController@edit');
 	Route::get('/penjualan/barang-titip/update', 'itemTitipController@update');
 	Route::get('/penjualan/barang-titip/serahTerima/{id}', 'itemTitipController@serahTerima');
