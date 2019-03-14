@@ -157,8 +157,8 @@
                                                     <label class="tebal">Outlet:<font color="red">*</font></label>
                                                 </div>
                                                 <div class="col-md-3 col-sm-8 col-xs-12">
-                                                    <select class="js-example-basic-multiple form-control input-sm" id="perusahaan" name="perusahaan[]" multiple="multiple">
-                                                        @foreach ($comp as $key => $value)
+                                                    <select class="js-example-basic-multiple form-control input-sm" id="perus" name="perusahaan[]" multiple="multiple">
+                                                        @foreach ($compGudang as $key => $value)
                                                             <option value="{{$value->c_id}}">{{$value->c_name}}</option>
                                                         @endforeach
                                                     </select>

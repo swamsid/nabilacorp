@@ -169,7 +169,7 @@ class hakuserController extends Controller
       return DB::transaction(function () use ($id) {
           $group = d_group::get();  
 
-          $comp = DB::table('m_comp')
+          $compGudang = DB::table('m_comp')
                      ->get(); 
 
           $mem_group = d_mem_access::join('d_group',function($join) use ($id){
@@ -227,7 +227,7 @@ class hakuserController extends Controller
               'mem_group' => $mem_group,
               'mem_access' => $mem_access,
               'posisi' => $posisi,
-              'comp' => $comp
+              'comp' => $compGudang
           ];
 
          //  return response()->json($data);
