@@ -53,7 +53,53 @@ class itemTitipanController extends Controller
       return view('Master::databarangtitipan/barang');
     }
     public function dataBarang(){
-      return m_item_titipan::dataBarang();
+      $data = DB::table('m_item')
+              ->leftJoin('m_group', 'g_id', '=', 'i_group')
+              ->leftJoin('m_satuan', 's_id', '=', 'i_sat1')
+              ->leftJoin('d_item_titipan_supplier', 'i_id', '=', 'its_id')
+              ->where('i_active', 'Y')
+              ->where('i_type', 'BTPN')
+              ->select('i_id', 'i_code', 'i_name', 's_name', 'i_type', 'its_price1', 'g_name','i_active')
+              ->get();
+         return Datatables::of($data)
+            ->editColumn('action', function ($data) {                            
+               if ($data->i_active == "Y") 
+               {
+                return  '<div class="text-center">'.
+                            '<button id="edit" onclick=edit("'.$data->i_id.'") 
+                                 class="btn btn-warning btn-xs" 
+                                 title="Edit">
+                                 <i class="fa-fw glyphicon glyphicon-pencil"></i>
+                              </button>'.'
+                              <button id="delete" 
+                                 onclick=gantiStatus("'.$data->i_id.'","aktif") 
+                                 class="btn btn-primary btn-xs" 
+                                 title="Aktif">
+                                 <i class="fa fa-fw fa-check-square"></i>
+                              </button>'.
+                        '</div>';
+               }
+               else
+               {
+                   return  '<div class="text-center">'.
+                                 '<button id="delete" 
+                                    onclick=gantiStatus("'.$data->i_id.'","nonaktif") 
+                                    class="btn btn-danger btn-sm" 
+                                    title="Tidak Aktif">
+                                    <i class="fa fa-minus-square"></i>
+                                 </button>'.
+                           '</div>';
+               }
+            })
+
+            ->editColumn('i_type', function ($data) { 
+               if ($data->i_type == "BTPN")
+               {
+                  return 'Barang Titipan';
+               }
+            })
+
+            ->make(true);  
     }
 
 
