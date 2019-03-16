@@ -75,7 +75,9 @@ class laporanPenjualanTokoController  extends Controller
         ->join('d_mem','d_mem.m_pegawai_id','=','c_id')
         ->get();
 
-      return view('POS::laporanPenjualanToko/index', compact('pegawai'));
+      $item = DB::table('m_item')->where('i_type', 'BP')->select('i_id', 'i_code', 'i_name')->get();
+
+      return view('POS::laporanPenjualanToko/index', compact('pegawai', 'item'));
     }
 
    public function totalPenjualan(Request $req)

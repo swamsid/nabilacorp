@@ -27,6 +27,10 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => ['auth', 'web']], function() {
 
+	Route::get('penjualan/analisa', [
+		'uses'	=> 'analisaPenjualan@index'
+	])->name('analisa_penjualan.index');
+
 	Route::get('/session-set-comp/{id}','mMemberController@setComp');
 	Route::get('not-allowed', 'mMemberController@notAllowed');
 	Route::get('logout', 'mMemberController@logout');

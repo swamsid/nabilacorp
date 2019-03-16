@@ -81,6 +81,9 @@
                               </div>
                            </div>
                            <div class="col-md-2 col-sm-12 col-xs-12" align="right">
+                              <button class="btn btn-info btn-sm" title="Analisa Penjualan" onclick="analisa()">
+                                 <i class="fa fa-line-chart"></i>
+                              </button>
                               <button class="btn btn-primary btn-sm" title="Print" onclick="print_laporan()">
                                  <i class="fa fa-print"></i>
                               </button>
@@ -151,6 +154,78 @@
                </div>
             </div>
          </div>
+
+         <div class="modal fade" id="modal-analisa" role="dialog">
+           <div class="modal-dialog">
+               
+             
+               <!-- Modal content-->
+                 <div class="modal-content" style="width: 80%; margin: 0 auto;">
+                   <div class="modal-header" style="background-color: #e77c38;">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title" style="color: white;">Analisa Penjualan</h4>
+                   </div>
+                   <form action="{{ Route('analisa_penjualan.index') }}" method="GET" target="_blank">
+                      <input type="hidden" name="_token" value="{{ csrf_token() }}" readonly>
+                      <div class="modal-body">
+
+                        <table class="table">
+                           <thead>
+                              <tr>
+                                 <th width="40%" style="vertical-align: middle; text-align: left;">Type Analisa</th>
+                                 <td>
+                                    <select class="form-control" id="type" name="type">
+                                       <option value="1">Item Terlaris</option>
+                                       <option value="2">Detail Penjualan Item</option>
+                                    </select>
+                                 </td>
+                              </tr>
+
+                              <tr>
+                                 <th width="40%" style="vertical-align: middle; text-align: left;">Jumlah Data Ditampilkan</th>
+                                 <td>
+                                    <input type="text" name="counter" class="form-control" placeholder="ex: 4">
+                                 </td>
+                              </tr>
+
+                              <tr>
+                                 <th width="40%" style="vertical-align: middle; text-align: left;">Tanggal</th>
+                                 <td>
+                                    <input type="text" name="date1" class="form-control datepicker" placeholder="DD-MM-YYY" style="cursor: pointer; padding-left: 10px;" autocomplete="none">
+                                 </td>
+                              </tr>
+
+                              <tr>
+                                 <th width="40%" style="vertical-align: middle; text-align: left;">Sampai Tanggal</th>
+                                 <td>
+                                    <input type="text" name="date2" class="form-control datepicker" placeholder="DD-MM-YYY" style="cursor: pointer; padding-left: 10px;" autocomplete="none">
+                                 </td>
+                              </tr>
+
+                              <tr id="optional" style="display: none">
+                                 <th style="vertical-align: middle; text-align: left;">Pilih Barang Produksi</th>
+                                 <td>
+                                    <select class="form-control input-sm select-2" id="cari_sup" name="id_item" style="width: 100%; text-align: left">
+                                       @foreach($item as $key => $itm)
+                                          <option value="{{ $itm->i_id }}">{{ $itm->i_code }} {{ $itm->i_name }}</option>
+                                       @endforeach
+                                    </select>
+                                 </td>
+                              </tr>
+                           </thead>
+                        </table>
+                        
+                      </div>
+                  
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning">Proses</button>
+                      </div>
+                  </form>
+                 </div>
+                  
+             </div>
+         </div>
+
          @endsection
          @section("extra_scripts")
          @include('POS::laporanPenjualanToko/js/commander')

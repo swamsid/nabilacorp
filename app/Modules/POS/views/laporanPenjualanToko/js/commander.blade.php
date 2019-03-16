@@ -1,6 +1,25 @@
 <script type="text/javascript">
 
+  $('.select-2').select2();
+
+  $('.datepicker').datepicker({
+      format:"dd-mm-yyyy",  
+      autoclose: true,      
+  }).datepicker("setDate",'now');
+
+
+  $('#type').change(function(){
+    if($(this).val() == '1'){
+      $('#optional').fadeOut();
+    }else{
+      $('#optional').fadeIn();
+    }
+
+    // console.log($('#optional').html());
+  })
+
 	dateAwal();
+
 	function dateAwal(){	      
 	      $('#tgl_awal').datepicker({
 	            format:"dd-mm-yyyy",        
@@ -55,6 +74,10 @@
          });
       }
 
+   }
+
+   function analisa(){
+      $('#modal-analisa').modal('show');
    }
 
 

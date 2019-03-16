@@ -181,6 +181,7 @@ class PenjualanController extends Controller
 
    public function posToko()
    { 
+      // return 'aa'
       $cabang = Session::get('user_comp');
       $cek = DB::table('m_comp')->select('c_owner')
          ->where('c_id',$cabang)->first();

@@ -4,94 +4,102 @@
    <form method="post" id="dataPos">
       <div class="row">
          {{ csrf_field() }}
-         <div class="col-md-12">
-            <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-top: 15px;" no>
-               
-               <div class="col-md-2 col-sm-6 col-xs-12">
-                  <label>Tanggal</label>
+         <div class="col-md-7 col-sm-12 col-xs-12 tamma-bg" style="padding-top: 15px;" no>
+            
+            <div class="col-md-2 col-sm-6 col-xs-12">
+               <label>Tanggal</label>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+               <div class="form-group">
+                  <input type="text" class="move up1 form-control input-sm reset "  name="s_date" id="s_date" value="{{date('d-m-Y')}}" autocomplete="off" readonly="">
+                  <input type="hidden" class="form-control input-sm reset"  name="s_id" id="s_id" readonly="">
+                  <input type="hidden" class="form-control input-sm reset"  name="s_status" id="s_status" readonly="">
                </div>
-               <div class="col-md-4 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                     <input type="text" class="move up1 form-control input-sm reset "  name="s_date" id="s_date" value="{{date('d-m-Y')}}" autocomplete="off" readonly="">
-                     <input type="hidden" class="form-control input-sm reset"  name="s_id" id="s_id" readonly="">
-                     <input type="hidden" class="form-control input-sm reset"  name="s_status" id="s_status" readonly="">
-                  </div>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-12">
+               <label>No Nota</label>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+               <div class="form-group">
+                  <input type="text" class="form-control input-sm reset" name="s_note" id="s_note" placeholder="(Auto)" disabled="">
                </div>
-               <div class="col-md-2 col-sm-6 col-xs-12">
-                  <label>No Nota</label>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-12">
+               <label>Pengguna</label>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+               <div class="form-group">
+                  <input type="text" id="s_created_by" class="form-control input-sm reset" name="s_created_by" readonly="" value="{{Auth::user()->m_name}}">
                </div>
-               <div class="col-md-4 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                     <input type="text" class="form-control input-sm reset" name="s_note" id="s_note" placeholder="(Auto)" disabled="">
-                  </div>
+            </div>
+            {{-- <div class="col-md-2 col-sm-6 col-xs-12">
+               <label>Kasir</label>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+               <div class="form-group">
+                  
                </div>
-               <div class="col-md-2 col-sm-6 col-xs-12">
-                  <label>Pengguna</label>
+            </div> --}}
+            <div class="col-md-2 col-sm-6 col-xs-12">
+               <label>Pilih Harga</label>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+               <div class="form-group">
+                  <select class="move up1 form-control input-sm" id="harga" onchange="harga()" name="s_type_price">
+                     @foreach($daftarHarga as $daftar)
+                     <option value="{{$daftar->pg_id}}">
+                        {{$daftar->pg_name}}
+                     </option>
+                     @endforeach
+                  </select>
                </div>
-               <div class="col-md-4 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                     <input type="text" id="s_created_by" class="form-control input-sm reset" name="s_created_by" readonly="" value="{{Auth::user()->m_name}}">
-                  </div>
-               </div>
-               {{-- <div class="col-md-2 col-sm-6 col-xs-12">
-                  <label>Kasir</label>
-               </div>
-               <div class="col-md-4 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                     
-                  </div>
-               </div> --}}
-               <div class="col-md-2 col-sm-6 col-xs-12">
-                  <label>Pilih Harga</label>
-               </div>
-               <div class="col-md-4 col-sm-6 col-xs-12">
-                  <div class="form-group">
-                     <select class="move up1 form-control input-sm" id="harga" onchange="harga()" name="s_type_price">
-                        @foreach($daftarHarga as $daftar)
-                        <option value="{{$daftar->pg_id}}">
-                           {{$daftar->pg_name}}
-                        </option>
-                        @endforeach
-                     </select>
-                  </div>
-               </div>
-               
             </div>
             
+         </div>
+
+         <div class="col-md-4 col-sm-12 col-xs-12 tamma-bg" style="padding-top: 15px; margin-left: 50px;" no>
             
+            <div class="col-md-12 col-sm-12 col-xs-12">
+               <label class="control-label tebal" for="jumlah">Grand Total + Biaya Kirim</label>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+               <div class="form-group">
+                  <input type="text" id="grand_biaya" name="s_net" class="form-control form-control-xl input-sm reset" style="text-align: right; height: 50px; font-size: 24pt;" readonly="" autocomplete="off">
+               </div>
+            </div>
             
          </div>
-         
-         
+
          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top: 20px;margin-bottom: 5px;margin-bottom: 20px; padding-bottom:20px;padding-top:20px;">
-            <div class="col-md-6">
-               <label class="control-label tebal" for="">Masukan Kode / Nama</label>
-               <div class="input-group input-group-sm" style="width: 100%;">
-                  <span role="status" aria-live="polite" class="ui-helper-hidden-accessible">1 result is available, use up and down arrow keys to navigate.</span>
-                  <input  class="move up1 form-control input-sm reset-seach" id="searchitem" >
-                  <input type="hidden" class="form-control input-sm reset-seach" id="itemName">
-                  <input type="hidden" class="form-control input-sm reset-seach" name="i_id" id="i_id">
-                  <input type="hidden" class="form-control input-sm reset-seach" name="i_code" id="i_code">
-                  <input type="hidden" class="form-control input-sm reset-seach" id="i_price">
-                  <input type="hidden" class="form-control input-sm reset-seach" name="s_satuan" id="s_satuan">
-                  <input type="hidden" class="fComp form-control input-sm reset-seach" name="" id="fComp">
-                  <input type="hidden" class="fPosition form-control input-sm reset-seach" name="" id="fPosition">
+               <div class="col-md-6">
+                  <label class="control-label tebal" for="">Masukan Kode / Nama</label>
+                  <div class="input-group input-group-sm" style="width: 100%;">
+                     <span role="status" aria-live="polite" class="ui-helper-hidden-accessible">1 result is available, use up and down arrow keys to navigate.</span>
+                     <input  class="move up1 form-control input-sm reset-seach" id="searchitem" >
+                     <input type="hidden" class="form-control input-sm reset-seach" id="itemName">
+                     <input type="hidden" class="form-control input-sm reset-seach" name="i_id" id="i_id">
+                     <input type="hidden" class="form-control input-sm reset-seach" name="i_code" id="i_code">
+                     <input type="hidden" class="form-control input-sm reset-seach" id="i_price">
+                     <input type="hidden" class="form-control input-sm reset-seach" name="s_satuan" id="s_satuan">
+                     <input type="hidden" class="fComp form-control input-sm reset-seach" name="" id="fComp">
+                     <input type="hidden" class="fPosition form-control input-sm reset-seach" name="" id="fPosition">
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <label class="control-label tebal" name="qty">Stok</label>
+                  <div class="input-group input-group-sm" style="width: 100%;">
+                     <input type="number" class="form-control input-sm alignAngka reset reset-seach" name="stock" id="stock" disabled="">
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <label class="control-label tebal" name="qty">Jumlah</label>
+                  <div class="input-group input-group-sm" style="width: 100%;">
+                     <input type="number" class="move up3 form-control input-sm alignAngka reset reset-seach" name="fQty" id="fQty" onclick="validationForm();" >
+                     <input type="hidden" class="form-control input-sm alignAngka reset reset-seach" name="cQty" id="cQty" onclick="validationForm();">
+                  </div>
                </div>
             </div>
-            <div class="col-md-3">
-               <label class="control-label tebal" name="qty">Stok</label>
-               <div class="input-group input-group-sm" style="width: 100%;">
-                  <input type="number" class="form-control input-sm alignAngka reset reset-seach" name="stock" id="stock" disabled="">
-               </div>
-            </div>
-            <div class="col-md-3">
-               <label class="control-label tebal" name="qty">Jumlah</label>
-               <div class="input-group input-group-sm" style="width: 100%;">
-                  <input type="number" class="move up3 form-control input-sm alignAngka reset reset-seach" name="fQty" id="fQty" onclick="validationForm();" >
-                  <input type="hidden" class="form-control input-sm alignAngka reset reset-seach" name="cQty" id="cQty" onclick="validationForm();">
-               </div>
-            </div>
-         </div>
+
       </form>
    </div>
    <form method="post" id="sdt">
@@ -176,15 +184,14 @@
                   </div>
                </div>
                
-               
-               <div class="col-md-12 col-sm-12 col-xs-12">
+               {{-- <div class="col-md-12 col-sm-12 col-xs-12">
                   <label class="control-label tebal" for="jumlah">Grand Total + Biaya Kirim</label>
                </div>
                <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="form-group">
                      <input type="text" id="grand_biaya" name="s_net" class="form-control form-control-xl input-sm reset" style="text-align: right;" readonly="" autocomplete="off">
                   </div>
-               </div>
+               </div> --}}
                
                <!--      <div class="col-md-6 col-sm-6 col-xs-12">
                   <label class="control-label tebal" for="jumlah">Jumlah Pembayaran</label>
