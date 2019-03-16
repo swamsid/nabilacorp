@@ -1,4 +1,13 @@
 <script type="text/javascript">
+   $(document).ready(function () {
+      var extensions = {
+          "sFilterInput": "form-control input-sm",
+          "sLengthSelect": "form-control input-sm"
+      }
+
+   });
+
+   
 
   $('.select-2').select2();
 
@@ -82,10 +91,10 @@
 
 
 
-var tablex;
-setTimeout(function () {            
-   table();
-      }, 1500);
+   var tablex;
+   setTimeout(function () {            
+      table();
+         }, 1500);
 
 
    function table()
@@ -166,6 +175,46 @@ setTimeout(function () {
       endDate: 'today'
    });//datepicker("setDate", "0");
 
+   $('.datepicker3').datepicker({
+      autoclose: true,
+      format:"dd-mm-yyyy",
+      endDate: 'today'
+   }).datepicker("setDate", nd);
+
+   $('.datepicker4').datepicker({
+      autoclose: true,
+      format:"dd-mm-yyyy",
+      endDate: 'today'
+   });//datepicker("setDate", "0");
+
    $('#shift').select2();
+
+   function penjualanItem() 
+   {
+      var tgl3 = $('#tgl_awal1').val();
+      var tgl4 = $('#tgl_awal2').val();
+      var shift = $('#shift-item').val();
+      $('#tabel-item').dataTable().fnDestroy();
+      $('#tabel-item').DataTable({
+          "destroy": true,
+          "processing": true,
+          "serverside": true,
+          "ajax": {
+              url: baseUrl + "/penjualan/get-item/" + tgl3 + '/' + tgl4 + '/' + shift,
+              type: 'GET'
+          },
+
+          "columns": [
+              // {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+              {"data": "i_code", "width": "5%"},
+              {"data": "i_name", "width": "20%"},
+              {"data": "type", "width": "5%"},
+              {"data": "m_gname", "width": "5%"},
+              {"data": "jumlah", "width": "5%", "className": "right"},
+          ]
+      });
+
+      
+  }
 
 </script>

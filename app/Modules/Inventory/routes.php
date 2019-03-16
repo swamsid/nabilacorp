@@ -70,5 +70,22 @@ Route::group(['namespace' => 'App\Modules\Inventory\Controllers', 'middleware'=>
 	Route::get('/inventory/p_suplier/get-list-received-bytgl/{tgl1}/{tgl2}', 'PenerimaanBrgSupController@getListReceivedByTgl');
 	Route::get('/inventory/p_suplier/get-detail-penerimaan/{id}', 'PenerimaanBrgSupController@getDataDetail');
 	Route::get('/inventory/p_suplier/print/{id}', 'PenerimaanBrgSupController@print');
-
+//Barang Rusak
+    Route::get('/inventory/b_rusak/index', 'BarangRusakController@index');
+    Route::get('/inventory/b_rusak/get-brg-rusak-by-tgl/{tgl1}/{tgl2}', 'BarangRusakController@getBrgRusakByTgl');
+    Route::get('/inventory/b_rusak/lookup-data-gudang', 'BarangRusakController@lookupDataGudang');
+    Route::get('/inventory/b_rusak/lookup-gudang', 'BarangRusakController@DataGudangAll');
+    Route::get('/inventory/b_rusak/autocomplete-barang', 'BarangRusakController@autocompleteBarang');
+    Route::get('/inventory/b_rusak/simpan-data-rusak', 'BarangRusakController@simpanDataRusak');
+    Route::get('/inventory/b_rusak/get-detail/{id}', 'BarangRusakController@detailBrgRusak');
+    Route::get('/inventory/b_rusak/print/{id}', 'BarangRusakController@printTandaTerimaRusak');
+    Route::post('/inventory/b_rusak/musnahkan-barang-rusak', 'BarangRusakController@musnahkanBrgRusak');
+    Route::get('/inventory/b_rusak/kembalikan-barang-rusak', 'BarangRusakController@kembalikanBrgRusak');
+    Route::get('/inventory/b_rusak/get-brg-musnah-by-tgl/{tgl1}/{tgl2}', 'BarangRusakController@getBrgMusnahByTgl');
+    Route::post('/inventory/b_rusak/simpan-ubah-jenis', 'BarangRusakController@simpanUbahJenis');
+    Route::get('/inventory/b_rusak/proses-ubah-jenis', 'BarangRusakController@prosesUbahJenis');
+    Route::get('/inventory/b_rusak/get-brg-ubahjenis-by-tgl/{tgl1}/{tgl2}', 'BarangRusakController@getBrgUbahJenisByTgl');
+    Route::get('/inventory/b_rusak/get-detail-ubahjenis/{id}', 'BarangRusakController@detailBrgUbahJenis');
+    Route::post('/inventory/b_rusak/hapus-data-ubahjenis', 'BarangRusakController@hapusDataUbah');
+//End Barang Rusak
 });

@@ -380,6 +380,10 @@
                                 Stock Opname
                             @endif
 
+                            @if(Auth::user()->punyaAkses('Barang Rusak','ma_read'))
+                                Stock Opname
+                            @endif
+
                         </span>
                         <!-- ========== -->
                     </a>
@@ -424,6 +428,14 @@
                         @if(Auth::user()->punyaAkses('Mutasi Item Bahan Baku','ma_read'))  
                             <li class="menu-sekunder {{ Request::is('inventory/mutasiitembaku') ? 'active' : '' || Request::is('inventory/mutasiitembaku/*') ? 'active' : '' }}"><a
                                     href="{{ url('/inventory/mutasiitembaku/index') }}"><span class="submenu-title">Mutasi Item Bahan Baku</span><span class="hidden">Inventory</span></a>
+                            </li>
+                        @endif
+
+                        @if(Auth::user()->punyaAkses('Barang Rusak','ma_read'))
+                            <li class="{{ Request::is('inventory/b_rusak/index') ? 'active' : '' || Request::is('inventory/b_rusak/*') ? 'active' : '' }}">
+                                <a href="{{ url('/inventory/b_rusak/index') }}"><span
+                                            class="submenu-title">Barang Rusak</span><span
+                                            class="hidden">Inventory</span></a>
                             </li>
                         @endif
                     </ul>

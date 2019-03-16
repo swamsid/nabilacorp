@@ -138,6 +138,8 @@ Route::group(['namespace' => 'App\Modules\POS\Controllers', 'middleware'=>['web'
 	Route::get('/penjualan/penjualanmobile/print_laporan_excel', 'laporanPenjualanTokoController@print_laporan_excel')->middleware('auth');
 	//menampilkan total pada ajax
 	Route::get('/penjualan/penjualanmobile/totalPenjualan', 'laporanPenjualanTokoController@totalPenjualan')->middleware('auth');
+	Route::get('/penjualan/get-item/{tgl1}/{tgl2}/{shift}', 'laporanPenjualanTokoController@penjualanItem');
+	
 	// ==========================================================================================
 	// Laporan penjualan pesanan
 	Route::get('penjualan/laporan-penjualan-pesanan/index', 'laporanPenjualanPesananController@index')->middleware('auth');

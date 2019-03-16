@@ -25,7 +25,7 @@
                </div>
                <ul id="generalTab" class="nav nav-tabs">
                   <li class="active"><a href="#alert-tab" data-toggle="tab">Laporan Penjualan</a></li>
-                 {{--  <li><a href="#note-tab" data-toggle="tab">Laporan Penjualan Mobil</a></li> --}}
+               {{--    <li><a href="#note-tab" data-toggle="tab" onclick="penjualanItem()">Penjualan Item</a></li> --}}
                   {{--              <li><a href="#label-badge-tab" data-toggle="tab">3</a></li> --}}
                </ul>
                <div id="generalTabContent" class="tab-content responsive">
@@ -40,6 +40,7 @@
                                  <div class="col-md-10 col-xs-12">
                                     <div class="form-group">
                                        <select class="form-control input-sm" id="shift" onchange="table()">
+                                          <option value="all">Semua</option>
                                           @foreach ($pegawai as $data)
                                           <option value="{{ $data->c_id }}">{{ $data->c_code }} - {{ $data->c_nama }}</option>
                                           @endforeach
@@ -136,8 +137,83 @@
                   <!-- div note-tab -->
                   <div id="note-tab" class="tab-pane fade">
                      <div class="row">
-                        <div class="panel-body">
-                           <!-- Isi Content -->
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                           <div class="col-md-5 col-sm-12 col-xs-12">
+                              <div class="row">
+                                 <div class="col-md-2 col-xs-12">
+                                    <label style="padding-top: 7px; font-size: 15px; margin-right:3mm;">Staff</label>
+                                 </div>
+                                 <div class="col-md-10 col-xs-12">
+                                    <div class="form-group">
+                                       <select class="form-control input-sm" id="shift-item" onchange="penjualanItem()">
+                                          <option value="all">Semua</option>
+                                          @foreach ($pegawai as $data)
+                                          <option value="{{ $data->c_id }}">{{ $data->c_code }} - {{ $data->c_nama }}</option>
+                                          @endforeach
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-5 col-sm-12 col-xs-12" style="padding-bottom: 10px;">
+                              <div class="row">
+                                 <div class="col-md-9 col-sm-12 col-xs-12">
+                                    <div class="row">
+                                       <div class="col-md-2 col-sm-12 col-xs-12">
+                                          <label style="padding-top: 7px; font-size: 15px; margin-right:3mm;">Tanggal</label>
+                                       </div>
+                                       <div class="col-md-10 col-sm-12 col-xs-12">
+                                          <div class="form-group">
+                                             <div class="input-daterange input-group">
+                                                <input id="tgl_awal1" class="form-control input-sm datepicker1" name="tgl_awal" type="text">
+                                                <span class="input-group-addon">-</span>
+                                                <input id="tgl_akhir2" class="input-sm form-control datepicker2" name="tgl_akhir" type="text" value="{{ date('d-m-Y') }}">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-3 col-sm-12 col-xs-12" align="center">
+                                    <button class="btn btn-warning btn-sm btn-flat" type="button" onclick='penjualanItem()'>
+                                    <strong>
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                    </strong>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm btn-flat" type="button" onclick='penjualanItem()'>
+                                    <strong>
+                                    <i class="fa fa-undo" aria-hidden="true"></i>
+                                    </strong>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-2 col-sm-12 col-xs-12" align="right">
+                              <button class="btn btn-primary btn-sm" title="Print" onclick="print_laporan()">
+                                 <i class="fa fa-print"></i>
+                              </button>
+                              <button class="btn btn-success btn-sm" title="Excel" type="button" onclick="print_excel()">
+                                 <i class="fa fa-file" title="Excel"></i>
+                              </button>
+                           </div>
+                           <!-- selesai -->
+                        </div>
+                        <!-- Tambahan -->
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                           <div class="table-responsive">
+                              <table id="tabel-item" class="table tabelan table-hover table-bordered" width="100%" cellspacing="0">
+                                 <thead>
+                                    <tr>
+                                       <th>Kode Nama Item</th>
+                                       <th>Tipe Item</th>
+                                       <th>Jumlah Penjualan</th>
+                                       <th>Satuan</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                 </tbody>
+                              </table>
+                           </div>
                         </div>
                      </div>
                   </div>
