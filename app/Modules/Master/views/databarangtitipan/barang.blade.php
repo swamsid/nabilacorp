@@ -54,12 +54,10 @@
                           <table  class="table table-stripped tabelan table-bordered table-hover dt-responsive data-table tableListToko"  width="100%" cellspacing="0" id="dataBarang">
                             <thead>
                                 <tr>
-                                <th class="wd-15p" width="3%">No.</th>
                                   <th class="wd-15p" width="5%">Kode</th>
                                   <th class="wd-15p" width="24%">Nama Barang</th>
                                   <th class="wd-15p" width="5%">Satuan</th>
-                                  <th class="wd-15p" width="8%">Harga HPP</th>
-                                  <th class="wd-15p" width="8%">Harga Jual</th>
+                                  <th class="wd-15p" width="8%">Type</th>
                                   <th class="wd-15p" width="10%">Kelompok </th>
                                   <th class="wd-15p" width="7%">Aksi</th>
                                 </tr>
@@ -123,50 +121,24 @@ function table(){
     tablex = $("#dataBarang").DataTable({        
          
         "language": dataTableLanguage,
-    processing: true,
+            processing: true,
             serverSide: true,
             ajax: {
               "url": "{{ url("master/item_titipan/data-barang") }}",
               "type": "get",              
               },
             columns: [
-              {data: 'i_code', name: 'i_code'}, 
-              {data: 'i_code', name: 'i_code'}, 
+              {data: 'i_code'}, 
               {data: 'i_name', name: 'i_name'},
               {data: 's_name', name: 's_name'},            
-              {
-                data: null, 
-                name: 'i_hpp',
-                render : function(res) {
-                  return get_currency(res.i_hpp);
-                }
-              },      
-              {
-                data: null, 
-                name: 'its_price1',
-                render : function(res) {
-                  return get_currency(res.its_price1);
-                }
-              },      
+              {data: 'i_type', name: 'i_type'},
               {data: 'g_name', name: 'g_name'},            
               {data: 'action', name: 'action'},            
             ],             
-
-            'columnDefs': [
-               {
-                  'targets': [4, 5],
-                  'createdCell':  function (td) {
-                     $(td).attr('align', 'right'); 
-                  }
-               },
-               {
-                  'targets': 7,
-                  'className':  'text-center'
-               }
-            ],
             responsive: false,
             "pageLength": 10,
-            "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+            "lengthMenu": [[10, 20, 50, - 1], 
+            [10, 20, 50, "All"]],
              
            
     });

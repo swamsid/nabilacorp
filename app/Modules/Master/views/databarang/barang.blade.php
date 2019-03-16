@@ -54,12 +54,10 @@
                           <table  class="table table-stripped tabelan table-bordered table-hover dt-responsive data-table tableListToko"  width="100%" cellspacing="0" id="dataBarang">
                             <thead>
                                 <tr>
-                                <th class="wd-15p" width="3%">No.</th>
                                   <th class="wd-15p" width="5%">Kode</th>
                                   <th class="wd-15p" width="24%">Nama Barang</th>
                                   <th class="wd-15p" width="5%">Satuan</th>
-                                  <th class="wd-15p" width="15%">Harga HPP</th>
-                                  <th class="wd-15p" width="15%">Harga Jual</th>
+                                  <th class="wd-15p" width="15%">Type</th>
                                   <th class="wd-15p" width="10%">Kelompok </th>
                                   <th class="wd-15p" width="10%">Aksi</th>
                                 </tr>
@@ -130,38 +128,14 @@ function table(){
               },
             columns: [
               {data: 'i_code', name: 'i_code'}, 
-              {data: 'i_code', name: 'i_code'}, 
               {data: 'i_name', name: 'i_name'},
               {data: 's_name', name: 's_name'},            
-              {
-                data: null, 
-                name: 'i_hpp',
-                render : function(res) {
-                  return 'Rp ' + get_currency(res.i_hpp);
-                }
-              },      
-              {
-                data: null, 
-                name: 'is_price1',
-                render : function(res) {
-                  return 'Rp ' + get_currency(res.i_price);
-                }
-              },      
+              {data: 'i_type', name: 'i_type'},
               {data: 'g_name', name: 'g_name'},            
               {data: 'action', name: 'action'},            
             ],             
 
             'columnDefs': [
-               {
-                  'targets': [4, 5],
-                  'createdCell':  function (td) {
-                     $(td).attr('align', 'right'); 
-                  }
-               },
-               {
-                  'targets': 7,
-                  'className' : 'text-center'
-               },
             ],
             responsive: false,
             "pageLength": 10,
