@@ -25,35 +25,70 @@ class laporanPenjualanTokoController  extends Controller
 {
 
    public function find_d_sales_dt(Request $req) 
-   {     
-      $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
-      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
-      $user = d_mem::select('m_id')
-        ->where('m_pegawai_id',$req->shift)
-        ->first();               
-      $rows = d_sales_dt::leftJoin('d_sales', function($join) {
-            $join->on('sd_sales', '=', 's_id');
-         })
-         ->where('s_channel', 'Toko')
-         ->where('s_status', 'final')
-         ->whereBetween('sd_date', [$tgl_awal, $tgl_akhir]) 
-         ->where('s_create_by',$user->m_id)
-         ->where('s_comp',Session::get('user_comp'))  
-         ->join('m_item','i_id','=','sd_item')
-         ->join('m_satuan','m_satuan.s_id','=','i_sat1')
-         ->select('m_item.i_name',
-                  's_note',
-                  's_date',
-                  's_nama_cus',
-                  's_detname',
-                  'sd_qty',
-                  'sd_price',
-                  'sd_disc_value',
-                  'sd_disc_percent',
-                  'sd_total',
-                  'sd_disc_percentvalue')
-         ->orderBy('sd_date', 'ASC')
-         ->get();
+   {
+      if ($req->shift == 'all') 
+      {
+         $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
+         $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
+         $user = d_mem::select('m_id')
+           // ->where('m_pegawai_id',$req->shift)
+           ->first();               
+         $rows = d_sales_dt::leftJoin('d_sales', function($join) {
+               $join->on('sd_sales', '=', 's_id');
+            })
+            ->where('s_channel', 'Toko')
+            ->where('s_status', 'final')
+            ->whereBetween('sd_date', [$tgl_awal, $tgl_akhir]) 
+            // ->where('s_create_by',$user->m_id)
+            ->where('s_comp',Session::get('user_comp'))  
+            ->join('m_item','i_id','=','sd_item')
+            ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+            ->select('m_item.i_name',
+                     's_note',
+                     's_date',
+                     's_nama_cus',
+                     's_detname',
+                     'sd_qty',
+                     'sd_price',
+                     'sd_disc_value',
+                     'sd_disc_percent',
+                     'sd_total',
+                     'sd_disc_percentvalue')
+            ->orderBy('sd_date', 'ASC')
+            ->get();
+      }
+      else
+      {
+         $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
+         $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
+         $user = d_mem::select('m_id')
+           ->where('m_pegawai_id',$req->shift)
+           ->first();               
+         $rows = d_sales_dt::leftJoin('d_sales', function($join) {
+               $join->on('sd_sales', '=', 's_id');
+            })
+            ->where('s_channel', 'Toko')
+            ->where('s_status', 'final')
+            ->whereBetween('sd_date', [$tgl_awal, $tgl_akhir]) 
+            ->where('s_create_by',$user->m_id)
+            ->where('s_comp',Session::get('user_comp'))  
+            ->join('m_item','i_id','=','sd_item')
+            ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+            ->select('m_item.i_name',
+                     's_note',
+                     's_date',
+                     's_nama_cus',
+                     's_detname',
+                     'sd_qty',
+                     'sd_price',
+                     'sd_disc_value',
+                     'sd_disc_percent',
+                     'sd_total',
+                     'sd_disc_percentvalue')
+            ->orderBy('sd_date', 'ASC')
+            ->get();
+      }     
+      
 
       return Datatables::of($rows)                         
                    ->editColumn('s_date', function ($rows) {                           
@@ -80,33 +115,67 @@ class laporanPenjualanTokoController  extends Controller
 
    public function totalPenjualan(Request $req)
    {
-      $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
-      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
-      $user = d_mem::select('m_id')
-        ->where('m_pegawai_id',$req->shift)
-        ->first();
+      if ($req->shift == 'all') 
+      {
+         $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
+         $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
+         $user = d_mem::select('m_id')
+           ->where('m_pegawai_id',$req->shift)
+           ->first();
 
-      $rows = d_sales_dt::select(DB::raw("SUM(sd_disc_value) as sd_disc_value"),
-                                 DB::raw("SUM(sd_disc_percentvalue) as sd_disc_percentvalue"),
-                                 DB::raw("SUM(sd_total) as sd_total"))
-         ->leftJoin('d_sales', function($join) {
-                  $join->on('sd_sales', '=', 's_id');
-         })
-         ->where('s_channel', 'Toko')
-         ->where('s_status', 'final')
-         ->where('s_create_by',$user->m_id)
-         ->whereBetween('s_date', [$tgl_awal, $tgl_akhir])  
-         ->where('s_comp',Session::get('user_comp'))                            
-         ->orderBy('sd_date', 'ASC')
-         ->first();
+         $rows = d_sales_dt::select(DB::raw("SUM(sd_disc_value) as sd_disc_value"),
+                                    DB::raw("SUM(sd_disc_percentvalue) as sd_disc_percentvalue"),
+                                    DB::raw("SUM(sd_total) as sd_total"))
+            ->leftJoin('d_sales', function($join) {
+                     $join->on('sd_sales', '=', 's_id');
+            })
+            ->where('s_channel', 'Toko')
+            ->where('s_status', 'final')
+            // ->where('s_create_by',$user->m_id)
+            ->whereBetween('s_date', [$tgl_awal, $tgl_akhir])  
+            ->where('s_comp',Session::get('user_comp'))                            
+            ->orderBy('sd_date', 'ASC')
+            ->first();
 
-        $data=[                
-                'sd_disc_value'=>number_format($rows->sd_disc_percentvalue+$rows->sd_disc_value,2,',','.'),
-                'sd_total'=>number_format($rows->sd_total,2,',','.')
+           $data=[                
+                   'sd_disc_value'=>number_format($rows->sd_disc_percentvalue+$rows->sd_disc_value,2,',','.'),
+                   'sd_total'=>number_format($rows->sd_total,2,',','.')
 
-                ];
+                   ];
 
-        return json_encode($data);
+           return json_encode($data);
+      }
+      else
+      {
+         $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
+         $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir));
+         $user = d_mem::select('m_id')
+           ->where('m_pegawai_id',$req->shift)
+           ->first();
+
+         $rows = d_sales_dt::select(DB::raw("SUM(sd_disc_value) as sd_disc_value"),
+                                    DB::raw("SUM(sd_disc_percentvalue) as sd_disc_percentvalue"),
+                                    DB::raw("SUM(sd_total) as sd_total"))
+            ->leftJoin('d_sales', function($join) {
+                     $join->on('sd_sales', '=', 's_id');
+            })
+            ->where('s_channel', 'Toko')
+            ->where('s_status', 'final')
+            ->where('s_create_by',$user->m_id)
+            ->whereBetween('s_date', [$tgl_awal, $tgl_akhir])  
+            ->where('s_comp',Session::get('user_comp'))                            
+            ->orderBy('sd_date', 'ASC')
+            ->first();
+
+           $data=[                
+                   'sd_disc_value'=>number_format($rows->sd_disc_percentvalue+$rows->sd_disc_value,2,',','.'),
+                   'sd_total'=>number_format($rows->sd_total,2,',','.')
+
+                   ];
+
+           return json_encode($data);
+      }
+      
    }
 
    public function print_laporan_excel(Request $req) 
@@ -133,7 +202,7 @@ class laporanPenjualanTokoController  extends Controller
          ->where('s_channel', 'Toko')
          ->where('s_status', 'final')
          ->whereBetween('s_date', [$tgl_awal, $tgl_akhir]) 
-         ->where('s_create_by',$user->m_id)    
+         // ->where('s_create_by',$user->m_id)    
          ->where('s_comp',Session::get('user_comp')) 
          ->join('m_item','i_id','=','sd_item')
          ->join('m_satuan','m_satuan.s_id','=','i_sat1')
@@ -169,35 +238,71 @@ class laporanPenjualanTokoController  extends Controller
 
    public function print_laporan(Request $req) 
    {
-      $data = array();
-      $rows=null;      
-      $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
-      $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir)); 
-      $user = d_mem::select('m_id')
-        ->where('m_pegawai_id',$req->shift)
-        ->first();                  
-      $rows = d_sales_dt::select('m_item.i_name',
-                                 's_note',
-                                 's_date',
-                                 's_nama_cus',
-                                 's_detname',
-                                 'sd_qty',
-                                 'sd_price',
-                                 'sd_disc_value',
-                                 'sd_disc_percent',
-                                 'sd_total')
-         ->leftJoin('d_sales', function($join) {
-               $join->on('sd_sales', '=', 's_id');
-           })
-         ->where('s_channel', 'Toko')
-         ->where('s_status', 'final')
-         ->whereBetween('s_date', [$tgl_awal, $tgl_akhir]) 
-         ->where('s_create_by',$user->m_id)   
-         ->where('s_comp',Session::get('user_comp'))  
-         ->join('m_item','i_id','=','sd_item')
-         ->join('m_satuan','m_satuan.s_id','=','i_sat1')
-         ->orderBy('sd_date', 'ASC')
-         ->get();
+      if ($req->shift == 'all') 
+      {
+         $data = array();
+         $rows=null;      
+         $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
+         $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir)); 
+         $user = d_mem::select('m_id')
+           ->where('m_pegawai_id',$req->shift)
+           ->first();                  
+         $rows = d_sales_dt::select('m_item.i_name',
+                                    's_note',
+                                    's_date',
+                                    's_nama_cus',
+                                    's_detname',
+                                    'sd_qty',
+                                    'sd_price',
+                                    'sd_disc_value',
+                                    'sd_disc_percent',
+                                    'sd_total')
+            ->leftJoin('d_sales', function($join) {
+                  $join->on('sd_sales', '=', 's_id');
+              })
+            ->where('s_channel', 'Toko')
+            ->where('s_status', 'final')
+            ->whereBetween('s_date', [$tgl_awal, $tgl_akhir]) 
+            // ->where('s_create_by',$user->m_id)   
+            ->where('s_comp',Session::get('user_comp'))  
+            ->join('m_item','i_id','=','sd_item')
+            ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+            ->orderBy('sd_date', 'ASC')
+            ->get();
+      }
+      else
+      {
+         $data = array();
+         $rows=null;      
+         $tgl_awal   = date('Y-m-d',strtotime($req->tgl_awal));
+         $tgl_akhir  = date('Y-m-d',strtotime($req->tgl_akhir)); 
+         $user = d_mem::select('m_id')
+           ->where('m_pegawai_id',$req->shift)
+           ->first();                  
+         $rows = d_sales_dt::select('m_item.i_name',
+                                    's_note',
+                                    's_date',
+                                    's_nama_cus',
+                                    's_detname',
+                                    'sd_qty',
+                                    'sd_price',
+                                    'sd_disc_value',
+                                    'sd_disc_percent',
+                                    'sd_total')
+            ->leftJoin('d_sales', function($join) {
+                  $join->on('sd_sales', '=', 's_id');
+              })
+            ->where('s_channel', 'Toko')
+            ->where('s_status', 'final')
+            ->whereBetween('s_date', [$tgl_awal, $tgl_akhir]) 
+            ->where('s_create_by',$user->m_id)   
+            ->where('s_comp',Session::get('user_comp'))  
+            ->join('m_item','i_id','=','sd_item')
+            ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+            ->orderBy('sd_date', 'ASC')
+            ->get();
+      }
+      
 
       // Menghitung total
       $total_discountPercent=0;       
@@ -221,6 +326,86 @@ class laporanPenjualanTokoController  extends Controller
               );
 
       return view('POS::laporanPenjualanToko/print_laporan', $res);
+   }
+
+   public function penjualanItem($tgl1, $tgl2, $shift)
+   {
+      $y = substr($tgl1, -4);
+      $m = substr($tgl1, -7,-5);
+      $d = substr($tgl1,0,2);
+         $tgll = $y.'-'.$m.'-'.$d;
+
+      $y2 = substr($tgl2, -4);
+      $m2 = substr($tgl2, -7,-5);
+      $d2 = substr($tgl2,0,2);
+         $tgl2 = $y2.'-'.$m2.'-'.$d2;
+
+      $user = d_mem::select('m_id')
+           ->where('m_pegawai_id',$shift)
+           ->first();    
+
+      if ($shift == 'all') 
+      {
+         $rows = d_sales_dt::select('s_name',
+                                  'i_name',
+                                  'i_type',
+                                  'i_code',
+                                  DB::raw("sum(sd_qty) as jumlah"))
+         ->leftJoin('d_sales', function($join) {
+               $join->on('sd_sales', '=', 's_id');
+           })
+         ->where('s_channel', 'Toko')
+         ->where('s_status', 'final')
+         ->whereBetween('s_date', [$tgll, $tgl2]) 
+         // ->where('s_create_by',$user->m_id)   
+         ->where('s_comp',Session::get('user_comp'))  
+         ->join('m_item','i_id','=','sd_item')
+         ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+         ->orderBy('sd_date', 'ASC')
+         ->get();   
+         dd($rows);       
+      }
+      else
+      {
+         $rows = d_sales_dt::select('sd_item',
+                                  'i_name',
+                                  'i_type',
+                                  'i_code',
+                                  DB::raw("sum(sd_qty) as jumlah"))
+         ->leftJoin('d_sales', function($join) {
+               $join->on('sd_sales', '=', 's_id');
+           })
+         ->where('s_channel', 'Toko')
+         ->where('s_status', 'final')
+         ->whereBetween('s_date', [$tgll, $tgl2]) 
+         ->where('s_create_by',$user->m_id)   
+         ->where('s_comp',Session::get('user_comp'))  
+         ->join('m_item','i_id','=','sd_item')
+         ->join('m_satuan','m_satuan.s_id','=','i_sat1')
+         ->orderBy('sd_date', 'ASC')
+         ->get();          
+      }                
+      
+
+      return DataTables::of($leagues)
+      // ->addIndexColumn()
+      ->editColumn('sDate', function ($data)
+      {
+        return date('d M Y', strtotime($data->s_date));
+      })
+      ->editColumn('type', function ($data)
+      {
+          if ($data->i_type == "BJ")
+          {
+              return 'Barang Jual';
+          }
+          elseif ($data->i_type == "BP")
+          {
+              return 'Barang Produksi';
+          }
+      })
+
+      ->make(true);
    }
     
 }
