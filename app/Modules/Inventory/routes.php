@@ -88,4 +88,17 @@ Route::group(['namespace' => 'App\Modules\Inventory\Controllers', 'middleware'=>
     Route::get('/inventory/b_rusak/get-detail-ubahjenis/{id}', 'BarangRusakController@detailBrgUbahJenis');
     Route::post('/inventory/b_rusak/hapus-data-ubahjenis', 'BarangRusakController@hapusDataUbah');
 //End Barang Rusak
+//p_returnsupplier
+    Route::get('/inventory/p_returnsupplier/index', 'PenerimaanRtrSupController@index');
+    Route::get('/inventory/p_returnsupplier/lookup-data-return', 'PenerimaanRtrSupController@lookupDataReturn');
+    Route::get('/inventory/p_returnsupplier/get-data-form/{id}', 'PenerimaanRtrSupController@getDataForm');
+    Route::get('/inventory/p_returnsupplier/simpan-penerimaan', 'PenerimaanRtrSupController@simpanPenerimaan');
+    Route::get('/inventory/p_returnsupplier/get-datatable-index', 'PenerimaanRtrSupController@getDatatableIndex');
+    Route::get('/inventory/p_returnsupplier/get-detail-penerimaan/{id}', 'PenerimaanRtrSupController@getDataDetail');
+    Route::post('/inventory/p_returnsupplier/delete-data-penerimaan', 'PenerimaanRtrSupController@deletePenerimaan');
+    Route::get('/inventory/p_returnsupplier/get-list-waiting-bytgl/{tgl1}/{tgl2}', 'PenerimaanRtrSupController@getListWaitingByTgl');
+    Route::get('/inventory/p_returnsupplier/get-list-received-bytgl/{tgl1}/{tgl2}', 'PenerimaanRtrSupController@getListReceivedByTgl');
+    Route::get('/inventory/p_returnsupplier/get-penerimaan-peritem/{id}', 'PenerimaanRtrSupController@getPenerimaanPeritem');
+    Route::get('/inventory/p_returnsupplier/print/{id}', 'PenerimaanRtrSupController@printTandaTerima');
+    Route::get('/inventory/p_returnsupplier/get-terimaretur-by-tgl/{tgl1}/{tgl2}', 'PenerimaanRtrSupController@getTerimaRtrByTgl');
 });

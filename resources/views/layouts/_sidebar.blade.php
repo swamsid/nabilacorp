@@ -258,6 +258,12 @@
                                 </li>
                             @endif
 
+                            @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
+                                <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span
+                                                class="hidden">Master</span></a>
+                            @endif
+
 
                         </ul>
                     </li>
@@ -360,6 +366,8 @@
                                 Penerimaan Barang Suplier
                             @endif
 
+
+
                             @if(Auth::user()->punyaAkses('Pengiriman Hasil Produksi','ma_read'))
                                 Pengiriman Hasil Produksi
                             @endif
@@ -392,6 +400,14 @@
                         @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
                             <li class="menu-sekunder {{ Request::is('inventory/p_suplier/suplier') ? 'active' : '' || Request::is('inventory/p_suplier/*') ? 'active' : '' }}"><a
                                     href="{{ url('/inventory/p_suplier/suplier') }}"><span class="submenu-title">Penerimaan Barang Suplier</span><span class="hidden">Inventory</span></a>
+                            </li>
+                        @endif
+
+                        @if(Auth::user()->punyaAkses('Penerimaan Barang Return Supplier','ma_read'))
+                            <li class="{{ Request::is('inventory/p_returnsupplier/index') ? 'active' : '' || Request::is('inventory/p_returnsupplier/*') ? 'active' : '' }}">
+                                <a href="{{ url('/inventory/p_returnsupplier/index') }}"><span
+                                            class="submenu-title">Penerimaan Barang Return Supplier</span><span
+                                            class="hidden">Inventory</span></a>
                             </li>
                         @endif
 
