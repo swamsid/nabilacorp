@@ -3,27 +3,27 @@
 Route::group(['namespace' => 'App\Modules\Master\Controllers', 'middleware'=>['web']], function () {
 
 // Section master data barang
-Route::get('/master/item/contoh_dokumen', 'itemController@contoh_dokumen');
-Route::get('/master/item/index', 'itemController@index');
-Route::get('/master/item/data-barang', 'itemController@dataBarang');
-Route::get('/master/item/tambah', 'itemController@tambah');
-Route::get('/master/item/supplier', 'itemController@supplier');
-Route::get('/master/item/simpan', 'itemController@simpan');
-Route::get('/master/item/edit/{id}', 'itemController@edit');
-Route::get('/master/item/update', 'itemController@update');
-Route::get('/master/item/hapus', 'itemController@hapus');
-// ===============================================================
+    Route::get('/master/item/contoh_dokumen', 'itemController@contoh_dokumen');
+    Route::get('/master/item/index', 'itemController@index');
+    Route::get('/master/item/data-barang', 'itemController@dataBarang');
+    Route::get('/master/item/tambah', 'itemController@tambah');
+    Route::get('/master/item/supplier', 'itemController@supplier');
+    Route::get('/master/item/simpan', 'itemController@simpan');
+    Route::get('/master/item/edit/{id}', 'itemController@edit');
+    Route::get('/master/item/update', 'itemController@update');
+    Route::get('/master/item/hapus', 'itemController@hapus');
+    // ===============================================================
 
-// Section master data barang titipan
-Route::get('/master/item_titipan/index', 'itemTitipanController@index');
-Route::get('/master/item_titipan/data-barang', 'itemTitipanController@dataBarang');
-Route::get('/master/item_titipan/tambah', 'itemTitipanController@tambah');
-Route::get('/master/item_titipan/supplier', 'itemTitipanController@supplier');
-Route::get('/master/item_titipan/simpan', 'itemTitipanController@simpan');
-Route::get('/master/item_titipan/edit/{id}', 'itemTitipanController@edit');
-Route::get('/master/item_titipan/update', 'itemTitipanController@update');
-Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
-// ===============================================================
+    // Section master data barang titipan
+    Route::get('/master/item_titipan/index', 'itemTitipanController@index');
+    Route::get('/master/item_titipan/data-barang', 'itemTitipanController@dataBarang');
+    Route::get('/master/item_titipan/tambah', 'itemTitipanController@tambah');
+    Route::get('/master/item_titipan/supplier', 'itemTitipanController@supplier');
+    Route::get('/master/item_titipan/simpan', 'itemTitipanController@simpan');
+    Route::get('/master/item_titipan/edit/{id}', 'itemTitipanController@edit');
+    Route::get('/master/item_titipan/update', 'itemTitipanController@update');
+    Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
+    // ===============================================================
 
 //data supplier
     Route::get('/master/datasuplier/find_m_suplier', 'SuplierController@find_m_suplier')->name('find_m_supplier');    
@@ -191,6 +191,16 @@ Route::get('/master/item_titipan/hapus', 'itemTitipanController@hapus');
     Route::get('/master/consigne/edit', 'MasterConsigneController@editConsigne');
     Route::post('/master/consigne/update/{id}', 'MasterConsigneController@updateConsigne');
     Route::get('/master/consigne/status', 'MasterConsigneController@statusConsigne');
+
+//satuan
+    Route::get('/master/datasatuan/satuan', 'satuanController@satuan')->name('satuan');
+    Route::get('/master/datasatuan/tambah_satuan', 'satuanController@tambah_satuan')->name('tambah_satuan');
+    Route::get('/master/datasatuan/simpan_satuan', 'satuanController@simpan_satuan')->name('simpan_satuan');
+    Route::get('/master/datasatuan/hapus_satuan', 'satuanController@hapus_satuan')->name('hapus_satuan');
+    Route::get('/master/datasatuan/edit_satuan', 'satuanController@edit_satuan')->name('edit_satuan');
+    Route::get('/master/datasatuan/update_satuan', 'satuanController@update_satuan')->name('update_satuan');
+    Route::get('/master/datasatuan/datatable_satuan', 'satuanController@datatable_satuan')->name('datatable_satuan');
+    Route::get('/master/datasatuan/ubahstatus', 'satuanController@ubahStatus');
     
     
 });

@@ -265,7 +265,8 @@ class spkProductionController extends Controller
 
             for ($i=0; $i <count($spkDt) ; $i++) 
             { 
-                $mutation = mutasi::mutasiStok(  $spkDt[$i]->fr_formula,
+                $mutation = mutasi::mutasiStok(  
+                                        $spkDt[$i]->fr_formula,
                                         number_format($spkDt[$i]->fr_value,2,',','.'),
                                         $comp=$gudang,
                                         $position=$gudang,
