@@ -109,7 +109,7 @@ class BelanjaMemberController extends Controller
 
         $ip_edit = DB::raw("IFNULL( (SELECT ip_edit FROM m_item_price MP JOIN m_price_group PG ON MP.ip_group = PG.pg_id JOIN m_customer ON pg_id = c_class WHERE c_id = $s_nama_cus AND MP.ip_item = i_id), (SELECT IFNULL(ip_edit, 'N') FROM m_item_price IP WHERE IP.ip_item = i_id LIMIT 0, 1)) AS ip_edit");
 
-        $label = DB::raw("CONCAT(i_name, ' - Rp ' , $price ) AS label");
+        $label = DB::raw("CONCAT(i_code, ' - ' , i_name ) AS label");
         $satuan = DB::raw('s_name AS satuan');
         $item = DB::raw('i_name AS item');
         $comp = DB::raw("$comp AS comp");

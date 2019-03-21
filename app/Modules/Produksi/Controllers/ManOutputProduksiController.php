@@ -185,6 +185,19 @@ class ManOutputProduksiController extends Controller
         { 
             if ($request->spk_qty[$i] != null) 
             {
+
+                $spk = DB::table('d_spk')
+                            ->join('d_productplan', 'pp_id', '=', 'spk_ref')
+                            ->where('spk_id', $request->spk_id[$i])
+                            ->select('spk_hpp', 'pp_qty', 'spk_code')->first();
+                
+                if(!$spk){
+                    return response()->json([
+                        'status' => 'gagal',
+                        'data'   => 'Spk Tidak Bisa Ditemukan. Data SPK Tidak Bisa Disimpan.'
+                    ]);
+                }
+
                 $status = d_spk::where('spk_id', $request->spk_id[$i])
                     ->first();
 
@@ -296,6 +309,7 @@ class ManOutputProduksiController extends Controller
                         'sm_qty_used' => 0,
                         'sm_qty_sisa' => $request->spk_qty[$i],
                         'sm_qty_expired' => 0,
+                        'sm_hpp'    => ($spk->spk_hpp / $spk->pp_qty),
                         'sm_detail' => 'PENAMBAHAN',
                         'sm_reff' => $nota->spk_code,
                         'sm_insert' => Carbon::now()
@@ -328,6 +342,7 @@ class ManOutputProduksiController extends Controller
                         'sm_qty_used' => 0,
                         'sm_qty_sisa' => $request->spk_qty[$i],
                         'sm_qty_expired' => 0,
+                        'sm_hpp'    => ($spk->spk_hpp / $spk->pp_qty),
                         'sm_detail' => 'PENAMBAHAN',
                         'sm_reff' => $nota->spk_code,
                         'sm_insert' => Carbon::now()
@@ -364,79 +379,72 @@ class ManOutputProduksiController extends Controller
                         'pp_isspk' => 'C'
                     ]);
                 }
+
+                // Tambahan Dirga
+                
+
+                $dataGroup = DB::table('m_group')
+                                    ->select('g_akun_persediaan')
+                                    ->where('g_id', function($query) use ($request, $i){
+                                      $query->select('i_group')->from('m_item')
+                                                ->where('i_id', $request->spk_item[$i])
+                                                ->first();
+                                    })->first();
+
+                // return json_encode($request->spk_item[$i]);
+
+                if(!$dataGroup || !$dataGroup->g_akun_persediaan){
+                    return response()->json([
+                        'status' => 'gagal',
+                        'data'   => 'Beberapa Akun Persediaan Pada Group Item Yang Terkait Belum Ditentukan. Jurnal dan Data SPK Tidak Bisa Disimpan.'
+                    ]);
+                }
+
+                // return json_encode($spk);
+
+                if(!array_key_exists($dataGroup->g_akun_persediaan, $dataJurnal)){
+                  $dataJurnal[$dataGroup->g_akun_persediaan] = [
+                    'jrdt_akun'   => $dataGroup->g_akun_persediaan,
+                    'jrdt_value'  => ($spk->spk_hpp / $spk->pp_qty) * $request->spk_qty[$i],
+                    'jrdt_dk'     => 'D'
+                  ];
+                }else{
+                  $dataJurnal[$dataGroup->g_akun_persediaan]['jrdt_value'] += ($spk->spk_hpp / $spk->pp_qty) * $request->spk_qty[$i];
+                }
+
+                if(modulSetting()['onLogin'] == modulSetting()['id_pusat']){
+                  $dataAkunHasil = DB::table('dk_akun_penting')
+                                        ->whereNull('ap_comp')
+                                        ->where('ap_nama', 'Hasil Produksi')
+                                        ->select('ap_akun')
+                                        ->first();
+                }
+                else{
+                  $dataAkunHasil = DB::table('dk_akun_penting')
+                                        ->where('ap_comp', modulSetting()['onLogin'])
+                                        ->where('ap_nama', 'Hasil Produksi')
+                                        ->select('ap_akun')
+                                        ->first();
+                }
+
+                if(!$dataAkunHasil || !$dataAkunHasil->ap_akun){
+                    return response()->json([
+                          'status' => 'gagal',
+                          'pesan'  => 'Akun Hasil Produksi Belum Ditentukan. Anda Bisa Memilihnya Di Menu Setting/Akun Penting'
+                    ]);
+                }
+                
+                $dataJurnal[$dataAkunHasil->ap_akun] = [
+                  'jrdt_akun'   => $dataAkunHasil->ap_akun,
+                  'jrdt_value'  => ($spk->spk_hpp / $spk->pp_qty) * $request->spk_qty[$i],
+                  'jrdt_dk' => 'K'
+                ];
+
+                keuangan::jurnal()->addJurnal($dataJurnal, date('Y-m-d'), $spk->spk_code, 'Hasil Produksi Dari SPK Produksi Nomor '.$spk->spk_code, 'MM', modulSetting()['onLogin'], false);
+                
+                // Selesai Dirga
+                
             }
-
-            // Tambahan Dirga
-            $spk = DB::table('d_spk')
-                        ->join('d_productplan', 'pp_id', '=', 'spk_ref')
-                        ->where('spk_id', $request->spk_id[$i])
-                        ->select('spk_hpp', 'pp_qty', 'spk_code')->first();
-
-            $dataGroup = DB::table('m_group')
-                                ->select('g_akun_persediaan')
-                                ->where('g_id', function($query) use ($request, $i){
-                                  $query->select('i_group')->from('m_item')
-                                            ->where('i_id', $request->spk_item[$i])
-                                            ->first();
-                                })->first();
-
-            // return json_encode($request->spk_item[$i]);
-
-            if(!$dataGroup || !$dataGroup->g_akun_persediaan){
-                return response()->json([
-                    'status' => 'gagal',
-                    'data'   => 'Beberapa Akun Persediaan Pada Group Item Yang Terkait Belum Ditentukan. Jurnal dan Data SPK Tidak Bisa Disimpan.'
-                ]);
-            }else if(!$spk){
-                return response()->json([
-                    'status' => 'gagal',
-                    'data'   => 'Spk Tidak Bisa Ditemukan. Data SPK Tidak Bisa Disimpan.'
-                ]);
-            }
-
-            // return json_encode($spk);
-
-            if(!array_key_exists($dataGroup->g_akun_persediaan, $dataJurnal)){
-              $dataJurnal[$dataGroup->g_akun_persediaan] = [
-                'jrdt_akun'   => $dataGroup->g_akun_persediaan,
-                'jrdt_value'  => ($spk->spk_hpp / $spk->pp_qty) * $request->spk_qty[$i],
-                'jrdt_dk'     => 'D'
-              ];
-            }else{
-              $dataJurnal[$dataGroup->g_akun_persediaan]['jrdt_value'] += ($spk->spk_hpp / $spk->pp_qty) * $request->spk_qty[$i];
-            }
-
-            if(modulSetting()['onLogin'] == modulSetting()['id_pusat']){
-              $dataAkunHasil = DB::table('dk_akun_penting')
-                                    ->whereNull('ap_comp')
-                                    ->where('ap_nama', 'Hasil Produksi')
-                                    ->select('ap_akun')
-                                    ->first();
-            }
-            else{
-              $dataAkunHasil = DB::table('dk_akun_penting')
-                                    ->where('ap_comp', modulSetting()['onLogin'])
-                                    ->where('ap_nama', 'Hasil Produksi')
-                                    ->select('ap_akun')
-                                    ->first();
-            }
-
-            if(!$dataAkunHasil || !$dataAkunHasil->ap_akun){
-                return response()->json([
-                      'status' => 'gagal',
-                      'pesan'  => 'Akun Hasil Produksi Belum Ditentukan. Anda Bisa Memilihnya Di Menu Setting/Akun Penting'
-                ]);
-            }
-            
-            $dataJurnal[$dataAkunHasil->ap_akun] = [
-              'jrdt_akun'   => $dataAkunHasil->ap_akun,
-              'jrdt_value'  => ($spk->spk_hpp / $spk->pp_qty) * $request->spk_qty[$i],
-              'jrdt_dk' => 'K'
-            ];
-
-            keuangan::jurnal()->addJurnal($dataJurnal, date('Y-m-d'), $spk->spk_code, 'Hasil Produksi Dari SPK Produksi Nomor '.$spk->spk_code, 'MM', modulSetting()['onLogin'], false);
-            
-            // Selesai Dirga
         }   
 
         DB::commit();

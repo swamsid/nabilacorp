@@ -178,7 +178,7 @@ class PenerimaanBrgSupController extends Controller
 
     public function simpan_penerimaan(Request $request)
     {
-        // return json_encode('simpan');
+        // return json_encode($request->all());
         DB::beginTransaction();
         try 
         {
@@ -379,7 +379,7 @@ class PenerimaanBrgSupController extends Controller
                     'jrdt_dk' => 'D'
                   ];
                 }else{
-                  $dataJurnal[$dataGroup->g_akun_persediaan]['jrdt_value'] += $request->fieldHargaRaw[$i];
+                  $dataJurnal[$dataGroup->g_akun_persediaan]['jrdt_value'] += $request->fieldHargaTotalRaw[$i];
                 }
 
                 // selesai Dirga
@@ -414,6 +414,8 @@ class PenerimaanBrgSupController extends Controller
               'jrdt_value'  => array_sum($request->fieldHargaTotalRaw),
               'jrdt_dk' => 'K'
             ];
+
+            // return json_encode($dataJurnal);
 
             // update data hutang
             DB::table('dk_payable')->where('py_ref_nomor', $request->headNotaTxt)->update([

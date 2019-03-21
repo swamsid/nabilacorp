@@ -139,6 +139,9 @@ class stockOpnameController extends Controller
 
     public function saveOpname(Request $request){
       // dd($request->all());
+
+      return json_encode($request->all());
+      
       DB::beginTransaction();
     	try {
       $o_id = d_opname::max('o_id') + 1;

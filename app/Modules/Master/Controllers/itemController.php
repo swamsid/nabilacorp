@@ -58,7 +58,7 @@ class itemController extends Controller
       $i_type = $req->i_type;
       $i_type = $i_type != null ? $i_type : '';
 
-      $m_item = m_itemm::leftJoin('m_satuan', 'i_satuan', '=', 's_id');
+      $m_item = m_itemm::leftJoin('m_satuan', 'i_sat1', '=', 's_id');
       if($keyword != '') {
          $m_item = $m_item->where([['i_name', 'LIKE', DB::raw("'%$keyword%'")]]);
       }
