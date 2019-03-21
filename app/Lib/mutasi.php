@@ -385,7 +385,8 @@ $totalPermintaan=abs($awaltotalPermintaan);
                             ]);
             }
 
-            $updateStock=d_stock::where('s_item',$item)->where('s_comp',$comp)->where('s_position',$position);          
+            $updateStock=d_stock::where('s_item',$item)->where('s_comp',$comp)->where('s_position',$position);
+
             $qty=$updateStock->first()->s_qty+$awaltotalPermintaan; 
 
             $updateStock->update([
