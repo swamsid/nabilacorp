@@ -31,8 +31,8 @@
             </div>
             <div class="col-md-4 col-sm-12 col-xs-12">
                 <div class="form-group" align="pull-left">
-                    <input type="text" readonly="" class="form-control input-sm" name="" value="">
-                    <input type="hidden" readonly="" class="form-control input-sm" name="o_staff" value="">
+                    <input type="text" readonly="" class="form-control input-sm" name="" value="{{ Auth::user()->m_name }}">
+                    <input type="hidden" readonly="" class="form-control input-sm" name="o_staff" value="{{ Auth::user()->m_id }}">
                 </div>
             </div>
 

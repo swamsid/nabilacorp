@@ -18,7 +18,7 @@
                   <div class="input-daterange input-group">
                     <input id="tanggal1" class="form-control input-sm datepicker2" name="tanggal1" type="text">
                     <span class="input-group-addon">-</span>
-                    <input id="tanggal2"" class="input-sm form-control datepicker2" name="tanggal2" type="text">
+                    <input id="tanggal2" class="input-sm form-control datepicker2" name="tanggal2" type="text">
                   </div>
                 </div>
               </div>

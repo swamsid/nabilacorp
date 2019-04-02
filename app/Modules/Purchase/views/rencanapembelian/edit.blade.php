@@ -152,7 +152,7 @@
                                           @for ($i = 0; $i < count($dataItem['data_isi']); $i++)
                                           <tr class="detail{{ $dataItem['data_isi'][$i]['i_id'] }}">
                                              <td width="30%">
-                                                <input style="width:100%" type="hidden" class="kode_item kode" name="ppdt_item[]" value='{{ $dataItem['data_isi'][$i]['i_id'] }}''>
+                                                <input style="width:100%" type="hidden" class="kode_item kode" name="ppdt_item[]" value='{{ $dataItem['data_isi'][$i]['i_id'] }}'>
                                                 <div style="padding-top:6px">{{ $dataItem['data_isi'][$i]['i_code'] }} - {{ $dataItem['data_isi'][$i]['i_name'] }}</div>
                                              </td>
                                              <td width="20%">
