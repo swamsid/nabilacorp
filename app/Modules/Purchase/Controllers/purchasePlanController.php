@@ -394,7 +394,7 @@ class purchasePlanController extends Controller
    }
    public function updatePlan(Request $request, $id)
    {         
-      // dd($request->all());
+
       DB::beginTransaction();
       try {
          d_purchase_plan::where('p_id',$id)->delete();

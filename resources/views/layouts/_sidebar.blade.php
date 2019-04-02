@@ -159,6 +159,10 @@
                                 Master Konsigne
                             @endif
 
+                            @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
+                                Data Satuan
+                            @endif
+
                         </span>
                     </a>
                         <ul class="nav nav-second-level">
@@ -261,6 +265,12 @@
                             @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
                                 <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}">
                                     <a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span
+                                                class="hidden">Master</span></a>
+                            @endif
+
+                            @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
+                                <li class="{{ Request::is('master/outlet/index') ? 'active' : '' || Request::is('master/outlet/*') ? 'active' : '' }}">
+                                    <a href="{{ url('/master/outlet/index') }}"><span class="submenu-title">Data Outlet</span><span
                                                 class="hidden">Master</span></a>
                             @endif
 
