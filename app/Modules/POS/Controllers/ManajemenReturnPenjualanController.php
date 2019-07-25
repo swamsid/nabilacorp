@@ -33,8 +33,6 @@ class ManajemenReturnPenjualanController extends Controller
       $d_sales_return = d_sales_return::where('dsr_id', $id);
       $d_sales_return->delete();
 
-
-
       DB::commit();
       $status = 'sukses';
     }

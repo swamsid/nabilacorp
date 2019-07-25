@@ -32,7 +32,8 @@ class RencanaBahanController extends Controller
                                       's_company')
          ->where('s_active','Y')
          ->get();
-      return view('Purchase::rencanabahanbaku.index',compact('tambah','supplier'));  
+
+      return view('Purchase::rencanabahanbaku.index',compact('supplier'));  
 
     }
 

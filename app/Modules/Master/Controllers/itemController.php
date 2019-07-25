@@ -306,6 +306,8 @@ class itemController extends Controller
         'satuan' => $m_satuan
       );
       
+      // return json_encode($res);
+
       // die(json_encode($res));
       return view('Master::databarang/edit_barang', $res);
     }

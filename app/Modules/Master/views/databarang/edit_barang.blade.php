@@ -82,8 +82,9 @@
                                 </div>
 
                                 <div class="col-md-3 col-sm-8 col-xs-12">
-                                  <div class="form-groupFa
+                                  <div class="form-groupFa">
                                       <input type="number" id='i_min_stock' name='i_min_stock' value='{{ $m_item->i_min_stock }}'  class="form-control">
+
                                       <span style="color:#ed5565;display:none;" class="help-block m-b-none" id="satuan-error"><small>Min. Stock Harus Diisi</small></span>
                                   </div>
                                 </div>
@@ -123,12 +124,6 @@
                                     </div>
                                   </div>
                                 </div>
-
-                                
-                               
-
-                                
-
 
                                 <div class="col-md-3 col-sm-4 col-xs-12">
 
@@ -243,7 +238,7 @@
                                 </div>
                                 <div class="col-md-9 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" id="hargabeli" name='is_price2' value='{{ $d_item_supplier[0]->is_price2 }}' class="form-control input-sm" readonly>
+                                      <input type="text" id="hargabeli" name='is_price2' value='{{ $d_item_supplier[0]->is_price2 }}' class="form-control input-sm">
                                       
                                   </div>
                                 </div>
@@ -255,7 +250,7 @@
                                 </div>
                                 <div class="col-md-9 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" id="hargabeli" name='is_price3' value='{{ $d_item_supplier[0]->is_price3 }}' class="form-control input-sm" readonly>
+                                      <input type="text" id="hargabeli" name='is_price3' value='{{ $d_item_supplier[0]->is_price3 }}' class="form-control input-sm">
                                       
                                   </div>
                                 </div>

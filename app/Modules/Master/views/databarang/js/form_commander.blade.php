@@ -80,6 +80,24 @@
                 }
               }
           });
+
+          $('#kelompok').change(function(){
+            var conteks = $(this);
+            var ctx = $('#i_type');
+            if(conteks.val() == '1' && ctx.val() == 'BB')
+              $('#dinamis').fadeIn(100);
+            else
+              $('#dinamis').fadeOut(100);
+          });
+
+          $('#i_type').change(function(){
+            var conteks = $(this);
+            var ctx = $('#kelompok');
+            if(conteks.val() == 'BB' && ctx.val() == '1')
+              $('#dinamis').fadeIn(100);
+            else
+              $('#dinamis').fadeOut(100);
+          })
         });
 
         dinamis();

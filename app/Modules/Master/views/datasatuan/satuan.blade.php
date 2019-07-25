@@ -115,7 +115,7 @@ tr.details td.details-control {
                   }, 
                 ],
             "columns": [
-            { "data": "s_code", "width" : "10%" },
+            { "data": "s_id", "width" : "10%" },
             { "data": "s_name", "width" : "30%" },
             { "data": "s_detname", "width" : "40%" },
             { "data": "aksi","width" : "20%" },

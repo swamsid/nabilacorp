@@ -123,12 +123,6 @@
                                   </div>
                                 </div>
 
-                                
-                               
-
-                                
-
-
                                 <div class="col-md-3 col-sm-4 col-xs-12">
 
                                     <label class="tebal">Satuan Utama</label>
@@ -242,7 +236,7 @@
                                 </div>
                                 <div class="col-md-9 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" id="hargabeli" name="is_price2" class="form-control input-sm" readonly>
+                                      <input type="text" id="hargabeli" name="is_price2" class="form-control input-sm">
                                       
                                   </div>
                                 </div>
@@ -254,7 +248,7 @@
                                 </div>
                                 <div class="col-md-9 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" id="hargabeli" name="is_price3" class="form-control input-sm" readonly>
+                                      <input type="text" id="hargabeli" name="is_price3" class="form-control input-sm">
                                       
                                   </div>
                                 </div>
@@ -271,9 +265,9 @@
                                   </div>
                                 </div>
                                 
-                                
+                                <!-- <input type="hidden" name="is_supplier[]" readonly> -->
 
-                                <div class="" id="dinamis">
+                                <div class="" id="dinamis" style="display: none;">
                                   <div class="col-md-2" style="margin-right: 68px;">
 
                                         <label class="tebal">Supplier</label>
@@ -288,7 +282,7 @@
                                       <span style="color:#ed5565;display:none;" class="help-block m-b-none" id="supplier-error0"><small>Supplier harus diisi.</small></span>
                                     </div>
                                   <div class="form-group col-sm-2">
-                                    <button type="button" class="btn btn-primary" name="button" onclick="tambah()"> <i class="fa fa-plus"></i> </button>
+                                    <!-- <button type="button" class="btn btn-primary" name="button" onclick="tambah()"> <i class="fa fa-plus"></i> </button> -->
                                   </div>
                                 </div>
 

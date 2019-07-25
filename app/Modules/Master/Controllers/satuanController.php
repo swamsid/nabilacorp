@@ -29,34 +29,21 @@ class satuanController extends Controller
         return Datatables::of($list)
                 
           ->addColumn('aksi', function ($data) {
-            if ($data->s_iactive == 'Y') 
-            {
-              return  '<div class="text-center">'.
-                          '<button id="edit" 
-                            onclick="edit('.$data->s_id.')" 
-                            class="btn btn-warning btn-xs" 
-                            title="Edit">
-                            <i class=" fa-fw glyphicon glyphicon-pencil"></i>
-                          </button>'.'
-                          <button id="status'.$data->s_id.'" 
-                              onclick="ubahStatus('.$data->s_id.')" 
-                              class="btn btn-primary btn-xs" 
-                              title="Aktif">
-                              <i class="fa fa-fw  fa-check-square" aria-hidden="true"></i>
-                          </button>'.
-                      '</div>';                                                                     
-            }
-            else
-            {
-              return '<div class="text-center">'.
-                        '<button id="status'.$data->s_id.'" 
+
+            return  '<div class="text-center">'.
+                        '<button id="edit" 
+                          onclick="edit('.$data->s_id.')" 
+                          class="btn btn-warning btn-xs" 
+                          title="Edit">
+                          <i class=" fa-fw glyphicon glyphicon-pencil"></i>
+                        </button>'.'
+                        <button id="status'.$data->s_id.'" 
                             onclick="ubahStatus('.$data->s_id.')" 
-                            class="btn btn-danger btn-xs" 
-                            title="Tidak Aktif">
-                            <i class="fa fa-fw  fa-minus-square" aria-hidden="true"></i>
+                            class="btn btn-primary btn-xs" 
+                            title="Aktif">
+                            <i class="fa fa-fw  fa-check-square" aria-hidden="true"></i>
                         </button>'.
-                    '</div>';
-            }
+                    '</div>';      
             
           })
           ->addColumn('none', function ($data) {

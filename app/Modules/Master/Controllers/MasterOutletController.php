@@ -73,7 +73,44 @@ class MasterOutletController extends Controller
 
 	public function tambahData()
 	{
-
 		return view('Master::MasterOutlet.tambah');
+	}
+
+	public function simpan(Request $request){
+
+		DB::beginTransaction();
+		
+		try {
+			
+			// return json_encode($request->all());
+
+			$id = DB::table('m_comp')->max('c_id') + 1;
+
+			DB::table('m_comp')->insert([
+				'c_id'		=> $id,
+				'c_code'	=> 'A0'.$id,
+				'c_name'	=> $request->c_company,
+				'c_owner'	=> $request->c_name,
+				'c_address'	=> $request->c_address
+			]);
+
+		    DB::commit();
+		
+		    return Response::json([
+		        'status' => 'sukses',
+		        'message' => ''
+		    ]);
+		
+		} catch (Exception $e) {
+		
+		    DB::rollBack();
+		    
+		    return Response::json([
+		        'status' => 'gagal',
+		        'message' => $e->getMessage()
+		    ]);
+		
+		}
+
 	}
 }

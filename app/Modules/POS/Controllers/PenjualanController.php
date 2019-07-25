@@ -90,6 +90,8 @@ class PenjualanController extends Controller
          ->take(25)
          ->get()->toArray();
 
+         // return json_encode($queries);
+
       foreach ($queries as $val) 
       {
          //cek item type
@@ -132,7 +134,7 @@ class PenjualanController extends Controller
                   'stok' => number_format($dataStok['val_stok'][$index]->qtyStok,0,',','.'),
                   'satuan' => $dataStok['txt_satuan'][$index],
                   'i_code' =>$data->i_code,
-                  'i_price' =>number_format($cekHarga->ip_price,0,',','.'),
+                  'i_price' =>number_format(($cekHarga) ? $cekHarga->ip_price : 0, 0, ',', '.'),
                   'item' => $data->i_name,
                   'position'=>$position->gc_id,
                   'comp'=>$position->gc_id,

@@ -202,9 +202,10 @@ Route::group(['namespace' => 'App\Modules\Master\Controllers', 'middleware'=>['w
     Route::get('/master/datasatuan/datatable_satuan', 'satuanController@datatable_satuan')->name('datatable_satuan');
     Route::get('/master/datasatuan/ubahstatus', 'satuanController@ubahStatus');
 
-//Master Konsigne
+//Master outlet
     Route::get('/master/outlet/index', 'MasterOutletController@index');
     Route::get('/master/outlet/table', 'MasterOutletController@tableOutlet');
     Route::get('/master/outlet/tambah', 'MasterOutletController@tambahData');
+    Route::get('/master/outlet/simpan', 'MasterOutletController@simpan');
     
 });
